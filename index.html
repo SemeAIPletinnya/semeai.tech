@@ -774,9 +774,9 @@
                 <strong>Static page boundary</strong>
                 <ul>
                   <li>No password is collected on this page.</li>
-                  <li>No customer data is stored by the static landing page.</li>
+                  <li>The browser sends this request to the live account API without embedding a shared API key.</li>
                   <li>Use only non-sensitive demo details for now.</li>
-                  <li>The live API remains separate from this intake form.</li>
+                  <li>Email delivery is not automated yet; verification is returned as an early-access link.</li>
                 </ul>
               </div>
             </div>
@@ -820,8 +820,8 @@
                 <span>I understand this prepares an early-access request. It is not a password account and should not include sensitive customer data.</span>
               </label>
               <div class="form-actions">
-                <button class="button primary" type="submit">Prepare request</button>
-                <button class="button ghost" type="button" id="copy-request" disabled>Copy request JSON</button>
+                <button class="button primary" type="submit">Request workspace</button>
+                <button class="button ghost" type="button" id="copy-request" disabled>Copy visible JSON</button>
                 <a class="button" id="mail-request" href="#" aria-disabled="true">Send by email</a>
               </div>
               <div class="message" id="form-message" role="status"></div>
@@ -868,7 +868,7 @@
       const message = document.querySelector("#form-message");
       const copyButton = document.querySelector("#copy-request");
       const mailButton = document.querySelector("#mail-request");
-      const storageKey = "semeai_early_access_requests_v1";
+      const apiBaseUrl = "https://api.semeai.tech";
       let preparedRequest = null;
 
       function formValue(name) {
@@ -878,7 +878,7 @@
 
       function buildRequest() {
         return {
-          schema_version: "0.1-static-intake",
+          schema_version: "0.1-account",
           request_type: "early_access_workspace_request",
           product: "SemeAI Gate",
           email: formValue("email"),
@@ -890,23 +890,14 @@
           canonical_internal_decisions: ["PROCEED", "NEEDS_REVIEW", "SILENCE"],
           boundary: {
             password_collected: false,
-            server_side_storage_from_static_page: false,
+            shared_api_key_embedded_in_browser: false,
+            static_page_stores_customer_data: false,
+            server_receives_registration_request: true,
             customer_data_should_not_be_included: true
           },
           created_at: new Date().toISOString(),
           source: "https://semeai.tech"
         };
-      }
-
-      function saveLocalCopy(request) {
-        try {
-          const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
-          existing.push(request);
-          localStorage.setItem(storageKey, JSON.stringify(existing.slice(-10)));
-          return true;
-        } catch (error) {
-          return false;
-        }
       }
 
       function updateMailLink(request) {
@@ -923,28 +914,97 @@
         mailButton.removeAttribute("aria-disabled");
       }
 
-      form.addEventListener("submit", (event) => {
-        event.preventDefault();
-        preparedRequest = buildRequest();
-        const saved = saveLocalCopy(preparedRequest);
-        preview.textContent = JSON.stringify(preparedRequest, null, 2);
+      function showJson(value) {
+        preview.textContent = JSON.stringify(value, null, 2);
         preview.classList.add("visible");
         copyButton.disabled = false;
+      }
+
+      function showFallback(request, detail) {
+        updateMailLink(request);
+        showJson({
+          status: "local_fallback_prepared",
+          reason: detail || "Live registration API unavailable.",
+          next_step: "Send this request by email or try again later.",
+          request
+        });
+        message.textContent = "Live API unavailable. Local fallback prepared; no shared API key was exposed.";
+      }
+
+      async function registerWorkspace(request) {
+        const response = await fetch(`${apiBaseUrl}/v0/register`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(request)
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(data.error || `registration failed with HTTP ${response.status}`);
+        }
+        return data;
+      }
+
+      async function verifyWorkspace(token) {
+        const response = await fetch(`${apiBaseUrl}/v0/verify`, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ verification_token: token })
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) {
+          throw new Error(data.error || `verification failed with HTTP ${response.status}`);
+        }
+        return data;
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        preparedRequest = buildRequest();
         updateMailLink(preparedRequest);
-        message.textContent = saved
-          ? "Request prepared. A local browser copy was saved; use email or copy JSON to send it."
-          : "Request prepared. Copy JSON or send by email.";
+        showJson({ status: "submitting_to_live_api", endpoint: `${apiBaseUrl}/v0/register`, request: preparedRequest });
+        message.textContent = "Submitting registration request to live API...";
+        try {
+          const result = await registerWorkspace(preparedRequest);
+          showJson(result);
+          const verificationUrl = result?.verification?.verification_url;
+          message.textContent = verificationUrl
+            ? "Workspace request created. Open the verification link in the JSON response to issue an API key."
+            : "Workspace request created.";
+        } catch (error) {
+          showFallback(preparedRequest, String(error.message || error));
+        }
       });
 
       copyButton.addEventListener("click", async () => {
-        if (!preparedRequest) return;
+        if (!preview.textContent) return;
         try {
-          await navigator.clipboard.writeText(JSON.stringify(preparedRequest, null, 2));
-          message.textContent = "Request JSON copied.";
+          await navigator.clipboard.writeText(preview.textContent);
+          message.textContent = "Visible JSON copied.";
         } catch (error) {
           message.textContent = "Copy failed. Select the JSON preview and copy manually.";
         }
       });
+
+      async function maybeVerifyFromHash() {
+        if (!window.location.hash.startsWith("#verify=")) return;
+        const token = decodeURIComponent(window.location.hash.slice("#verify=".length));
+        if (!token) return;
+        message.textContent = "Verifying workspace and issuing API key...";
+        showJson({ status: "verifying_workspace", endpoint: `${apiBaseUrl}/v0/verify` });
+        try {
+          const result = await verifyWorkspace(token);
+          showJson(result);
+          message.textContent = result.api_key
+            ? "Workspace verified. Copy the API key now; it is shown once and is not stored by this page."
+            : "Workspace already verified. Use the API key shown during first verification.";
+          history.replaceState(null, "", window.location.pathname + window.location.search);
+        } catch (error) {
+          showJson({ status: "verification_failed", error: String(error.message || error) });
+          message.textContent = "Verification failed. Request a new workspace link or contact support.";
+        }
+      }
+
+      maybeVerifyFromHash();
     </script>
   </body>
 </html>
