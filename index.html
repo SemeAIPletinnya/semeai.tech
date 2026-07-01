@@ -6,23 +6,28 @@
     <title>SemeAI | Release control for AI answers</title>
     <meta
       name="description"
-      content="SemeAI builds release-control infrastructure for AI outputs. Generation is not release authority."
+      content="SemeAI Gate is a release-control checkpoint for AI answers. Existing LLM apps send an AI answer, business data, and rules; the gate returns SHOW, REVIEW, or BLOCK."
     />
     <style>
       :root {
         color-scheme: light;
         --ink: #20272b;
+        --ink-strong: #12171a;
         --muted: #647278;
-        --soft: #f4f6f6;
+        --muted-2: #839196;
+        --bg: #eef3f3;
         --panel: #ffffff;
-        --line: #d9e1e2;
+        --panel-soft: #f8fafa;
+        --line: #d5dfdf;
         --line-strong: #8fc7c8;
-        --teal: #99cccc;
-        --teal-dark: #5e999b;
-        --red: #d04b48;
-        --amber: #b7832d;
+        --teal: #9dcdcd;
+        --teal-dark: #5c9698;
+        --teal-deep: #1f696d;
         --green: #2d986e;
-        --shadow: 0 28px 80px rgba(32, 39, 43, 0.08);
+        --red: #d24b4b;
+        --amber: #b9812f;
+        --shadow: 0 24px 70px rgba(31, 45, 50, 0.1);
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
@@ -40,25 +45,41 @@
         margin: 0;
         color: var(--ink);
         background:
-          linear-gradient(180deg, rgba(153, 204, 204, 0.22), rgba(255, 255, 255, 0) 420px),
-          var(--soft);
+          linear-gradient(180deg, rgba(157, 205, 205, 0.38), rgba(255, 255, 255, 0) 520px),
+          var(--bg);
       }
 
       a {
         color: inherit;
       }
 
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
       .page {
-        width: min(1180px, calc(100vw - 40px));
+        width: min(1180px, calc(100vw - 42px));
         margin: 0 auto;
       }
 
       .nav {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        background: rgba(238, 243, 243, 0.94);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-inner {
         display: flex;
+        min-height: 78px;
         align-items: center;
         justify-content: space-between;
-        min-height: 82px;
-        border-bottom: 1px solid var(--line);
+        gap: 24px;
       }
 
       .brand {
@@ -74,42 +95,56 @@
         height: 38px;
         place-items: center;
         border-radius: 50%;
-        color: #16393a;
+        color: #153b3d;
         background: var(--teal);
+        font-size: 14px;
         font-weight: 950;
       }
 
       .nav-links {
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         gap: 16px;
         color: var(--muted);
         font-size: 14px;
-        font-weight: 750;
+        font-weight: 780;
       }
 
       .nav-links a {
         text-decoration: none;
       }
 
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
-        gap: 48px;
+      .nav-links .nav-cta {
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid var(--teal-dark);
+        border-radius: 7px;
+        color: var(--ink-strong);
+        background: #fff;
+        display: inline-flex;
         align-items: center;
-        min-height: 720px;
-        padding: 56px 0 70px;
       }
 
-      .eyebrow {
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.04fr) minmax(420px, 0.96fr);
+        gap: 46px;
+        align-items: center;
+        min-height: 700px;
+        padding: 54px 0 66px;
+      }
+
+      .eyebrow,
+      .pill {
         display: inline-flex;
         align-items: center;
         min-height: 28px;
         padding: 4px 10px;
         border: 1px solid var(--line-strong);
         border-radius: 999px;
-        color: var(--teal-dark);
-        background: rgba(255, 255, 255, 0.78);
+        color: var(--teal-deep);
+        background: rgba(255, 255, 255, 0.84);
         font-size: 12px;
         font-weight: 900;
         text-transform: uppercase;
@@ -117,13 +152,14 @@
 
       h1 {
         margin: 22px 0 18px;
+        color: var(--ink-strong);
         font-size: clamp(48px, 6vw, 86px);
         line-height: 1.02;
         letter-spacing: 0;
       }
 
       .lead {
-        width: min(700px, 100%);
+        width: min(720px, 100%);
         margin: 0;
         color: var(--muted);
         font-size: clamp(18px, 2vw, 22px);
@@ -134,10 +170,11 @@
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
-        margin-top: 34px;
+        margin-top: 32px;
       }
 
-      .button {
+      .button,
+      button.button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -150,6 +187,7 @@
         box-shadow: 0 8px 24px rgba(32, 39, 43, 0.06);
         font-weight: 850;
         text-decoration: none;
+        cursor: pointer;
       }
 
       .button.primary {
@@ -157,7 +195,39 @@
         background: var(--teal);
       }
 
-      .terminal {
+      .button.ghost {
+        color: var(--muted);
+        background: var(--panel-soft);
+      }
+
+      .proof-strip {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 34px;
+      }
+
+      .proof-item {
+        min-height: 72px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .proof-item strong {
+        display: block;
+        font-size: 20px;
+      }
+
+      .proof-item span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      .gate-card {
         position: relative;
         border: 1px solid var(--line);
         border-top: 3px solid var(--line-strong);
@@ -165,15 +235,16 @@
         box-shadow: var(--shadow);
       }
 
-      .terminal-head {
+      .gate-card-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 14px;
         padding: 18px 20px;
         border-bottom: 1px solid var(--line);
       }
 
-      .terminal-title {
+      .gate-title {
         font-weight: 900;
       }
 
@@ -187,18 +258,16 @@
         background: rgba(45, 152, 110, 0.1);
         font-size: 12px;
         font-weight: 900;
+        white-space: nowrap;
       }
 
       .gate-flow {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0;
         padding: 18px 20px 22px;
       }
 
       .flow-row {
         display: grid;
-        grid-template-columns: 130px minmax(0, 1fr) 112px;
+        grid-template-columns: 132px minmax(0, 1fr) 108px;
         gap: 18px;
         align-items: center;
         padding: 15px 0;
@@ -217,7 +286,7 @@
       }
 
       .value {
-        color: var(--ink);
+        color: var(--ink-strong);
         font-weight: 800;
       }
 
@@ -246,16 +315,22 @@
       }
 
       .section {
-        padding: 54px;
+        padding: 52px 54px;
         border: 1px solid var(--line);
         background: var(--panel);
         box-shadow: var(--shadow);
       }
 
+      .section.compact {
+        padding: 38px 42px;
+      }
+
       .section h2 {
         margin: 0 0 14px;
+        color: var(--ink-strong);
         font-size: clamp(30px, 4vw, 48px);
         line-height: 1.08;
+        letter-spacing: 0;
       }
 
       .section p {
@@ -271,6 +346,13 @@
         margin-top: 28px;
       }
 
+      .grid-2 {
+        display: grid;
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+        gap: 26px;
+        align-items: start;
+      }
+
       .card {
         min-height: 210px;
         padding: 22px;
@@ -280,12 +362,28 @@
 
       .card h3 {
         margin: 0 0 12px;
+        color: var(--ink-strong);
         font-size: 20px;
       }
 
       .card p {
         margin: 0;
         font-size: 15px;
+      }
+
+      .table {
+        display: grid;
+        border-top: 1px solid var(--line-strong);
+      }
+
+      .table-row {
+        display: grid;
+        grid-template-columns: minmax(140px, 0.42fr) minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+        min-height: 62px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--line);
       }
 
       .proof-list {
@@ -316,6 +414,110 @@
         font-weight: 750;
       }
 
+      .signup-shell {
+        display: grid;
+        grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+        gap: 30px;
+      }
+
+      .signup-note {
+        padding: 20px;
+        border: 1px solid var(--line);
+        background: var(--panel-soft);
+      }
+
+      .signup-note ul {
+        margin: 16px 0 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .field {
+        display: grid;
+        gap: 7px;
+      }
+
+      .field.full {
+        grid-column: 1 / -1;
+      }
+
+      .field label {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .field input,
+      .field textarea,
+      .field select {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: var(--ink);
+        background: #fff;
+      }
+
+      .field textarea {
+        min-height: 106px;
+        resize: vertical;
+      }
+
+      .checkline {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .checkline input {
+        margin-top: 4px;
+      }
+
+      .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        margin-top: 18px;
+      }
+
+      .request-preview {
+        display: none;
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        background: #0f1518;
+        color: #d9eeee;
+        font-family: var(--mono);
+        font-size: 12px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        overflow: auto;
+      }
+
+      .request-preview.visible {
+        display: block;
+      }
+
+      .message {
+        min-height: 24px;
+        color: var(--teal-deep);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
       .author {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -335,10 +537,13 @@
         font-size: 14px;
       }
 
-      @media (max-width: 920px) {
+      @media (max-width: 960px) {
         .hero,
+        .grid-2,
         .author,
-        .grid-3 {
+        .signup-shell,
+        .grid-3,
+        .proof-strip {
           grid-template-columns: 1fr;
         }
 
@@ -347,33 +552,59 @@
           padding-top: 34px;
         }
 
-        .section {
+        .section,
+        .section.compact {
           padding: 30px;
         }
+      }
 
-        .flow-row {
+      @media (max-width: 680px) {
+        .page {
+          width: min(100% - 24px, 1180px);
+        }
+
+        .nav-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+        }
+
+        .nav-links {
+          gap: 10px;
+        }
+
+        .flow-row,
+        .table-row,
+        .form-grid {
           grid-template-columns: 1fr;
         }
 
         .decision {
           justify-self: start;
         }
+
+        h1 {
+          font-size: clamp(44px, 14vw, 64px);
+        }
       }
     </style>
   </head>
   <body>
-    <header class="page nav">
-      <div class="brand">
-        <span class="brand-mark">SG</span>
-        <span>SemeAI</span>
+    <header class="nav">
+      <div class="page nav-inner">
+        <a class="brand" href="#" aria-label="SemeAI home">
+          <span class="brand-mark">SG</span>
+          <span>SemeAI</span>
+        </a>
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#gate">Gate</a>
+          <a href="#product">Product</a>
+          <a href="#research">Research</a>
+          <a href="#access">Register</a>
+          <a href="https://gate.semeai.tech">Live demo</a>
+          <a class="nav-cta" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
+        </nav>
       </div>
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#gate">Gate</a>
-        <a href="#research">Research</a>
-        <a href="#author">Author</a>
-        <a href="https://gate.semeai.tech">Live demo</a>
-        <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
-      </nav>
     </header>
 
     <main class="page">
@@ -382,20 +613,38 @@
           <span class="eyebrow">Release control for AI outputs</span>
           <h1>Generation is not release authority.</h1>
           <p class="lead">
-            SemeAI builds a control layer between an LLM answer and the real
-            user. The model may generate a candidate. The gate decides whether
-            it should be shown, reviewed, or blocked.
+            SemeAI Gate is a control layer between an LLM answer and the real
+            user. Your product can generate with any model, then ask the gate
+            whether the answer should be shown, reviewed, or blocked.
           </p>
           <div class="cta-row">
-            <a class="button primary" href="https://gate.semeai.tech">Open Gate demo</a>
-            <a class="button" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718">Read SSRN paper</a>
-            <a class="button" href="https://zenodo.org/records/20525820">Open Zenodo record</a>
+            <a class="button primary" href="https://gate.semeai.tech">Open live demo</a>
+            <a class="button" href="#access">Request access</a>
+            <a class="button" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718">Read paper</a>
+          </div>
+          <div class="proof-strip" aria-label="SemeAI status">
+            <div class="proof-item">
+              <strong>v0.1</strong>
+              <span>versioned gate contract</span>
+            </div>
+            <div class="proof-item">
+              <strong>3</strong>
+              <span>public actions: SHOW, REVIEW, BLOCK</span>
+            </div>
+            <div class="proof-item">
+              <strong>local</strong>
+              <span>deterministic reference adapter</span>
+            </div>
+            <div class="proof-item">
+              <strong>audit</strong>
+              <span>withheld answers keep records</span>
+            </div>
           </div>
         </div>
 
-        <aside class="terminal" aria-label="SemeAI Gate product flow">
-          <div class="terminal-head">
-            <div class="terminal-title">SemeAI Gate check</div>
+        <aside class="gate-card" aria-label="SemeAI Gate product flow">
+          <div class="gate-card-head">
+            <div class="gate-title">SemeAI Gate check</div>
             <div class="status">audit preserved</div>
           </div>
           <div class="gate-flow">
@@ -430,30 +679,35 @@
 
       <div class="sections">
         <section class="section" id="gate">
-          <h2>A safety checkpoint between your LLM app and your user.</h2>
-          <p>
-            SemeAI Gate is a small B2B adapter for existing AI products. Your
-            product sends the user message, AI answer, business data, and
-            business rules. The gate returns a simple action: SHOW, REVIEW, or
-            BLOCK.
-          </p>
-          <div class="grid-3">
-            <article class="card">
-              <h3>SHOW</h3>
-              <p>Maps to PROCEED. The answer is supported enough for release.</p>
-            </article>
-            <article class="card">
-              <h3>REVIEW</h3>
-              <p>Maps to NEEDS_REVIEW. Do not auto-release. Send to an operator.</p>
-            </article>
-            <article class="card">
-              <h3>BLOCK</h3>
-              <p>Maps to SILENCE. Withhold the answer and preserve audit metadata.</p>
-            </article>
+          <div class="grid-2">
+            <div>
+              <span class="eyebrow">B2B gate contract</span>
+              <h2>A safety checkpoint between your LLM app and your user.</h2>
+              <p>
+                SemeAI Gate is a small adapter for existing AI products. Your
+                product sends the user message, AI answer, business data,
+                business context, and business rules. The gate returns one
+                business action.
+              </p>
+            </div>
+            <div class="table" aria-label="SHOW REVIEW BLOCK mapping">
+              <div class="table-row">
+                <div class="label">SHOW</div>
+                <div>Maps to PROCEED. The answer is supported enough for release.</div>
+              </div>
+              <div class="table-row">
+                <div class="label">REVIEW</div>
+                <div>Maps to NEEDS_REVIEW. Do not auto-release. Send to an operator.</div>
+              </div>
+              <div class="table-row">
+                <div class="label">BLOCK</div>
+                <div>Maps to SILENCE. Withhold the answer and preserve audit metadata.</div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section class="section">
+        <section class="section" id="product">
           <h2>What SemeAI is building.</h2>
           <div class="grid-3">
             <article class="card">
@@ -474,9 +728,9 @@
         <section class="section" id="research">
           <h2>Research and public proof links.</h2>
           <p>
-            The project is developed as both working software and a research
+            The project is developed as working software and as a research
             direction around release authority after generation. These links are
-            public records for the thesis and artifacts.
+            public records for the thesis, archive, and reference implementation.
           </p>
           <ul class="proof-list">
             <li>
@@ -506,7 +760,77 @@
           </ul>
         </section>
 
-        <section class="section" id="author">
+        <section class="section" id="access">
+          <div class="signup-shell">
+            <div>
+              <span class="eyebrow">Early access registration</span>
+              <h2>Request a SemeAI Gate workspace.</h2>
+              <p>
+                This is the first public registration surface. It prepares an
+                early-access request for a hosted workspace, without creating a
+                password account yet.
+              </p>
+              <div class="signup-note">
+                <strong>Static page boundary</strong>
+                <ul>
+                  <li>No password is collected on this page.</li>
+                  <li>No customer data is stored by the static landing page.</li>
+                  <li>Use only non-sensitive demo details for now.</li>
+                  <li>The live API remains separate from this intake form.</li>
+                </ul>
+              </div>
+            </div>
+
+            <form id="access-form" autocomplete="on">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="email">Work email</label>
+                  <input id="email" name="email" type="email" placeholder="you@company.com" required />
+                </div>
+                <div class="field">
+                  <label for="company">Company or project</label>
+                  <input id="company" name="company" type="text" placeholder="Acme Support" required />
+                </div>
+                <div class="field">
+                  <label for="use-case">Primary use case</label>
+                  <select id="use-case" name="use_case">
+                    <option value="support">Customer support AI answers</option>
+                    <option value="fintech">Fintech or account claims</option>
+                    <option value="internal_tools">Internal copilots</option>
+                    <option value="product">Product assistant</option>
+                    <option value="research">Research / evaluation</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="volume">Expected monthly checks</label>
+                  <select id="volume" name="volume">
+                    <option value="pilot">Pilot / manual testing</option>
+                    <option value="lt_10k">Under 10k</option>
+                    <option value="10k_100k">10k to 100k</option>
+                    <option value="gt_100k">Over 100k</option>
+                  </select>
+                </div>
+                <div class="field full">
+                  <label for="notes">What should the gate protect?</label>
+                  <textarea id="notes" name="notes" placeholder="Example: stop fake promo codes, unsupported account claims, risky actions, or context drift before answers reach users."></textarea>
+                </div>
+              </div>
+              <label class="checkline">
+                <input id="boundary" name="boundary" type="checkbox" required />
+                <span>I understand this prepares an early-access request. It is not a password account and should not include sensitive customer data.</span>
+              </label>
+              <div class="form-actions">
+                <button class="button primary" type="submit">Prepare request</button>
+                <button class="button ghost" type="button" id="copy-request" disabled>Copy request JSON</button>
+                <a class="button" id="mail-request" href="#" aria-disabled="true">Send by email</a>
+              </div>
+              <div class="message" id="form-message" role="status"></div>
+              <pre class="request-preview" id="request-preview" aria-label="Prepared request JSON"></pre>
+            </form>
+          </div>
+        </section>
+
+        <section class="section compact" id="author">
           <div class="author">
             <div class="author-box">
               <span class="eyebrow">Author and developer</span>
@@ -537,5 +861,90 @@
       <div>SemeAI. Generation is not release authority.</div>
       <div>Machine values remain canonical: SHOW / REVIEW / BLOCK and PROCEED / NEEDS_REVIEW / SILENCE.</div>
     </footer>
+
+    <script>
+      const form = document.querySelector("#access-form");
+      const preview = document.querySelector("#request-preview");
+      const message = document.querySelector("#form-message");
+      const copyButton = document.querySelector("#copy-request");
+      const mailButton = document.querySelector("#mail-request");
+      const storageKey = "semeai_early_access_requests_v1";
+      let preparedRequest = null;
+
+      function formValue(name) {
+        const element = form.elements.namedItem(name);
+        return element ? String(element.value || "").trim() : "";
+      }
+
+      function buildRequest() {
+        return {
+          schema_version: "0.1-static-intake",
+          request_type: "early_access_workspace_request",
+          product: "SemeAI Gate",
+          email: formValue("email"),
+          company: formValue("company"),
+          use_case: formValue("use_case"),
+          expected_monthly_checks: formValue("volume"),
+          notes: formValue("notes"),
+          canonical_actions: ["SHOW", "REVIEW", "BLOCK"],
+          canonical_internal_decisions: ["PROCEED", "NEEDS_REVIEW", "SILENCE"],
+          boundary: {
+            password_collected: false,
+            server_side_storage_from_static_page: false,
+            customer_data_should_not_be_included: true
+          },
+          created_at: new Date().toISOString(),
+          source: "https://semeai.tech"
+        };
+      }
+
+      function saveLocalCopy(request) {
+        try {
+          const existing = JSON.parse(localStorage.getItem(storageKey) || "[]");
+          existing.push(request);
+          localStorage.setItem(storageKey, JSON.stringify(existing.slice(-10)));
+          return true;
+        } catch (error) {
+          return false;
+        }
+      }
+
+      function updateMailLink(request) {
+        const body = [
+          "SemeAI Gate early-access request",
+          "",
+          JSON.stringify(request, null, 2)
+        ].join("\n");
+        mailButton.href =
+          "mailto:adelayida0403@gmail.com?subject=" +
+          encodeURIComponent("SemeAI Gate early access request") +
+          "&body=" +
+          encodeURIComponent(body);
+        mailButton.removeAttribute("aria-disabled");
+      }
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        preparedRequest = buildRequest();
+        const saved = saveLocalCopy(preparedRequest);
+        preview.textContent = JSON.stringify(preparedRequest, null, 2);
+        preview.classList.add("visible");
+        copyButton.disabled = false;
+        updateMailLink(preparedRequest);
+        message.textContent = saved
+          ? "Request prepared. A local browser copy was saved; use email or copy JSON to send it."
+          : "Request prepared. Copy JSON or send by email.";
+      });
+
+      copyButton.addEventListener("click", async () => {
+        if (!preparedRequest) return;
+        try {
+          await navigator.clipboard.writeText(JSON.stringify(preparedRequest, null, 2));
+          message.textContent = "Request JSON copied.";
+        } catch (error) {
+          message.textContent = "Copy failed. Select the JSON preview and copy manually.";
+        }
+      });
+    </script>
   </body>
 </html>

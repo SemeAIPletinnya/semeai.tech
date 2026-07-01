@@ -6,6 +6,8 @@ This repo is intentionally small:
 
 - `index.html` is the main public landing page.
 - `CNAME` binds GitHub Pages to `semeai.tech`.
+- The early-access registration section is a static intake surface. It does
+  not collect passwords and does not store customer data server-side.
 
 Related surfaces:
 
