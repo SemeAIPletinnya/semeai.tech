@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SemeAI Gate | Design directions</title>
+    <meta
+      name="description"
+      content="Ten visual directions for the SemeAI Gate landing, demo, and account console."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #20272b;
+        --ink-strong: #12171a;
+        --muted: #647278;
+        --bg: #eef3f3;
+        --panel: #ffffff;
+        --line: #d5dfdf;
+        --line-strong: #8fc7c8;
+        --teal: #9dcdcd;
+        --teal-dark: #5c9698;
+        --green: #2d986e;
+        --red: #d24b4b;
+        --shadow: 0 24px 70px rgba(31, 45, 50, 0.1);
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          linear-gradient(180deg, rgba(157, 205, 205, 0.34), rgba(255, 255, 255, 0) 440px),
+          var(--bg);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        width: min(1180px, calc(100vw - 42px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(238, 243, 243, 0.94);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(14px);
+      }
+
+      .nav-inner {
+        display: flex;
+        min-height: 78px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border-radius: 50%;
+        color: #153b3d;
+        background: var(--teal);
+        font-size: 14px;
+        font-weight: 950;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 780;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+      }
+
+      .hero {
+        padding: 64px 0 28px;
+      }
+
+      .eyebrow,
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 4px 10px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        color: #1f696d;
+        background: rgba(255, 255, 255, 0.84);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 920px;
+        margin: 22px 0 18px;
+        color: var(--ink-strong);
+        font-size: clamp(44px, 5.6vw, 78px);
+        line-height: 1.03;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        color: var(--ink-strong);
+        font-size: clamp(26px, 3vw, 38px);
+        line-height: 1.1;
+      }
+
+      p {
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.6;
+      }
+
+      .lead {
+        max-width: 860px;
+        margin: 0;
+        font-size: clamp(18px, 2vw, 22px);
+      }
+
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 24px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 16px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--ink);
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(32, 39, 43, 0.06);
+        font-weight: 850;
+        text-decoration: none;
+      }
+
+      .button.primary {
+        border-color: var(--teal-dark);
+        background: var(--teal);
+      }
+
+      .contact-sheet,
+      .option-card {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .contact-sheet {
+        margin: 10px 0 28px;
+        padding: 20px;
+      }
+
+      .contact-sheet img,
+      .option-card img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border: 1px solid var(--line);
+        background: #fff;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 24px;
+        padding-bottom: 70px;
+      }
+
+      .option-card {
+        padding: 20px;
+      }
+
+      .card-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      .option-number {
+        color: var(--teal-dark);
+        font-size: 13px;
+        font-weight: 950;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .option-card p {
+        margin: 0;
+        font-size: 15px;
+      }
+
+      .machine-note {
+        margin: 0 0 30px;
+        padding: 16px 18px;
+        border: 1px solid var(--line-strong);
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .footer {
+        padding: 32px 0 46px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        font-size: 14px;
+      }
+
+      @media (max-width: 860px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .page {
+          width: min(100% - 24px, 1180px);
+        }
+
+        .contact-sheet,
+        .option-card {
+          padding: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="page nav-inner">
+        <a class="brand" href="index.html" aria-label="SemeAI home">
+          <span class="brand-mark">SG</span>
+          <span>SemeAI Gate</span>
+        </a>
+        <nav class="nav-links" aria-label="Design navigation">
+          <a href="index.html">Landing</a>
+          <a href="register.html">Register</a>
+          <a href="account.html">Account</a>
+          <a href="https://gate.semeai.tech/demo/saas_visible.html">Live demo</a>
+          <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero">
+        <span class="eyebrow">Design direction board</span>
+        <h1>Pick the product surface for SemeAI Gate.</h1>
+        <p class="lead">
+          These are controlled UI mockups for choosing the next professional
+          design pass. They are not final screenshots; they define direction,
+          hierarchy, palette, and the kind of buyer/user each surface speaks to.
+        </p>
+        <div class="toolbar">
+          <a class="button primary" href="#options">View all 10</a>
+          <a class="button" href="index.html">Back to landing</a>
+          <a class="button" href="account.html">Open account console</a>
+        </div>
+      </section>
+
+      <section class="contact-sheet" aria-label="All design options">
+        <img
+          src="assets/design-options/semeai_design_options_contact_sheet.png"
+          alt="Contact sheet with ten SemeAI Gate UI design directions"
+        />
+      </section>
+
+      <p class="machine-note">
+        Canonical machine values stay unchanged in every direction:
+        SHOW / REVIEW / BLOCK and PROCEED / NEEDS_REVIEW / SILENCE.
+        Design may translate explanatory copy, but not payload values.
+      </p>
+
+      <section class="grid" id="options" aria-label="Design options">
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 01</div>
+              <h2>Clean SaaS Console</h2>
+              <p>Light B2B console, readable buyer story, teal status language.</p>
+            </div>
+            <span class="tag">B2B simple</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_01.png" alt="Clean SaaS Console option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 02</div>
+              <h2>Premium Developer API</h2>
+              <p>Docs-first surface for SDKs, schemas, snippets, and API confidence.</p>
+            </div>
+            <span class="tag">Dev product</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_02.png" alt="Premium Developer API option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 03</div>
+              <h2>AI Safety Lab</h2>
+              <p>Research-backed SaaS style with public proof links and benchmark cards.</p>
+            </div>
+            <span class="tag">Research</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_03.png" alt="AI Safety Lab option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 04</div>
+              <h2>Enterprise Control Room</h2>
+              <p>Dark operator console for production monitoring and release events.</p>
+            </div>
+            <span class="tag">Enterprise</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_04.png" alt="Enterprise Control Room option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 05</div>
+              <h2>Security Gateway</h2>
+              <p>Firewall-like checkpoint between AI answer and customer release.</p>
+            </div>
+            <span class="tag">Security</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_05.png" alt="Security Gateway option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 06</div>
+              <h2>Evidence Workspace</h2>
+              <p>Obsidian-style answer surface with sources, context, and receipts.</p>
+            </div>
+            <span class="tag">Workspace</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_06.png" alt="Evidence Workspace option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 07</div>
+              <h2>Technical Blueprint</h2>
+              <p>Pipeline-first diagram for explaining architecture in five seconds.</p>
+            </div>
+            <span class="tag">Architecture</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_07.png" alt="Technical Blueprint option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 08</div>
+              <h2>Minimal Research Artifact</h2>
+              <p>Editorial thesis page centered on “Generation is not release authority.”</p>
+            </div>
+            <span class="tag">Thesis</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_08.png" alt="Minimal Research Artifact option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 09</div>
+              <h2>Cybernetic Control Circuit</h2>
+              <p>Premium dark circuit hero with a central gate chip and measured signals.</p>
+            </div>
+            <span class="tag">Visual hero</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_09.png" alt="Cybernetic Control Circuit option" />
+        </article>
+
+        <article class="option-card">
+          <div class="card-head">
+            <div>
+              <div class="option-number">Option 10</div>
+              <h2>Hybrid Product Direction</h2>
+              <p>Light landing, serious API console, and one dark technical gate section.</p>
+            </div>
+            <span class="tag">Best blend</span>
+          </div>
+          <img src="assets/design-options/semeai_design_option_10.png" alt="Hybrid Product Direction option" />
+        </article>
+      </section>
+    </main>
+
+    <footer class="page footer">
+      <div>SemeAI. Generation is not release authority.</div>
+      <div>Choose one direction or combine two, then the production design pass can start.</div>
+    </footer>
+  </body>
+</html>
