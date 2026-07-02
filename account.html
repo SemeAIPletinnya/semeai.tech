@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SemeAI Gate | Account console</title>
+    <meta
+      name="description"
+      content="Browser-safe SemeAI Gate account console for loading a workspace and scoped receipt trail with a user-provided API key."
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #20272b;
+        --ink-strong: #12171a;
+        --muted: #647278;
+        --bg: #eef3f3;
+        --panel: #ffffff;
+        --panel-soft: #f8fafa;
+        --line: #d5dfdf;
+        --line-strong: #8fc7c8;
+        --teal: #9dcdcd;
+        --teal-dark: #5c9698;
+        --teal-deep: #1f696d;
+        --green: #2d986e;
+        --red: #d24b4b;
+        --amber: #b9812f;
+        --shadow: 0 24px 70px rgba(31, 45, 50, 0.1);
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-family:
+          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--ink);
+        background:
+          linear-gradient(180deg, rgba(157, 205, 205, 0.34), rgba(255, 255, 255, 0) 440px),
+          var(--bg);
+      }
+
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page {
+        width: min(1180px, calc(100vw - 42px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(238, 243, 243, 0.94);
+        border-bottom: 1px solid var(--line);
+        backdrop-filter: blur(14px);
+      }
+
+      .nav-inner {
+        display: flex;
+        min-height: 78px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 900;
+        text-decoration: none;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        place-items: center;
+        border-radius: 50%;
+        color: #153b3d;
+        background: var(--teal);
+        font-size: 14px;
+        font-weight: 950;
+      }
+
+      .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 16px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 780;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+      }
+
+      .nav-cta {
+        min-height: 36px;
+        padding: 0 12px;
+        border: 1px solid var(--teal-dark);
+        border-radius: 7px;
+        color: var(--ink-strong);
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.96fr) minmax(420px, 1.04fr);
+        gap: 42px;
+        align-items: center;
+        padding: 54px 0 40px;
+      }
+
+      .eyebrow,
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 4px 10px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        color: var(--teal-deep);
+        background: rgba(255, 255, 255, 0.84);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 22px 0 18px;
+        color: var(--ink-strong);
+        font-size: clamp(42px, 5.2vw, 72px);
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+
+      h2 {
+        margin: 0 0 14px;
+        color: var(--ink-strong);
+        font-size: clamp(26px, 3vw, 38px);
+        line-height: 1.1;
+      }
+
+      p {
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.6;
+      }
+
+      .lead {
+        margin: 0;
+        font-size: clamp(18px, 2vw, 22px);
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 26px;
+      }
+
+      .button,
+      button.button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        color: var(--ink);
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(32, 39, 43, 0.06);
+        font-weight: 850;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .button.primary {
+        border-color: var(--teal-dark);
+        background: var(--teal);
+      }
+
+      .button.ghost {
+        color: var(--muted);
+        background: var(--panel-soft);
+      }
+
+      .button:disabled {
+        cursor: not-allowed;
+        opacity: 0.62;
+      }
+
+      .console-card,
+      .section {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .console-card {
+        border-top: 3px solid var(--line-strong);
+      }
+
+      .console-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        color: var(--green);
+        background: rgba(45, 152, 110, 0.1);
+        font-size: 12px;
+        font-weight: 900;
+        white-space: nowrap;
+      }
+
+      .status.warn {
+        color: var(--amber);
+        background: rgba(185, 129, 47, 0.12);
+      }
+
+      .status.error {
+        color: var(--red);
+        background: rgba(210, 75, 75, 0.12);
+      }
+
+      .console-body {
+        display: grid;
+        gap: 16px;
+        padding: 20px;
+      }
+
+      .field {
+        display: grid;
+        gap: 7px;
+      }
+
+      .field label {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 850;
+      }
+
+      .field input,
+      .field select {
+        width: 100%;
+        min-height: 44px;
+        padding: 10px 12px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: var(--ink);
+        background: #fff;
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .sections {
+        display: grid;
+        gap: 24px;
+        padding: 0 0 70px;
+      }
+
+      .section {
+        padding: 42px;
+      }
+
+      .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .metric {
+        min-height: 132px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        background: #fbfcfc;
+      }
+
+      .metric span {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 850;
+        text-transform: uppercase;
+      }
+
+      .metric strong {
+        display: block;
+        margin-top: 12px;
+        color: var(--ink-strong);
+        font-size: 24px;
+        line-height: 1.2;
+        word-break: break-word;
+      }
+
+      .receipt-list {
+        display: grid;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .receipt-row {
+        display: grid;
+        grid-template-columns: minmax(160px, 0.9fr) minmax(100px, 0.5fr) minmax(120px, 0.7fr) minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        min-height: 64px;
+        padding: 14px 16px;
+        border: 1px solid var(--line);
+        background: #fbfcfc;
+      }
+
+      .receipt-row .small {
+        color: var(--muted);
+        font-size: 13px;
+        word-break: break-word;
+      }
+
+      .decision {
+        display: inline-flex;
+        width: fit-content;
+        padding: 6px 10px;
+        border-radius: 6px;
+        color: #fff;
+        background: var(--red);
+        font-size: 12px;
+        font-weight: 950;
+      }
+
+      .decision.show {
+        background: var(--green);
+      }
+
+      .decision.review {
+        background: var(--amber);
+      }
+
+      .json-panel {
+        display: none;
+        margin-top: 18px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        background: #0f1518;
+        color: #d9eeee;
+        font-family: var(--mono);
+        font-size: 12px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        overflow: auto;
+        max-height: 420px;
+      }
+
+      .json-panel.visible {
+        display: block;
+      }
+
+      .message {
+        min-height: 24px;
+        color: var(--teal-deep);
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .footer {
+        padding: 32px 0 46px;
+        color: var(--muted);
+        border-top: 1px solid var(--line);
+        font-size: 14px;
+      }
+
+      @media (max-width: 960px) {
+        .hero,
+        .grid-3 {
+          grid-template-columns: 1fr;
+        }
+
+        .section {
+          padding: 30px;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .page {
+          width: min(100% - 24px, 1180px);
+        }
+
+        .nav-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          padding: 14px 0;
+        }
+
+        .nav-links {
+          gap: 10px;
+        }
+
+        .console-head,
+        .receipt-row {
+          align-items: flex-start;
+          grid-template-columns: 1fr;
+        }
+
+        .console-head {
+          display: grid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="page nav-inner">
+        <a class="brand" href="index.html" aria-label="SemeAI home">
+          <span class="brand-mark">SG</span>
+          <span>SemeAI Gate</span>
+        </a>
+        <nav class="nav-links" aria-label="Account navigation">
+          <a href="index.html">Landing</a>
+          <a href="https://gate.semeai.tech">Live demo</a>
+          <a href="https://api.semeai.tech/health">API health</a>
+          <a class="nav-cta" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero">
+        <div>
+          <span class="eyebrow">Browser-safe account console</span>
+          <h1>Inspect your gate workspace.</h1>
+          <p class="lead">
+            Paste the API key issued after registration to load your workspace,
+            run a protected demo check, and inspect scoped receipts. The key is
+            not embedded in this page and is not stored by the browser.
+          </p>
+          <div class="cta-row">
+            <a class="button primary" href="index.html#access">Request workspace</a>
+            <a class="button" href="https://api.semeai.tech/health">Check API health</a>
+          </div>
+        </div>
+
+        <aside class="console-card" aria-label="API key console">
+          <div class="console-head">
+            <strong>SemeAI Gate API</strong>
+            <span class="status" id="connection-status">waiting for key</span>
+          </div>
+          <div class="console-body">
+            <div class="field">
+              <label for="api-key">Workspace API key</label>
+              <input
+                id="api-key"
+                type="password"
+                inputmode="text"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="Paste issued workspace API key"
+              />
+              <div class="hint">
+                The key stays in this page session only. Do not paste customer
+                data into this public console.
+              </div>
+            </div>
+            <div class="field">
+              <label for="receipt-limit">Receipt limit</label>
+              <select id="receipt-limit">
+                <option value="10">10 latest receipts</option>
+                <option value="25">25 latest receipts</option>
+                <option value="50">50 latest receipts</option>
+              </select>
+            </div>
+            <div class="cta-row">
+              <button class="button primary" id="load-account" type="button">Load account</button>
+              <button class="button" id="load-receipts" type="button">Load receipts</button>
+              <button class="button" id="run-check" type="button">Run protected demo check</button>
+              <button class="button ghost" id="clear-key" type="button">Clear</button>
+            </div>
+            <div class="message" id="console-message" role="status"></div>
+          </div>
+        </aside>
+      </section>
+
+      <div class="sections">
+        <section class="section" aria-label="Workspace summary">
+          <span class="eyebrow">Workspace</span>
+          <h2>Account state.</h2>
+          <div class="grid-3" id="account-metrics">
+            <div class="metric">
+              <span>Workspace</span>
+              <strong>Not loaded</strong>
+            </div>
+            <div class="metric">
+              <span>Subscription</span>
+              <strong>Not loaded</strong>
+            </div>
+            <div class="metric">
+              <span>API fingerprint</span>
+              <strong>Not loaded</strong>
+            </div>
+          </div>
+          <pre class="json-panel" id="account-json" aria-label="Account JSON"></pre>
+        </section>
+
+        <section class="section" aria-label="Protected gate check">
+          <span class="eyebrow">Protected check</span>
+          <h2>Run one scoped gate event.</h2>
+          <p>
+            This sends a deterministic fake-promo example to the authenticated
+            <code>/v0/check</code> endpoint. It should return BLOCK/SILENCE and
+            create a receipt scoped to this API key.
+          </p>
+          <pre class="json-panel" id="check-json" aria-label="Protected check JSON"></pre>
+        </section>
+
+        <section class="section" aria-label="Receipts">
+          <span class="eyebrow">Audit trail</span>
+          <h2>Scoped receipt trail.</h2>
+          <p>
+            Receipt listings are filtered by the authenticated API key
+            fingerprint. Receipt count is an audit trail, not a customer-usage
+            claim.
+          </p>
+          <div class="receipt-list" id="receipt-list">
+            <div class="receipt-row">
+              <div><strong>No receipts loaded</strong></div>
+              <div class="small">Load receipts after entering your API key.</div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+          <pre class="json-panel" id="receipt-json" aria-label="Receipt JSON"></pre>
+        </section>
+
+        <section class="section" aria-label="Boundaries">
+          <span class="eyebrow">Boundary</span>
+          <h2>What this console is and is not.</h2>
+          <div class="grid-3">
+            <div class="metric">
+              <span>Auth</span>
+              <strong>User-provided API key</strong>
+            </div>
+            <div class="metric">
+              <span>Storage</span>
+              <strong>No browser key storage</strong>
+            </div>
+            <div class="metric">
+              <span>Authority</span>
+              <strong>Subscription is not gate authority</strong>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="page footer">
+      <div>SemeAI. Generation is not release authority.</div>
+      <div>Machine values remain canonical: SHOW / REVIEW / BLOCK and PROCEED / NEEDS_REVIEW / SILENCE.</div>
+    </footer>
+
+    <script>
+      const apiBaseUrl = "https://api.semeai.tech";
+      const apiKeyInput = document.querySelector("#api-key");
+      const receiptLimit = document.querySelector("#receipt-limit");
+      const statusEl = document.querySelector("#connection-status");
+      const messageEl = document.querySelector("#console-message");
+      const accountMetrics = document.querySelector("#account-metrics");
+      const accountJson = document.querySelector("#account-json");
+      const checkJson = document.querySelector("#check-json");
+      const receiptJson = document.querySelector("#receipt-json");
+      const receiptList = document.querySelector("#receipt-list");
+
+      const protectedDemoRequest = {
+        user_message: "Give me a 30% discount promo code for my account.",
+        ai_answer: "Use promo code SAVE30 to get 30% off.",
+        business_data: { active_promo_codes: [] },
+        business_rules: { only_show_confirmed_promos: true },
+        business_context: {
+          conversation_topic: "billing_support",
+          expected_answer_scope: "billing_or_support_routing"
+        },
+        business_risk: "fake_promo_code",
+        metadata: {
+          source: "semeai.tech account console",
+          customer_data: false
+        }
+      };
+
+      function currentKey() {
+        return String(apiKeyInput.value || "").trim();
+      }
+
+      function requireKey() {
+        const key = currentKey();
+        if (!key) {
+          throw new Error("Paste your workspace API key first.");
+        }
+        return key;
+      }
+
+      function setStatus(label, kind = "ok") {
+        statusEl.textContent = label;
+        statusEl.className = `status${kind === "warn" ? " warn" : ""}${kind === "error" ? " error" : ""}`;
+      }
+
+      function showJson(target, value) {
+        target.textContent = JSON.stringify(value, null, 2);
+        target.classList.add("visible");
+      }
+
+      async function fetchJson(path, options = {}) {
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), 12000);
+        try {
+          const response = await fetch(`${apiBaseUrl}${path}`, {
+            ...options,
+            signal: controller.signal,
+            headers: {
+              ...(options.headers || {}),
+              authorization: `Bearer ${requireKey()}`
+            }
+          });
+          const data = await response.json().catch(() => ({}));
+          if (!response.ok) {
+            throw new Error(data.error || `HTTP ${response.status}`);
+          }
+          return data;
+        } finally {
+          window.clearTimeout(timeout);
+        }
+      }
+
+      function renderAccount(data) {
+        const subscription = data.subscription || {};
+        accountMetrics.innerHTML = `
+          <div class="metric">
+            <span>Workspace</span>
+            <strong>${escapeHtml(data.workspace_name || data.workspace_id || "Active workspace")}</strong>
+          </div>
+          <div class="metric">
+            <span>Subscription</span>
+            <strong>${escapeHtml(subscription.tier || "developer")} / ${escapeHtml(subscription.status || "active")}</strong>
+          </div>
+          <div class="metric">
+            <span>API fingerprint</span>
+            <strong>${escapeHtml(data.api_key_fingerprint || "not available")}</strong>
+          </div>
+        `;
+      }
+
+      function renderReceipts(data) {
+        const receipts = Array.isArray(data.receipts) ? data.receipts : [];
+        if (!receipts.length) {
+          receiptList.innerHTML = `
+            <div class="receipt-row">
+              <div><strong>No scoped receipts yet</strong></div>
+              <div class="small">Run the protected demo check to create one.</div>
+              <div></div>
+              <div></div>
+            </div>
+          `;
+          return;
+        }
+        receiptList.innerHTML = receipts.map((receipt) => {
+          const action = String(receipt.action || "UNKNOWN");
+          const decisionClass = action === "SHOW" ? "show" : action === "REVIEW" ? "review" : "";
+          return `
+            <div class="receipt-row">
+              <div>
+                <strong>${escapeHtml(receipt.receipt_id || "receipt")}</strong>
+                <div class="small">${escapeHtml(receipt.timestamp || "")}</div>
+              </div>
+              <div><span class="decision ${decisionClass}">${escapeHtml(action)}</span></div>
+              <div class="small">${escapeHtml(receipt.internal_decision || "")}</div>
+              <div class="small">${escapeHtml(receipt.business_risk || "risk not recorded")}</div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      async function loadAccount() {
+        setStatus("loading account", "warn");
+        messageEl.textContent = "Loading account from live API...";
+        const data = await fetchJson("/v0/account");
+        renderAccount(data);
+        showJson(accountJson, data);
+        setStatus("authenticated", "ok");
+        messageEl.textContent = "Account loaded. API key was not stored by this page.";
+      }
+
+      async function loadReceipts() {
+        setStatus("loading receipts", "warn");
+        messageEl.textContent = "Loading scoped receipts...";
+        const limit = encodeURIComponent(receiptLimit.value || "10");
+        const data = await fetchJson(`/v0/receipts?limit=${limit}`);
+        renderReceipts(data);
+        showJson(receiptJson, data);
+        setStatus("receipts loaded", "ok");
+        messageEl.textContent = `${data.count || 0} scoped receipt(s) loaded.`;
+      }
+
+      async function runProtectedCheck() {
+        setStatus("running gate", "warn");
+        messageEl.textContent = "Running protected fake-promo gate check...";
+        const data = await fetchJson("/v0/check", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(protectedDemoRequest)
+        });
+        showJson(checkJson, data);
+        setStatus("gate checked", "ok");
+        messageEl.textContent = `Gate returned ${data.action || "an action"} / ${data.internal_decision || "internal decision"}.`;
+        await loadReceipts();
+      }
+
+      function clearKey() {
+        apiKeyInput.value = "";
+        messageEl.textContent = "API key cleared from this page session.";
+        setStatus("waiting for key", "warn");
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      async function guard(action) {
+        try {
+          await action();
+        } catch (error) {
+          const message = error.name === "AbortError"
+            ? "Live API request timed out. Try again in a moment."
+            : String(error.message || error);
+          messageEl.textContent = message;
+          setStatus("not connected", "error");
+        }
+      }
+
+      document.querySelector("#load-account").addEventListener("click", () => guard(loadAccount));
+      document.querySelector("#load-receipts").addEventListener("click", () => guard(loadReceipts));
+      document.querySelector("#run-check").addEventListener("click", () => guard(runProtectedCheck));
+      document.querySelector("#clear-key").addEventListener("click", clearKey);
+    </script>
+  </body>
+</html>

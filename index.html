@@ -601,6 +601,7 @@
           <a href="#product">Product</a>
           <a href="#research">Research</a>
           <a href="#access">Register</a>
+          <a href="account.html">Account</a>
           <a href="https://gate.semeai.tech">Live demo</a>
           <a class="nav-cta" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
         </nav>
@@ -620,6 +621,7 @@
           <div class="cta-row">
             <a class="button primary" href="https://gate.semeai.tech">Open live demo</a>
             <a class="button" href="#access">Request access</a>
+            <a class="button" href="account.html">Open account console</a>
             <a class="button" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718">Read paper</a>
           </div>
           <div class="proof-strip" aria-label="SemeAI status">
@@ -777,6 +779,7 @@
                   <li>The browser sends this request to the live account API without embedding a shared API key.</li>
                   <li>Use only non-sensitive demo details for now.</li>
                   <li>Email delivery is not automated yet; verification is returned as an early-access link.</li>
+                  <li>After verification, paste the issued API key into the account console to inspect your workspace.</li>
                 </ul>
               </div>
             </div>
@@ -850,6 +853,7 @@
               <div class="cta-row">
                 <a class="button primary" href="https://gate.semeai.tech">Try the demo</a>
                 <a class="button" href="https://api.semeai.tech/health">API health</a>
+                <a class="button" href="account.html">Account console</a>
               </div>
             </div>
           </div>
@@ -995,7 +999,7 @@
           const result = await verifyWorkspace(token);
           showJson(result);
           message.textContent = result.api_key
-            ? "Workspace verified. Copy the API key now; it is shown once and is not stored by this page."
+            ? "Workspace verified. Copy the API key now; it is shown once and is not stored by this page. Then open account.html and paste it there."
             : "Workspace already verified. Use the API key shown during first verification.";
           history.replaceState(null, "", window.location.pathname + window.location.search);
         } catch (error) {
