@@ -6,23 +6,27 @@
     <title>SemeAI Gate | Design directions</title>
     <meta
       name="description"
-      content="Ten visual directions for the SemeAI Gate landing, demo, and account console."
+      content="Ten visual directions for SemeAI Gate landing, account console, and live demo."
     />
     <style>
       :root {
         color-scheme: light;
         --ink: #20272b;
         --ink-strong: #12171a;
-        --muted: #647278;
-        --bg: #eef3f3;
+        --muted: #66767c;
+        --paper: #f5f7f7;
         --panel: #ffffff;
-        --line: #d5dfdf;
-        --line-strong: #8fc7c8;
+        --line: #d7e1e1;
+        --line-strong: #91c8c8;
         --teal: #9dcdcd;
-        --teal-dark: #5c9698;
-        --green: #2d986e;
+        --teal-dark: #5b9698;
+        --green: #2e986f;
+        --amber: #d6943c;
         --red: #d24b4b;
-        --shadow: 0 24px 70px rgba(31, 45, 50, 0.1);
+        --dark: #121a20;
+        --dark-2: #1d2931;
+        --blue: #6eb7ff;
+        --shadow: 0 24px 80px rgba(30, 44, 50, 0.12);
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
@@ -36,8 +40,8 @@
         margin: 0;
         color: var(--ink);
         background:
-          linear-gradient(180deg, rgba(157, 205, 205, 0.34), rgba(255, 255, 255, 0) 440px),
-          var(--bg);
+          linear-gradient(180deg, rgba(157, 205, 205, 0.36), rgba(255, 255, 255, 0) 430px),
+          var(--paper);
       }
 
       a {
@@ -53,7 +57,7 @@
         position: sticky;
         top: 0;
         z-index: 20;
-        background: rgba(238, 243, 243, 0.94);
+        background: rgba(245, 247, 247, 0.94);
         border-bottom: 1px solid var(--line);
         backdrop-filter: blur(14px);
       }
@@ -101,7 +105,7 @@
       }
 
       .hero {
-        padding: 64px 0 28px;
+        padding: 64px 0 34px;
       }
 
       .eyebrow,
@@ -120,18 +124,18 @@
       }
 
       h1 {
-        max-width: 920px;
+        max-width: 900px;
         margin: 22px 0 18px;
         color: var(--ink-strong);
-        font-size: clamp(44px, 5.6vw, 78px);
+        font-size: clamp(42px, 5.3vw, 76px);
         line-height: 1.03;
         letter-spacing: 0;
       }
 
       h2 {
-        margin: 0 0 10px;
+        margin: 0;
         color: var(--ink-strong);
-        font-size: clamp(26px, 3vw, 38px);
+        font-size: clamp(22px, 2.4vw, 30px);
         line-height: 1.1;
       }
 
@@ -142,9 +146,9 @@
       }
 
       .lead {
-        max-width: 860px;
+        max-width: 850px;
         margin: 0;
-        font-size: clamp(18px, 2vw, 22px);
+        font-size: clamp(18px, 2vw, 21px);
       }
 
       .toolbar {
@@ -174,36 +178,43 @@
         background: var(--teal);
       }
 
-      .contact-sheet,
-      .option-card {
+      .machine-note {
+        margin: 0 0 26px;
+        padding: 16px 18px;
+        border: 1px solid var(--line-strong);
+        background: rgba(255, 255, 255, 0.74);
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .contact-grid,
+      .option-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .contact-grid {
+        margin: 10px 0 30px;
+      }
+
+      .option-grid {
+        padding-bottom: 70px;
+      }
+
+      .option-card,
+      .mini-card {
         border: 1px solid var(--line);
         background: var(--panel);
         box-shadow: var(--shadow);
       }
 
-      .contact-sheet {
-        margin: 10px 0 28px;
-        padding: 20px;
-      }
-
-      .contact-sheet img,
-      .option-card img {
-        display: block;
-        width: 100%;
-        height: auto;
-        border: 1px solid var(--line);
-        background: #fff;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 24px;
-        padding-bottom: 70px;
-      }
-
       .option-card {
         padding: 20px;
+      }
+
+      .mini-card {
+        padding: 14px;
       }
 
       .card-head {
@@ -222,18 +233,459 @@
         text-transform: uppercase;
       }
 
-      .option-card p {
-        margin: 0;
+      .option-card p,
+      .mini-card p {
+        margin: 8px 0 0;
         font-size: 15px;
       }
 
-      .machine-note {
-        margin: 0 0 30px;
-        padding: 16px 18px;
+      .mockup {
+        position: relative;
+        overflow: hidden;
+        min-height: 250px;
+        border: 1px solid var(--line);
+        background: #f8fbfb;
+      }
+
+      .mockup.dark {
+        color: #eaf3f5;
+        background: var(--dark);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+
+      .mockup-inner {
+        position: absolute;
+        inset: 18px;
+      }
+
+      .mini-card .mockup {
+        min-height: 190px;
+      }
+
+      .side {
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 76px;
+        background: #2d3336;
+      }
+
+      .side.light {
+        background: #f2f4f4;
+        border-right: 1px solid var(--line);
+      }
+
+      .side-line {
+        height: 32px;
+        margin: 11px 10px;
+        border-radius: 3px;
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .side.light .side-line {
+        background: #d7e1e1;
+      }
+
+      .topline,
+      .row,
+      .chip,
+      .panel,
+      .terminal,
+      .receipt,
+      .hero-box {
+        position: absolute;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.85);
+      }
+
+      .dark .topline,
+      .dark .row,
+      .dark .chip,
+      .dark .panel,
+      .dark .terminal,
+      .dark .receipt,
+      .dark .hero-box {
+        border-color: rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .accent {
+        background: var(--teal);
+      }
+
+      .danger {
+        background: var(--red);
+      }
+
+      .warn {
+        background: var(--amber);
+      }
+
+      .ok {
+        background: var(--green);
+      }
+
+      .line {
+        position: absolute;
+        height: 1px;
+        background: var(--line-strong);
+      }
+
+      .dark .line {
+        background: rgba(110, 183, 255, 0.46);
+        box-shadow: 0 0 16px rgba(110, 183, 255, 0.28);
+      }
+
+      .dot {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #fff;
         border: 1px solid var(--line-strong);
-        background: rgba(255, 255, 255, 0.72);
+      }
+
+      .dark .dot {
+        background: #dcecff;
+        border-color: #9fcfff;
+        box-shadow: 0 0 16px rgba(110, 183, 255, 0.45);
+      }
+
+      .mock-title {
+        position: absolute;
+        color: var(--ink-strong);
+        font-size: clamp(22px, 4vw, 42px);
+        font-weight: 950;
+        line-height: 1;
+      }
+
+      .dark .mock-title {
+        color: #edf5f7;
+      }
+
+      .label {
+        position: absolute;
         color: var(--muted);
-        font-size: 14px;
+        font-size: 12px;
+        font-weight: 780;
+      }
+
+      .dark .label {
+        color: rgba(234, 243, 245, 0.7);
+      }
+
+      .mock-1 .side {
+        width: 86px;
+      }
+
+      .mock-1 .topline {
+        left: 104px;
+        right: 20px;
+        top: 18px;
+        height: 40px;
+      }
+
+      .mock-1 .row {
+        left: 104px;
+        right: 20px;
+        height: 34px;
+      }
+
+      .mock-1 .row:nth-child(3) {
+        top: 76px;
+      }
+
+      .mock-1 .row:nth-child(4) {
+        top: 120px;
+      }
+
+      .mock-1 .row:nth-child(5) {
+        top: 164px;
+      }
+
+      .mock-1 .chip {
+        right: 34px;
+        bottom: 26px;
+        width: 92px;
+        height: 28px;
+        background: var(--teal);
+      }
+
+      .mock-2 {
+        background: #0f151b;
+      }
+
+      .mock-2 .terminal {
+        left: 24px;
+        right: 24px;
+        top: 58px;
+        bottom: 32px;
+        background: #111d24;
+      }
+
+      .mock-2 .row {
+        left: 48px;
+        right: 48px;
+        height: 10px;
+        background: rgba(110, 183, 255, 0.3);
+      }
+
+      .mock-2 .row:nth-child(2) {
+        top: 92px;
+      }
+
+      .mock-2 .row:nth-child(3) {
+        top: 118px;
+        right: 110px;
+      }
+
+      .mock-2 .row:nth-child(4) {
+        top: 144px;
+        right: 78px;
+      }
+
+      .mock-2 .chip {
+        left: 48px;
+        bottom: 48px;
+        width: 110px;
+        height: 30px;
+        background: rgba(45, 152, 111, 0.45);
+      }
+
+      .mock-3 .hero-box {
+        left: 24px;
+        top: 24px;
+        right: 24px;
+        height: 86px;
+      }
+
+      .mock-3 .panel {
+        left: 24px;
+        width: calc(33.3% - 28px);
+        bottom: 24px;
+        height: 84px;
+      }
+
+      .mock-3 .panel:nth-child(2) {
+        left: calc(33.3% + 8px);
+      }
+
+      .mock-3 .panel:nth-child(3) {
+        left: calc(66.6% - 8px);
+      }
+
+      .mock-4 .mock-title {
+        left: 28px;
+        top: 26px;
+      }
+
+      .mock-4 .panel {
+        right: 22px;
+        top: 24px;
+        width: 190px;
+        height: 190px;
+      }
+
+      .mock-4 .row {
+        left: 40px;
+        right: 240px;
+        height: 16px;
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .mock-4 .row:nth-child(3) {
+        top: 92px;
+      }
+
+      .mock-4 .row:nth-child(4) {
+        top: 122px;
+      }
+
+      .mock-4 .row:nth-child(5) {
+        top: 152px;
+      }
+
+      .mock-5 .line {
+        left: 18px;
+        right: 18px;
+        top: 125px;
+      }
+
+      .mock-5 .panel {
+        left: 50%;
+        top: 78px;
+        width: 170px;
+        height: 94px;
+        transform: translateX(-50%);
+        background: rgba(157, 205, 205, 0.16);
+        box-shadow: 0 0 34px rgba(110, 183, 255, 0.24);
+      }
+
+      .mock-5 .danger {
+        left: 24px;
+        top: 104px;
+        width: 84px;
+        height: 26px;
+      }
+
+      .mock-5 .ok {
+        right: 24px;
+        top: 104px;
+        width: 84px;
+        height: 26px;
+      }
+
+      .mock-6 .panel {
+        left: 18px;
+        top: 18px;
+        width: 58%;
+        bottom: 18px;
+      }
+
+      .mock-6 .receipt {
+        right: 18px;
+        top: 18px;
+        width: 34%;
+        height: 92px;
+      }
+
+      .mock-6 .row {
+        right: 18px;
+        width: 34%;
+        height: 24px;
+      }
+
+      .mock-6 .row:nth-child(3) {
+        top: 128px;
+      }
+
+      .mock-6 .row:nth-child(4) {
+        top: 166px;
+      }
+
+      .mock-7 .mock-title {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 28px;
+      }
+
+      .mock-7 .line:nth-child(2) {
+        left: 18px;
+        right: 18px;
+        top: 50%;
+      }
+
+      .mock-7 .line:nth-child(3) {
+        top: 18px;
+        bottom: 18px;
+        left: 50%;
+        width: 1px;
+        height: auto;
+      }
+
+      .mock-7 .dot:nth-child(4) {
+        left: 18%;
+        top: 31%;
+      }
+
+      .mock-7 .dot:nth-child(5) {
+        left: 72%;
+        top: 64%;
+      }
+
+      .mock-8 {
+        background: #fbfbfa;
+      }
+
+      .mock-8 .mock-title {
+        left: 26px;
+        top: 28px;
+        font-size: 32px;
+        max-width: 300px;
+      }
+
+      .mock-8 .row {
+        left: 28px;
+        right: 28px;
+        height: 1px;
+      }
+
+      .mock-8 .row:nth-child(2) {
+        top: 118px;
+      }
+
+      .mock-8 .row:nth-child(3) {
+        top: 152px;
+      }
+
+      .mock-8 .row:nth-child(4) {
+        top: 186px;
+      }
+
+      .mock-9 .line {
+        transform-origin: left center;
+      }
+
+      .mock-9 .line:nth-child(1) {
+        left: 26px;
+        right: 26px;
+        top: 126px;
+      }
+
+      .mock-9 .line:nth-child(2) {
+        left: 50px;
+        width: 210px;
+        top: 88px;
+        transform: rotate(16deg);
+      }
+
+      .mock-9 .line:nth-child(3) {
+        left: 50px;
+        width: 210px;
+        top: 164px;
+        transform: rotate(-16deg);
+      }
+
+      .mock-9 .panel {
+        left: 50%;
+        top: 80px;
+        width: 170px;
+        height: 92px;
+        transform: translateX(-50%);
+        border-color: rgba(255, 220, 170, 0.7);
+        box-shadow: 0 0 30px rgba(255, 196, 120, 0.18);
+      }
+
+      .mock-10 .side {
+        width: 76px;
+      }
+
+      .mock-10 .hero-box {
+        left: 94px;
+        top: 20px;
+        width: 46%;
+        height: 92px;
+      }
+
+      .mock-10 .panel {
+        right: 20px;
+        top: 20px;
+        width: 32%;
+        height: 164px;
+      }
+
+      .mock-10 .row {
+        left: 94px;
+        right: 38%;
+        height: 20px;
+      }
+
+      .mock-10 .row:nth-child(4) {
+        top: 134px;
+      }
+
+      .mock-10 .row:nth-child(5) {
+        top: 166px;
       }
 
       .footer {
@@ -243,8 +695,9 @@
         font-size: 14px;
       }
 
-      @media (max-width: 860px) {
-        .grid {
+      @media (max-width: 880px) {
+        .contact-grid,
+        .option-grid {
           grid-template-columns: 1fr;
         }
 
@@ -260,9 +713,13 @@
           width: min(100% - 24px, 1180px);
         }
 
-        .contact-sheet,
-        .option-card {
+        .option-card,
+        .mini-card {
           padding: 12px;
+        }
+
+        .mockup {
+          min-height: 220px;
         }
       }
     </style>
@@ -289,9 +746,9 @@
         <span class="eyebrow">Design direction board</span>
         <h1>Pick the product surface for SemeAI Gate.</h1>
         <p class="lead">
-          These are controlled UI mockups for choosing the next professional
-          design pass. They are not final screenshots; they define direction,
-          hierarchy, palette, and the kind of buyer/user each surface speaks to.
+          Ten lightweight visual directions for the next professional design
+          pass. These are not final screenshots; they define hierarchy,
+          palette, buyer story, and product mood.
         </p>
         <div class="toolbar">
           <a class="button primary" href="#options">View all 10</a>
@@ -300,20 +757,30 @@
         </div>
       </section>
 
-      <section class="contact-sheet" aria-label="All design options">
-        <img
-          src="assets/design-options/semeai_design_options_contact_sheet.png"
-          alt="Contact sheet with ten SemeAI Gate UI design directions"
-        />
+      <section class="contact-grid" aria-label="Quick moodboard">
+        <article class="mini-card">
+          <div class="mockup mock-1">
+            <div class="side"><div class="side-line"></div><div class="side-line"></div><div class="side-line accent"></div></div>
+            <div class="topline"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="chip"></div>
+          </div>
+          <p>Clean SaaS console: easiest for buyers to understand.</p>
+        </article>
+        <article class="mini-card">
+          <div class="mockup dark mock-9">
+            <div class="line"></div><div class="line"></div><div class="line"></div><div class="panel"></div>
+            <div class="mock-title" style="left:50%;top:45%;transform:translate(-50%,-50%);font-size:30px;">GATE</div>
+          </div>
+          <p>Cybernetic circuit: strongest visual identity for a hero section.</p>
+        </article>
       </section>
 
       <p class="machine-note">
         Canonical machine values stay unchanged in every direction:
         SHOW / REVIEW / BLOCK and PROCEED / NEEDS_REVIEW / SILENCE.
-        Design may translate explanatory copy, but not payload values.
+        Design may localize explanatory copy, but not payload values.
       </p>
 
-      <section class="grid" id="options" aria-label="Design options">
+      <section class="option-grid" id="options" aria-label="Design options">
         <article class="option-card">
           <div class="card-head">
             <div>
@@ -323,7 +790,10 @@
             </div>
             <span class="tag">B2B simple</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_01.png" alt="Clean SaaS Console option" />
+          <div class="mockup mock-1">
+            <div class="side"><div class="side-line"></div><div class="side-line"></div><div class="side-line accent"></div><div class="side-line"></div></div>
+            <div class="topline"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="chip"></div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -335,7 +805,10 @@
             </div>
             <span class="tag">Dev product</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_02.png" alt="Premium Developer API option" />
+          <div class="mockup dark mock-2">
+            <div class="mock-title" style="left:28px;top:24px;font-size:30px;">POST /v0/check</div>
+            <div class="terminal"></div><div class="row"></div><div class="row"></div><div class="row"></div><div class="chip"></div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -347,7 +820,10 @@
             </div>
             <span class="tag">Research</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_03.png" alt="AI Safety Lab option" />
+          <div class="mockup mock-3">
+            <div class="hero-box"></div><div class="panel"></div><div class="panel"></div><div class="panel"></div>
+            <div class="mock-title" style="left:44px;top:46px;font-size:34px;">Evidence first</div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -359,7 +835,9 @@
             </div>
             <span class="tag">Enterprise</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_04.png" alt="Enterprise Control Room option" />
+          <div class="mockup dark mock-4">
+            <div class="mock-title">Runtime<br />control</div><div class="panel"></div><div class="row"></div><div class="row"></div><div class="row"></div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -371,7 +849,10 @@
             </div>
             <span class="tag">Security</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_05.png" alt="Security Gateway option" />
+          <div class="mockup dark mock-5">
+            <div class="line"></div><div class="panel"></div><div class="danger"></div><div class="ok"></div>
+            <div class="mock-title" style="left:50%;top:41%;transform:translate(-50%,-50%);font-size:28px;">SemeAI Gate</div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -383,7 +864,11 @@
             </div>
             <span class="tag">Workspace</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_06.png" alt="Evidence Workspace option" />
+          <div class="mockup dark mock-6">
+            <div class="panel"></div><div class="receipt"></div><div class="row"></div><div class="row"></div>
+            <div class="label" style="left:38px;top:38px;">answer with sources</div>
+            <div class="label" style="right:42px;top:42px;">receipt</div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -395,7 +880,9 @@
             </div>
             <span class="tag">Architecture</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_07.png" alt="Technical Blueprint option" />
+          <div class="mockup dark mock-7">
+            <div class="line"></div><div class="line"></div><div class="mock-title">LLM -> Gate -> User</div><div class="dot"></div><div class="dot"></div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -403,11 +890,13 @@
             <div>
               <div class="option-number">Option 08</div>
               <h2>Minimal Research Artifact</h2>
-              <p>Editorial thesis page centered on “Generation is not release authority.”</p>
+              <p>Editorial thesis page centered on "Generation is not release authority."</p>
             </div>
             <span class="tag">Thesis</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_08.png" alt="Minimal Research Artifact option" />
+          <div class="mockup mock-8">
+            <div class="mock-title">Generation is not release authority.</div><div class="row"></div><div class="row"></div><div class="row"></div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -419,7 +908,10 @@
             </div>
             <span class="tag">Visual hero</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_09.png" alt="Cybernetic Control Circuit option" />
+          <div class="mockup dark mock-9">
+            <div class="line"></div><div class="line"></div><div class="line"></div><div class="panel"></div>
+            <div class="mock-title" style="left:50%;top:45%;transform:translate(-50%,-50%);font-size:32px;">PoR Gate</div>
+          </div>
         </article>
 
         <article class="option-card">
@@ -431,7 +923,11 @@
             </div>
             <span class="tag">Best blend</span>
           </div>
-          <img src="assets/design-options/semeai_design_option_10.png" alt="Hybrid Product Direction option" />
+          <div class="mockup mock-10">
+            <div class="side light"><div class="side-line"></div><div class="side-line accent"></div><div class="side-line"></div></div>
+            <div class="hero-box"></div><div class="panel"></div><div class="row"></div><div class="row"></div>
+            <div class="mock-title" style="left:112px;top:42px;font-size:30px;">Release control</div>
+          </div>
         </article>
       </section>
     </main>
