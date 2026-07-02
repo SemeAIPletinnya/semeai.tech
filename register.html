@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register for SemeAI Gate</title>
+    <meta name="description" content="Early-access registration entry point for SemeAI Gate workspaces." />
+    <style>
+      :root{--ink:#20272b;--muted:#647278;--bg:#eef3f3;--panel:#fff;--line:#d5dfdf;--teal:#9dcdcd;--teal-dark:#5c9698;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;color:var(--ink);background:linear-gradient(180deg,rgba(157,205,205,.38),rgba(255,255,255,0) 420px),var(--bg)}a{color:inherit}.page{width:min(960px,calc(100vw - 36px));margin:0 auto}.nav{border-bottom:1px solid var(--line);background:rgba(238,243,243,.94);backdrop-filter:blur(14px)}.nav-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px}.brand{display:flex;align-items:center;gap:12px;font-weight:900;text-decoration:none}.mark{display:grid;width:38px;height:38px;place-items:center;border-radius:50%;background:var(--teal);font-weight:950}.links{display:flex;flex-wrap:wrap;gap:14px;color:var(--muted);font-weight:780}.links a{text-decoration:none}.hero{padding:70px 0 30px}.eyebrow{display:inline-flex;padding:5px 11px;border:1px solid var(--teal-dark);border-radius:999px;color:#1f696d;background:rgba(255,255,255,.84);font-size:12px;font-weight:900;text-transform:uppercase}h1{margin:22px 0 18px;font-size:clamp(42px,6vw,72px);line-height:1.03}.lead,p,li{color:var(--muted);font-size:17px;line-height:1.65}.section{margin:0 0 24px;padding:42px;border:1px solid var(--line);background:var(--panel);box-shadow:0 24px 70px rgba(31,45,50,.1)}.steps{display:grid;gap:14px;margin:24px 0}.step{padding:18px;border:1px solid var(--line);background:#fbfcfc}.button{display:inline-flex;min-height:46px;align-items:center;justify-content:center;padding:0 18px;border:1px solid var(--line);border-radius:7px;background:#fff;font-weight:850;text-decoration:none}.button.primary{background:var(--teal);border-color:var(--teal-dark)}footer{padding:28px 0 42px;border-top:1px solid var(--line);color:var(--muted);font-size:14px}@media(max-width:680px){.section{padding:28px}.nav-inner{align-items:flex-start;flex-direction:column;padding:14px 0}}
+    </style>
+  </head>
+  <body>
+    <header class="nav"><div class="page nav-inner"><a class="brand" href="index.html"><span class="mark">SG</span><span>SemeAI</span></a><nav class="links"><a href="gate.html">Gate</a><a href="research.html">Research</a><a href="article.html">Article</a><a href="register.html">Register</a><a href="account.html">Account</a><a href="https://gate.semeai.tech">Live demo</a></nav></div></header>
+    <main class="page">
+      <section class="hero"><span class="eyebrow">Early access</span><h1>Request a SemeAI Gate workspace.</h1><p class="lead">Registration is live through the account API on the main landing page. The static site does not collect passwords and does not embed a shared API key.</p></section>
+      <section class="section">
+        <h2>Registration flow</h2>
+        <div class="steps">
+          <div class="step"><strong>1. Read the thesis.</strong><br />Start with <a href="article.html">Generation is not release authority</a> so the product boundary is clear.</div>
+          <div class="step"><strong>2. Submit the early-access form.</strong><br />Open the registration section and send non-sensitive demo details to the live account API.</div>
+          <div class="step"><strong>3. Verify and copy your API key.</strong><br />The issued API key is shown once. Paste it into the account console; the page does not store it.</div>
+          <div class="step"><strong>4. Run protected checks.</strong><br />Use the account console to load workspace metadata, run a smoke check, and inspect receipts.</div>
+        </div>
+        <p>
+          <a class="button primary" href="index.html#access">Open registration form</a>
+          <a class="button" href="article.html">Read article</a>
+          <a class="button" href="account.html">Open account console</a>
+        </p>
+      </section>
+    </main>
+    <footer class="page">Do not include sensitive customer data in early-access registration notes.</footer>
+  </body>
+</html>

@@ -126,6 +126,30 @@
         align-items: center;
       }
 
+      .lang-switch {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .lang-switch button {
+        min-height: 30px;
+        padding: 4px 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        background: #fff;
+        font-size: 12px;
+        font-weight: 850;
+        cursor: pointer;
+      }
+
+      .lang-switch button.active {
+        color: var(--ink-strong);
+        border-color: var(--line-strong);
+        background: var(--teal);
+      }
+
       .hero {
         display: grid;
         grid-template-columns: minmax(0, 1.04fr) minmax(420px, 0.96fr);
@@ -592,18 +616,24 @@
   <body>
     <header class="nav">
       <div class="page nav-inner">
-        <a class="brand" href="#" aria-label="SemeAI home">
+        <a class="brand" href="index.html" aria-label="SemeAI home">
           <span class="brand-mark">SG</span>
           <span>SemeAI</span>
         </a>
         <nav class="nav-links" aria-label="Main navigation">
-          <a href="#gate">Gate</a>
+          <a href="gate.html">Gate</a>
           <a href="#product">Product</a>
-          <a href="#research">Research</a>
-          <a href="#access">Register</a>
+          <a href="research.html">Research</a>
+          <a href="article.html">Article</a>
+          <a href="register.html">Register</a>
           <a href="account.html">Account</a>
           <a href="https://gate.semeai.tech">Live demo</a>
           <a class="nav-cta" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
+          <span class="lang-switch" aria-label="Language">
+            <button class="active" type="button" data-lang="en">EN</button>
+            <button type="button" data-lang="uk">UA</button>
+            <button type="button" data-lang="ru">RU</button>
+          </span>
         </nav>
       </div>
     </header>
@@ -611,18 +641,18 @@
     <main class="page">
       <section class="hero">
         <div>
-          <span class="eyebrow">Release control for AI outputs</span>
-          <h1>Generation is not release authority.</h1>
-          <p class="lead">
+          <span class="eyebrow" data-i18n="eyebrow">Release control for AI outputs</span>
+          <h1 data-i18n="hero_title">Generation is not release authority.</h1>
+          <p class="lead" data-i18n="hero_lead">
             SemeAI Gate is a control layer between an LLM answer and the real
             user. Your product can generate with any model, then ask the gate
             whether the answer should be shown, reviewed, or blocked.
           </p>
           <div class="cta-row">
-            <a class="button primary" href="https://gate.semeai.tech">Open live demo</a>
-            <a class="button" href="#access">Request access</a>
-            <a class="button" href="account.html">Open account console</a>
-            <a class="button" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718">Read paper</a>
+            <a class="button primary" href="https://gate.semeai.tech" data-i18n="cta_demo">Open live demo</a>
+            <a class="button" href="register.html" data-i18n="cta_access">Request access</a>
+            <a class="button" href="account.html" data-i18n="cta_account">Open account console</a>
+            <a class="button" href="article.html" data-i18n="cta_article">Read article</a>
           </div>
           <div class="proof-strip" aria-label="SemeAI status">
             <div class="proof-item">
@@ -780,6 +810,7 @@
                   <li>Use only non-sensitive demo details for now.</li>
                   <li>Email delivery is not automated yet; verification is returned as an early-access link.</li>
                   <li>After verification, paste the issued API key into the account console to inspect your workspace.</li>
+                  <li>Read <a href="article.html">Generation is not release authority</a> before or after registration to understand the release-control thesis.</li>
                 </ul>
               </div>
             </div>
@@ -826,6 +857,7 @@
                 <button class="button primary" type="submit">Request workspace</button>
                 <button class="button ghost" type="button" id="copy-request" disabled>Copy visible JSON</button>
                 <a class="button" id="mail-request" href="#" aria-disabled="true">Send by email</a>
+                <a class="button" href="article.html">Read article</a>
               </div>
               <div class="message" id="form-message" role="status"></div>
               <pre class="request-preview" id="request-preview" aria-label="Prepared request JSON"></pre>
@@ -852,6 +884,7 @@
               </p>
               <div class="cta-row">
                 <a class="button primary" href="https://gate.semeai.tech">Try the demo</a>
+                <a class="button" href="article.html">Read article</a>
                 <a class="button" href="https://api.semeai.tech/health">API health</a>
                 <a class="button" href="account.html">Account console</a>
               </div>
@@ -874,6 +907,38 @@
       const mailButton = document.querySelector("#mail-request");
       const apiBaseUrl = "https://api.semeai.tech";
       let preparedRequest = null;
+      const translations = {
+        en: {
+          eyebrow: "Release control for AI outputs",
+          hero_title: "Generation is not release authority.",
+          hero_lead:
+            "SemeAI Gate is a control layer between an LLM answer and the real user. Your product can generate with any model, then ask the gate whether the answer should be shown, reviewed, or blocked.",
+          cta_demo: "Open live demo",
+          cta_access: "Request access",
+          cta_account: "Open account console",
+          cta_article: "Read article"
+        },
+        uk: {
+          eyebrow: "Release control для AI-відповідей",
+          hero_title: "Генерація не є правом на release.",
+          hero_lead:
+            "SemeAI Gate — це контрольний шар між відповіддю LLM і реальним користувачем. Ваш продукт може генерувати будь-якою моделлю, а gate вирішує: показати, відправити на рев'ю або заблокувати.",
+          cta_demo: "Відкрити live demo",
+          cta_access: "Запросити доступ",
+          cta_account: "Відкрити account console",
+          cta_article: "Читати статтю"
+        },
+        ru: {
+          eyebrow: "Release control для AI-ответов",
+          hero_title: "Генерация не является правом на release.",
+          hero_lead:
+            "SemeAI Gate — это контрольный слой между ответом LLM и реальным пользователем. Ваш продукт может генерировать любой моделью, а gate решает: показать, отправить на ревью или заблокировать.",
+          cta_demo: "Открыть live demo",
+          cta_access: "Запросить доступ",
+          cta_account: "Открыть account console",
+          cta_article: "Читать статью"
+        }
+      };
 
       function formValue(name) {
         const element = form.elements.namedItem(name);
@@ -922,6 +987,20 @@
         preview.textContent = JSON.stringify(value, null, 2);
         preview.classList.add("visible");
         copyButton.disabled = false;
+      }
+
+      function applyLanguage(lang) {
+        const dictionary = translations[lang] || translations.en;
+        document.documentElement.lang = lang === "uk" ? "uk" : lang === "ru" ? "ru" : "en";
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          const key = element.dataset.i18n;
+          if (dictionary[key]) {
+            element.textContent = dictionary[key];
+          }
+        });
+        document.querySelectorAll("[data-lang]").forEach((button) => {
+          button.classList.toggle("active", button.dataset.lang === lang);
+        });
       }
 
       function showFallback(request, detail) {
@@ -999,7 +1078,7 @@
           const result = await verifyWorkspace(token);
           showJson(result);
           message.textContent = result.api_key
-            ? "Workspace verified. Copy the API key now; it is shown once and is not stored by this page. Then open account.html and paste it there."
+            ? "Workspace verified. Copy the API key now; it is shown once and is not stored by this page. Then open account.html and paste it there. You can also read article.html for the release-control thesis."
             : "Workspace already verified. Use the API key shown during first verification.";
           history.replaceState(null, "", window.location.pathname + window.location.search);
         } catch (error) {
@@ -1008,6 +1087,10 @@
         }
       }
 
+      document.querySelectorAll("[data-lang]").forEach((button) => {
+        button.addEventListener("click", () => applyLanguage(button.dataset.lang || "en"));
+      });
+      applyLanguage("en");
       maybeVerifyFromHash();
     </script>
   </body>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Generation is not release authority | SemeAI</title>
+    <meta
+      name="description"
+      content="A concise public article explaining the SemeAI release-control thesis: generation is not release authority."
+    />
+    <style>
+      :root {
+        --ink: #20272b;
+        --muted: #647278;
+        --bg: #eef3f3;
+        --panel: #fff;
+        --line: #d5dfdf;
+        --teal: #9dcdcd;
+        --teal-dark: #5c9698;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body { margin: 0; color: var(--ink); background: linear-gradient(180deg, rgba(157,205,205,.38), rgba(255,255,255,0) 420px), var(--bg); }
+      a { color: inherit; }
+      .page { width: min(980px, calc(100vw - 36px)); margin: 0 auto; }
+      .nav { border-bottom: 1px solid var(--line); background: rgba(238,243,243,.94); backdrop-filter: blur(14px); }
+      .nav-inner { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+      .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; text-decoration: none; }
+      .mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 50%; background: var(--teal); font-weight: 950; }
+      .links { display: flex; flex-wrap: wrap; gap: 14px; color: var(--muted); font-weight: 780; }
+      .links a { text-decoration: none; }
+      .lang button { min-height: 30px; border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--muted); font-weight: 850; cursor: pointer; }
+      .lang button.active { background: var(--teal); color: var(--ink); border-color: var(--teal-dark); }
+      .hero { padding: 72px 0 24px; }
+      .eyebrow { display: inline-flex; padding: 5px 11px; border: 1px solid var(--teal-dark); border-radius: 999px; color: #1f696d; background: rgba(255,255,255,.84); font-size: 12px; font-weight: 900; text-transform: uppercase; }
+      h1 { margin: 22px 0 18px; font-size: clamp(42px, 7vw, 76px); line-height: 1.02; letter-spacing: 0; }
+      .lead, article p, article li { color: var(--muted); font-size: 18px; line-height: 1.68; }
+      article { margin: 34px 0 70px; padding: 48px; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 24px 70px rgba(31,45,50,.1); }
+      h2 { margin-top: 36px; font-size: 30px; line-height: 1.15; }
+      .formula { display: grid; gap: 10px; margin: 24px 0; padding: 22px; border: 1px solid var(--line); background: #f8fafa; font-weight: 900; }
+      .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+      .button { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; padding: 0 16px; border: 1px solid var(--line); border-radius: 7px; background: #fff; font-weight: 850; text-decoration: none; }
+      .button.primary { border-color: var(--teal-dark); background: var(--teal); }
+      footer { padding: 28px 0 42px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+      @media (max-width: 680px) { article { padding: 28px; } .nav-inner { align-items: flex-start; flex-direction: column; padding: 14px 0; } }
+    </style>
+  </head>
+  <body>
+    <header class="nav">
+      <div class="page nav-inner">
+        <a class="brand" href="index.html"><span class="mark">SG</span><span>SemeAI</span></a>
+        <nav class="links" aria-label="Main navigation">
+          <a href="gate.html">Gate</a>
+          <a href="research.html">Research</a>
+          <a href="register.html">Register</a>
+          <a href="account.html">Account</a>
+          <a href="https://gate.semeai.tech">Live demo</a>
+          <span class="lang" aria-label="Language">
+            <button class="active" type="button" data-lang="en">EN</button>
+            <button type="button" data-lang="uk">UA</button>
+            <button type="button" data-lang="ru">RU</button>
+          </span>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="hero">
+        <span class="eyebrow" data-i18n="eyebrow">Article</span>
+        <h1 data-i18n="title">Generation is not release authority.</h1>
+        <p class="lead" data-i18n="lead">Transformers made generation scalable. Production systems still need a separate decision about what may be released.</p>
+      </section>
+
+      <article>
+        <p data-i18n="p1">
+          A language model generates a candidate answer. That candidate can be useful, fluent, and still unsupported by the current business data or unsafe for the current user context. The production mistake is treating generation as permission to show the answer.
+        </p>
+        <div class="formula">
+          <span>Transformer = generation engine.</span>
+          <span>Gate = release authority.</span>
+          <span>Receipt = proof of what happened.</span>
+        </div>
+        <h2 data-i18n="boundary_title">The transformer boundary</h2>
+        <p data-i18n="p2">
+          Attention helps a model decide what to focus on. It does not decide whether a claim is supported by business data, whether an action is allowed by business rules, or whether an answer should be withheld for review.
+        </p>
+        <h2 data-i18n="candidate_title">The candidate problem</h2>
+        <p data-i18n="p3">
+          Generated does not mean verified. Generated does not mean allowed. Generated does not mean released. SemeAI treats model output as a candidate that must pass a release-control layer before it reaches a user.
+        </p>
+        <h2 data-i18n="states_title">Release states</h2>
+        <ul>
+          <li><strong>PROCEED</strong> / <strong>SHOW</strong>: the answer may be released.</li>
+          <li><strong>NEEDS_REVIEW</strong> / <strong>REVIEW</strong>: do not auto-release; route to an operator.</li>
+          <li><strong>SILENCE</strong> / <strong>BLOCK</strong>: withhold the answer and preserve audit metadata.</li>
+        </ul>
+        <h2 data-i18n="silence_title">SILENCE is not deletion</h2>
+        <p data-i18n="p4">
+          A blocked answer should not disappear from the audit trail. SILENCE means release denied, execution withheld, audit preserved. This separation matters for replay, debugging, and accountability.
+        </p>
+        <h2 data-i18n="why_title">Why this matters</h2>
+        <p data-i18n="p5">
+          A support chatbot can invent a promo code. A financial assistant can make an unsupported claim. An internal copilot can suggest bypassing an approval step. SemeAI Gate is the checkpoint between the generated answer and the real user.
+        </p>
+        <div class="cta-row">
+          <a class="button primary" href="register.html" data-i18n="cta_register">Request access</a>
+          <a class="button" href="https://gate.semeai.tech" data-i18n="cta_demo">Try the live demo</a>
+          <a class="button" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718">SSRN</a>
+          <a class="button" href="https://zenodo.org/records/20525820">Zenodo</a>
+        </div>
+      </article>
+    </main>
+
+    <footer class="page">Machine values remain canonical: SHOW / REVIEW / BLOCK and PROCEED / NEEDS_REVIEW / SILENCE.</footer>
+    <script>
+      const t = {
+        en: {},
+        uk: {
+          eyebrow: "Стаття",
+          title: "Генерація не є правом на release.",
+          lead: "Трансформери зробили генерацію масштабованою. Продакшн-системам усе ще потрібне окреме рішення про те, що можна випускати.",
+          p1: "Мовна модель генерує кандидат-відповідь. Вона може бути корисною і плавною, але все одно не підтримуватись поточними бізнес-даними або бути небезпечною для поточного контексту користувача.",
+          boundary_title: "Межа трансформера",
+          p2: "Attention допомагає моделі вирішити, на що дивитись. Він не вирішує, чи підтримана заява бізнес-даними, чи дозволена дія правилами, або чи потрібно утримати відповідь для рев'ю.",
+          candidate_title: "Проблема кандидата",
+          p3: "Згенеровано не означає перевірено. Згенеровано не означає дозволено. Згенеровано не означає випущено.",
+          states_title: "Release states",
+          silence_title: "SILENCE не є видаленням",
+          p4: "SILENCE означає release denied, execution withheld, audit preserved. Це важливо для replay, debugging та accountability.",
+          why_title: "Чому це важливо",
+          p5: "Support chatbot може вигадати промокод. Financial assistant може зробити непідтверджену заяву. Internal copilot може порадити обійти approval.",
+          cta_register: "Запросити доступ",
+          cta_demo: "Спробувати live demo"
+        },
+        ru: {
+          eyebrow: "Статья",
+          title: "Генерация не является правом на release.",
+          lead: "Трансформеры сделали генерацию масштабируемой. Продакшн-системам все еще нужно отдельное решение о том, что можно выпускать.",
+          p1: "Языковая модель генерирует кандидат-ответ. Он может быть полезным и fluent, но все равно не поддерживаться текущими бизнес-данными или быть небезопасным для текущего контекста пользователя.",
+          boundary_title: "Граница трансформера",
+          p2: "Attention помогает модели решить, на что смотреть. Он не решает, подтверждено ли утверждение бизнес-данными, разрешено ли действие правилами, или нужно удержать ответ для ревью.",
+          candidate_title: "Проблема кандидата",
+          p3: "Сгенерировано не означает проверено. Сгенерировано не означает разрешено. Сгенерировано не означает выпущено.",
+          states_title: "Release states",
+          silence_title: "SILENCE не является удалением",
+          p4: "SILENCE означает release denied, execution withheld, audit preserved. Это важно для replay, debugging и accountability.",
+          why_title: "Почему это важно",
+          p5: "Support chatbot может придумать промокод. Financial assistant может сделать неподтвержденное заявление. Internal copilot может предложить обойти approval.",
+          cta_register: "Запросить доступ",
+          cta_demo: "Попробовать live demo"
+        }
+      };
+      function applyLang(lang) {
+        const dictionary = t[lang] || t.en;
+        document.documentElement.lang = lang === "uk" ? "uk" : lang === "ru" ? "ru" : "en";
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const value = dictionary[el.dataset.i18n];
+          if (value) el.textContent = value;
+        });
+        document.querySelectorAll("[data-lang]").forEach((button) => button.classList.toggle("active", button.dataset.lang === lang));
+      }
+      document.querySelectorAll("[data-lang]").forEach((button) => button.addEventListener("click", () => applyLang(button.dataset.lang || "en")));
+    </script>
+  </body>
+</html>
