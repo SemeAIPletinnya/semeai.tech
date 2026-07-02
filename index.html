@@ -3,33 +3,33 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SemeAI | Release control for AI answers</title>
+    <title>SemeAI Gate | Release control for AI answers</title>
     <meta
       name="description"
-      content="SemeAI Gate is a release-control layer for LLM apps. Check AI answers against business data, context, and rules before users see them."
+      content="SemeAI Gate is a release-control checkpoint for LLM apps. Check AI answers against business data, context, and rules before users see them."
     />
     <style>
       :root {
         color-scheme: light;
-        --ink: #20272b;
-        --ink-strong: #11171a;
-        --muted: #627178;
-        --muted-2: #87969b;
-        --bg: #f3f6f6;
+        --bg: #eef3f3;
         --paper: #ffffff;
-        --soft: #f8fbfb;
-        --line: #d6e1e1;
-        --line-strong: #94c9ca;
-        --teal: #9dcdcd;
-        --teal-2: #5b989a;
-        --teal-deep: #1d696e;
-        --green: #2d986e;
-        --red: #d24b4b;
-        --amber: #b9812f;
-        --dark: #111a20;
-        --dark-2: #17242c;
-        --dark-line: rgba(220, 238, 241, 0.14);
-        --shadow: 0 26px 80px rgba(30, 44, 50, 0.12);
+        --paper-2: #f7faf9;
+        --ink: #11191d;
+        --ink-2: #26343a;
+        --muted: #627278;
+        --faint: #8b9b9f;
+        --line: #d9e2e2;
+        --line-2: #accdcd;
+        --aqua: #9ccfcf;
+        --aqua-2: #4f9699;
+        --aqua-3: #12666d;
+        --green: #288c65;
+        --amber: #b77b27;
+        --red: #cf474b;
+        --dark: #121b21;
+        --dark-2: #1a2830;
+        --dark-3: #23343e;
+        --shadow: 0 28px 80px rgba(20, 33, 38, 0.12);
         --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -48,44 +48,45 @@
         margin: 0;
         color: var(--ink);
         background:
-          radial-gradient(circle at 76% 9%, rgba(157, 205, 205, 0.5), transparent 31vw),
-          linear-gradient(180deg, #edf5f5 0, rgba(255, 255, 255, 0) 560px),
-          var(--bg);
+          radial-gradient(circle at 82% 12%, rgba(156, 207, 207, 0.5), transparent 28vw),
+          linear-gradient(180deg, #f5f8f8 0, var(--bg) 580px);
       }
 
       a {
         color: inherit;
       }
 
-      button {
+      button,
+      input {
         font: inherit;
       }
 
-      .page {
-        width: min(1180px, calc(100vw - 42px));
+      .wrap {
+        width: min(1160px, calc(100vw - 44px));
         margin: 0 auto;
       }
 
-      .nav {
+      .topbar {
         position: sticky;
         top: 0;
-        z-index: 30;
+        z-index: 20;
         border-bottom: 1px solid var(--line);
-        background: rgba(243, 246, 246, 0.94);
-        backdrop-filter: blur(14px);
+        background: rgba(247, 250, 249, 0.94);
+        backdrop-filter: blur(18px);
       }
 
-      .nav-inner {
+      .topbar-inner {
         display: flex;
-        min-height: 78px;
+        min-height: 72px;
         align-items: center;
         justify-content: space-between;
-        gap: 24px;
+        gap: 20px;
       }
 
       .brand,
-      .nav-links a,
-      .button {
+      .nav a,
+      .button,
+      .proof-link {
         text-decoration: none;
       }
 
@@ -93,52 +94,61 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        font-weight: 920;
+        font-weight: 900;
       }
 
       .brand-mark {
         display: grid;
-        width: 40px;
-        height: 40px;
+        width: 42px;
+        height: 42px;
         place-items: center;
-        border: 1px solid var(--line-strong);
+        border: 1px solid var(--line-2);
         border-radius: 50%;
-        color: #153c3f;
-        background: var(--teal);
+        color: #163b3f;
+        background: var(--aqua);
         font-size: 14px;
         font-weight: 950;
       }
 
-      .nav-links {
+      .brand-sub {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 780;
+      }
+
+      .nav {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
         justify-content: flex-end;
-        gap: 15px;
+        gap: 14px;
         color: var(--muted);
         font-size: 14px;
         font-weight: 780;
       }
 
-      .nav-cta {
-        display: inline-flex;
+      .nav a:hover {
+        color: var(--ink);
+      }
+
+      .nav .github {
         min-height: 36px;
-        align-items: center;
-        padding: 0 12px;
-        border: 1px solid var(--teal-2);
-        border-radius: 7px;
-        color: var(--ink-strong);
+        padding: 8px 13px;
+        border: 1px solid var(--aqua-2);
+        border-radius: 8px;
+        color: var(--ink);
         background: #fff;
       }
 
-      .lang-switch {
+      .langs {
         display: inline-flex;
         gap: 6px;
       }
 
-      .lang-switch button {
+      .langs button {
         min-height: 30px;
-        padding: 4px 9px;
+        padding: 5px 10px;
         border: 1px solid var(--line);
         border-radius: 999px;
         color: var(--muted);
@@ -148,122 +158,128 @@
         cursor: pointer;
       }
 
-      .lang-switch button.active {
-        color: var(--ink-strong);
-        border-color: var(--line-strong);
-        background: var(--teal);
+      .langs button.active {
+        border-color: var(--line-2);
+        color: var(--ink);
+        background: var(--aqua);
       }
 
       .hero {
         display: grid;
-        grid-template-columns: minmax(0, 1.03fr) minmax(420px, 0.97fr);
-        gap: 46px;
+        grid-template-columns: minmax(0, 0.95fr) minmax(410px, 0.75fr);
+        gap: 56px;
         align-items: center;
-        min-height: 690px;
-        padding: 54px 0 66px;
+        min-height: 670px;
+        padding: 62px 0 58px;
       }
 
       .eyebrow,
-      .pill,
-      .state-pill {
+      .badge {
         display: inline-flex;
         align-items: center;
         min-height: 28px;
-        padding: 4px 10px;
-        border: 1px solid var(--line-strong);
+        padding: 5px 11px;
+        border: 1px solid var(--line-2);
         border-radius: 999px;
-        color: var(--teal-deep);
+        color: var(--aqua-3);
         background: rgba(255, 255, 255, 0.86);
         font-size: 12px;
         font-weight: 900;
         text-transform: uppercase;
       }
 
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
       h1 {
-        max-width: 760px;
-        margin: 22px 0 18px;
-        color: var(--ink-strong);
-        font-size: clamp(48px, 6.1vw, 86px);
-        line-height: 1.02;
+        max-width: 720px;
+        margin-bottom: 20px;
+        color: var(--ink);
+        font-size: clamp(48px, 6vw, 84px);
+        line-height: 0.98;
         letter-spacing: 0;
       }
 
       .lead {
-        max-width: 690px;
-        margin: 0;
+        max-width: 680px;
         color: var(--muted);
-        font-size: clamp(18px, 2vw, 22px);
+        font-size: clamp(18px, 1.8vw, 22px);
         line-height: 1.55;
       }
 
-      .cta-row {
+      .hero-actions,
+      .mini-actions {
         display: flex;
         flex-wrap: wrap;
         gap: 12px;
-        margin-top: 32px;
+        margin-top: 30px;
       }
 
       .button {
         display: inline-flex;
+        min-height: 46px;
         align-items: center;
         justify-content: center;
-        min-height: 46px;
         padding: 0 18px;
         border: 1px solid var(--line);
-        border-radius: 7px;
+        border-radius: 8px;
         color: var(--ink);
         background: #fff;
-        box-shadow: 0 8px 24px rgba(32, 39, 43, 0.06);
+        box-shadow: 0 10px 28px rgba(20, 33, 38, 0.06);
         font-weight: 850;
       }
 
       .button.primary {
-        border-color: var(--teal-2);
-        background: var(--teal);
+        border-color: var(--aqua-2);
+        background: var(--aqua);
       }
 
       .button.dark {
-        color: #eff8f8;
-        border-color: rgba(255, 255, 255, 0.18);
+        color: #f5fbfb;
+        border-color: rgba(255, 255, 255, 0.16);
         background: var(--dark);
       }
 
-      .proof-strip {
+      .signal-strip {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 10px;
         margin-top: 34px;
       }
 
-      .proof-item {
-        min-height: 76px;
-        padding: 14px;
+      .signal {
+        min-height: 82px;
+        padding: 15px;
         border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.74);
+        background: rgba(255, 255, 255, 0.78);
       }
 
-      .proof-item strong {
+      .signal strong {
         display: block;
-        color: var(--ink-strong);
+        margin-bottom: 4px;
+        color: var(--ink);
         font-size: 20px;
       }
 
-      .proof-item span {
-        display: block;
-        margin-top: 4px;
+      .signal span {
         color: var(--muted);
         font-size: 12px;
-        font-weight: 740;
+        font-weight: 760;
+        line-height: 1.35;
       }
 
-      .gate-card {
+      .gate-console {
         border: 1px solid var(--line);
-        border-top: 3px solid var(--line-strong);
+        border-top: 3px solid var(--line-2);
         background: var(--paper);
         box-shadow: var(--shadow);
       }
 
-      .gate-card-head {
+      .console-head {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -272,118 +288,102 @@
         border-bottom: 1px solid var(--line);
       }
 
-      .gate-title {
-        color: var(--ink-strong);
-        font-weight: 900;
+      .console-title {
+        color: var(--ink);
+        font-weight: 920;
       }
 
       .status {
-        display: inline-flex;
-        align-items: center;
         min-height: 26px;
-        padding: 4px 9px;
+        padding: 5px 9px;
         border-radius: 999px;
         color: var(--green);
-        background: rgba(45, 152, 110, 0.1);
+        background: rgba(40, 140, 101, 0.1);
         font-size: 12px;
         font-weight: 900;
         white-space: nowrap;
       }
 
-      .gate-flow {
-        padding: 18px 20px 22px;
+      .check-table {
+        padding: 4px 20px 18px;
       }
 
-      .flow-row {
+      .check-row {
         display: grid;
-        grid-template-columns: 132px minmax(0, 1fr) 108px;
+        grid-template-columns: 132px minmax(0, 1fr) 88px;
         gap: 18px;
         align-items: center;
-        padding: 15px 0;
+        min-height: 72px;
         border-bottom: 1px solid var(--line);
       }
 
-      .flow-row:last-child {
+      .check-row:last-child {
         border-bottom: 0;
       }
 
       .label {
         color: var(--muted);
-        font-size: 13px;
-        font-weight: 850;
+        font-size: 12px;
+        font-weight: 900;
         text-transform: uppercase;
       }
 
       .value {
-        color: var(--ink-strong);
-        font-weight: 800;
+        color: var(--ink);
+        font-weight: 820;
       }
 
       .decision {
         justify-self: end;
-        padding: 6px 10px;
-        border-radius: 6px;
+        padding: 7px 10px;
+        border-radius: 7px;
         color: #fff;
         background: var(--red);
         font-size: 12px;
         font-weight: 950;
       }
 
-      .decision.review {
-        background: var(--amber);
-      }
-
       .decision.show {
         background: var(--green);
       }
 
-      .sections {
-        display: grid;
-        gap: 24px;
-        padding: 0 0 70px;
+      .decision.review {
+        background: var(--amber);
       }
 
-      .section {
+      .page-stack {
+        display: grid;
+        gap: 24px;
+        padding-bottom: 74px;
+      }
+
+      .panel {
         padding: 52px 54px;
         border: 1px solid var(--line);
         background: var(--paper);
         box-shadow: var(--shadow);
       }
 
-      .section.dark-section {
-        color: #eaf4f6;
-        border-color: rgba(255, 255, 255, 0.12);
-        background:
-          radial-gradient(circle at 48% 40%, rgba(110, 183, 255, 0.22), transparent 31%),
-          linear-gradient(135deg, var(--dark), var(--dark-2));
-        box-shadow: 0 30px 90px rgba(12, 24, 31, 0.25);
-      }
-
-      .section.compact {
-        padding: 38px 42px;
-      }
-
-      .section h2 {
-        margin: 0 0 14px;
-        color: var(--ink-strong);
-        font-size: clamp(30px, 4vw, 50px);
-        line-height: 1.08;
+      .panel h2 {
+        max-width: 840px;
+        margin-bottom: 16px;
+        color: var(--ink);
+        font-size: clamp(34px, 4.3vw, 56px);
+        line-height: 1.05;
         letter-spacing: 0;
       }
 
-      .dark-section h2,
-      .dark-section h3 {
-        color: #f4fbfc;
-      }
-
-      .section p {
+      .panel p {
         color: var(--muted);
         font-size: 17px;
-        line-height: 1.6;
+        line-height: 1.65;
       }
 
-      .dark-section p {
-        color: rgba(234, 244, 246, 0.74);
+      .two-col {
+        display: grid;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+        gap: 36px;
+        align-items: start;
       }
 
       .grid-3 {
@@ -393,50 +393,23 @@
         margin-top: 28px;
       }
 
-      .grid-2 {
-        display: grid;
-        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-        gap: 26px;
-        align-items: start;
-      }
-
-      .card {
-        min-height: 210px;
-        padding: 22px;
-        border: 1px solid var(--line);
-        background: #fbfcfc;
-      }
-
-      .dark-section .card {
-        border-color: rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .card h3 {
-        margin: 0 0 12px;
-        color: var(--ink-strong);
-        font-size: 20px;
-      }
-
-      .card p {
-        margin: 0;
-        font-size: 15px;
-      }
-
-      .risk-stack {
+      .risk-list {
         display: grid;
         gap: 12px;
       }
 
-      .risk-item {
+      .risk-row {
         display: grid;
-        grid-template-columns: 96px minmax(0, 1fr);
-        gap: 16px;
+        grid-template-columns: 112px minmax(0, 1fr);
+        gap: 18px;
+        min-height: 76px;
         align-items: start;
-        min-height: 74px;
-        padding: 16px;
-        border: 1px solid var(--line);
-        background: #fbfcfc;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .risk-row:first-child {
+        border-top: 1px solid var(--line-2);
       }
 
       .risk-tag {
@@ -448,8 +421,8 @@
 
       .risk-copy strong {
         display: block;
-        color: var(--ink-strong);
         margin-bottom: 4px;
+        color: var(--ink);
       }
 
       .risk-copy span {
@@ -458,41 +431,59 @@
         line-height: 1.45;
       }
 
+      .dark-panel {
+        color: #eef8f9;
+        border-color: rgba(255, 255, 255, 0.1);
+        background:
+          radial-gradient(circle at 48% 42%, rgba(126, 204, 255, 0.18), transparent 30%),
+          linear-gradient(135deg, var(--dark), var(--dark-2));
+        box-shadow: 0 34px 90px rgba(11, 22, 27, 0.25);
+      }
+
+      .dark-panel h2,
+      .dark-panel h3 {
+        color: #f8fcfc;
+      }
+
+      .dark-panel p {
+        color: rgba(238, 248, 249, 0.72);
+      }
+
       .circuit {
         position: relative;
-        min-height: 340px;
+        min-height: 330px;
         margin-top: 30px;
         overflow: hidden;
         border: 1px solid rgba(255, 255, 255, 0.12);
         background:
-          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
         background-size: 34px 34px;
       }
 
-      .circuit-line {
+      .wire {
         position: absolute;
         height: 1px;
-        background: rgba(126, 204, 255, 0.52);
-        box-shadow: 0 0 22px rgba(126, 204, 255, 0.25);
+        background: rgba(122, 202, 255, 0.58);
+        box-shadow: 0 0 22px rgba(122, 202, 255, 0.26);
       }
 
-      .circuit-line.main {
+      .wire.main {
         left: 7%;
         right: 7%;
         top: 50%;
       }
 
-      .circuit-line.top {
+      .wire.up {
         left: 14%;
-        right: 50%;
+        right: 51%;
         top: 31%;
         transform: rotate(12deg);
       }
 
-      .circuit-line.bottom {
+      .wire.down {
         left: 14%;
-        right: 50%;
+        right: 51%;
         top: 68%;
         transform: rotate(-12deg);
       }
@@ -501,14 +492,14 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        width: min(260px, 56vw);
-        min-height: 112px;
-        transform: translate(-50%, -50%);
         display: grid;
+        width: min(270px, 60vw);
+        min-height: 112px;
         place-items: center;
-        border: 1px solid rgba(255, 218, 165, 0.72);
-        border-radius: 6px;
-        background: rgba(17, 26, 32, 0.9);
+        transform: translate(-50%, -50%);
+        border: 1px solid rgba(255, 218, 165, 0.74);
+        border-radius: 8px;
+        background: rgba(18, 27, 33, 0.92);
         box-shadow: 0 0 44px rgba(255, 205, 132, 0.16);
         color: #f7fbfc;
         font-size: 28px;
@@ -517,9 +508,9 @@
 
       .circuit-label {
         position: absolute;
-        color: rgba(234, 244, 246, 0.72);
+        color: rgba(238, 248, 249, 0.76);
         font-size: 13px;
-        font-weight: 780;
+        font-weight: 800;
       }
 
       .circuit-label.left {
@@ -532,172 +523,223 @@
         top: 41%;
       }
 
-      .dot {
+      .node {
         position: absolute;
         width: 11px;
         height: 11px;
         border-radius: 50%;
-        background: #eaf8ff;
-        box-shadow: 0 0 18px rgba(126, 204, 255, 0.46);
+        background: #edfaff;
+        box-shadow: 0 0 18px rgba(122, 202, 255, 0.48);
       }
 
-      .dot.one {
+      .node.a {
         left: 20%;
         top: 49%;
       }
 
-      .dot.two {
+      .node.b {
         right: 20%;
         top: 49%;
       }
 
-      .dot.three {
-        left: 67%;
+      .node.c {
+        left: 66%;
         top: 28%;
       }
 
-      .table {
+      .state-grid {
         display: grid;
-        border-top: 1px solid var(--line-strong);
-      }
-
-      .table-row {
-        display: grid;
-        grid-template-columns: minmax(140px, 0.42fr) minmax(0, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 18px;
-        align-items: start;
-        min-height: 62px;
-        padding: 16px 0;
-        border-bottom: 1px solid var(--line);
+        margin-top: 28px;
       }
 
-      .code {
+      .state-card {
+        min-height: 164px;
+        padding: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .state-card h3 {
+        margin-bottom: 12px;
+        font-size: 20px;
+      }
+
+      .state-card p {
+        margin: 0;
+        font-size: 15px;
+      }
+
+      .product-card {
+        min-height: 210px;
+        padding: 24px;
+        border: 1px solid var(--line);
+        background: var(--paper-2);
+      }
+
+      .product-card h3 {
+        margin-bottom: 12px;
+        color: var(--ink);
+      }
+
+      .code-card {
         overflow: auto;
-        padding: 20px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        background: rgba(6, 12, 16, 0.72);
-        color: #dbf1f4;
+        padding: 22px;
+        border: 1px solid var(--line);
+        background: #30383d;
+        color: #e8f5f6;
         font-family: var(--mono);
         font-size: 13px;
-        line-height: 1.55;
+        line-height: 1.6;
         white-space: pre-wrap;
       }
 
       .proof-list {
         display: grid;
         gap: 12px;
-        margin: 26px 0 0;
+        margin: 28px 0 0;
         padding: 0;
         list-style: none;
       }
 
-      .proof-list a {
+      .proof-link {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 18px;
-        min-height: 58px;
-        padding: 14px 18px;
+        min-height: 60px;
+        padding: 15px 18px;
         border: 1px solid var(--line);
         color: var(--ink);
-        background: #fbfcfc;
-        font-weight: 850;
-        text-decoration: none;
+        background: var(--paper-2);
+        font-weight: 860;
       }
 
-      .proof-list span {
+      .proof-link span {
         color: var(--muted);
         font-size: 13px;
-        font-weight: 750;
+        font-weight: 760;
       }
 
       .author {
         display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-        gap: 28px;
+        grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+        gap: 34px;
         align-items: start;
       }
 
-      .author-box {
-        border-left: 4px solid var(--teal);
-        padding-left: 20px;
+      .author-card {
+        padding-left: 22px;
+        border-left: 4px solid var(--aqua);
       }
 
-      .footer {
-        padding: 32px 0 46px;
+      footer {
+        padding: 34px 0 46px;
         color: var(--muted);
         border-top: 1px solid var(--line);
         font-size: 14px;
       }
 
-      @media (max-width: 980px) {
+      @media (max-width: 1020px) {
         .hero,
-        .grid-2,
+        .two-col,
         .grid-3,
-        .proof-strip,
+        .signal-strip,
+        .state-grid,
         .author {
           grid-template-columns: 1fr;
         }
 
         .hero {
           min-height: auto;
-          padding-top: 34px;
-        }
-
-        .section,
-        .section.compact {
-          padding: 30px;
+          padding-top: 38px;
         }
       }
 
-      @media (max-width: 680px) {
-        .page {
-          width: min(100% - 24px, 1180px);
+      @media (max-width: 720px) {
+        .wrap {
+          width: min(100% - 24px, 1160px);
         }
 
-        .nav-inner {
+        .topbar-inner {
           align-items: flex-start;
           flex-direction: column;
-          padding: 14px 0;
+          gap: 12px;
+          padding: 12px 0;
         }
 
-        .nav-links {
+        .nav {
+          width: 100%;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
           gap: 10px;
+          overflow-x: auto;
+          padding-bottom: 4px;
+          scrollbar-width: none;
         }
 
-        .flow-row,
-        .table-row,
-        .risk-item {
+        .nav::-webkit-scrollbar {
+          display: none;
+        }
+
+        .nav a,
+        .langs button {
+          flex: 0 0 auto;
+          white-space: nowrap;
+        }
+
+        .hero {
+          gap: 30px;
+          padding-top: 34px;
+          padding-bottom: 44px;
+        }
+
+        h1 {
+          font-size: clamp(42px, 11.5vw, 58px);
+        }
+
+        .lead {
+          font-size: 18px;
+        }
+
+        .signal-strip {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .panel {
+          padding: 30px 24px;
+        }
+
+        .check-row,
+        .risk-row {
           grid-template-columns: 1fr;
+          gap: 8px;
         }
 
         .decision {
           justify-self: start;
         }
-
-        h1 {
-          font-size: clamp(42px, 13vw, 64px);
-        }
       }
     </style>
   </head>
   <body>
-    <header class="nav">
-      <div class="page nav-inner">
+    <header class="topbar">
+      <div class="wrap topbar-inner">
         <a class="brand" href="index.html" aria-label="SemeAI home">
           <span class="brand-mark">SG</span>
-          <span>SemeAI</span>
+          <span>SemeAI <span class="brand-sub" data-i18n="brand_sub">Release-control systems</span></span>
         </a>
-        <nav class="nav-links" aria-label="Main navigation">
+        <nav class="nav" aria-label="Main navigation">
           <a href="gate.html">Gate</a>
-          <a href="#product">Product</a>
-          <a href="research.html">Research</a>
-          <a href="article.html">Article</a>
-          <a href="register.html">Register</a>
-          <a href="account.html">Account</a>
-          <a href="https://gate.semeai.tech">Live demo</a>
-          <a class="nav-cta" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
-          <span class="lang-switch" aria-label="Language">
+          <a href="#product" data-i18n="nav_product">Product</a>
+          <a href="research.html" data-i18n="nav_research">Research</a>
+          <a href="article.html" data-i18n="nav_article">Article</a>
+          <a href="register.html" data-i18n="nav_register">Register</a>
+          <a href="account.html" data-i18n="nav_account">Account</a>
+          <a href="https://gate.semeai.tech" data-i18n="nav_demo">Live demo</a>
+          <a class="github" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
+          <span class="langs" aria-label="Language">
             <button class="active" type="button" data-lang="en">EN</button>
             <button type="button" data-lang="uk">UA</button>
             <button type="button" data-lang="ru">RU</button>
@@ -706,69 +748,70 @@
       </div>
     </header>
 
-    <main class="page">
+    <main class="wrap">
       <section class="hero">
         <div>
-          <span class="eyebrow" data-i18n="eyebrow">Release control between AI answers and real users</span>
-          <h1 data-i18n="hero_title">Stop unsupported AI answers before users see them.</h1>
+          <span class="eyebrow" data-i18n="hero_eyebrow">Release control between AI answers and real users</span>
+          <h1 data-i18n="hero_title">Ship AI answers only when they are supported.</h1>
           <p class="lead" data-i18n="hero_lead">
-            Your LLM writes a candidate answer. SemeAI Gate checks it against
-            business data, context, and rules, then returns SHOW, REVIEW, or
-            BLOCK before it reaches a customer.
+            SemeAI Gate sits after an LLM and before the user. It checks the AI answer against business data,
+            current context, and release rules, then returns SHOW, REVIEW, or BLOCK.
           </p>
-          <div class="cta-row">
+          <div class="hero-actions">
             <a class="button primary" href="https://gate.semeai.tech" data-i18n="cta_demo">Try live gate</a>
             <a class="button" href="register.html" data-i18n="cta_register">Register workspace</a>
-            <a class="button" href="account.html" data-i18n="cta_account">Open account console</a>
-            <a class="button" href="article.html" data-i18n="cta_article">Read article</a>
+            <a class="button" href="article.html" data-i18n="cta_article">Read the paper thesis</a>
           </div>
-          <div class="proof-strip" aria-label="SemeAI status">
-            <div class="proof-item">
+          <div class="signal-strip" aria-label="SemeAI status">
+            <div class="signal">
               <strong>live</strong>
-              <span data-i18n="proof_live">API health and demo endpoint online</span>
+              <span data-i18n="signal_live">API and browser demo online</span>
             </div>
-            <div class="proof-item">
+            <div class="signal">
               <strong>v0.1</strong>
-              <span data-i18n="proof_schema">versioned schema and API contract</span>
+              <span data-i18n="signal_schema">versioned schema and contract</span>
             </div>
-            <div class="proof-item">
+            <div class="signal">
               <strong>local</strong>
-              <span data-i18n="proof_local">open-source adapter, no model lock-in</span>
+              <span data-i18n="signal_local">open-source adapter, no model lock-in</span>
             </div>
-            <div class="proof-item">
+            <div class="signal">
               <strong>audit</strong>
-              <span data-i18n="proof_audit">blocked answers preserve decision metadata</span>
+              <span data-i18n="signal_audit">blocked answers preserve metadata</span>
             </div>
           </div>
         </div>
 
-        <aside class="gate-card" aria-label="SemeAI Gate product flow">
-          <div class="gate-card-head">
-            <div class="gate-title" data-i18n="card_title">Fake promo code blocked</div>
+        <aside class="gate-console" aria-label="SemeAI Gate check">
+          <div class="console-head">
+            <div>
+              <div class="console-title" data-i18n="console_title">Gate check</div>
+              <div class="brand-sub">business_data + rules + context</div>
+            </div>
             <div class="status">audit preserved</div>
           </div>
-          <div class="gate-flow">
-            <div class="flow-row">
+          <div class="check-table">
+            <div class="check-row">
               <div class="label">User</div>
-              <div class="value" data-i18n="card_user">Give me a 30% discount promo code.</div>
+              <div class="value" data-i18n="console_user">Give me a 30% discount promo code.</div>
               <div></div>
             </div>
-            <div class="flow-row">
+            <div class="check-row">
               <div class="label">AI answer</div>
-              <div class="value" data-i18n="card_answer">Use promo code SAVE30 to get 30% off.</div>
+              <div class="value" data-i18n="console_answer">Use promo code SAVE30 to get 30% off.</div>
               <div></div>
             </div>
-            <div class="flow-row">
+            <div class="check-row">
               <div class="label">Business data</div>
               <div class="value">active_promo_codes: []</div>
               <div></div>
             </div>
-            <div class="flow-row">
+            <div class="check-row">
               <div class="label">Gate result</div>
-              <div class="value" data-i18n="card_result">The answer is unsupported by business data.</div>
+              <div class="value" data-i18n="console_result">Unsupported by business data.</div>
               <div class="decision">BLOCK</div>
             </div>
-            <div class="flow-row">
+            <div class="check-row">
               <div class="label">Internal</div>
               <div class="value">BLOCK maps to SILENCE.</div>
               <div class="decision">SILENCE</div>
@@ -777,42 +820,39 @@
         </aside>
       </section>
 
-      <div class="sections">
-        <section class="section grid-2" id="dashboard">
+      <div class="page-stack">
+        <section class="panel two-col">
           <div>
             <span class="eyebrow" data-i18n="why_eyebrow">Why this matters</span>
-            <h2 data-i18n="why_title">AI answers can be fluent and still not allowed.</h2>
+            <h2 data-i18n="why_title">Fluent does not mean allowed.</h2>
             <p data-i18n="why_copy">
-              The v0.1 demo focuses on support and product claims because the
-              failure is easy to understand: a model can invent a discount code,
-              account condition, financial promise, or risky action. The gate
-              does not replace the model. It decides whether the candidate is
-              releasable for the current business context.
+              The model may generate a plausible candidate. The business still needs a separate decision before
+              that answer becomes customer-visible, operationally active, or stored as trusted memory.
             </p>
           </div>
-          <div class="risk-stack" aria-label="Release risks">
-            <div class="risk-item">
+          <div class="risk-list">
+            <div class="risk-row">
               <div class="risk-tag">Support</div>
               <div class="risk-copy">
                 <strong data-i18n="risk_promo_title">Fake promo codes</strong>
-                <span data-i18n="risk_promo">Do not show a code unless business data confirms it.</span>
+                <span data-i18n="risk_promo">Do not show a discount code unless business data confirms it.</span>
               </div>
             </div>
-            <div class="risk-item">
+            <div class="risk-row">
               <div class="risk-tag">Finance</div>
               <div class="risk-copy">
                 <strong data-i18n="risk_finance_title">Unsupported account claims</strong>
-                <span data-i18n="risk_finance">Review or block answers that invent terms, fees, or returns.</span>
+                <span data-i18n="risk_finance">Review or block answers that invent terms, fees, eligibility, or returns.</span>
               </div>
             </div>
-            <div class="risk-item">
+            <div class="risk-row">
               <div class="risk-tag">Ops</div>
               <div class="risk-copy">
                 <strong data-i18n="risk_ops_title">Unsafe actions</strong>
                 <span data-i18n="risk_ops">Block approval bypass, direct deploy advice, and irreversible action recommendations.</span>
               </div>
             </div>
-            <div class="risk-item">
+            <div class="risk-row">
               <div class="risk-tag">Context</div>
               <div class="risk-copy">
                 <strong data-i18n="risk_context_title">Context drift</strong>
@@ -822,84 +862,73 @@
           </div>
         </section>
 
-        <section class="section dark-section" id="gate">
+        <section class="panel dark-panel">
           <span class="eyebrow">Production pipeline</span>
           <h2 data-i18n="pipeline_title">Attention generates. The gate decides release.</h2>
           <p data-i18n="pipeline_copy">
-            Transformers made generation scalable. They did not make generated
-            text automatically safe, supported, or allowed. SemeAI Gate is the
-            checkpoint after generation and before the real user.
+            Transformers made generation scalable. They did not make generated text automatically safe,
+            supported, or allowed. SemeAI Gate is a checkpoint after generation and before the real user.
           </p>
-          <div class="circuit" aria-label="LLM to gate to user diagram">
-            <div class="circuit-line main"></div>
-            <div class="circuit-line top"></div>
-            <div class="circuit-line bottom"></div>
-            <div class="chip">SemeAI Gate</div>
+          <div class="circuit" aria-label="LLM to SemeAI Gate to release decision">
+            <div class="wire main"></div>
+            <div class="wire up"></div>
+            <div class="wire down"></div>
+            <div class="node a"></div>
+            <div class="node b"></div>
+            <div class="node c"></div>
             <div class="circuit-label left">LLM / candidate answer</div>
+            <div class="chip">SemeAI Gate</div>
             <div class="circuit-label right">SHOW / REVIEW / BLOCK</div>
-            <div class="dot one"></div>
-            <div class="dot two"></div>
-            <div class="dot three"></div>
           </div>
-          <div class="grid-3">
-            <div class="card">
+          <div class="state-grid">
+            <div class="state-card">
               <h3>SHOW</h3>
               <p>Maps to PROCEED. The answer is supported enough for release.</p>
             </div>
-            <div class="card">
+            <div class="state-card">
               <h3>REVIEW</h3>
               <p>Maps to NEEDS_REVIEW. Do not auto-release. Send to an operator.</p>
             </div>
-            <div class="card">
+            <div class="state-card">
               <h3>BLOCK</h3>
               <p>Maps to SILENCE. Withhold the answer and preserve audit metadata.</p>
             </div>
           </div>
         </section>
 
-        <section class="section" id="product">
-          <h2 data-i18n="product_title">What SemeAI is building.</h2>
+        <section class="panel" id="product">
+          <h2 data-i18n="product_title">One gate, three product surfaces.</h2>
           <div class="grid-3">
-            <div class="card">
+            <div class="product-card">
               <h3>SemeAI Gate</h3>
-              <p data-i18n="product_gate">
-                Release-control middleware for AI answers in support, fintech,
-                product, and internal tools.
-              </p>
+              <p data-i18n="product_gate">Release-control middleware for AI answers in support, fintech, product, and internal tools.</p>
             </div>
-            <div class="card">
+            <div class="product-card">
               <h3>SemeAI Local</h3>
-              <p data-i18n="product_local">
-                A local governed AI workspace for memory, receipts, replay,
-                audit, and source-grounded answers.
-              </p>
+              <p data-i18n="product_local">A governed local workspace for memory, receipts, replay, audit, and source-grounded answers.</p>
             </div>
-            <div class="card">
+            <div class="product-card">
               <h3>Silence-as-Control</h3>
-              <p data-i18n="product_sac">
-                The governance source context behind PROCEED, NEEDS_REVIEW,
-                and SILENCE release states.
-              </p>
+              <p data-i18n="product_sac">The governance source context behind PROCEED, NEEDS_REVIEW, and SILENCE release states.</p>
             </div>
           </div>
         </section>
 
-        <section class="section grid-2" id="api">
+        <section class="panel two-col" id="api">
           <div>
             <span class="eyebrow">API contract</span>
             <h2 data-i18n="api_title">A small adapter for existing LLM apps.</h2>
             <p data-i18n="api_copy">
-              The host product sends the user message, AI answer, business data,
-              business rules, and context. The gate returns a business action
-              plus canonical internal decision metadata.
+              The host product sends the user message, AI answer, business data, business rules, and context.
+              The gate returns a business action plus canonical internal decision metadata.
             </p>
-            <div class="cta-row">
-              <a class="button primary" href="register.html">Register workspace</a>
-              <a class="button" href="account.html">Open account console</a>
+            <div class="mini-actions">
+              <a class="button primary" href="register.html" data-i18n="cta_register">Register workspace</a>
+              <a class="button" href="account.html" data-i18n="cta_account">Open account console</a>
               <a class="button" href="https://api.semeai.tech/health">API health</a>
             </div>
           </div>
-          <pre class="code">POST /v0/check
+          <pre class="code-card">POST /v0/check
 {
   "user_message": "Give me a 30% discount promo code.",
   "ai_answer": "Use promo code SAVE30 to get 30% off.",
@@ -915,252 +944,293 @@
 }</pre>
         </section>
 
-        <section class="section grid-2">
+        <section class="panel two-col">
           <div>
-            <span class="eyebrow">Beyond promo codes</span>
+            <span class="eyebrow" data-i18n="beyond_eyebrow">Beyond promo codes</span>
             <h2 data-i18n="beyond_title">The same boundary applies wherever generated output can cause damage.</h2>
             <p data-i18n="beyond_copy">
-              Fake promo codes are only the simplest demo. The deeper pattern is
-              release authority: production systems need a separate checkpoint
-              before generated text mutates decisions, worlds, workflows, or
-              customer-visible facts.
+              Fake promo codes are only the simplest demo. The deeper pattern is release authority:
+              production systems need a separate checkpoint before generated text mutates decisions, worlds,
+              workflows, or customer-visible facts.
             </p>
           </div>
-          <div class="table">
-            <div class="table-row">
-              <div class="label">Medicine</div>
-              <div>Generated advice should be checked before it becomes a patient-visible recommendation.</div>
+          <div class="risk-list">
+            <div class="risk-row">
+              <div class="risk-tag">Medicine</div>
+              <div class="risk-copy">
+                <strong data-i18n="domain_med_title">Patient-visible recommendations</strong>
+                <span data-i18n="domain_med">Generated advice should be checked before it becomes a user-visible recommendation.</span>
+              </div>
             </div>
-            <div class="table-row">
-              <div class="label">Finance</div>
-              <div>Claims about fees, returns, eligibility, and account status require business evidence.</div>
+            <div class="risk-row">
+              <div class="risk-tag">Games</div>
+              <div class="risk-copy">
+                <strong data-i18n="domain_game_title">World mutation</strong>
+                <span data-i18n="domain_game">AI content should pass a gate before it mutates canon, quests, economy, or player-visible lore.</span>
+              </div>
             </div>
-            <div class="table-row">
-              <div class="label">Games / worlds</div>
-              <div>AI content should pass a gate before it mutates canon, quests, economy, or player-visible lore.</div>
-            </div>
-            <div class="table-row">
-              <div class="label">Ops</div>
-              <div>Deploy, delete, config, and approval-bypass recommendations need release control before action.</div>
+            <div class="risk-row">
+              <div class="risk-tag">Studios</div>
+              <div class="risk-copy">
+                <strong data-i18n="domain_studio_title">Production assets</strong>
+                <span data-i18n="domain_studio">Generated creative output can be reviewed, receipted, and released instead of blindly accepted.</span>
+              </div>
             </div>
           </div>
         </section>
 
-        <section class="section" id="research">
+        <section class="panel" id="research">
           <h2 data-i18n="proof_title">Research and public proof links.</h2>
           <p data-i18n="proof_copy">
-            The project is developed as working software and as a research
-            direction around release authority after generation. These links are
-            public records for the thesis, archive, and reference implementation.
+            The project is developed as working software and as a research direction around release authority
+            after generation. These links are public records for the thesis, archive, and reference implementation.
           </p>
           <ul class="proof-list">
             <li>
-              <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718">
-                SSRN paper
-                <span>abstract_id=6613718</span>
+              <a class="proof-link" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718">
+                SSRN paper <span>abstract_id=6613718</span>
               </a>
             </li>
             <li>
-              <a href="https://zenodo.org/records/20525820">
-                Zenodo archived record
-                <span>record 20525820</span>
+              <a class="proof-link" href="https://zenodo.org/records/20525820">
+                Zenodo archived record <span>record 20525820</span>
               </a>
             </li>
             <li>
-              <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">
-                Open-source gate adapter
-                <span>semeai-gate-basic</span>
+              <a class="proof-link" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">
+                Open-source gate adapter <span>semeai-gate-basic</span>
               </a>
             </li>
             <li>
-              <a href="https://github.com/SemeAIPletinnya/silence-as-control">
-                Governance source context
-                <span>silence-as-control</span>
+              <a class="proof-link" href="https://github.com/SemeAIPletinnya/silence-as-control">
+                Governance source context <span>silence-as-control</span>
               </a>
             </li>
           </ul>
         </section>
 
-        <section class="section compact" id="author">
-          <div class="author">
-            <div class="author-box">
-              <span class="eyebrow">Author and developer</span>
-              <h2>Anton Semenenko</h2>
-            </div>
-            <div>
-              <p data-i18n="author_copy_1">
-                Anton Semenenko is the developer behind SemeAI Gate and SemeAI
-                Local, and the author of public research artifacts on
-                release-control architecture for AI outputs.
-              </p>
-              <p data-i18n="author_copy_2">
-                The core position is intentionally narrow: transformers make
-                generation scalable, but production AI systems still need a
-                separate release decision before an answer reaches users.
-              </p>
-              <div class="cta-row">
-                <a class="button primary" href="register.html">Register workspace</a>
-                <a class="button" href="article.html">Read article</a>
-                <a class="button" href="https://gate.semeai.tech">Try demo</a>
-              </div>
+        <section class="panel author" id="author">
+          <div class="author-card">
+            <span class="eyebrow" data-i18n="author_tag">Author and developer</span>
+            <h2>Anton Semenenko</h2>
+          </div>
+          <div>
+            <p data-i18n="author_copy_1">
+              Anton Semenenko is the developer behind SemeAI Gate and SemeAI Local, and the author of public
+              research artifacts on release-control architecture for AI outputs.
+            </p>
+            <p data-i18n="author_copy_2">
+              The core position is intentionally narrow: transformers make generation scalable, but production AI
+              systems still need a separate release decision before an answer reaches users.
+            </p>
+            <div class="mini-actions">
+              <a class="button primary" href="https://gate.semeai.tech" data-i18n="cta_demo">Try live gate</a>
+              <a class="button" href="https://api.semeai.tech/health">API health</a>
             </div>
           </div>
         </section>
       </div>
     </main>
 
-    <footer class="page footer">
-      <div>SemeAI. Generation is not release authority.</div>
-      <div>Machine values remain canonical: SHOW / REVIEW / BLOCK and PROCEED / NEEDS_REVIEW / SILENCE.</div>
+    <footer>
+      <div class="wrap">
+        <div>SemeAI. Generation is not release authority.</div>
+        <div>Machine values remain canonical: SHOW / REVIEW / BLOCK and PROCEED / NEEDS_REVIEW / SILENCE.</div>
+      </div>
     </footer>
 
     <script>
       const translations = {
         en: {
-          eyebrow: "Release control between AI answers and real users",
-          hero_title: "Stop unsupported AI answers before users see them.",
+          brand_sub: "Release-control systems",
+          nav_product: "Product",
+          nav_research: "Research",
+          nav_article: "Article",
+          nav_register: "Register",
+          nav_account: "Account",
+          nav_demo: "Live demo",
+          hero_eyebrow: "Release control between AI answers and real users",
+          hero_title: "Ship AI answers only when they are supported.",
           hero_lead:
-            "Your LLM writes a candidate answer. SemeAI Gate checks it against business data, context, and rules, then returns SHOW, REVIEW, or BLOCK before it reaches a customer.",
+            "SemeAI Gate sits after an LLM and before the user. It checks the AI answer against business data, current context, and release rules, then returns SHOW, REVIEW, or BLOCK.",
           cta_demo: "Try live gate",
           cta_register: "Register workspace",
+          cta_article: "Read the paper thesis",
           cta_account: "Open account console",
-          cta_article: "Read article",
-          proof_live: "API health and demo endpoint online",
-          proof_schema: "versioned schema and API contract",
-          proof_local: "open-source adapter, no model lock-in",
-          proof_audit: "blocked answers preserve decision metadata",
-          card_title: "Fake promo code blocked",
-          card_user: "Give me a 30% discount promo code.",
-          card_answer: "Use promo code SAVE30 to get 30% off.",
-          card_result: "The answer is unsupported by business data.",
+          signal_live: "API and browser demo online",
+          signal_schema: "versioned schema and contract",
+          signal_local: "open-source adapter, no model lock-in",
+          signal_audit: "blocked answers preserve metadata",
+          console_title: "Gate check",
+          console_user: "Give me a 30% discount promo code.",
+          console_answer: "Use promo code SAVE30 to get 30% off.",
+          console_result: "Unsupported by business data.",
           why_eyebrow: "Why this matters",
-          why_title: "AI answers can be fluent and still not allowed.",
+          why_title: "Fluent does not mean allowed.",
           why_copy:
-            "The v0.1 demo focuses on support and product claims because the failure is easy to understand: a model can invent a discount code, account condition, financial promise, or risky action. The gate does not replace the model. It decides whether the candidate is releasable for the current business context.",
+            "The model may generate a plausible candidate. The business still needs a separate decision before that answer becomes customer-visible, operationally active, or stored as trusted memory.",
           risk_promo_title: "Fake promo codes",
-          risk_promo: "Do not show a code unless business data confirms it.",
+          risk_promo: "Do not show a discount code unless business data confirms it.",
           risk_finance_title: "Unsupported account claims",
-          risk_finance: "Review or block answers that invent terms, fees, or returns.",
+          risk_finance: "Review or block answers that invent terms, fees, eligibility, or returns.",
           risk_ops_title: "Unsafe actions",
           risk_ops: "Block approval bypass, direct deploy advice, and irreversible action recommendations.",
           risk_context_title: "Context drift",
           risk_context: "Stop answers that no longer belong to the current business conversation.",
           pipeline_title: "Attention generates. The gate decides release.",
           pipeline_copy:
-            "Transformers made generation scalable. They did not make generated text automatically safe, supported, or allowed. SemeAI Gate is the checkpoint after generation and before the real user.",
-          product_title: "What SemeAI is building.",
+            "Transformers made generation scalable. They did not make generated text automatically safe, supported, or allowed. SemeAI Gate is a checkpoint after generation and before the real user.",
+          product_title: "One gate, three product surfaces.",
           product_gate: "Release-control middleware for AI answers in support, fintech, product, and internal tools.",
-          product_local: "A local governed AI workspace for memory, receipts, replay, audit, and source-grounded answers.",
+          product_local: "A governed local workspace for memory, receipts, replay, audit, and source-grounded answers.",
           product_sac: "The governance source context behind PROCEED, NEEDS_REVIEW, and SILENCE release states.",
           api_title: "A small adapter for existing LLM apps.",
           api_copy:
             "The host product sends the user message, AI answer, business data, business rules, and context. The gate returns a business action plus canonical internal decision metadata.",
+          beyond_eyebrow: "Beyond promo codes",
           beyond_title: "The same boundary applies wherever generated output can cause damage.",
           beyond_copy:
             "Fake promo codes are only the simplest demo. The deeper pattern is release authority: production systems need a separate checkpoint before generated text mutates decisions, worlds, workflows, or customer-visible facts.",
+          domain_med_title: "Patient-visible recommendations",
+          domain_med: "Generated advice should be checked before it becomes a user-visible recommendation.",
+          domain_game_title: "World mutation",
+          domain_game: "AI content should pass a gate before it mutates canon, quests, economy, or player-visible lore.",
+          domain_studio_title: "Production assets",
+          domain_studio: "Generated creative output can be reviewed, receipted, and released instead of blindly accepted.",
           proof_title: "Research and public proof links.",
           proof_copy:
             "The project is developed as working software and as a research direction around release authority after generation. These links are public records for the thesis, archive, and reference implementation.",
+          author_tag: "Author and developer",
           author_copy_1:
             "Anton Semenenko is the developer behind SemeAI Gate and SemeAI Local, and the author of public research artifacts on release-control architecture for AI outputs.",
           author_copy_2:
             "The core position is intentionally narrow: transformers make generation scalable, but production AI systems still need a separate release decision before an answer reaches users."
         },
         uk: {
-          eyebrow: "Release control між AI-відповіддю і реальним користувачем",
-          hero_title: "Зупиняйте непідтверджені AI-відповіді до того, як їх побачать користувачі.",
+          brand_sub: "Системи release-control",
+          nav_product: "Продукт",
+          nav_research: "Дослідження",
+          nav_article: "Стаття",
+          nav_register: "Реєстрація",
+          nav_account: "Кабінет",
+          nav_demo: "Live demo",
+          hero_eyebrow: "Release control між AI-відповіддю і реальним користувачем",
+          hero_title: "Випускайте AI-відповіді лише тоді, коли вони підтверджені.",
           hero_lead:
-            "LLM створює candidate answer. SemeAI Gate перевіряє її за бізнес-даними, контекстом і правилами, а потім повертає SHOW, REVIEW або BLOCK до того, як відповідь потрапить до клієнта.",
+            "SemeAI Gate стоїть після LLM і перед користувачем. Він перевіряє AI-відповідь за бізнес-даними, поточним контекстом і правилами release, а потім повертає SHOW, REVIEW або BLOCK.",
           cta_demo: "Спробувати live gate",
           cta_register: "Зареєструвати workspace",
+          cta_article: "Прочитати тезу статті",
           cta_account: "Відкрити account console",
-          cta_article: "Читати статтю",
-          proof_live: "API health і demo endpoint онлайн",
-          proof_schema: "версійна схема і API contract",
-          proof_local: "open-source adapter без прив'язки до моделі",
-          proof_audit: "заблоковані відповіді зберігають decision metadata",
-          card_title: "Фейковий promo code заблоковано",
-          card_user: "Дай мені promo code на знижку 30%.",
-          card_answer: "Використай promo code SAVE30 для знижки 30%.",
-          card_result: "Відповідь не підтверджена бізнес-даними.",
+          signal_live: "API і browser demo онлайн",
+          signal_schema: "версійна схема і контракт",
+          signal_local: "open-source adapter без model lock-in",
+          signal_audit: "заблоковані відповіді зберігають metadata",
+          console_title: "Gate check",
+          console_user: "Дай мені promo code на знижку 30%.",
+          console_answer: "Використай promo code SAVE30 для знижки 30%.",
+          console_result: "Не підтверджено бізнес-даними.",
           why_eyebrow: "Чому це важливо",
-          why_title: "AI-відповідь може бути гладкою, але все одно недозволеною.",
+          why_title: "Гладка відповідь не означає дозволена.",
           why_copy:
-            "v0.1 demo фокусується на підтримці і product claims, бо помилка очевидна: модель може вигадати знижку, умову акаунта, фінансову обіцянку або ризикову дію. Gate не замінює модель. Він вирішує, чи можна release candidate у поточному бізнес-контексті.",
+            "Модель може створити правдоподібний candidate. Бізнесу все одно потрібне окреме рішення до того, як відповідь стане видимою клієнту, операційно активною або збереженою як trusted memory.",
           risk_promo_title: "Фейкові promo codes",
-          risk_promo: "Не показувати код, якщо бізнес-дані його не підтверджують.",
+          risk_promo: "Не показувати discount code, якщо бізнес-дані його не підтверджують.",
           risk_finance_title: "Непідтверджені account claims",
-          risk_finance: "Відправляти на review або блокувати відповіді, які вигадують умови, fees або returns.",
+          risk_finance: "Відправляти на review або блокувати відповіді, які вигадують terms, fees, eligibility або returns.",
           risk_ops_title: "Небезпечні дії",
           risk_ops: "Блокувати approval bypass, direct deploy advice і незворотні action recommendations.",
           risk_context_title: "Context drift",
           risk_context: "Зупиняти відповіді, які вже не належать до поточної бізнес-розмови.",
           pipeline_title: "Attention генерує. Gate вирішує release.",
           pipeline_copy:
-            "Transformers зробили генерацію масштабованою. Але вони не роблять згенерований текст автоматично безпечним, підтвердженим або дозволеним. SemeAI Gate — checkpoint після generation і до реального користувача.",
-          product_title: "Що будує SemeAI.",
+            "Transformers зробили generation масштабованою. Але вони не роблять згенерований текст автоматично безпечним, підтвердженим або дозволеним. SemeAI Gate — checkpoint після generation і до реального користувача.",
+          product_title: "Один gate, три продуктові поверхні.",
           product_gate: "Release-control middleware для AI-відповідей у support, fintech, product та internal tools.",
-          product_local: "Локальний governed AI workspace для memory, receipts, replay, audit і source-grounded answers.",
+          product_local: "Локальний governed workspace для memory, receipts, replay, audit і source-grounded answers.",
           product_sac: "Governance source context за станами PROCEED, NEEDS_REVIEW і SILENCE.",
           api_title: "Малий adapter для існуючих LLM apps.",
           api_copy:
             "Host product надсилає user message, AI answer, business data, business rules і context. Gate повертає business action та canonical internal decision metadata.",
+          beyond_eyebrow: "Більше ніж promo codes",
           beyond_title: "Та сама межа потрібна всюди, де generated output може нашкодити.",
           beyond_copy:
             "Фейкові promo codes — лише найпростіше demo. Глибший патерн — release authority: production systems потребують окремий checkpoint до того, як generated text змінює decisions, worlds, workflows або customer-visible facts.",
+          domain_med_title: "Рекомендації, видимі пацієнту",
+          domain_med: "Згенеровану пораду потрібно перевірити до того, як вона стане видимою рекомендацією.",
+          domain_game_title: "Зміна світу",
+          domain_game: "AI content має пройти gate до того, як змінює canon, quests, economy або player-visible lore.",
+          domain_studio_title: "Production assets",
+          domain_studio: "Згенерований creative output можна review, receipt і release, а не приймати всліпу.",
           proof_title: "Research і public proof links.",
           proof_copy:
             "Проєкт розвивається як working software і як research direction навколо release authority after generation. Ці посилання — публічні records для thesis, archive і reference implementation.",
+          author_tag: "Автор і розробник",
           author_copy_1:
             "Anton Semenenko є developer behind SemeAI Gate і SemeAI Local, а також автором public research artifacts про release-control architecture for AI outputs.",
           author_copy_2:
-            "Головна позиція навмисно вузька: transformers масштабують generation, але production AI systems усе ще потребують окремого release decision до того, як відповідь доходить до користувача."
+            "Головна позиція навмисно вузька: transformers масштабують generation, але production AI systems все ще потребують окремого release decision до того, як відповідь доходить до користувача."
         },
         ru: {
-          eyebrow: "Release control между AI-ответом и реальным пользователем",
-          hero_title: "Останавливайте неподтвержденные AI-ответы до того, как их увидят пользователи.",
+          brand_sub: "Системы release-control",
+          nav_product: "Продукт",
+          nav_research: "Исследование",
+          nav_article: "Статья",
+          nav_register: "Регистрация",
+          nav_account: "Кабинет",
+          nav_demo: "Live demo",
+          hero_eyebrow: "Release control между AI-ответом и реальным пользователем",
+          hero_title: "Выпускайте AI-ответы только тогда, когда они подтверждены.",
           hero_lead:
-            "LLM создает candidate answer. SemeAI Gate проверяет его по бизнес-данным, контексту и правилам, а затем возвращает SHOW, REVIEW или BLOCK до того, как ответ попадет к клиенту.",
+            "SemeAI Gate стоит после LLM и перед пользователем. Он проверяет AI-ответ по бизнес-данным, текущему контексту и правилам release, а затем возвращает SHOW, REVIEW или BLOCK.",
           cta_demo: "Попробовать live gate",
           cta_register: "Зарегистрировать workspace",
+          cta_article: "Прочитать тезис статьи",
           cta_account: "Открыть account console",
-          cta_article: "Читать статью",
-          proof_live: "API health и demo endpoint онлайн",
-          proof_schema: "версионная схема и API contract",
-          proof_local: "open-source adapter без привязки к модели",
-          proof_audit: "заблокированные ответы сохраняют decision metadata",
-          card_title: "Фейковый promo code заблокирован",
-          card_user: "Дай мне promo code на скидку 30%.",
-          card_answer: "Используй promo code SAVE30 для скидки 30%.",
-          card_result: "Ответ не подтвержден бизнес-данными.",
+          signal_live: "API и browser demo онлайн",
+          signal_schema: "версионная схема и контракт",
+          signal_local: "open-source adapter без model lock-in",
+          signal_audit: "заблокированные ответы сохраняют metadata",
+          console_title: "Gate check",
+          console_user: "Дай мне promo code на скидку 30%.",
+          console_answer: "Используй promo code SAVE30 для скидки 30%.",
+          console_result: "Не подтверждено бизнес-данными.",
           why_eyebrow: "Почему это важно",
-          why_title: "AI-ответ может быть гладким, но все равно недопустимым.",
+          why_title: "Гладкий ответ не значит разрешенный.",
           why_copy:
-            "v0.1 demo фокусируется на поддержке и product claims, потому что ошибка очевидна: модель может придумать скидку, условие аккаунта, финансовое обещание или рискованное действие. Gate не заменяет модель. Он решает, можно ли release candidate в текущем бизнес-контексте.",
+            "Модель может создать правдоподобный candidate. Бизнесу все равно нужно отдельное решение до того, как ответ станет видимым клиенту, операционно активным или сохраненным как trusted memory.",
           risk_promo_title: "Фейковые promo codes",
-          risk_promo: "Не показывать код, если бизнес-данные его не подтверждают.",
+          risk_promo: "Не показывать discount code, если бизнес-данные его не подтверждают.",
           risk_finance_title: "Неподтвержденные account claims",
-          risk_finance: "Отправлять на review или блокировать ответы, которые придумывают условия, fees или returns.",
+          risk_finance: "Отправлять на review или блокировать ответы, которые придумывают terms, fees, eligibility или returns.",
           risk_ops_title: "Опасные действия",
           risk_ops: "Блокировать approval bypass, direct deploy advice и необратимые action recommendations.",
           risk_context_title: "Context drift",
           risk_context: "Останавливать ответы, которые уже не относятся к текущему бизнес-разговору.",
           pipeline_title: "Attention генерирует. Gate решает release.",
           pipeline_copy:
-            "Transformers сделали генерацию масштабируемой. Но они не делают сгенерированный текст автоматически безопасным, подтвержденным или разрешенным. SemeAI Gate — checkpoint после generation и до реального пользователя.",
-          product_title: "Что строит SemeAI.",
+            "Transformers сделали generation масштабируемой. Но они не делают сгенерированный текст автоматически безопасным, подтвержденным или разрешенным. SemeAI Gate — checkpoint после generation и до реального пользователя.",
+          product_title: "Один gate, три продуктовые поверхности.",
           product_gate: "Release-control middleware для AI-ответов в support, fintech, product и internal tools.",
-          product_local: "Локальный governed AI workspace для memory, receipts, replay, audit и source-grounded answers.",
+          product_local: "Локальный governed workspace для memory, receipts, replay, audit и source-grounded answers.",
           product_sac: "Governance source context за состояниями PROCEED, NEEDS_REVIEW и SILENCE.",
           api_title: "Малый adapter для существующих LLM apps.",
           api_copy:
             "Host product отправляет user message, AI answer, business data, business rules и context. Gate возвращает business action и canonical internal decision metadata.",
+          beyond_eyebrow: "Больше чем promo codes",
           beyond_title: "Та же граница нужна везде, где generated output может навредить.",
           beyond_copy:
             "Фейковые promo codes — только самое простое demo. Более глубокий паттерн — release authority: production systems нужен отдельный checkpoint до того, как generated text меняет decisions, worlds, workflows или customer-visible facts.",
+          domain_med_title: "Рекомендации, видимые пациенту",
+          domain_med: "Сгенерированный совет нужно проверить до того, как он станет видимой рекомендацией.",
+          domain_game_title: "Изменение мира",
+          domain_game: "AI content должен пройти gate до того, как меняет canon, quests, economy или player-visible lore.",
+          domain_studio_title: "Production assets",
+          domain_studio: "Сгенерированный creative output можно review, receipt и release, а не принимать вслепую.",
           proof_title: "Research и public proof links.",
           proof_copy:
             "Проект развивается как working software и как research direction вокруг release authority after generation. Эти ссылки — публичные records для thesis, archive и reference implementation.",
+          author_tag: "Автор и разработчик",
           author_copy_1:
             "Anton Semenenko является developer behind SemeAI Gate и SemeAI Local, а также автором public research artifacts о release-control architecture for AI outputs.",
           author_copy_2:
