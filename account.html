@@ -286,6 +286,12 @@
         line-height: 1.5;
       }
 
+      .small {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
       .sections {
         display: grid;
         gap: 24px;
@@ -299,6 +305,13 @@
       .grid-3 {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+        margin-top: 22px;
+      }
+
+      .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 18px;
         margin-top: 22px;
       }
@@ -325,6 +338,67 @@
         font-size: 24px;
         line-height: 1.2;
         word-break: break-word;
+      }
+
+      .metric p {
+        margin: 10px 0 0;
+        font-size: 14px;
+      }
+
+      .summary-panel {
+        margin-top: 22px;
+        border: 1px solid var(--line);
+        background: #fbfcfc;
+      }
+
+      .summary-row {
+        display: grid;
+        grid-template-columns: 150px minmax(0, 1fr) minmax(120px, 0.35fr);
+        gap: 16px;
+        align-items: center;
+        min-height: 58px;
+        padding: 13px 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .summary-row:last-child {
+        border-bottom: 0;
+      }
+
+      .summary-row span {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .summary-row strong {
+        color: var(--ink-strong);
+      }
+
+      .activation-code {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin-top: 16px;
+        padding: 14px 16px;
+        border: 1px dashed var(--line-strong);
+        background: rgba(157, 205, 205, 0.13);
+        font-family: var(--mono);
+        font-size: 13px;
+        word-break: break-all;
+      }
+
+      .mini-button {
+        min-height: 32px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        color: var(--ink);
+        background: #fff;
+        font-weight: 850;
+        cursor: pointer;
       }
 
       .receipt-list {
@@ -404,7 +478,8 @@
 
       @media (max-width: 960px) {
         .hero,
-        .grid-3 {
+        .grid-3,
+        .grid-2 {
           grid-template-columns: 1fr;
         }
 
@@ -429,7 +504,8 @@
         }
 
         .console-head,
-        .receipt-row {
+        .receipt-row,
+        .summary-row {
           align-items: flex-start;
           grid-template-columns: 1fr;
         }
@@ -518,6 +594,11 @@
         <section class="section" aria-label="Workspace summary">
           <span class="eyebrow">Workspace</span>
           <h2>Account state.</h2>
+          <p>
+            This panel reads the live account metadata attached to your API key.
+            Subscription and manual activation status are account metadata only;
+            they do not become release authority.
+          </p>
           <div class="grid-3" id="account-metrics">
             <div class="metric">
               <span>Workspace</span>
@@ -543,6 +624,13 @@
             <code>/v0/check</code> endpoint. It should return BLOCK/SILENCE and
             create a receipt scoped to this API key.
           </p>
+          <div class="summary-panel" id="check-summary" aria-label="Latest gate check summary">
+            <div class="summary-row">
+              <span>Gate action</span>
+              <strong>Not run yet</strong>
+              <div class="small">Run the protected check to see SHOW / REVIEW / BLOCK.</div>
+            </div>
+          </div>
           <pre class="json-panel" id="check-json" aria-label="Protected check JSON"></pre>
         </section>
 
@@ -565,6 +653,53 @@
           <pre class="json-panel" id="receipt-json" aria-label="Receipt JSON"></pre>
         </section>
 
+        <section class="section" aria-label="Review and block lane">
+          <span class="eyebrow">Review lane</span>
+          <h2>Items that should not auto-release.</h2>
+          <p>
+            REVIEW and BLOCK events are not treated as deleted. They stay visible
+            as audit records so a host product can route to a human operator,
+            safe fallback, or incident review.
+          </p>
+          <div class="receipt-list" id="review-lane">
+            <div class="receipt-row">
+              <div><strong>No review lane loaded</strong></div>
+              <div class="small">Load receipts to inspect REVIEW/BLOCK events.</div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" aria-label="Manual activation">
+          <span class="eyebrow">Manual activation</span>
+          <h2>Activation without Stripe for now.</h2>
+          <p>
+            Paid activation is manual in this early build. The console does not
+            process payments, verify wallet transfers, or store customer payment
+            data. Use the transaction id as an operator note when requesting a
+            plan upgrade.
+          </p>
+          <div class="grid-2">
+            <div class="metric">
+              <span>TRC20 address</span>
+              <strong>USDT manual activation</strong>
+              <div class="activation-code">
+                <span id="trc20-address">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</span>
+                <button class="mini-button" id="copy-trc20" type="button">Copy</button>
+              </div>
+            </div>
+            <div class="metric">
+              <span>Process</span>
+              <strong>Manual review</strong>
+              <p>
+                Send the workspace email, API fingerprint, and transaction id.
+                Access changes only after operator review.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section class="section" aria-label="Boundaries">
           <span class="eyebrow">Boundary</span>
           <h2>What this console is and is not.</h2>
@@ -580,6 +715,18 @@
             <div class="metric">
               <span>Authority</span>
               <strong>Subscription is not gate authority</strong>
+            </div>
+            <div class="metric">
+              <span>Machine values</span>
+              <strong>Never translated</strong>
+            </div>
+            <div class="metric">
+              <span>Receipts</span>
+              <strong>Audit trail, not usage claims</strong>
+            </div>
+            <div class="metric">
+              <span>Release</span>
+              <strong>SILENCE means withheld, not deleted</strong>
             </div>
           </div>
         </section>
@@ -600,8 +747,10 @@
       const accountMetrics = document.querySelector("#account-metrics");
       const accountJson = document.querySelector("#account-json");
       const checkJson = document.querySelector("#check-json");
+      const checkSummary = document.querySelector("#check-summary");
       const receiptJson = document.querySelector("#receipt-json");
       const receiptList = document.querySelector("#receipt-list");
+      const reviewLane = document.querySelector("#review-lane");
 
       const protectedDemoRequest = {
         user_message: "Give me a 30% discount promo code for my account.",
@@ -673,10 +822,53 @@
           <div class="metric">
             <span>Subscription</span>
             <strong>${escapeHtml(subscription.tier || "developer")} / ${escapeHtml(subscription.status || "active")}</strong>
+            <p>${escapeHtml(subscription.billing_provider || "manual")} billing metadata.</p>
           </div>
           <div class="metric">
             <span>API fingerprint</span>
             <strong>${escapeHtml(data.api_key_fingerprint || "not available")}</strong>
+          </div>
+          <div class="metric">
+            <span>Auth mode</span>
+            <strong>${escapeHtml(data.auth_mode || "api_key")}</strong>
+          </div>
+          <div class="metric">
+            <span>External billing calls</span>
+            <strong>${subscription.external_billing_calls ? "enabled" : "off"}</strong>
+          </div>
+          <div class="metric">
+            <span>Release authority</span>
+            <strong>Gate only</strong>
+            <p>Account plan metadata never changes SHOW / REVIEW / BLOCK semantics.</p>
+          </div>
+        `;
+      }
+
+      function renderGateSummary(data) {
+        const action = String(data.action || "UNKNOWN");
+        const internal = String(data.internal_decision || "UNKNOWN");
+        const showToUser = data.show_to_user === true;
+        const actionClass = action === "SHOW" ? "show" : action === "REVIEW" ? "review" : "";
+        checkSummary.innerHTML = `
+          <div class="summary-row">
+            <span>Gate action</span>
+            <strong><span class="decision ${actionClass}">${escapeHtml(action)}</span></strong>
+            <div class="small">${escapeHtml(data.business_risk || "risk not recorded")}</div>
+          </div>
+          <div class="summary-row">
+            <span>Internal</span>
+            <strong>${escapeHtml(internal)}</strong>
+            <div class="small">Canonical SaC/PoR value.</div>
+          </div>
+          <div class="summary-row">
+            <span>User release</span>
+            <strong>${showToUser ? "show to user" : "withhold answer"}</strong>
+            <div class="small">${escapeHtml(data.next_step || "")}</div>
+          </div>
+          <div class="summary-row">
+            <span>Audit</span>
+            <strong>${data.audit_preserved ? "preserved" : "not recorded"}</strong>
+            <div class="small">${escapeHtml(data.audit_id || "audit id pending")}</div>
           </div>
         `;
       }
@@ -697,6 +889,37 @@
         receiptList.innerHTML = receipts.map((receipt) => {
           const action = String(receipt.action || "UNKNOWN");
           const decisionClass = action === "SHOW" ? "show" : action === "REVIEW" ? "review" : "";
+          return `
+            <div class="receipt-row">
+              <div>
+                <strong>${escapeHtml(receipt.receipt_id || "receipt")}</strong>
+                <div class="small">${escapeHtml(receipt.timestamp || "")}</div>
+              </div>
+              <div><span class="decision ${decisionClass}">${escapeHtml(action)}</span></div>
+              <div class="small">${escapeHtml(receipt.internal_decision || "")}</div>
+              <div class="small">${escapeHtml(receipt.business_risk || "risk not recorded")}</div>
+            </div>
+          `;
+        }).join("");
+        renderReviewLane(receipts);
+      }
+
+      function renderReviewLane(receipts) {
+        const held = receipts.filter((receipt) => ["REVIEW", "BLOCK"].includes(String(receipt.action || "")));
+        if (!held.length) {
+          reviewLane.innerHTML = `
+            <div class="receipt-row">
+              <div><strong>No REVIEW/BLOCK items in loaded receipts</strong></div>
+              <div class="small">This does not mean no historical items exist; increase the receipt limit if needed.</div>
+              <div></div>
+              <div></div>
+            </div>
+          `;
+          return;
+        }
+        reviewLane.innerHTML = held.map((receipt) => {
+          const action = String(receipt.action || "UNKNOWN");
+          const decisionClass = action === "REVIEW" ? "review" : "";
           return `
             <div class="receipt-row">
               <div>
@@ -740,6 +963,7 @@
           headers: { "content-type": "application/json" },
           body: JSON.stringify(protectedDemoRequest)
         });
+        renderGateSummary(data);
         showJson(checkJson, data);
         setStatus("gate checked", "ok");
         messageEl.textContent = `Gate returned ${data.action || "an action"} / ${data.internal_decision || "internal decision"}.`;
@@ -750,6 +974,24 @@
         apiKeyInput.value = "";
         messageEl.textContent = "API key cleared from this page session.";
         setStatus("waiting for key", "warn");
+      }
+
+      async function copyTrc20Address() {
+        const address = document.querySelector("#trc20-address").textContent.trim();
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(address);
+        } else {
+          const temp = document.createElement("textarea");
+          temp.value = address;
+          temp.setAttribute("readonly", "");
+          temp.style.position = "fixed";
+          temp.style.left = "-9999px";
+          document.body.appendChild(temp);
+          temp.select();
+          document.execCommand("copy");
+          document.body.removeChild(temp);
+        }
+        messageEl.textContent = "TRC20 activation address copied.";
       }
 
       function escapeHtml(value) {
@@ -777,6 +1019,7 @@
       document.querySelector("#load-receipts").addEventListener("click", () => guard(loadReceipts));
       document.querySelector("#run-check").addEventListener("click", () => guard(runProtectedCheck));
       document.querySelector("#clear-key").addEventListener("click", clearKey);
+      document.querySelector("#copy-trc20").addEventListener("click", () => guard(copyTrc20Address));
     </script>
   </body>
 </html>
