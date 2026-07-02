@@ -251,6 +251,49 @@
         font-weight: 750;
       }
 
+      .risk-band {
+        display: grid;
+        grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+        gap: 26px;
+        align-items: start;
+        margin-top: -24px;
+      }
+
+      .risk-stack {
+        display: grid;
+        gap: 12px;
+      }
+
+      .risk-item {
+        display: grid;
+        grid-template-columns: 96px minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+        min-height: 74px;
+        padding: 16px;
+        border: 1px solid var(--line);
+        background: #fbfcfc;
+      }
+
+      .risk-tag {
+        color: var(--red);
+        font-size: 12px;
+        font-weight: 950;
+        text-transform: uppercase;
+      }
+
+      .risk-copy strong {
+        display: block;
+        color: var(--ink-strong);
+        margin-bottom: 4px;
+      }
+
+      .risk-copy span {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
       .gate-card {
         position: relative;
         border: 1px solid var(--line);
@@ -563,6 +606,7 @@
 
       @media (max-width: 960px) {
         .hero,
+        .risk-band,
         .grid-2,
         .author,
         .signup-shell,
@@ -641,42 +685,42 @@
     <main class="page">
       <section class="hero">
         <div>
-          <span class="eyebrow" data-i18n="eyebrow">Release control for AI outputs</span>
-          <h1 data-i18n="hero_title">Generation is not release authority.</h1>
+          <span class="eyebrow" data-i18n="eyebrow">Release control between AI answers and real users</span>
+          <h1 data-i18n="hero_title">Stop unsupported AI answers before users see them.</h1>
           <p class="lead" data-i18n="hero_lead">
-            SemeAI Gate is a control layer between an LLM answer and the real
-            user. Your product can generate with any model, then ask the gate
-            whether the answer should be shown, reviewed, or blocked.
+            Your LLM writes a candidate answer. SemeAI Gate checks it against
+            business data, context, and rules, then returns SHOW, REVIEW, or
+            BLOCK before it reaches a customer.
           </p>
           <div class="cta-row">
-            <a class="button primary" href="https://gate.semeai.tech" data-i18n="cta_demo">Open live demo</a>
-            <a class="button" href="register.html" data-i18n="cta_access">Request access</a>
+            <a class="button primary" href="https://gate.semeai.tech" data-i18n="cta_demo">Try live gate</a>
+            <a class="button" href="register.html" data-i18n="cta_access">Register workspace</a>
             <a class="button" href="account.html" data-i18n="cta_account">Open account console</a>
             <a class="button" href="article.html" data-i18n="cta_article">Read article</a>
           </div>
           <div class="proof-strip" aria-label="SemeAI status">
             <div class="proof-item">
+              <strong>live</strong>
+              <span>API health and demo endpoint online</span>
+            </div>
+            <div class="proof-item">
               <strong>v0.1</strong>
-              <span>versioned gate contract</span>
+              <span>versioned schema and API contract</span>
             </div>
             <div class="proof-item">
-              <strong>3</strong>
-              <span>public actions: SHOW, REVIEW, BLOCK</span>
-            </div>
-            <div class="proof-item">
-              <strong>local</strong>
-              <span>deterministic reference adapter</span>
+              <strong>no key</strong>
+              <span>browser demo does not expose API secrets</span>
             </div>
             <div class="proof-item">
               <strong>audit</strong>
-              <span>withheld answers keep records</span>
+              <span>blocked answers preserve decision metadata</span>
             </div>
           </div>
         </div>
 
         <aside class="gate-card" aria-label="SemeAI Gate product flow">
           <div class="gate-card-head">
-            <div class="gate-title">SemeAI Gate check</div>
+            <div class="gate-title">Fake promo code blocked</div>
             <div class="status">audit preserved</div>
           </div>
           <div class="gate-flow">
@@ -710,6 +754,50 @@
       </section>
 
       <div class="sections">
+        <section class="section risk-band" id="dashboard">
+          <div>
+            <span class="eyebrow">Why this matters</span>
+            <h2>AI answers can be fluent and still not allowed.</h2>
+            <p>
+              The v0.1 demo focuses on support and product claims because the
+              failure is easy to understand: a model can invent a discount code,
+              account condition, financial promise, or risky action. The gate
+              does not replace the model. It decides whether the candidate is
+              releasable for the current business context.
+            </p>
+          </div>
+          <div class="risk-stack" aria-label="Release risks">
+            <div class="risk-item">
+              <div class="risk-tag">Support</div>
+              <div class="risk-copy">
+                <strong>Fake promo codes</strong>
+                <span>Do not show a code unless business data confirms it.</span>
+              </div>
+            </div>
+            <div class="risk-item">
+              <div class="risk-tag">Finance</div>
+              <div class="risk-copy">
+                <strong>Unsupported account claims</strong>
+                <span>Review or block answers that invent terms, fees, or returns.</span>
+              </div>
+            </div>
+            <div class="risk-item">
+              <div class="risk-tag">Ops</div>
+              <div class="risk-copy">
+                <strong>Unsafe actions</strong>
+                <span>Block approval bypass, direct deploy advice, and irreversible action recommendations.</span>
+              </div>
+            </div>
+            <div class="risk-item">
+              <div class="risk-tag">Context</div>
+              <div class="risk-copy">
+                <strong>Conversation drift</strong>
+                <span>Check whether the answer still belongs to the current support or product flow.</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section class="section" id="gate">
           <div class="grid-2">
             <div>
@@ -754,6 +842,39 @@
               <h3>Silence-as-Control</h3>
               <p>The governance source context behind PROCEED, NEEDS_REVIEW, and SILENCE release states.</p>
             </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="grid-2">
+            <div>
+              <span class="eyebrow">Beyond the promo demo</span>
+              <h2>Same release-control pattern, different domains.</h2>
+              <p>
+                The public v0.1 demo is deliberately narrow. It proves a simple
+                boundary: generated does not mean allowed. The same pattern can
+                be adapted to other domains only when the host product supplies
+                the right evidence, rules, and review process.
+              </p>
+            </div>
+            <div class="table" aria-label="Domain expansion map">
+              <div class="table-row">
+                <div class="label">Medicine</div>
+                <div>Clinical claims require verified sources, professional review, and strict non-release fallbacks.</div>
+              </div>
+              <div class="table-row">
+                <div class="label">Finance</div>
+                <div>Account, tariff, fee, and return claims must match current business data and allowed wording.</div>
+              </div>
+              <div class="table-row">
+                <div class="label">Games / worlds</div>
+                <div>AI-generated world state should be checked before it mutates canon, quests, economy, or player-visible lore.</div>
+              </div>
+              <div class="table-row">
+                <div class="label">Production ops</div>
+                <div>Deploy, delete, config, and approval-bypass recommendations need release control before action.</div>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -909,12 +1030,12 @@
       let preparedRequest = null;
       const translations = {
         en: {
-          eyebrow: "Release control for AI outputs",
-          hero_title: "Generation is not release authority.",
+          eyebrow: "Release control between AI answers and real users",
+          hero_title: "Stop unsupported AI answers before users see them.",
           hero_lead:
-            "SemeAI Gate is a control layer between an LLM answer and the real user. Your product can generate with any model, then ask the gate whether the answer should be shown, reviewed, or blocked.",
-          cta_demo: "Open live demo",
-          cta_access: "Request access",
+            "Your LLM writes a candidate answer. SemeAI Gate checks it against business data, context, and rules, then returns SHOW, REVIEW, or BLOCK before it reaches a customer.",
+          cta_demo: "Try live gate",
+          cta_access: "Register workspace",
           cta_account: "Open account console",
           cta_article: "Read article"
         },
@@ -938,6 +1059,28 @@
           cta_account: "Открыть account console",
           cta_article: "Читать статью"
         }
+      };
+
+      translations.uk = {
+        eyebrow: "Release control між AI-відповіддю і реальним користувачем",
+        hero_title: "Зупиняйте непідтверджені AI-відповіді до того, як їх побачать користувачі.",
+        hero_lead:
+          "LLM створює candidate answer. SemeAI Gate перевіряє її за бізнес-даними, контекстом і правилами, а потім повертає SHOW, REVIEW або BLOCK до того, як відповідь потрапить до клієнта.",
+        cta_demo: "Спробувати live gate",
+        cta_access: "Зареєструвати workspace",
+        cta_account: "Відкрити account console",
+        cta_article: "Читати статтю"
+      };
+
+      translations.ru = {
+        eyebrow: "Release control между AI-ответом и реальным пользователем",
+        hero_title: "Останавливайте неподтвержденные AI-ответы до того, как их увидят пользователи.",
+        hero_lead:
+          "LLM создает candidate answer. SemeAI Gate проверяет ее по бизнес-данным, контексту и правилам, а затем возвращает SHOW, REVIEW или BLOCK до того, как ответ попадет к клиенту.",
+        cta_demo: "Попробовать live gate",
+        cta_access: "Зарегистрировать workspace",
+        cta_account: "Открыть account console",
+        cta_article: "Читать статью"
       };
 
       function formValue(name) {
