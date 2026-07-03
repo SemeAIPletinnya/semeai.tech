@@ -309,11 +309,12 @@
 
       .control-plane {
         overflow: hidden;
-        border: 1px solid rgba(157, 213, 214, 0.24);
-        border-radius: 22px;
+        border: 1px solid rgba(157, 213, 214, 0.32);
+        border-radius: 26px;
         background:
-          radial-gradient(circle at 50% 0%, rgba(157, 213, 214, 0.16), transparent 36%),
-          linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.035));
+          radial-gradient(circle at 50% -12%, rgba(157, 213, 214, 0.22), transparent 38%),
+          radial-gradient(circle at 100% 22%, rgba(255, 93, 108, 0.12), transparent 28%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.035));
         box-shadow: var(--shadow);
       }
 
@@ -354,12 +355,32 @@
 
       .flow-canvas {
         position: relative;
-        min-height: 430px;
+        min-height: 500px;
         padding: 26px 24px 24px;
         background:
           linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
         background-size: 32px 32px;
+      }
+
+      .flow-canvas::before,
+      .flow-canvas::after {
+        position: absolute;
+        inset: 72px 52px auto;
+        height: 210px;
+        border: 1px solid rgba(157, 213, 214, 0.13);
+        border-bottom: 0;
+        border-radius: 28px 28px 0 0;
+        content: "";
+        pointer-events: none;
+      }
+
+      .flow-canvas::after {
+        inset: auto 52px 34px;
+        height: 172px;
+        border-top: 0;
+        border-bottom: 1px solid rgba(157, 213, 214, 0.13);
+        border-radius: 0 0 28px 28px;
       }
 
       .flow-line {
@@ -370,6 +391,44 @@
         height: 1px;
         background: linear-gradient(90deg, rgba(130, 199, 255, 0.08), rgba(130, 199, 255, 0.8), rgba(85, 214, 154, 0.9));
         box-shadow: 0 0 24px rgba(130, 199, 255, 0.26);
+      }
+
+      .release-rail {
+        position: relative;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-bottom: 22px;
+      }
+
+      .release-stage {
+        min-height: 72px;
+        padding: 12px;
+        border: 1px solid rgba(214, 235, 238, 0.12);
+        border-radius: 14px;
+        background: rgba(6, 13, 17, 0.72);
+      }
+
+      .release-stage span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 680;
+        text-transform: uppercase;
+      }
+
+      .release-stage strong {
+        display: block;
+        margin-top: 8px;
+        color: var(--ink);
+        font-size: 14px;
+        line-height: 1.25;
+      }
+
+      .release-stage.block {
+        border-color: rgba(255, 93, 108, 0.38);
+        background: linear-gradient(180deg, rgba(255, 93, 108, 0.12), rgba(6, 13, 17, 0.72));
       }
 
       .gate-chip {
@@ -387,7 +446,7 @@
         background: rgba(7, 16, 20, 0.92);
         color: #fff;
         box-shadow: 0 0 42px rgba(240, 185, 90, 0.15);
-        opacity: 0.2;
+        opacity: 0.34;
         pointer-events: none;
         font-size: 24px;
         font-weight: 760;
@@ -429,7 +488,8 @@
         padding: 10px 12px;
         border: 1px solid var(--line);
         border-radius: 12px;
-        background: rgba(6, 13, 17, 0.9);
+        background: rgba(6, 13, 17, 0.92);
+        box-shadow: 0 18px 48px rgba(0, 0, 0, 0.16);
         backdrop-filter: blur(8px);
       }
 
@@ -491,6 +551,28 @@
         color: var(--muted);
         font-size: 12px;
         line-height: 1.35;
+      }
+
+      .audit-strip {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 16px;
+        align-items: center;
+        padding: 14px 18px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        background: rgba(6, 13, 17, 0.54);
+        font-size: 12px;
+      }
+
+      .audit-strip strong {
+        color: var(--ink);
+        font-weight: 720;
+      }
+
+      .audit-strip span {
+        color: var(--green);
+        font-weight: 720;
       }
 
       .ops-console {
@@ -1006,11 +1088,26 @@
         }
 
         .flow-canvas {
-          min-height: 520px;
+          min-height: auto;
+          padding: 18px;
+        }
+
+        .flow-canvas::before,
+        .flow-canvas::after {
+          display: none;
+        }
+
+        .release-rail {
+          grid-template-columns: 1fr;
+          margin-bottom: 16px;
+        }
+
+        .release-stage {
+          min-height: auto;
         }
 
         .gate-chip {
-          top: 28%;
+          display: none;
         }
 
         .flow-line,
@@ -1020,7 +1117,11 @@
         }
 
         .check-card {
-          margin-top: 112px;
+          margin-top: 0;
+        }
+
+        .audit-strip {
+          grid-template-columns: 1fr;
         }
 
         .check-row,
@@ -1118,6 +1219,20 @@
             <div class="flow-label left">LLM / candidate answer</div>
             <div class="flow-label right">SHOW / REVIEW / BLOCK</div>
             <div class="gate-chip">SemeAI Gate</div>
+            <div class="release-rail" aria-label="Release-control path">
+              <div class="release-stage">
+                <span>01 Candidate</span>
+                <strong>AI writes a plausible answer</strong>
+              </div>
+              <div class="release-stage">
+                <span>02 Gate</span>
+                <strong>Business data and context are checked</strong>
+              </div>
+              <div class="release-stage block">
+                <span>03 Release</span>
+                <strong>Unsupported answer is withheld</strong>
+              </div>
+            </div>
             <div class="check-card">
               <div class="check-row dim">
                 <div class="label">User</div>
@@ -1150,6 +1265,10 @@
             <div><strong>Context integrity</strong><span data-i18n="foot_context">Detect answers that no longer belong to the current business flow.</span></div>
             <div><strong>Receipts</strong><span data-i18n="foot_receipts">Preserve release decision and execution/audit metadata.</span></div>
             <div><strong>Fail closed</strong><span data-i18n="foot_closed">A risky or unsupported answer is withheld, not silently trusted.</span></div>
+          </div>
+          <div class="audit-strip">
+            <strong>Release denied / execution withheld / audit preserved</strong>
+            <span>receipt ready</span>
           </div>
         </aside>
       </section>
@@ -1233,7 +1352,7 @@
             <div class="proof-track" aria-label="Fake promo code gate path">
               <div class="proof-step">
                 <span data-i18n="flowproof_step_one_label">AI answer</span>
-                <strong data-i18n="flowproof_step_one_title">“Use SAVE30 for 30% off.”</strong>
+                <strong data-i18n="flowproof_step_one_title">"Use SAVE30 for 30% off."</strong>
                 <p data-i18n="flowproof_step_one_copy">The LLM produced a plausible but unsupported candidate.</p>
               </div>
               <div class="proof-step blocked">
