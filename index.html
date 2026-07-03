@@ -633,6 +633,101 @@
         font-weight: 950;
       }
 
+      .proof-flow-panel {
+        display: grid;
+        gap: 28px;
+        padding: clamp(28px, 5vw, 54px);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 26px;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 22% 16%, rgba(157, 213, 214, 0.16), transparent 34%),
+          radial-gradient(circle at 88% 10%, rgba(255, 93, 108, 0.12), transparent 30%),
+          linear-gradient(145deg, #0b151b, #101f27);
+        box-shadow: var(--shadow);
+      }
+
+      .proof-flow-panel h2 {
+        color: var(--ink);
+      }
+
+      .proof-flow-panel p {
+        color: rgba(239, 247, 247, 0.72);
+      }
+
+      .proof-track {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .proof-step {
+        display: grid;
+        min-height: 210px;
+        padding: 20px;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.045);
+      }
+
+      .proof-step span {
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 950;
+        text-transform: uppercase;
+      }
+
+      .proof-step strong {
+        align-self: center;
+        color: var(--ink);
+        font-size: clamp(22px, 2.5vw, 34px);
+        line-height: 1.06;
+      }
+
+      .proof-step p {
+        align-self: end;
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .proof-step.blocked {
+        border-color: rgba(255, 93, 108, 0.44);
+        background: linear-gradient(180deg, rgba(255, 93, 108, 0.12), rgba(255, 255, 255, 0.04));
+      }
+
+      .proof-step.safe {
+        border-color: rgba(85, 214, 154, 0.38);
+        background: linear-gradient(180deg, rgba(85, 214, 154, 0.1), rgba(255, 255, 255, 0.04));
+      }
+
+      .proof-meta {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .proof-meta div {
+        min-height: 78px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.035);
+      }
+
+      .proof-meta span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .proof-meta strong {
+        display: block;
+        margin-top: 8px;
+        color: var(--ink);
+      }
+
       .split {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -775,7 +870,8 @@
         }
 
         .cards,
-        .hero-metrics {
+        .hero-metrics,
+        .proof-meta {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
@@ -829,7 +925,9 @@
         .hero-metrics,
         .cards,
         .ops-console,
-        .plane-foot {
+        .plane-foot,
+        .proof-track,
+        .proof-meta {
           grid-template-columns: 1fr;
         }
 
@@ -1057,6 +1155,42 @@
           </div>
         </section>
 
+        <section class="wrap section">
+          <div class="proof-flow-panel">
+            <div>
+              <span class="badge" data-i18n="flowproof_badge">Live proof path</span>
+              <h2 data-i18n="flowproof_title">One invented answer becomes a release-control event.</h2>
+              <p data-i18n="flowproof_copy">
+                The fake promo-code demo is intentionally simple because the boundary is what matters:
+                generated text is checked against business data before it becomes user-visible output.
+              </p>
+            </div>
+            <div class="proof-track" aria-label="Fake promo code gate path">
+              <div class="proof-step">
+                <span data-i18n="flowproof_step_one_label">AI answer</span>
+                <strong data-i18n="flowproof_step_one_title">“Use SAVE30 for 30% off.”</strong>
+                <p data-i18n="flowproof_step_one_copy">The LLM produced a plausible but unsupported candidate.</p>
+              </div>
+              <div class="proof-step blocked">
+                <span>SemeAI Gate</span>
+                <strong>BLOCK / SILENCE</strong>
+                <p data-i18n="flowproof_step_two_copy">Business data has no active promo code, so release is denied.</p>
+              </div>
+              <div class="proof-step safe">
+                <span data-i18n="flowproof_step_three_label">Host product</span>
+                <strong data-i18n="flowproof_step_three_title">Safe fallback + audit.</strong>
+                <p data-i18n="flowproof_step_three_copy">The user does not see the fake code. The decision record remains inspectable.</p>
+              </div>
+            </div>
+            <div class="proof-meta" aria-label="Release-control proof fields">
+              <div><span>business_data</span><strong>active_promo_codes: []</strong></div>
+              <div><span>action</span><strong>BLOCK</strong></div>
+              <div><span>internal_decision</span><strong>SILENCE</strong></div>
+              <div><span>audit_preserved</span><strong>true</strong></div>
+            </div>
+          </div>
+        </section>
+
         <section id="platform" class="wrap section">
           <div class="split">
             <div>
@@ -1254,6 +1388,17 @@
           proof_title: "Software, research, and open-source artifacts.",
           proof_copy:
             "SemeAI is developed as a working product direction and a research thesis around release authority after generation. These links are public records for the idea, archive, and reference implementation.",
+          flowproof_badge: "Live proof path",
+          flowproof_title: "One invented answer becomes a release-control event.",
+          flowproof_copy:
+            "The fake promo-code demo is intentionally simple because the boundary is what matters: generated text is checked against business data before it becomes user-visible output.",
+          flowproof_step_one_label: "AI answer",
+          flowproof_step_one_title: "\"Use SAVE30 for 30% off.\"",
+          flowproof_step_one_copy: "The LLM produced a plausible but unsupported candidate.",
+          flowproof_step_two_copy: "Business data has no active promo code, so release is denied.",
+          flowproof_step_three_label: "Host product",
+          flowproof_step_three_title: "Safe fallback + audit.",
+          flowproof_step_three_copy: "The user does not see the fake code. The decision record remains inspectable.",
           author_badge: "Author and developer",
           author_copy_1:
             "Anton Semenenko is the developer behind SemeAI Gate and SemeAI Local, and the author of public research artifacts on release-control architecture for AI outputs.",
@@ -1334,6 +1479,17 @@
           proof_title: "Software, research і open-source artifacts.",
           proof_copy:
             "SemeAI розвивається як working product direction і research thesis навколо release authority after generation. Ці links є public records для ідеї, archive і reference implementation.",
+          flowproof_badge: "Live proof path",
+          flowproof_title: "Одна вигадана відповідь стає release-control event.",
+          flowproof_copy:
+            "Fake promo-code demo навмисно простий, бо важлива сама межа: generated text перевіряється бізнес-даними до того, як стає user-visible output.",
+          flowproof_step_one_label: "AI answer",
+          flowproof_step_one_title: "\"Використай SAVE30 для знижки 30%.\"",
+          flowproof_step_one_copy: "LLM створив правдоподібний, але непідтверджений candidate.",
+          flowproof_step_two_copy: "У business data немає активного promo code, тому release denied.",
+          flowproof_step_three_label: "Host product",
+          flowproof_step_three_title: "Safe fallback + audit.",
+          flowproof_step_three_copy: "Користувач не бачить фейковий код. Decision record залишається доступним для перевірки.",
           author_badge: "Автор і розробник",
           author_copy_1:
             "Anton Semenenko є developer behind SemeAI Gate і SemeAI Local, а також автором public research artifacts про release-control architecture for AI outputs.",
@@ -1414,6 +1570,17 @@
           proof_title: "Software, research и open-source artifacts.",
           proof_copy:
             "SemeAI развивается как working product direction и research thesis вокруг release authority after generation. Эти links являются public records для идеи, archive и reference implementation.",
+          flowproof_badge: "Live proof path",
+          flowproof_title: "Один выдуманный ответ становится release-control event.",
+          flowproof_copy:
+            "Fake promo-code demo намеренно простое, потому что важна сама граница: generated text проверяется бизнес-данными до того, как становится user-visible output.",
+          flowproof_step_one_label: "AI answer",
+          flowproof_step_one_title: "\"Используй SAVE30 для скидки 30%.\"",
+          flowproof_step_one_copy: "LLM создал правдоподобный, но неподтвержденный candidate.",
+          flowproof_step_two_copy: "В business data нет активного promo code, поэтому release denied.",
+          flowproof_step_three_label: "Host product",
+          flowproof_step_three_title: "Safe fallback + audit.",
+          flowproof_step_three_copy: "Пользователь не видит фейковый код. Decision record остается доступным для проверки.",
           author_badge: "Автор и разработчик",
           author_copy_1:
             "Anton Semenenko является developer behind SemeAI Gate и SemeAI Local, а также автором public research artifacts о release-control architecture for AI outputs.",

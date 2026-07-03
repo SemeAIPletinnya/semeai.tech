@@ -10,22 +10,22 @@
     />
     <style>
       :root {
-        color-scheme: light;
-        --ink: #20272b;
-        --ink-strong: #12171a;
-        --muted: #647278;
-        --bg: #eef3f3;
-        --panel: #ffffff;
-        --panel-soft: #f8fafa;
-        --line: #d5dfdf;
-        --line-strong: #8fc7c8;
-        --teal: #9dcdcd;
-        --teal-dark: #5c9698;
-        --teal-deep: #1f696d;
+        color-scheme: dark;
+        --ink: #edf7f7;
+        --ink-strong: #ffffff;
+        --muted: #9fb2b8;
+        --bg: #071014;
+        --panel: #101d24;
+        --panel-soft: #14252d;
+        --line: rgba(214, 235, 238, 0.14);
+        --line-strong: rgba(157, 213, 214, 0.5);
+        --teal: #9dd5d6;
+        --teal-dark: #4ba3a7;
+        --teal-deep: #9dd5d6;
         --green: #2d986e;
-        --red: #d24b4b;
-        --amber: #b9812f;
-        --shadow: 0 24px 70px rgba(31, 45, 50, 0.1);
+        --red: #ff5d6c;
+        --amber: #f0b95a;
+        --shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
         --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         font-family:
           Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
@@ -40,7 +40,9 @@
         margin: 0;
         color: var(--ink);
         background:
-          linear-gradient(180deg, rgba(157, 205, 205, 0.34), rgba(255, 255, 255, 0) 440px),
+          radial-gradient(circle at 78% 0%, rgba(75, 163, 167, 0.24), transparent 36vw),
+          radial-gradient(circle at 6% 18%, rgba(130, 199, 255, 0.16), transparent 34vw),
+          linear-gradient(180deg, #071014 0%, #0b151a 70%, #0e1a20 100%),
           var(--bg);
       }
 
@@ -63,7 +65,7 @@
         position: sticky;
         top: 0;
         z-index: 20;
-        background: rgba(238, 243, 243, 0.94);
+        background: rgba(7, 16, 20, 0.82);
         border-bottom: 1px solid var(--line);
         backdrop-filter: blur(14px);
       }
@@ -90,7 +92,7 @@
         height: 38px;
         place-items: center;
         border-radius: 50%;
-        color: #153b3d;
+        color: #12393b;
         background: var(--teal);
         font-size: 14px;
         font-weight: 950;
@@ -101,7 +103,7 @@
         flex-wrap: wrap;
         align-items: center;
         gap: 16px;
-        color: var(--muted);
+        color: #b8c9cc;
         font-size: 14px;
         font-weight: 780;
       }
@@ -115,8 +117,8 @@
         padding: 0 12px;
         border: 1px solid var(--teal-dark);
         border-radius: 7px;
-        color: var(--ink-strong);
-        background: #fff;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.06);
         display: inline-flex;
         align-items: center;
       }
@@ -137,8 +139,8 @@
         padding: 4px 10px;
         border: 1px solid var(--line-strong);
         border-radius: 999px;
-        color: var(--teal-deep);
-        background: rgba(255, 255, 255, 0.84);
+        color: #d8fbfb;
+        background: rgba(157, 213, 214, 0.08);
         font-size: 12px;
         font-weight: 900;
         text-transform: uppercase;
@@ -187,7 +189,7 @@
         border: 1px solid var(--line);
         border-radius: 7px;
         color: var(--ink);
-        background: #fff;
+        background: rgba(255, 255, 255, 0.06);
         box-shadow: 0 8px 24px rgba(32, 39, 43, 0.06);
         font-weight: 850;
         text-decoration: none;
@@ -196,12 +198,13 @@
 
       .button.primary {
         border-color: var(--teal-dark);
+        color: #081f22;
         background: var(--teal);
       }
 
       .button.ghost {
         color: var(--muted);
-        background: var(--panel-soft);
+        background: rgba(255, 255, 255, 0.035);
       }
 
       .button:disabled {
@@ -212,7 +215,7 @@
       .console-card,
       .section {
         border: 1px solid var(--line);
-        background: var(--panel);
+        background: linear-gradient(180deg, rgba(20, 37, 45, 0.94), rgba(13, 24, 30, 0.94));
         box-shadow: var(--shadow);
       }
 
@@ -277,7 +280,7 @@
         border: 1px solid var(--line);
         border-radius: 6px;
         color: var(--ink);
-        background: #fff;
+        background: #0a1116;
       }
 
       .hint {
@@ -320,7 +323,7 @@
         min-height: 132px;
         padding: 20px;
         border: 1px solid var(--line);
-        background: #fbfcfc;
+        background: rgba(255, 255, 255, 0.035);
       }
 
       .metric span {
@@ -348,7 +351,7 @@
       .summary-panel {
         margin-top: 22px;
         border: 1px solid var(--line);
-        background: #fbfcfc;
+        background: rgba(255, 255, 255, 0.035);
       }
 
       .summary-row {
@@ -396,7 +399,7 @@
         border: 1px solid var(--line);
         border-radius: 6px;
         color: var(--ink);
-        background: #fff;
+        background: rgba(255, 255, 255, 0.06);
         font-weight: 850;
         cursor: pointer;
       }
@@ -415,7 +418,7 @@
         min-height: 64px;
         padding: 14px 16px;
         border: 1px solid var(--line);
-        background: #fbfcfc;
+        background: rgba(255, 255, 255, 0.035);
       }
 
       .receipt-row .small {
