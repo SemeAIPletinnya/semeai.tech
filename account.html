@@ -703,13 +703,20 @@
 
         <section class="section" aria-label="Manual activation">
           <span class="eyebrow">Manual activation</span>
-          <h2>Activation without Stripe for now.</h2>
+          <h2>USDT/TRC20 payment review.</h2>
           <p>
-            Paid activation is manual in this early build. The console does not
-            process payments, verify wallet transfers, or store customer payment
-            data. Use the transaction id as an operator note when requesting a
-            plan upgrade.
+            Paid activation is manual in this early build. Create a payment
+            intent, send USDT on TRC20, then submit the transaction id for
+            operator review. A submitted TXID does not automatically activate
+            paid access.
           </p>
+          <div class="summary-panel" id="billing-summary" aria-label="Billing summary">
+            <div class="summary-row">
+              <span>Billing</span>
+              <strong>Not loaded</strong>
+              <div class="small">Load account to inspect current status.</div>
+            </div>
+          </div>
           <div class="grid-2">
             <div class="metric">
               <span>TRC20 address</span>
@@ -723,11 +730,42 @@
               <span>Process</span>
               <strong>Manual review</strong>
               <p>
-                Send the workspace email, API fingerprint, and transaction id.
-                Access changes only after operator review.
+                The API records invoice and TXID evidence for the authenticated
+                workspace. Access changes only after operator review.
               </p>
             </div>
           </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="billing-plan">Plan</label>
+              <select id="billing-plan">
+                <option value="pilot">Pilot access</option>
+                <option value="developer">Developer workspace</option>
+                <option value="enterprise_review">Enterprise review</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="billing-amount">Amount USDT</label>
+              <input id="billing-amount" type="text" inputmode="decimal" value="25.00" autocomplete="off" />
+            </div>
+          </div>
+          <div class="cta-row">
+            <button class="button primary" id="create-payment-intent" type="button">Create payment intent</button>
+          </div>
+          <div class="grid-2">
+            <div class="field">
+              <label for="billing-invoice-id">Invoice id</label>
+              <input id="billing-invoice-id" type="text" autocomplete="off" placeholder="Create intent first" />
+            </div>
+            <div class="field">
+              <label for="billing-txid">TRC20 transaction id</label>
+              <input id="billing-txid" type="text" autocomplete="off" spellcheck="false" placeholder="64-character transaction hash" />
+            </div>
+          </div>
+          <div class="cta-row">
+            <button class="button" id="submit-txid" type="button">Submit TXID for review</button>
+          </div>
+          <pre class="json-panel" id="billing-json" aria-label="Billing JSON"></pre>
         </section>
 
         <section class="section" aria-label="Boundaries">
@@ -781,6 +819,14 @@
       const receiptJson = document.querySelector("#receipt-json");
       const receiptList = document.querySelector("#receipt-list");
       const reviewLane = document.querySelector("#review-lane");
+      const billingSummary = document.querySelector("#billing-summary");
+      const billingJson = document.querySelector("#billing-json");
+      const billingPlan = document.querySelector("#billing-plan");
+      const billingAmount = document.querySelector("#billing-amount");
+      const billingInvoiceId = document.querySelector("#billing-invoice-id");
+      const billingTxid = document.querySelector("#billing-txid");
+      const trc20Address = document.querySelector("#trc20-address");
+      let currentInvoiceId = "";
 
       const protectedDemoRequest = {
         user_message: "Give me a 30% discount promo code for my account.",
@@ -870,6 +916,43 @@
             <span>Release authority</span>
             <strong>Gate only</strong>
             <p>Account plan metadata never changes SHOW / REVIEW / BLOCK semantics.</p>
+          </div>
+        `;
+        renderBilling(data);
+      }
+
+      function renderBilling(data) {
+        const billing = data.billing || {};
+        const manual = data.manual_crypto || {};
+        const status = billing.status || billing.payment_status || "not loaded";
+        const amount = billing.latest_amount_usdt || manual.default_amount_usdt || "25.00";
+        const invoiceId = billing.latest_invoice_id || currentInvoiceId || "";
+        const address = manual.payment_address || trc20Address.textContent.trim();
+        currentInvoiceId = invoiceId;
+        if (invoiceId) {
+          billingInvoiceId.value = invoiceId;
+        }
+        if (address) {
+          trc20Address.textContent = address;
+        }
+        if (amount) {
+          billingAmount.value = amount;
+        }
+        billingSummary.innerHTML = `
+          <div class="summary-row">
+            <span>Status</span>
+            <strong>${escapeHtml(status)}</strong>
+            <div class="small">${escapeHtml(billing.payment_status || "manual billing metadata")}</div>
+          </div>
+          <div class="summary-row">
+            <span>Provider</span>
+            <strong>${escapeHtml(billing.billing_provider || manual.billing_provider || "manual_usdt_trc20")}</strong>
+            <div class="small">${escapeHtml(manual.asset || "USDT")} on ${escapeHtml(manual.network || "TRC20")}</div>
+          </div>
+          <div class="summary-row">
+            <span>Review</span>
+            <strong>${billing.manual_review_required !== false ? "manual required" : "not required"}</strong>
+            <div class="small">TXID submission is not automatic payment verification.</div>
           </div>
         `;
       }
@@ -985,6 +1068,70 @@
         messageEl.textContent = `${data.count || 0} scoped receipt(s) loaded.`;
       }
 
+      async function createPaymentIntent() {
+        setStatus("creating invoice", "warn");
+        messageEl.textContent = "Creating manual USDT/TRC20 payment intent...";
+        const data = await fetchJson("/v0/billing/manual-crypto-intent", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            plan: billingPlan.value || "pilot",
+            amount_usdt: billingAmount.value || "25.00"
+          })
+        });
+        currentInvoiceId = data.invoice && data.invoice.invoice_id ? data.invoice.invoice_id : "";
+        if (currentInvoiceId) {
+          billingInvoiceId.value = currentInvoiceId;
+        }
+        renderBilling({
+          billing: data.billing,
+          manual_crypto: {
+            payment_address: data.invoice ? data.invoice.payment_address : trc20Address.textContent.trim(),
+            asset: data.invoice ? data.invoice.asset : "USDT",
+            network: data.invoice ? data.invoice.network : "TRC20",
+            default_amount_usdt: data.invoice ? data.invoice.amount_usdt : billingAmount.value
+          }
+        });
+        showJson(billingJson, data);
+        setStatus("invoice created", "ok");
+        messageEl.textContent = "Payment intent created. Send USDT on TRC20, then submit the TXID for operator review.";
+      }
+
+      async function submitTxid() {
+        const invoiceId = String(billingInvoiceId.value || currentInvoiceId || "").trim();
+        const txid = String(billingTxid.value || "").trim();
+        if (!invoiceId) {
+          throw new Error("Create a payment intent first.");
+        }
+        if (!txid) {
+          throw new Error("Paste the TRC20 transaction id first.");
+        }
+        setStatus("submitting txid", "warn");
+        messageEl.textContent = "Submitting TXID for manual operator review...";
+        const data = await fetchJson("/v0/billing/submit-txid", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ invoice_id: invoiceId, txid })
+        });
+        renderBilling({
+          billing: {
+            status: data.status,
+            payment_status: data.payment_status,
+            billing_provider: "manual_usdt_trc20",
+            latest_invoice_id: data.invoice_id,
+            manual_review_required: data.manual_review_required
+          },
+          manual_crypto: {
+            payment_address: trc20Address.textContent.trim(),
+            asset: "USDT",
+            network: "TRC20"
+          }
+        });
+        showJson(billingJson, data);
+        setStatus("pending review", "warn");
+        messageEl.textContent = "TXID submitted. Paid access is still pending manual operator verification.";
+      }
+
       async function runProtectedCheck() {
         setStatus("running gate", "warn");
         messageEl.textContent = "Running protected fake-promo gate check...";
@@ -1007,7 +1154,7 @@
       }
 
       async function copyTrc20Address() {
-        const address = document.querySelector("#trc20-address").textContent.trim();
+        const address = trc20Address.textContent.trim();
         if (navigator.clipboard && window.isSecureContext) {
           await navigator.clipboard.writeText(address);
         } else {
@@ -1050,6 +1197,8 @@
       document.querySelector("#run-check").addEventListener("click", () => guard(runProtectedCheck));
       document.querySelector("#clear-key").addEventListener("click", clearKey);
       document.querySelector("#copy-trc20").addEventListener("click", () => guard(copyTrc20Address));
+      document.querySelector("#create-payment-intent").addEventListener("click", () => guard(createPaymentIntent));
+      document.querySelector("#submit-txid").addEventListener("click", () => guard(submitTxid));
     </script>
   </body>
 </html>
