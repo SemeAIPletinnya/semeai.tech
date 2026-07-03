@@ -815,6 +815,85 @@
         color: var(--ink);
       }
 
+      .deployment-panel {
+        display: grid;
+        gap: 24px;
+        padding: clamp(28px, 5vw, 56px);
+        border: 1px solid #d7e2e2;
+        border-radius: 26px;
+        background:
+          radial-gradient(circle at 12% 0%, rgba(157, 213, 214, 0.24), transparent 30%),
+          linear-gradient(180deg, #ffffff 0%, #f7fbfa 100%);
+        box-shadow: 0 24px 80px rgba(20, 36, 40, 0.08);
+      }
+
+      .deployment-panel .section-head {
+        margin-bottom: 2px;
+      }
+
+      .deployment-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .deployment-card {
+        display: grid;
+        min-height: 260px;
+        padding: 22px;
+        border: 1px solid #cfdddd;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.76);
+      }
+
+      .deployment-card .tag {
+        width: fit-content;
+        min-height: 28px;
+        padding: 5px 10px;
+        border: 1px solid var(--line-strong);
+        border-radius: 999px;
+        color: #0d6066;
+        background: rgba(157, 213, 214, 0.18);
+        font-size: 11px;
+        font-weight: 760;
+        text-transform: uppercase;
+      }
+
+      .deployment-card h3 {
+        align-self: end;
+        margin: 28px 0 10px;
+        color: var(--ink-dark);
+        font-size: 24px;
+      }
+
+      .deployment-card p {
+        margin-bottom: 0;
+        font-size: 15px;
+      }
+
+      .privacy-answer {
+        display: grid;
+        grid-template-columns: minmax(0, 0.86fr) minmax(0, 1.14fr);
+        gap: 18px;
+        align-items: stretch;
+        padding: 20px;
+        border: 1px solid rgba(157, 213, 214, 0.42);
+        border-radius: 18px;
+        background: #eef7f6;
+      }
+
+      .privacy-answer strong {
+        display: block;
+        color: var(--ink-dark);
+        font-size: 24px;
+        line-height: 1.16;
+      }
+
+      .privacy-answer p {
+        margin: 0;
+        font-size: 15px;
+      }
+
       .split {
         display: grid;
         grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -958,7 +1037,9 @@
 
         .cards,
         .hero-metrics,
-        .proof-meta {
+        .proof-meta,
+        .deployment-grid,
+        .privacy-answer {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
@@ -1074,7 +1155,9 @@
         .ops-console,
         .plane-foot,
         .proof-track,
-        .proof-meta {
+        .proof-meta,
+        .deployment-grid,
+        .privacy-answer {
           grid-template-columns: 1fr;
         }
 
@@ -1103,6 +1186,10 @@
         }
 
         .release-stage {
+          min-height: auto;
+        }
+
+        .deployment-card {
           min-height: auto;
         }
 
@@ -1171,6 +1258,7 @@
           <a href="gate.html">Gate</a>
           <a href="#platform" data-i18n="nav_platform">Platform</a>
           <a href="#api" data-i18n="nav_api">API</a>
+          <a href="#deployment" data-i18n="nav_deployment">Deployment</a>
           <a href="research.html" data-i18n="nav_research">Research</a>
           <a href="article.html" data-i18n="nav_article">Article</a>
           <a href="register.html" data-i18n="nav_register">Register</a>
@@ -1398,6 +1486,55 @@
           </div>
         </section>
 
+        <section id="deployment" class="wrap section">
+          <div class="deployment-panel">
+            <div class="section-head">
+              <div>
+                <span class="badge" data-i18n="deploy_badge">Deployment model</span>
+                <h2 data-i18n="deploy_title">Use the gate where your data is allowed to live.</h2>
+                <p data-i18n="deploy_copy">
+                  SemeAI Gate should not force sensitive teams into a single SaaS path. Smaller teams can start with a hosted API,
+                  while banks, medical teams, governments, and large enterprises can run the same release-control boundary inside
+                  their own infrastructure.
+                </p>
+              </div>
+            </div>
+            <div class="deployment-grid">
+              <article class="deployment-card">
+                <span class="tag">01 Open source</span>
+                <h3 data-i18n="deploy_open_title">Run it yourself</h3>
+                <p data-i18n="deploy_open_copy">
+                  Developers can inspect, fork, and run the basic gate locally. It is the fastest path for technical validation,
+                  demos, and integration experiments.
+                </p>
+              </article>
+              <article class="deployment-card">
+                <span class="tag">02 Self-hosted</span>
+                <h3 data-i18n="deploy_self_title">Keep documents inside your perimeter</h3>
+                <p data-i18n="deploy_self_copy">
+                  Enterprise teams can deploy the gate in their own VPC, data center, or private cloud. Customer documents do not
+                  need to leave their security boundary.
+                </p>
+              </article>
+              <article class="deployment-card">
+                <span class="tag">03 SaaS API</span>
+                <h3 data-i18n="deploy_saas_title">Start quickly when policy allows it</h3>
+                <p data-i18n="deploy_saas_copy">
+                  Hosted API access is for teams that want a quick pilot and are allowed to send scoped request data to an external
+                  release-control endpoint.
+                </p>
+              </article>
+            </div>
+            <div class="privacy-answer">
+              <strong data-i18n="deploy_objection_title">Privacy objection answer</strong>
+              <p data-i18n="deploy_objection_copy">
+                If a company cannot send documents outside its infrastructure, it should not use the SaaS path. It can run SemeAI
+                Gate self-hosted, and SemeAI does not see those documents at all.
+              </p>
+            </div>
+          </div>
+        </section>
+
         <section id="api" class="wrap section">
           <div class="api-panel">
             <div class="api-grid">
@@ -1502,6 +1639,7 @@
           brand_sub: "Release-control systems",
           nav_platform: "Platform",
           nav_api: "API",
+          nav_deployment: "Deployment",
           nav_research: "Research",
           nav_article: "Article",
           nav_register: "Register",
@@ -1553,6 +1691,22 @@
           row_local: "Local governed workspace for memory, receipts, replay, audit, and evidence.",
           row_sac: "Governance source context for PROCEED, NEEDS_REVIEW, and SILENCE.",
           row_sacin: "Governed memory admission: generated output is not trusted memory by default.",
+          deploy_badge: "Deployment model",
+          deploy_title: "Use the gate where your data is allowed to live.",
+          deploy_copy:
+            "SemeAI Gate should not force sensitive teams into a single SaaS path. Smaller teams can start with a hosted API, while banks, medical teams, governments, and large enterprises can run the same release-control boundary inside their own infrastructure.",
+          deploy_open_title: "Run it yourself",
+          deploy_open_copy:
+            "Developers can inspect, fork, and run the basic gate locally. It is the fastest path for technical validation, demos, and integration experiments.",
+          deploy_self_title: "Keep documents inside your perimeter",
+          deploy_self_copy:
+            "Enterprise teams can deploy the gate in their own VPC, data center, or private cloud. Customer documents do not need to leave their security boundary.",
+          deploy_saas_title: "Start quickly when policy allows it",
+          deploy_saas_copy:
+            "Hosted API access is for teams that want a quick pilot and are allowed to send scoped request data to an external release-control endpoint.",
+          deploy_objection_title: "Privacy objection answer",
+          deploy_objection_copy:
+            "If a company cannot send documents outside its infrastructure, it should not use the SaaS path. It can run SemeAI Gate self-hosted, and SemeAI does not see those documents at all.",
           api_title: "Drop it between your LLM and your customer.",
           api_copy:
             "The host product sends the user message, AI answer, business data, business rules, and current context. The gate returns a simple action plus canonical internal decision metadata.",
@@ -1593,6 +1747,7 @@
           brand_sub: "Системи release-control",
           nav_platform: "Платформа",
           nav_api: "API",
+          nav_deployment: "Розгортання",
           nav_research: "Дослідження",
           nav_article: "Стаття",
           nav_register: "Реєстрація",
@@ -1644,6 +1799,22 @@
           row_local: "Local governed workspace для memory, receipts, replay, audit і evidence.",
           row_sac: "Governance source context для PROCEED, NEEDS_REVIEW і SILENCE.",
           row_sacin: "Governed memory admission: generated output не є trusted memory за замовчуванням.",
+          deploy_badge: "Модель розгортання",
+          deploy_title: "Запускайте gate там, де вашим даним дозволено бути.",
+          deploy_copy:
+            "SemeAI Gate не змушує чутливі команди йти тільки в SaaS. Невеликі команди можуть стартувати з hosted API, а банки, медицина, державні структури та великі корпорації можуть запускати той самий release-control boundary всередині власної інфраструктури.",
+          deploy_open_title: "Запустити самостійно",
+          deploy_open_copy:
+            "Розробники можуть перевірити, fork-нути і запустити basic gate локально. Це найшвидший шлях для технічної валідації, demo та інтеграційних експериментів.",
+          deploy_self_title: "Тримати документи всередині свого контуру",
+          deploy_self_copy:
+            "Enterprise-команди можуть розгорнути gate у власному VPC, дата-центрі або private cloud. Документи клієнта не мають залишати його security boundary.",
+          deploy_saas_title: "Швидко стартувати, якщо політика дозволяє",
+          deploy_saas_copy:
+            "Hosted API підходить командам, які хочуть швидкий pilot і мають право надсилати обмежені request data до зовнішнього release-control endpoint.",
+          deploy_objection_title: "Відповідь на privacy objection",
+          deploy_objection_copy:
+            "Якщо компанія не може надсилати документи за межі своєї інфраструктури, їй не потрібен SaaS-шлях. Вона може запустити SemeAI Gate self-hosted, і SemeAI взагалі не бачить ці документи.",
           api_title: "Поставте його між вашим LLM і вашим клієнтом.",
           api_copy:
             "Host product надсилає user message, AI answer, business data, business rules і current context. Gate повертає simple action плюс canonical internal decision metadata.",
@@ -1684,6 +1855,7 @@
           brand_sub: "Системы release-control",
           nav_platform: "Платформа",
           nav_api: "API",
+          nav_deployment: "Развертывание",
           nav_research: "Исследование",
           nav_article: "Статья",
           nav_register: "Регистрация",
@@ -1735,6 +1907,22 @@
           row_local: "Local governed workspace для memory, receipts, replay, audit и evidence.",
           row_sac: "Governance source context для PROCEED, NEEDS_REVIEW и SILENCE.",
           row_sacin: "Governed memory admission: generated output не является trusted memory по умолчанию.",
+          deploy_badge: "Модель развертывания",
+          deploy_title: "Запускайте gate там, где вашим данным разрешено находиться.",
+          deploy_copy:
+            "SemeAI Gate не заставляет чувствительные команды идти только в SaaS. Небольшие команды могут стартовать с hosted API, а банки, медицина, государственные структуры и крупные корпорации могут запускать тот же release-control boundary внутри собственной инфраструктуры.",
+          deploy_open_title: "Запустить самостоятельно",
+          deploy_open_copy:
+            "Разработчики могут проверить, fork-нуть и запустить basic gate локально. Это самый быстрый путь для технической валидации, demo и интеграционных экспериментов.",
+          deploy_self_title: "Держать документы внутри своего контура",
+          deploy_self_copy:
+            "Enterprise-команды могут развернуть gate в собственном VPC, дата-центре или private cloud. Документы клиента не должны покидать его security boundary.",
+          deploy_saas_title: "Быстро стартовать, если политика разрешает",
+          deploy_saas_copy:
+            "Hosted API подходит командам, которые хотят быстрый pilot и имеют право отправлять ограниченные request data во внешний release-control endpoint.",
+          deploy_objection_title: "Ответ на privacy objection",
+          deploy_objection_copy:
+            "Если компания не может отправлять документы за пределы своей инфраструктуры, ей не нужен SaaS-путь. Она может запустить SemeAI Gate self-hosted, и SemeAI вообще не видит эти документы.",
           api_title: "Поставьте его между вашим LLM и вашим клиентом.",
           api_copy:
             "Host product отправляет user message, AI answer, business data, business rules и current context. Gate возвращает simple action плюс canonical internal decision metadata.",
