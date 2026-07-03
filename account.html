@@ -210,6 +210,22 @@
         background: rgba(255, 255, 255, 0.035);
       }
 
+      .quick-path {
+        display: grid;
+        gap: 8px;
+        margin-top: 18px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.45;
+      }
+
+      .quick-path strong {
+        color: var(--ink-strong);
+      }
+
       .button:disabled {
         cursor: not-allowed;
         opacity: 0.62;
@@ -553,6 +569,14 @@
           <div class="cta-row">
             <a class="button primary" href="index.html#access">Request workspace</a>
             <a class="button" href="https://api.semeai.tech/health">Check API health</a>
+          </div>
+          <div class="quick-path">
+            <strong>First workspace check</strong>
+            <span>
+              Paste the key from registration, load the account, run the protected
+              fake-promo check, then inspect the receipt trail. This public console
+              keeps the key only in the current page session.
+            </span>
           </div>
         </div>
 

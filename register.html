@@ -409,6 +409,41 @@
         color: #ffd3d3;
       }
 
+      .next-steps {
+        display: grid;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid #344146;
+        background: rgba(8, 12, 15, 0.72);
+      }
+
+      .next-steps strong {
+        color: #fff;
+      }
+
+      .next-steps ol {
+        display: grid;
+        gap: 8px;
+        margin: 0;
+        padding-left: 22px;
+        color: #c6d8db;
+        line-height: 1.45;
+      }
+
+      .next-steps .current {
+        color: #eaf2f2;
+        font-weight: 720;
+      }
+
+      .secret-warning {
+        padding: 10px 12px;
+        border: 1px solid rgba(157, 213, 214, 0.4);
+        background: rgba(157, 213, 214, 0.08);
+        color: #d8fbfb;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
       pre {
         max-height: 460px;
         margin: 0;
@@ -648,6 +683,27 @@
             Submit the form to create a pending workspace request.
           </div>
 
+          <div class="next-steps" id="next-steps">
+            <strong data-i18n="next_title">What happens next</strong>
+            <ol>
+              <li id="step-register" class="current" data-i18n="next_submit">
+                Submit the workspace request.
+              </li>
+              <li id="step-verify" data-i18n="next_verify">
+                Verify the workspace with the token shown here.
+              </li>
+              <li id="step-copy-key" data-i18n="next_copy_key">
+                Copy the API key once. The browser page does not store it.
+              </li>
+              <li id="step-account" data-i18n="next_account">
+                Open Account Console, paste the key, then run the protected demo check.
+              </li>
+            </ol>
+            <div class="secret-warning" id="secret-warning" data-i18n="secret_warning">
+              v0.1 uses manual verification: no password, no billing, no customer data upload.
+            </div>
+          </div>
+
           <div class="field">
             <label for="verify-token" data-i18n="verify_label">Verification token</label>
             <input id="verify-token" type="text" placeholder="Paste token or open #verify= link" />
@@ -710,6 +766,10 @@
       const keyBox = document.querySelector("#key-box");
       const apiKeyInput = document.querySelector("#api-key");
       const copyKeyButton = document.querySelector("#copy-key-button");
+      const stepRegister = document.querySelector("#step-register");
+      const stepVerify = document.querySelector("#step-verify");
+      const stepCopyKey = document.querySelector("#step-copy-key");
+      const stepAccount = document.querySelector("#step-account");
 
       const translations = {
         en: {
@@ -755,6 +815,12 @@
           api_key_label: "API key shown once",
           copy_key: "Copy API key",
           open_account: "Open account console",
+          next_title: "What happens next",
+          next_submit: "Submit the workspace request.",
+          next_verify: "Verify the workspace with the token shown here.",
+          next_copy_key: "Copy the API key once. The browser page does not store it.",
+          next_account: "Open Account Console, paste the key, then run the protected demo check.",
+          secret_warning: "v0.1 uses manual verification: no password, no billing, no customer data upload.",
           boundary_title: "What this is and is not.",
           boundary_text:
             "SemeAI Gate is a release-control adapter. The public business action remains SHOW, REVIEW, or BLOCK. Internally those map to PROCEED, NEEDS_REVIEW, and SILENCE. These machine values are not translated because audit and replay depend on them."
@@ -802,6 +868,12 @@
           api_key_label: "API key показується один раз",
           copy_key: "Копіювати API key",
           open_account: "Відкрити account console",
+          next_title: "Що далі",
+          next_submit: "Відправ workspace request.",
+          next_verify: "Верифікуй workspace токеном, який показаний тут.",
+          next_copy_key: "Скопіюй API key один раз. Сторінка браузера його не зберігає.",
+          next_account: "Відкрий Account Console, встав ключ і запусти protected demo check.",
+          secret_warning: "v0.1 використовує ручну верифікацію: без пароля, без billing, без customer data upload.",
           boundary_title: "Що це є і чим це не є.",
           boundary_text:
             "SemeAI Gate — release-control adapter. Публічна business action залишається SHOW, REVIEW або BLOCK. Внутрішньо вони мапляться на PROCEED, NEEDS_REVIEW і SILENCE. Ці machine values не перекладаються, бо audit і replay залежать від них."
@@ -849,6 +921,12 @@
           api_key_label: "API key показывается один раз",
           copy_key: "Копировать API key",
           open_account: "Открыть account console",
+          next_title: "Что дальше",
+          next_submit: "Отправь workspace request.",
+          next_verify: "Верифицируй workspace токеном, который показан здесь.",
+          next_copy_key: "Скопируй API key один раз. Страница браузера его не хранит.",
+          next_account: "Открой Account Console, вставь ключ и запусти protected demo check.",
+          secret_warning: "v0.1 использует ручную верификацию: без пароля, без billing, без customer data upload.",
           boundary_title: "Что это такое и чем это не является.",
           boundary_text:
             "SemeAI Gate — release-control adapter. Публичная business action остается SHOW, REVIEW или BLOCK. Внутри они мапятся на PROCEED, NEEDS_REVIEW и SILENCE. Эти machine values не переводятся, потому что audit и replay зависят от них."
@@ -893,6 +971,12 @@
         copyJsonButton.disabled = false;
       }
 
+      function setCurrentStep(activeStep) {
+        [stepRegister, stepVerify, stepCopyKey, stepAccount].forEach((step) => {
+          step.classList.toggle("current", step === activeStep);
+        });
+      }
+
       async function fetchJson(path, options = {}) {
         const controller = new AbortController();
         const timeout = window.setTimeout(() => controller.abort(), 15000);
@@ -931,6 +1015,7 @@
         if (!result?.api_key) return;
         apiKeyInput.value = result.api_key;
         keyBox.classList.add("visible");
+        setCurrentStep(stepCopyKey);
       }
 
       function extractVerificationTokenFromUrl(url) {
@@ -971,10 +1056,11 @@
           }
           setMessage(
             verificationUrl
-              ? "Workspace request created. The verification link is included in the JSON response."
+              ? "Workspace request created. The token is filled below; press Verify workspace next."
               : "Workspace request created.",
             "ok"
           );
+          setCurrentStep(stepVerify);
         } catch (error) {
           showJson({
             status: "registration_failed",
@@ -1008,10 +1094,13 @@
           maybeShowApiKey(result);
           setMessage(
             result.api_key
-              ? "Workspace verified. Copy the API key now; this page does not store it."
+              ? "Workspace verified. Copy the API key now, then open Account Console and run the protected check."
               : "Workspace already verified. Use the API key shown during first verification.",
             "ok"
           );
+          if (!result.api_key) {
+            setCurrentStep(stepAccount);
+          }
           if (window.location.hash.startsWith("#verify=")) {
             history.replaceState(null, "", window.location.pathname + window.location.search);
           }
@@ -1030,7 +1119,8 @@
 
       copyKeyButton.addEventListener("click", async () => {
         await navigator.clipboard.writeText(apiKeyInput.value);
-        setMessage("API key copied. Store it privately; it is not stored by this page.", "ok");
+        setMessage("API key copied. Open Account Console, paste it, and run the protected demo check.", "ok");
+        setCurrentStep(stepAccount);
       });
 
       document.querySelectorAll("[data-lang]").forEach((button) => {
