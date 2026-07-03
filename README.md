@@ -10,6 +10,8 @@ This repo is intentionally small:
   with Ukrainian and Russian UI summaries.
 - `research.html` collects public proof links: SSRN, Zenodo, GitHub, and
   Silence-as-Control.
+- `self-hosted.html` explains the private/VPC deployment path for companies
+  that cannot send documents outside their infrastructure.
 - `register.html` is the early-access registration entry point and links back
   to the live registration form.
 - `account.html` is a browser-safe account console. It asks the user to paste
@@ -24,6 +26,7 @@ Related surfaces:
 
 - Product demo: <https://gate.semeai.tech>
 - SemeAI Gate page: <https://semeai.tech/gate.html>
+- Self-hosted deployment: <https://semeai.tech/self-hosted.html>
 - Article: <https://semeai.tech/article.html>
 - Research links: <https://semeai.tech/research.html>
 - Registration entry: <https://semeai.tech/register.html>
