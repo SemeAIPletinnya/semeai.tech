@@ -30,10 +30,9 @@
         --red: #ff5d6c;
         --blue: #82c7ff;
         --shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
+        --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+        font-family: var(--sans);
       }
 
       * {
@@ -53,6 +52,8 @@
           radial-gradient(circle at 80% 0%, rgba(75, 163, 167, 0.26), transparent 34vw),
           radial-gradient(circle at 8% 16%, rgba(130, 199, 255, 0.18), transparent 32vw),
           linear-gradient(180deg, #071014 0%, #0b151a 48%, #edf3f2 48%, #edf3f2 100%);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: geometricPrecision;
       }
 
       a {
@@ -97,7 +98,7 @@
         display: inline-flex;
         align-items: center;
         gap: 12px;
-        font-weight: 900;
+        font-weight: 760;
       }
 
       .mark {
@@ -111,14 +112,14 @@
         background: linear-gradient(135deg, var(--aqua), #c7eeee);
         box-shadow: 0 0 30px rgba(157, 213, 214, 0.18);
         font-size: 13px;
-        font-weight: 950;
+        font-weight: 760;
       }
 
       .brand small {
         display: block;
         color: var(--muted);
         font-size: 12px;
-        font-weight: 720;
+        font-weight: 500;
       }
 
       .nav {
@@ -128,8 +129,8 @@
         justify-content: flex-end;
         gap: 15px;
         color: var(--muted);
-        font-size: 14px;
-        font-weight: 780;
+        font-size: 13px;
+        font-weight: 680;
       }
 
       .nav a:hover {
@@ -158,7 +159,7 @@
         color: var(--muted);
         background: rgba(255, 255, 255, 0.04);
         font-size: 12px;
-        font-weight: 850;
+        font-weight: 720;
         cursor: pointer;
       }
 
@@ -202,8 +203,8 @@
         color: var(--aqua);
         background: rgba(157, 213, 214, 0.08);
         font-size: 12px;
-        font-weight: 900;
-        letter-spacing: 0.02em;
+        font-weight: 720;
+        letter-spacing: 0;
         text-transform: uppercase;
       }
 
@@ -217,8 +218,9 @@
       h1 {
         max-width: 780px;
         margin: 22px 0;
-        font-size: clamp(56px, 7.2vw, 104px);
-        line-height: 0.91;
+        font-size: clamp(54px, 7vw, 98px);
+        font-weight: 780;
+        line-height: 0.96;
         letter-spacing: 0;
       }
 
@@ -231,8 +233,8 @@
         margin-bottom: 16px;
         color: var(--aqua);
         font-size: 15px;
-        font-weight: 870;
-        letter-spacing: 0.01em;
+        font-weight: 680;
+        letter-spacing: 0;
       }
 
       .lead {
@@ -260,7 +262,7 @@
         color: var(--ink);
         background: rgba(255, 255, 255, 0.06);
         box-shadow: 0 18px 45px rgba(0, 0, 0, 0.14);
-        font-weight: 860;
+        font-weight: 720;
       }
 
       .button.primary {
@@ -293,14 +295,15 @@
         display: block;
         margin-bottom: 4px;
         color: var(--ink);
-        font-size: 23px;
+        font-size: 20px;
+        font-weight: 760;
         line-height: 1;
       }
 
       .metric span {
         color: var(--muted);
         font-size: 12px;
-        font-weight: 760;
+        font-weight: 460;
         line-height: 1.35;
       }
 
@@ -387,14 +390,14 @@
         opacity: 0.2;
         pointer-events: none;
         font-size: 24px;
-        font-weight: 950;
+        font-weight: 760;
       }
 
       .flow-label {
         position: absolute;
         color: var(--muted);
         font-size: 12px;
-        font-weight: 850;
+        font-weight: 680;
         text-transform: uppercase;
       }
 
@@ -437,14 +440,14 @@
       .label {
         color: var(--muted);
         font-size: 11px;
-        font-weight: 900;
+        font-weight: 700;
         text-transform: uppercase;
       }
 
       .value {
         color: var(--ink);
         font-size: 13px;
-        font-weight: 780;
+        font-weight: 650;
         line-height: 1.35;
       }
 
@@ -455,7 +458,7 @@
         color: #fff;
         background: var(--red);
         font-size: 11px;
-        font-weight: 950;
+        font-weight: 760;
       }
 
       .pill.ok {
@@ -549,7 +552,7 @@
         color: #06261b;
         background: var(--green);
         font-size: 11px;
-        font-weight: 950;
+        font-weight: 760;
         text-align: center;
       }
 
@@ -584,8 +587,9 @@
         max-width: 840px;
         margin-bottom: 14px;
         color: var(--ink-dark);
-        font-size: clamp(38px, 4.6vw, 66px);
-        line-height: 0.98;
+        font-size: clamp(36px, 4.2vw, 60px);
+        font-weight: 760;
+        line-height: 1.04;
       }
 
       .section p {
@@ -630,7 +634,7 @@
         border-radius: 50%;
         color: #063033;
         background: var(--aqua);
-        font-weight: 950;
+        font-weight: 760;
       }
 
       .proof-flow-panel {
@@ -673,7 +677,7 @@
       .proof-step span {
         color: var(--muted);
         font-size: 11px;
-        font-weight: 950;
+        font-weight: 700;
         text-transform: uppercase;
       }
 
@@ -681,6 +685,7 @@
         align-self: center;
         color: var(--ink);
         font-size: clamp(22px, 2.5vw, 34px);
+        font-weight: 760;
         line-height: 1.06;
       }
 
@@ -718,7 +723,7 @@
         display: block;
         color: var(--muted);
         font-size: 11px;
-        font-weight: 900;
+        font-weight: 700;
         text-transform: uppercase;
       }
 
@@ -825,13 +830,13 @@
         border-radius: 14px;
         color: var(--ink-dark);
         background: #fff;
-        font-weight: 860;
+        font-weight: 720;
       }
 
       .proof-link span {
         color: var(--muted-dark);
         font-size: 13px;
-        font-weight: 760;
+        font-weight: 520;
       }
 
       .author {
@@ -884,8 +889,23 @@
         .topbar-inner {
           align-items: flex-start;
           flex-direction: column;
-          gap: 12px;
+          gap: 10px;
           padding: 12px 0;
+        }
+
+        .brand {
+          gap: 10px;
+          font-size: 15px;
+        }
+
+        .brand small {
+          display: none;
+        }
+
+        .mark {
+          width: 36px;
+          height: 36px;
+          border-radius: 12px;
         }
 
         .nav {
@@ -893,10 +913,12 @@
           width: 100%;
           flex-wrap: nowrap;
           justify-content: flex-start;
-          gap: 10px;
+          gap: 8px;
           overflow-x: auto;
           padding-bottom: 4px;
           scrollbar-width: none;
+          font-size: 12px;
+          font-weight: 640;
         }
 
         .nav::-webkit-scrollbar {
@@ -909,17 +931,60 @@
           white-space: nowrap;
         }
 
+        .nav a {
+          min-height: 30px;
+          padding: 4px 0;
+        }
+
+        .nav .github {
+          min-height: 30px;
+          padding: 5px 10px;
+          border-radius: 9px;
+        }
+
+        .langs button {
+          min-height: 28px;
+          padding: 4px 8px;
+          font-size: 11px;
+        }
+
         .hero {
-          gap: 34px;
-          padding: 42px 0 58px;
+          gap: 28px;
+          padding: 36px 0 52px;
         }
 
         h1 {
-          font-size: clamp(48px, 15vw, 68px);
+          margin: 18px 0 18px;
+          font-size: clamp(42px, 13vw, 60px);
+          line-height: 1;
         }
 
         .lead {
-          font-size: 18px;
+          font-size: 17px;
+          line-height: 1.55;
+        }
+
+        .eyebrow,
+        .badge {
+          min-height: 26px;
+          padding: 5px 10px;
+          font-size: 11px;
+        }
+
+        .hero-actions {
+          gap: 10px;
+          margin-top: 24px;
+        }
+
+        .button {
+          min-height: 44px;
+          padding: 0 14px;
+          border-radius: 10px;
+          font-size: 14px;
+        }
+
+        .hero-metrics {
+          display: none;
         }
 
         .hero-metrics,

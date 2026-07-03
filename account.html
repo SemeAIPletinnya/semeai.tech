@@ -26,10 +26,9 @@
         --red: #ff5d6c;
         --amber: #f0b95a;
         --shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
+        --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
+        font-family: var(--sans);
       }
 
       * {
@@ -44,6 +43,8 @@
           radial-gradient(circle at 6% 18%, rgba(130, 199, 255, 0.16), transparent 34vw),
           linear-gradient(180deg, #071014 0%, #0b151a 70%, #0e1a20 100%),
           var(--bg);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: geometricPrecision;
       }
 
       button,
@@ -82,7 +83,7 @@
         display: flex;
         align-items: center;
         gap: 12px;
-        font-weight: 900;
+        font-weight: 760;
         text-decoration: none;
       }
 
@@ -95,7 +96,7 @@
         color: #12393b;
         background: var(--teal);
         font-size: 14px;
-        font-weight: 950;
+        font-weight: 760;
       }
 
       .nav-links {
@@ -104,8 +105,8 @@
         align-items: center;
         gap: 16px;
         color: #b8c9cc;
-        font-size: 14px;
-        font-weight: 780;
+        font-size: 13px;
+        font-weight: 680;
       }
 
       .nav-links a {
@@ -142,7 +143,7 @@
         color: #d8fbfb;
         background: rgba(157, 213, 214, 0.08);
         font-size: 12px;
-        font-weight: 900;
+        font-weight: 720;
         text-transform: uppercase;
       }
 
@@ -150,6 +151,7 @@
         margin: 22px 0 18px;
         color: var(--ink-strong);
         font-size: clamp(42px, 5.2vw, 72px);
+        font-weight: 780;
         line-height: 1.04;
         letter-spacing: 0;
       }
@@ -158,6 +160,7 @@
         margin: 0 0 14px;
         color: var(--ink-strong);
         font-size: clamp(26px, 3vw, 38px);
+        font-weight: 760;
         line-height: 1.1;
       }
 
@@ -191,7 +194,7 @@
         color: var(--ink);
         background: rgba(255, 255, 255, 0.06);
         box-shadow: 0 8px 24px rgba(32, 39, 43, 0.06);
-        font-weight: 850;
+        font-weight: 720;
         text-decoration: none;
         cursor: pointer;
       }
@@ -241,7 +244,7 @@
         color: var(--green);
         background: rgba(45, 152, 110, 0.1);
         font-size: 12px;
-        font-weight: 900;
+        font-weight: 720;
         white-space: nowrap;
       }
 
@@ -269,7 +272,7 @@
       .field label {
         color: var(--muted);
         font-size: 13px;
-        font-weight: 850;
+        font-weight: 680;
       }
 
       .field input,
@@ -330,7 +333,7 @@
         display: block;
         color: var(--muted);
         font-size: 12px;
-        font-weight: 850;
+        font-weight: 680;
         text-transform: uppercase;
       }
 
@@ -371,7 +374,7 @@
       .summary-row span {
         color: var(--muted);
         font-size: 12px;
-        font-weight: 900;
+        font-weight: 680;
         text-transform: uppercase;
       }
 
@@ -400,7 +403,7 @@
         border-radius: 6px;
         color: var(--ink);
         background: rgba(255, 255, 255, 0.06);
-        font-weight: 850;
+        font-weight: 720;
         cursor: pointer;
       }
 
@@ -435,7 +438,7 @@
         color: #fff;
         background: var(--red);
         font-size: 12px;
-        font-weight: 950;
+        font-weight: 760;
       }
 
       .decision.show {
@@ -469,7 +472,7 @@
         min-height: 24px;
         color: var(--teal-deep);
         font-size: 14px;
-        font-weight: 800;
+        font-weight: 680;
       }
 
       .footer {
