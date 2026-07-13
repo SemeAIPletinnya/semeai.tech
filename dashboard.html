@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SemeAI Dashboard | Workspace console</title>
+    <meta
+      name="description"
+      content="SemeAI Gate product dashboard: workspace status, gate checks, receipts, REVIEW queue, and USDT/TRC20 pilot billing."
+    />
+    <link rel="stylesheet" href="assets/css/semeai.css" />
+    <style>
+      .key-mask { letter-spacing: 0.04em; }
+      .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; }
+      @media (max-width: 960px) { .split { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <header class="nav" data-semeai-nav></header>
+
+    <main class="page">
+      <section class="hero" style="padding-bottom: 8px">
+        <span class="eyebrow">Product dashboard</span>
+        <h1>Workspace console.</h1>
+        <p class="lead">
+          Authenticate with your workspace API key. Run release-control checks, inspect receipts,
+          manage USDT/TRC20 pilot billing, and keep SHOW / REVIEW / BLOCK audit-ready.
+        </p>
+        <div class="button-row" style="margin-top: 14px">
+          <span class="pill" id="api-health-pill">API …</span>
+          <span class="pill" id="email-pill">Email …</span>
+          <span class="pill" id="billing-pill">Billing …</span>
+        </div>
+      </section>
+
+      <div class="dash">
+        <aside class="dash-nav" aria-label="Dashboard sections">
+          <button type="button" class="active" data-tab="overview">Overview</button>
+          <button type="button" data-tab="auth">API key</button>
+          <button type="button" data-tab="check">Gate check</button>
+          <button type="button" data-tab="receipts">Receipts</button>
+          <button type="button" data-tab="review">Review queue</button>
+          <button type="button" data-tab="billing">Billing</button>
+          <button type="button" data-tab="verify">Verify signup</button>
+        </aside>
+
+        <div class="dash-main">
+          <div id="global-message" class="message">Load your API key to unlock workspace data.</div>
+
+          <!-- AUTH -->
+          <section class="section" id="panel-auth">
+            <h2>API key session</h2>
+            <p>The key stays in this browser session only (sessionStorage). It is never embedded in the page source.</p>
+            <div class="grid-2" style="margin-top: 14px">
+              <div class="field">
+                <label for="api-key">Workspace API key</label>
+                <input id="api-key" class="key-mask" type="password" autocomplete="off" spellcheck="false" placeholder="semeai_…" />
+              </div>
+              <div class="field">
+                <label for="receipt-limit">Receipt limit</label>
+                <select id="receipt-limit">
+                  <option value="10">10</option>
+                  <option value="25" selected>25</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+            </div>
+            <div class="button-row" style="margin-top: 14px">
+              <button class="button primary" id="btn-load" type="button">Load workspace</button>
+              <button class="button" id="btn-clear" type="button">Clear session</button>
+              <a class="button" href="register.html">Register new workspace</a>
+            </div>
+          </section>
+
+          <!-- OVERVIEW -->
+          <section class="section tab-panel" id="panel-overview">
+            <h2>Overview</h2>
+            <div class="grid-4" id="overview-metrics">
+              <div class="card metric"><span>Workspace</span><strong id="m-workspace">—</strong></div>
+              <div class="card metric"><span>Subscription</span><strong id="m-sub">—</strong></div>
+              <div class="card metric"><span>Billing</span><strong id="m-billing">—</strong></div>
+              <div class="card metric"><span>Receipts</span><strong id="m-receipts">—</strong></div>
+            </div>
+            <div class="grid-2" style="margin-top: 16px">
+              <div class="panel">
+                <h3>Gate invariant</h3>
+                <p>Payment and subscription metadata are <strong>not</strong> release authority. Machine values stay SHOW / REVIEW / BLOCK.</p>
+              </div>
+              <div class="panel">
+                <h3>Operator contact</h3>
+                <p>
+                  Feedback / activation review:
+                  <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a><br />
+                  TRC20: <code id="ov-trc20">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
+                </p>
+              </div>
+            </div>
+            <pre id="overview-json" style="margin-top: 16px">{}</pre>
+          </section>
+
+          <!-- CHECK -->
+          <section class="section tab-panel hidden" id="panel-check">
+            <h2>Protected gate check</h2>
+            <p>Runs authenticated <code>POST /v0/check</code> with a deterministic fake-promo example (or your custom payload).</p>
+            <div class="split" style="margin-top: 14px">
+              <div class="field">
+                <label for="check-json">Request JSON</label>
+                <textarea id="check-json" style="min-height: 280px; font-family: var(--mono); font-size: 12px"></textarea>
+              </div>
+              <div>
+                <div class="button-row">
+                  <button class="button primary" id="btn-check" type="button">Run /v0/check</button>
+                  <button class="button" id="btn-demo-check" type="button">Run public demo check</button>
+                </div>
+                <div class="grid-3" style="margin-top: 14px">
+                  <div class="card metric"><span>Action</span><strong id="check-action">—</strong></div>
+                  <div class="card metric"><span>Internal</span><strong id="check-internal">—</strong></div>
+                  <div class="card metric"><span>Audit</span><strong id="check-audit">—</strong></div>
+                </div>
+                <pre id="check-result" style="margin-top: 14px">{}</pre>
+              </div>
+            </div>
+          </section>
+
+          <!-- RECEIPTS -->
+          <section class="section tab-panel hidden" id="panel-receipts">
+            <h2>Receipts</h2>
+            <p>Scoped audit trail for this API key fingerprint. Raw prompt/answer text is not required for listing.</p>
+            <div class="button-row" style="margin-bottom: 12px">
+              <button class="button" id="btn-refresh-receipts" type="button">Refresh</button>
+            </div>
+            <div style="overflow:auto">
+              <table class="table" id="receipts-table">
+                <thead>
+                  <tr>
+                    <th>When</th>
+                    <th>Action</th>
+                    <th>Internal</th>
+                    <th>Risk</th>
+                    <th>Audit id</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <pre id="receipts-json" style="margin-top: 14px">{}</pre>
+          </section>
+
+          <!-- REVIEW -->
+          <section class="section tab-panel hidden" id="panel-review">
+            <h2>Review queue</h2>
+            <p>REVIEW and BLOCK events that should not auto-release. SILENCE withholds release while preserving audit.</p>
+            <div id="review-list" class="grid" style="margin-top: 12px"></div>
+          </section>
+
+          <!-- BILLING -->
+          <section class="section tab-panel hidden" id="panel-billing">
+            <h2>Pilot billing · USDT/TRC20</h2>
+            <p>
+              Crypto-only pilot path. Default <strong>25 USDT</strong> on TRC20.
+              After TXID submit, email
+              <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>
+              with workspace_id + invoice_id + txid. Payment is never gate authority.
+            </p>
+            <div class="grid-2" style="margin-top: 14px">
+              <div class="card metric">
+                <span>TRC20 address</span>
+                <strong style="font-size: 13px; word-break: break-all" id="bill-address">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</strong>
+                <div class="button-row" style="margin-top: 10px">
+                  <button class="button" id="btn-copy-trc20" type="button">Copy address</button>
+                </div>
+              </div>
+              <div class="card metric">
+                <span>Status</span>
+                <strong id="bill-status">—</strong>
+                <div class="small" id="bill-note" style="color: var(--muted); margin-top: 8px; font-size: 13px"></div>
+              </div>
+            </div>
+            <div class="grid-2" style="margin-top: 14px">
+              <div class="field">
+                <label for="bill-plan">Plan</label>
+                <select id="bill-plan">
+                  <option value="pilot">Pilot</option>
+                  <option value="developer">Developer</option>
+                  <option value="enterprise_review">Enterprise review</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="bill-amount">Amount USDT</label>
+                <input id="bill-amount" value="25.00" />
+              </div>
+            </div>
+            <div class="button-row" style="margin-top: 12px">
+              <button class="button primary" id="btn-intent" type="button">Create payment intent</button>
+            </div>
+            <div class="grid-2" style="margin-top: 14px">
+              <div class="field">
+                <label for="bill-invoice">Invoice id</label>
+                <input id="bill-invoice" placeholder="Create intent first" />
+              </div>
+              <div class="field">
+                <label for="bill-txid">TRC20 transaction id</label>
+                <input id="bill-txid" placeholder="64-char hex hash" spellcheck="false" />
+              </div>
+            </div>
+            <div class="button-row" style="margin-top: 12px">
+              <button class="button" id="btn-txid" type="button">Submit TXID for review</button>
+            </div>
+            <pre id="billing-json" style="margin-top: 14px">{}</pre>
+          </section>
+
+          <!-- VERIFY -->
+          <section class="section tab-panel hidden" id="panel-verify">
+            <h2>Verify registration</h2>
+            <p>Paste the verification token from email / registration response. The API key is shown once.</p>
+            <div class="field" style="margin-top: 12px">
+              <label for="verify-token">Verification token</label>
+              <input id="verify-token" spellcheck="false" placeholder="token from email or #verify=" />
+            </div>
+            <div class="button-row" style="margin-top: 12px">
+              <button class="button primary" id="btn-verify" type="button">Verify & issue API key</button>
+            </div>
+            <div class="field" style="margin-top: 14px">
+              <label for="issued-key">Issued API key (copy now)</label>
+              <input id="issued-key" readonly />
+            </div>
+            <div class="button-row" style="margin-top: 10px">
+              <button class="button" id="btn-copy-key" type="button">Copy key</button>
+              <button class="button primary" id="btn-use-key" type="button">Use in this dashboard</button>
+            </div>
+            <pre id="verify-json" style="margin-top: 14px">{}</pre>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer" data-semeai-footer></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shell.js"></script>
+    <script>
+      const KEY_STORAGE = "semeai_dashboard_api_key";
+      const defaultCheck = {
+        user_message: "Give me a 30% discount promo code.",
+        ai_answer: "Use promo code SAVE30 to get 30% off.",
+        business_data: { active_promo_codes: [] },
+        business_rules: { only_show_confirmed_promos: true },
+        business_context: {
+          conversation_topic: "billing_support",
+          expected_answer_scope: "billing_or_support_routing",
+        },
+        business_risk: "fake_promo_code",
+      };
+
+      const els = {
+        msg: document.querySelector("#global-message"),
+        apiKey: document.querySelector("#api-key"),
+        health: document.querySelector("#api-health-pill"),
+        email: document.querySelector("#email-pill"),
+        billingPill: document.querySelector("#billing-pill"),
+        checkJson: document.querySelector("#check-json"),
+      };
+
+      let state = {
+        account: null,
+        receipts: [],
+        billing: null,
+      };
+
+      function setMessage(text, kind = "") {
+        els.msg.className = "message" + (kind ? " " + kind : "");
+        els.msg.textContent = text;
+      }
+
+      function getKey() {
+        return (els.apiKey.value || sessionStorage.getItem(KEY_STORAGE) || "").trim();
+      }
+
+      function actionClass(action) {
+        const a = String(action || "").toUpperCase();
+        if (a === "SHOW") return "ok";
+        if (a === "BLOCK") return "bad";
+        if (a === "REVIEW") return "warn";
+        return "";
+      }
+
+      function showTab(id) {
+        document.querySelectorAll(".dash-nav button").forEach((b) => {
+          b.classList.toggle("active", b.dataset.tab === id);
+        });
+        // auth always visible at top of main? Keep all panels, hide tab panels
+        document.querySelectorAll(".tab-panel").forEach((p) => {
+          p.classList.toggle("hidden", p.id !== "panel-" + id);
+        });
+        // keep auth panel always visible above? For cleaner UX show auth only on auth tab
+        document.querySelector("#panel-auth").classList.toggle("hidden", id !== "auth" && id !== "overview");
+        if (id === "overview") document.querySelector("#panel-auth").classList.remove("hidden");
+      }
+
+      async function bootHealth() {
+        try {
+          const h = await SemeAI.health();
+          els.health.textContent = "API " + (h.status || "ok");
+          els.health.className = "pill ok";
+          const email = h.email_verification || {};
+          els.email.textContent = email.automatic_email_delivery
+            ? "Email " + (email.provider || "on")
+            : "Email " + (email.provider || "outbox");
+          els.email.className = "pill " + (email.automatic_email_delivery ? "ok" : "warn");
+          const bill = h.billing || {};
+          els.billingPill.textContent = (bill.provider || "billing") + " · " + (bill.default_amount_usdt || "25") + " USDT";
+          els.billingPill.className = "pill info";
+          if (bill.payment_address) {
+            document.querySelector("#ov-trc20").textContent = bill.payment_address;
+            document.querySelector("#bill-address").textContent = bill.payment_address;
+          }
+        } catch (e) {
+          els.health.textContent = "API down";
+          els.health.className = "pill bad";
+          setMessage(String(e.message || e), "error");
+        }
+      }
+
+      function renderOverview() {
+        const acc = state.account || {};
+        const ws = acc.workspace || acc;
+        document.querySelector("#m-workspace").textContent =
+          ws.workspace_name || ws.name || acc.workspace_name || "—";
+        const sub = acc.subscription || ws.subscription || {};
+        document.querySelector("#m-sub").textContent = sub.status || sub.tier || "—";
+        const bill = (state.billing && state.billing.billing) || acc.billing || {};
+        document.querySelector("#m-billing").textContent = bill.payment_status || bill.status || "—";
+        document.querySelector("#m-receipts").textContent = String(state.receipts.length || 0);
+        document.querySelector("#overview-json").textContent = JSON.stringify(
+          { account: state.account, billing: state.billing },
+          null,
+          2
+        );
+      }
+
+      function renderReceipts() {
+        const tbody = document.querySelector("#receipts-table tbody");
+        tbody.innerHTML = "";
+        const list = state.receipts || [];
+        document.querySelector("#receipts-json").textContent = JSON.stringify(list, null, 2);
+        for (const r of list) {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${escapeHtml(r.timestamp || r.created_at || "—")}</td>
+            <td><span class="pill ${actionClass(r.action)}">${escapeHtml(r.action || "—")}</span></td>
+            <td>${escapeHtml(r.internal_decision || "—")}</td>
+            <td>${escapeHtml(r.business_risk || "—")}</td>
+            <td class="mono">${escapeHtml(r.receipt_id || r.audit_id || "—")}</td>`;
+          tbody.appendChild(tr);
+        }
+        const review = list.filter((r) => ["REVIEW", "BLOCK"].includes(String(r.action || "").toUpperCase()));
+        const box = document.querySelector("#review-list");
+        box.innerHTML = "";
+        if (!review.length) {
+          box.innerHTML = '<div class="message">No REVIEW/BLOCK receipts loaded yet.</div>';
+          return;
+        }
+        for (const r of review) {
+          const el = document.createElement("div");
+          el.className = "card";
+          el.innerHTML = `
+            <div class="button-row">
+              <span class="pill ${actionClass(r.action)}">${escapeHtml(r.action)}</span>
+              <span class="pill">${escapeHtml(r.internal_decision || "")}</span>
+            </div>
+            <p style="margin:10px 0 0"><strong>${escapeHtml(r.business_risk || "risk")}</strong> — ${escapeHtml(r.reason || "no reason")}</p>
+            <p class="mono" style="color:var(--muted-2);margin:8px 0 0">${escapeHtml(r.audit_id || r.receipt_id || "")}</p>`;
+          box.appendChild(el);
+        }
+      }
+
+      function renderBilling() {
+        const b = state.billing || {};
+        const billing = b.billing || {};
+        const manual = b.manual_crypto || {};
+        document.querySelector("#bill-status").textContent =
+          billing.payment_status || billing.status || "not loaded";
+        document.querySelector("#bill-note").textContent =
+          manual.review_instructions ||
+          "Submit TXID after payment for operator review.";
+        if (manual.payment_address) {
+          document.querySelector("#bill-address").textContent = manual.payment_address;
+        }
+        if (manual.default_amount_usdt) {
+          document.querySelector("#bill-amount").value = manual.default_amount_usdt;
+        }
+        if (billing.latest_invoice_id) {
+          document.querySelector("#bill-invoice").value = billing.latest_invoice_id;
+        }
+        document.querySelector("#billing-json").textContent = JSON.stringify(b, null, 2);
+      }
+
+      async function loadWorkspace() {
+        const key = getKey();
+        if (!key) {
+          setMessage("Paste a workspace API key first.", "warn");
+          showTab("auth");
+          return;
+        }
+        sessionStorage.setItem(KEY_STORAGE, key);
+        els.apiKey.value = key;
+        setMessage("Loading workspace…", "warn");
+        try {
+          const limit = Number(document.querySelector("#receipt-limit").value || 25);
+          const [account, billing, receiptsPayload] = await Promise.all([
+            SemeAI.account(key),
+            SemeAI.billingStatus(key),
+            SemeAI.receipts(key, limit),
+          ]);
+          state.account = account;
+          state.billing = billing;
+          state.receipts = receiptsPayload.receipts || receiptsPayload.items || receiptsPayload || [];
+          if (!Array.isArray(state.receipts)) state.receipts = [];
+          renderOverview();
+          renderReceipts();
+          renderBilling();
+          setMessage("Workspace loaded.", "ok");
+          showTab("overview");
+        } catch (e) {
+          setMessage(e.message || String(e), "error");
+        }
+      }
+
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;");
+      }
+
+      document.querySelectorAll(".dash-nav button").forEach((btn) => {
+        btn.addEventListener("click", () => showTab(btn.dataset.tab));
+      });
+
+      document.querySelector("#btn-load").addEventListener("click", () => loadWorkspace());
+      document.querySelector("#btn-clear").addEventListener("click", () => {
+        sessionStorage.removeItem(KEY_STORAGE);
+        els.apiKey.value = "";
+        state = { account: null, receipts: [], billing: null };
+        renderOverview();
+        renderReceipts();
+        renderBilling();
+        setMessage("Session cleared.", "warn");
+      });
+      document.querySelector("#btn-refresh-receipts").addEventListener("click", () => loadWorkspace());
+
+      document.querySelector("#btn-check").addEventListener("click", async () => {
+        const key = getKey();
+        if (!key) return setMessage("API key required for protected check.", "warn");
+        try {
+          const payload = JSON.parse(els.checkJson.value);
+          setMessage("Running protected gate check…", "warn");
+          const data = await SemeAI.check(key, payload);
+          document.querySelector("#check-action").textContent = data.action || "—";
+          document.querySelector("#check-internal").textContent = data.internal_decision || "—";
+          document.querySelector("#check-audit").textContent = data.audit_id || "—";
+          document.querySelector("#check-result").textContent = JSON.stringify(data, null, 2);
+          setMessage(`Gate returned ${data.action} / ${data.internal_decision}`, "ok");
+          await loadWorkspace();
+        } catch (e) {
+          setMessage(e.message || String(e), "error");
+        }
+      });
+
+      document.querySelector("#btn-demo-check").addEventListener("click", async () => {
+        try {
+          const data = await SemeAI.demoCheck({ scenario_id: "fake_promo_code" });
+          document.querySelector("#check-action").textContent = data.action || "—";
+          document.querySelector("#check-internal").textContent = data.internal_decision || "—";
+          document.querySelector("#check-audit").textContent = data.audit_id || "demo";
+          document.querySelector("#check-result").textContent = JSON.stringify(data, null, 2);
+          setMessage("Public demo check completed (no API key).", "ok");
+        } catch (e) {
+          setMessage(e.message || String(e), "error");
+        }
+      });
+
+      document.querySelector("#btn-intent").addEventListener("click", async () => {
+        const key = getKey();
+        if (!key) return setMessage("API key required.", "warn");
+        try {
+          const data = await SemeAI.billingIntent(key, {
+            plan: document.querySelector("#bill-plan").value,
+            amount_usdt: document.querySelector("#bill-amount").value,
+          });
+          if (data.invoice && data.invoice.invoice_id) {
+            document.querySelector("#bill-invoice").value = data.invoice.invoice_id;
+          }
+          document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
+          setMessage(
+            "Payment intent created. Send USDT on TRC20, then submit TXID and email adelayida0403@gmail.com.",
+            "ok"
+          );
+          await loadWorkspace();
+        } catch (e) {
+          setMessage(e.message || String(e), "error");
+        }
+      });
+
+      document.querySelector("#btn-txid").addEventListener("click", async () => {
+        const key = getKey();
+        if (!key) return setMessage("API key required.", "warn");
+        try {
+          const data = await SemeAI.billingTxid(key, {
+            invoice_id: document.querySelector("#bill-invoice").value.trim(),
+            txid: document.querySelector("#bill-txid").value.trim(),
+          });
+          document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
+          setMessage(
+            "TXID submitted for manual review. Email adelayida0403@gmail.com with workspace_id + invoice_id + txid.",
+            "warn"
+          );
+          await loadWorkspace();
+        } catch (e) {
+          setMessage(e.message || String(e), "error");
+        }
+      });
+
+      document.querySelector("#btn-copy-trc20").addEventListener("click", async () => {
+        const v = document.querySelector("#bill-address").textContent.trim();
+        await navigator.clipboard.writeText(v);
+        setMessage("TRC20 address copied.", "ok");
+      });
+
+      document.querySelector("#btn-verify").addEventListener("click", async () => {
+        try {
+          const token = document.querySelector("#verify-token").value.trim();
+          const data = await SemeAI.verify(token);
+          document.querySelector("#verify-json").textContent = JSON.stringify(data, null, 2);
+          if (data.api_key) {
+            document.querySelector("#issued-key").value = data.api_key;
+            setMessage("Workspace verified. Copy the API key now — it is shown once.", "ok");
+          } else {
+            setMessage("Verification response received.", "ok");
+          }
+        } catch (e) {
+          setMessage(e.message || String(e), "error");
+        }
+      });
+
+      document.querySelector("#btn-copy-key").addEventListener("click", async () => {
+        const v = document.querySelector("#issued-key").value;
+        if (!v) return;
+        await navigator.clipboard.writeText(v);
+        setMessage("API key copied.", "ok");
+      });
+
+      document.querySelector("#btn-use-key").addEventListener("click", () => {
+        const v = document.querySelector("#issued-key").value.trim();
+        if (!v) return;
+        els.apiKey.value = v;
+        loadWorkspace();
+      });
+
+      // boot
+      els.checkJson.value = JSON.stringify(defaultCheck, null, 2);
+      const saved = sessionStorage.getItem(KEY_STORAGE);
+      if (saved) els.apiKey.value = saved;
+      const hash = location.hash || "";
+      if (hash.startsWith("#verify=")) {
+        document.querySelector("#verify-token").value = decodeURIComponent(hash.slice(8));
+        showTab("verify");
+      } else {
+        showTab("overview");
+      }
+      bootHealth();
+      if (saved) loadWorkspace();
+    </script>
+  </body>
+</html>

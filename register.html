@@ -4,627 +4,53 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Register for SemeAI Gate</title>
-    <meta
-      name="description"
-      content="Create an early-access SemeAI Gate workspace request and verify it through the live account API."
-    />
-    <style>
-      :root {
-        color-scheme: dark;
-        --ink: #edf7f7;
-        --ink-strong: #ffffff;
-        --muted: #9fb2b8;
-        --muted-2: #73878f;
-        --bg: #071014;
-        --panel: #101d24;
-        --panel-soft: #14252d;
-        --line: rgba(214, 235, 238, 0.14);
-        --line-strong: rgba(157, 213, 214, 0.5);
-        --teal: #9dd5d6;
-        --teal-dark: #4ba3a7;
-        --teal-deep: #9dd5d6;
-        --green: #2d986e;
-        --red: #ff5d6c;
-        --amber: #f0b95a;
-        --shadow: 0 34px 100px rgba(0, 0, 0, 0.34);
-        --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        font-family: var(--sans);
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        color: var(--ink);
-        background:
-          radial-gradient(circle at 78% 0%, rgba(75, 163, 167, 0.24), transparent 36vw),
-          radial-gradient(circle at 6% 18%, rgba(130, 199, 255, 0.16), transparent 34vw),
-          linear-gradient(180deg, #071014 0%, #0b151a 70%, #0e1a20 100%),
-          var(--bg);
-        -webkit-font-smoothing: antialiased;
-        text-rendering: geometricPrecision;
-      }
-
-      a {
-        color: inherit;
-      }
-
-      .page {
-        width: min(1180px, calc(100vw - 40px));
-        margin: 0 auto;
-      }
-
-      .nav {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        border-bottom: 1px solid var(--line);
-        background: rgba(7, 16, 20, 0.82);
-        backdrop-filter: blur(14px);
-      }
-
-      .nav-inner {
-        min-height: 76px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 22px;
-      }
-
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 17px;
-        font-weight: 760;
-        text-decoration: none;
-      }
-
-      .mark {
-        display: grid;
-        width: 38px;
-        height: 38px;
-        place-items: center;
-        border-radius: 50%;
-        color: #12393b;
-        background: var(--teal);
-        font-weight: 760;
-      }
-
-      .links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        align-items: center;
-        color: #b8c9cc;
-        font-size: 13px;
-        font-weight: 680;
-      }
-
-      .links a {
-        text-decoration: none;
-      }
-
-      .lang-switch {
-        display: inline-flex;
-        gap: 6px;
-      }
-
-      .lang-switch button {
-        min-height: 30px;
-        padding: 4px 9px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        color: var(--muted);
-        background: rgba(255, 255, 255, 0.06);
-        font-size: 12px;
-        font-weight: 720;
-        cursor: pointer;
-      }
-
-      .lang-switch button.active {
-        color: #082126;
-        border-color: var(--line-strong);
-        background: var(--teal);
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 0.98fr) minmax(360px, 0.72fr);
-        gap: 34px;
-        align-items: end;
-        padding: 72px 0 34px;
-      }
-
-      .eyebrow,
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        min-height: 28px;
-        padding: 4px 10px;
-        border: 1px solid var(--line-strong);
-        border-radius: 999px;
-        color: #d8fbfb;
-        background: rgba(157, 213, 214, 0.08);
-        font-size: 12px;
-        font-weight: 720;
-        text-transform: uppercase;
-      }
-
-      h1,
-      h2,
-      h3,
-      p {
-        margin-top: 0;
-      }
-
-      h1 {
-        max-width: 870px;
-        margin-bottom: 18px;
-        color: var(--ink-strong);
-        font-size: clamp(44px, 7vw, 82px);
-        font-weight: 780;
-        line-height: 0.99;
-        letter-spacing: 0;
-      }
-
-      h2 {
-        margin-bottom: 14px;
-        color: var(--ink-strong);
-        font-size: clamp(30px, 4vw, 46px);
-        font-weight: 760;
-        line-height: 1.05;
-      }
-
-      h3 {
-        margin-bottom: 10px;
-        color: var(--ink-strong);
-        font-size: 19px;
-      }
-
-      .lead,
-      p,
-      li,
-      label,
-      input,
-      select,
-      textarea {
-        color: var(--muted);
-        font-size: 16px;
-        line-height: 1.58;
-      }
-
-      .lead {
-        max-width: 760px;
-        font-size: 20px;
-      }
-
-      .hero-panel,
-      .section {
-        border: 1px solid var(--line);
-        background: linear-gradient(180deg, rgba(20, 37, 45, 0.94), rgba(13, 24, 30, 0.94));
-        box-shadow: var(--shadow);
-      }
-
-      .hero-panel {
-        padding: 24px;
-      }
-
-      .status-stack {
-        display: grid;
-        gap: 11px;
-      }
-
-      .status-item {
-        display: flex;
-        justify-content: space-between;
-        gap: 18px;
-        padding: 13px 0;
-        border-bottom: 1px solid var(--line);
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      .status-item:last-child {
-        border-bottom: 0;
-      }
-
-      .status-item strong {
-        color: var(--ink-strong);
-      }
-
-      .section {
-        margin: 26px 0;
-        padding: clamp(28px, 5vw, 54px);
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(360px, 0.8fr);
-        gap: 22px;
-        align-items: start;
-      }
-
-      .cards {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
-        margin-top: 24px;
-      }
-
-      .card {
-        min-height: 162px;
-        padding: 22px;
-        border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.035);
-      }
-
-      .card strong {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--ink-strong);
-        font-size: 18px;
-      }
-
-      .form {
-        display: grid;
-        gap: 16px;
-      }
-
-      .form-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-      }
-
-      .field {
-        display: grid;
-        gap: 7px;
-      }
-
-      label {
-        color: var(--ink-strong);
-        font-size: 13px;
-        font-weight: 680;
-      }
-
-      input,
-      select,
-      textarea {
-        width: 100%;
-        border: 1px solid var(--line);
-        border-radius: 7px;
-        color: var(--ink);
-        background: #0a1116;
-        padding: 12px 13px;
-      }
-
-      textarea {
-        min-height: 128px;
-        resize: vertical;
-      }
-
-      input:focus,
-      select:focus,
-      textarea:focus {
-        border-color: var(--teal-dark);
-        outline: 3px solid rgba(157, 205, 205, 0.34);
-      }
-
-      .check-row {
-        display: grid;
-        grid-template-columns: 20px 1fr;
-        gap: 11px;
-        align-items: start;
-        padding: 13px;
-        border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.035);
-      }
-
-      .check-row input {
-        width: 18px;
-        margin-top: 5px;
-      }
-
-      .button-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: center;
-      }
-
-      .button {
-        display: inline-flex;
-        min-height: 46px;
-        align-items: center;
-        justify-content: center;
-        padding: 0 18px;
-        border: 1px solid var(--line);
-        border-radius: 7px;
-        color: var(--ink);
-        background: rgba(255, 255, 255, 0.06);
-        font-weight: 720;
-        text-decoration: none;
-        cursor: pointer;
-      }
-
-      .button.primary {
-        border-color: var(--teal-dark);
-        color: #081f22;
-        background: var(--teal);
-      }
-
-      .button:disabled {
-        color: var(--muted-2);
-        cursor: not-allowed;
-        opacity: 0.72;
-      }
-
-      .output-panel {
-        display: grid;
-        gap: 16px;
-        padding: 24px;
-        border: 1px solid var(--line);
-        background: #11171a;
-        color: #eaf2f2;
-      }
-
-      .output-panel h3,
-      .output-panel label {
-        color: #fff;
-      }
-
-      .output-panel p {
-        color: #b8c9cc;
-      }
-
-      .output-panel input {
-        color: #eaf2f2;
-        border-color: #344146;
-        background: #0a0f12;
-      }
-
-      .message {
-        min-height: 58px;
-        padding: 14px;
-        border: 1px solid #344146;
-        background: #0a0f12;
-        color: #b8c9cc;
-      }
-
-      .message.ok {
-        border-color: rgba(45, 152, 110, 0.6);
-        color: #dff7ed;
-      }
-
-      .message.warn {
-        border-color: rgba(159, 107, 29, 0.7);
-        color: #ffe9bf;
-      }
-
-      .message.error {
-        border-color: rgba(216, 75, 75, 0.7);
-        color: #ffd3d3;
-      }
-
-      .next-steps {
-        display: grid;
-        gap: 10px;
-        padding: 14px;
-        border: 1px solid #344146;
-        background: rgba(8, 12, 15, 0.72);
-      }
-
-      .next-steps strong {
-        color: #fff;
-      }
-
-      .next-steps ol {
-        display: grid;
-        gap: 8px;
-        margin: 0;
-        padding-left: 22px;
-        color: #c6d8db;
-        line-height: 1.45;
-      }
-
-      .next-steps .current {
-        color: #eaf2f2;
-        font-weight: 720;
-      }
-
-      .secret-warning {
-        padding: 10px 12px;
-        border: 1px solid rgba(157, 213, 214, 0.4);
-        background: rgba(157, 213, 214, 0.08);
-        color: #d8fbfb;
-        font-size: 13px;
-        line-height: 1.45;
-      }
-
-      pre {
-        max-height: 460px;
-        margin: 0;
-        overflow: auto;
-        padding: 16px;
-        border: 1px solid #344146;
-        background: #080c0f;
-        color: #eaf2f2;
-        font-size: 13px;
-        line-height: 1.48;
-        white-space: pre-wrap;
-      }
-
-      .key-box {
-        display: none;
-        gap: 10px;
-      }
-
-      .key-box.visible {
-        display: grid;
-      }
-
-      .fineprint {
-        color: var(--muted-2);
-        font-size: 13px;
-      }
-
-      .machine-note {
-        padding: 14px;
-        border-left: 4px solid var(--line-strong);
-        background: rgba(157, 213, 214, 0.07);
-      }
-
-      footer {
-        padding: 28px 0 42px;
-        border-top: 1px solid var(--line);
-        color: var(--muted);
-        font-size: 14px;
-      }
-
-      @media (max-width: 900px) {
-        .hero,
-        .grid,
-        .form-grid,
-        .cards {
-          grid-template-columns: 1fr;
-        }
-
-        .hero {
-          padding-top: 42px;
-        }
-      }
-
-      @media (max-width: 680px) {
-        .page {
-          width: min(100% - 28px, 1180px);
-        }
-
-        .nav-inner {
-          min-height: auto;
-          align-items: flex-start;
-          flex-direction: column;
-          padding: 14px 0;
-        }
-
-        h1 {
-          font-size: clamp(40px, 13vw, 60px);
-        }
-
-        .section,
-        .hero-panel {
-          padding: 22px;
-        }
-      }
-    </style>
+    <meta name="description" content="Create a SemeAI Gate workspace, verify email, receive an API key, and open the product dashboard." />
+    <link rel="stylesheet" href="assets/css/semeai.css" />
   </head>
   <body>
-    <header class="nav">
-      <div class="page nav-inner">
-        <a class="brand" href="index.html"><span class="mark">SG</span><span>SemeAI</span></a>
-        <nav class="links" aria-label="Primary navigation">
-          <a href="index.html">Home</a>
-          <a href="article.html">Article</a>
-          <a href="self-hosted.html">Self-hosted</a>
-          <a href="account.html">Account</a>
-          <a href="https://gate.semeai.tech/demo/saas_visible.html">Live demo</a>
-          <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
-          <span class="lang-switch" aria-label="Language">
-            <button class="active" type="button" data-lang="en">EN</button>
-            <button type="button" data-lang="uk">UA</button>
-            <button type="button" data-lang="ru">RU</button>
-          </span>
-        </nav>
-      </div>
-    </header>
-
+    <header class="nav" data-semeai-nav></header>
     <main class="page">
       <section class="hero">
-        <div>
-          <span class="eyebrow" data-i18n="eyebrow">Workspace registration</span>
-          <h1 data-i18n="hero_title">Create a SemeAI Gate workspace.</h1>
-          <p class="lead" data-i18n="hero_lead">
-            Request access, verify the workspace, copy your API key once, and
-            use the account console to run release-control checks.
-          </p>
-          <div class="button-row">
-            <a class="button primary" href="#register" data-i18n="cta_register">Start registration</a>
-            <a class="button" href="article.html" data-i18n="cta_article">Read the thesis first</a>
-            <a class="button" href="account.html" data-i18n="cta_account">Open account console</a>
-          </div>
+        <span class="eyebrow">Workspace registration</span>
+        <h1>Create a SemeAI Gate workspace.</h1>
+        <p class="lead">
+          Request access, verify, copy your API key once, then use the dashboard for checks, receipts, and pilot billing.
+        </p>
+        <div class="button-row">
+          <a class="button primary" href="#register">Start registration</a>
+          <a class="button" href="dashboard.html">Open dashboard</a>
+          <a class="button" href="article.html">Read the thesis</a>
         </div>
-
-        <aside class="hero-panel" aria-label="Registration boundaries">
-          <div class="status-stack">
-            <div class="status-item"><span>Live account API</span><strong>api.semeai.tech</strong></div>
-            <div class="status-item"><span>Password collection</span><strong>false</strong></div>
-            <div class="status-item"><span>Shared API key in browser</span><strong>false</strong></div>
-            <div class="status-item"><span>Billing provider</span><strong>USDT / TRC20 manual</strong></div>
-            <div class="status-item"><span>Pilot amount</span><strong>25 USDT</strong></div>
-            <div class="status-item"><span>Feedback / review email</span><strong>adelayida0403@gmail.com</strong></div>
-            <div class="status-item"><span>Canonical states</span><strong>SHOW / REVIEW / BLOCK</strong></div>
-          </div>
-        </aside>
       </section>
 
       <section class="section">
-        <h2 data-i18n="flow_title">Registration flow</h2>
-        <p data-i18n="flow_lead">
-          This is a v0.1 early-access flow. It is intentionally narrow:
-          create a workspace request, verify it, receive an API key once, then
-          use that key from the account console or your backend integration.
-        </p>
-        <div class="cards">
-          <div class="card">
-            <strong data-i18n="step_one_title">1. Read</strong>
-            <p data-i18n="step_one_text">
-              Start with the article so the core boundary is clear:
-              generation is not release authority.
-            </p>
-          </div>
-          <div class="card">
-            <strong data-i18n="step_two_title">2. Register</strong>
-            <p data-i18n="step_two_text">
-              Send only non-sensitive workspace metadata. The page does not
-              collect passwords or customer data.
-            </p>
-          </div>
-          <div class="card">
-            <strong data-i18n="step_three_title">3. Verify</strong>
-            <p data-i18n="step_three_text">
-              The API key is shown once after verification. Store it privately
-              and use it as a Bearer token.
-            </p>
-          </div>
+        <div class="grid-4">
+          <div class="card metric"><span>API</span><strong>api.semeai.tech</strong></div>
+          <div class="card metric"><span>Passwords</span><strong>not collected</strong></div>
+          <div class="card metric"><span>Billing</span><strong>USDT / TRC20</strong></div>
+          <div class="card metric"><span>Feedback</span><strong style="font-size:13px">adelayida0403@gmail.com</strong></div>
         </div>
       </section>
 
-      <section class="section grid" id="register">
+      <section class="section grid-2" id="register">
         <div>
-          <span class="pill">schema 0.1-account</span>
-          <h2 data-i18n="form_title">Request workspace access.</h2>
-          <p data-i18n="form_lead">
-            Tell SemeAI what kind of release-control pilot you want to run.
-            Do not paste customer secrets, production prompts, or private data.
-          </p>
-
-          <form class="form" id="register-form" autocomplete="on">
-            <div class="form-grid">
+          <span class="pill info">schema 0.1-account</span>
+          <h2 style="margin-top: 12px">Request workspace access.</h2>
+          <p>Do not paste customer secrets, production prompts, or private data.</p>
+          <form class="grid" id="register-form" style="margin-top: 16px; gap: 14px">
+            <div class="grid-2">
               <div class="field">
-                <label for="email" data-i18n="email_label">Work email</label>
-                <input id="email" name="email" type="email" placeholder="you@company.com" required />
+                <label for="email">Work email</label>
+                <input id="email" name="email" type="email" required placeholder="you@company.com" />
               </div>
               <div class="field">
-                <label for="company" data-i18n="company_label">Company or project</label>
-                <input id="company" name="company" type="text" placeholder="Acme Support" required />
+                <label for="company">Company or project</label>
+                <input id="company" name="company" required placeholder="Acme Support" />
               </div>
             </div>
-
-            <div class="form-grid">
+            <div class="grid-2">
               <div class="field">
-                <label for="use_case" data-i18n="use_case_label">Primary use case</label>
+                <label for="use_case">Primary use case</label>
                 <select id="use_case" name="use_case">
                   <option value="support">Support chatbot release control</option>
                   <option value="fintech">Fintech / account claim checks</option>
@@ -635,7 +61,7 @@
                 </select>
               </div>
               <div class="field">
-                <label for="volume" data-i18n="volume_label">Expected monthly checks</label>
+                <label for="volume">Expected monthly checks</label>
                 <select id="volume" name="volume">
                   <option value="pilot">Pilot / evaluation</option>
                   <option value="under_10k">Under 10k</option>
@@ -644,517 +70,145 @@
                 </select>
               </div>
             </div>
-
             <div class="field">
-              <label for="notes" data-i18n="notes_label">Pilot notes</label>
-              <textarea
-                id="notes"
-                name="notes"
-                placeholder="Example: We want to block fake promo codes and unsupported account claims before a chatbot answer reaches users."
-              ></textarea>
+              <label for="notes">Pilot notes</label>
+              <textarea id="notes" name="notes" placeholder="Example: block fake promo codes before chatbot answers reach users."></textarea>
             </div>
-
-            <label class="check-row" for="ack">
-              <input id="ack" name="ack" type="checkbox" required />
-              <span data-i18n="ack_label">
-                I will not submit sensitive customer data. I understand the
-                v0.1 account flow does not collect passwords, uses manual
-                verification links, and optional pilot billing is USDT/TRC20
-                with operator review (not Stripe).
-              </span>
+            <label class="panel" style="display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start">
+              <input id="ack" type="checkbox" required style="width:18px;margin-top:3px" />
+              <span>I will not submit sensitive customer data. I understand v0.1 uses email verification links and optional USDT/TRC20 pilot billing with operator review.</span>
             </label>
-
             <div class="button-row">
-              <button class="button primary" id="submit-button" type="submit" data-i18n="submit_button">
-                Submit registration
-              </button>
-              <button class="button" id="preview-button" type="button" data-i18n="preview_button">
-                Preview JSON
-              </button>
-              <a class="button" href="article.html" data-i18n="article_button">Read article</a>
+              <button class="button primary" id="submit-button" type="submit">Submit registration</button>
+              <button class="button" id="preview-button" type="button">Preview JSON</button>
             </div>
           </form>
-
-          <p class="fineprint" data-i18n="form_note">
-            In v0.1, automatic email delivery is not configured. The API returns a
-            verification link for early-access setup. For pilot help or paid
-            activation review, email
-            <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>.
+          <p style="margin-top: 14px; color: var(--muted-2); font-size: 13px">
+            When Resend/SMTP is configured, verification email is sent automatically.
+            Otherwise the verification URL is returned here and queued for operator delivery.
           </p>
-          <div class="machine-note" style="margin-top: 16px">
-            <strong>Pilot pilot (crypto only)</strong>
-            <p style="margin: 8px 0 0; color: var(--muted); line-height: 1.5">
-              1) Register + verify → get API key<br />
-              2) Open Account Console → create USDT/TRC20 payment intent (default 25 USDT)<br />
-              3) Send USDT on TRC20 to
-              <code>TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code><br />
-              4) Submit TXID in console, then email
-              <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>
-              with workspace_id, invoice_id, and txid<br />
-              5) Payment metadata never becomes gate authority (SHOW / REVIEW / BLOCK stay independent)
-            </p>
-          </div>
         </div>
 
-        <aside class="output-panel" aria-label="API response">
-          <h3 data-i18n="response_title">Live API response</h3>
-          <div class="message" id="form-message" data-i18n="message_idle">
-            Submit the form to create a pending workspace request.
-          </div>
-
-          <div class="next-steps" id="next-steps">
-            <strong data-i18n="next_title">What happens next</strong>
-            <ol>
-              <li id="step-register" class="current" data-i18n="next_submit">
-                Submit the workspace request.
-              </li>
-              <li id="step-verify" data-i18n="next_verify">
-                Verify the workspace with the token shown here.
-              </li>
-              <li id="step-copy-key" data-i18n="next_copy_key">
-                Copy the API key once. The browser page does not store it.
-              </li>
-              <li id="step-account" data-i18n="next_account">
-                Open Account Console, paste the key, then run the protected demo check.
-              </li>
-            </ol>
-            <div class="secret-warning" id="secret-warning" data-i18n="secret_warning">
-              v0.1 uses manual verification: no password, no customer data upload.
-              Pilot billing is manual USDT/TRC20 reviewed via adelayida0403@gmail.com.
-            </div>
-          </div>
-
+        <aside class="panel">
+          <h3>Live API response</h3>
+          <div class="message" id="form-message" style="margin: 12px 0">Submit the form to create a pending workspace request.</div>
           <div class="field">
-            <label for="verify-token" data-i18n="verify_label">Verification token</label>
-            <input id="verify-token" type="text" placeholder="Paste token or open #verify= link" />
+            <label for="verify-token">Verification token / URL token</label>
+            <input id="verify-token" placeholder="Paste token or open #verify= link" />
           </div>
-          <div class="button-row">
-            <button class="button primary" id="verify-button" type="button" data-i18n="verify_button">
-              Verify workspace
-            </button>
-            <button class="button" id="copy-json-button" type="button" disabled data-i18n="copy_json">
-              Copy JSON
-            </button>
+          <div class="button-row" style="margin: 12px 0">
+            <button class="button primary" id="verify-button" type="button">Verify workspace</button>
+            <a class="button" href="dashboard.html">Open dashboard</a>
           </div>
-
-          <div class="key-box" id="key-box">
-            <label for="api-key" data-i18n="api_key_label">API key shown once</label>
+          <div class="field">
+            <label for="api-key">API key (shown once)</label>
             <input id="api-key" readonly />
-            <div class="button-row">
-              <button class="button primary" id="copy-key-button" type="button" data-i18n="copy_key">
-                Copy API key
-              </button>
-              <a class="button" href="account.html" data-i18n="open_account">Open account console</a>
-            </div>
           </div>
-
-          <pre id="json-output">{
-  "status": "idle",
-  "endpoint": "https://api.semeai.tech/v0/register"
-}</pre>
+          <div class="button-row" style="margin-top: 10px">
+            <button class="button" id="copy-key-button" type="button">Copy API key</button>
+            <button class="button primary" id="use-dashboard" type="button">Use in dashboard</button>
+          </div>
+          <pre id="json-output" style="margin-top: 14px">{ "status": "idle" }</pre>
         </aside>
       </section>
 
       <section class="section">
-        <h2 data-i18n="boundary_title">What this is and is not.</h2>
-        <div class="machine-note">
-          <p data-i18n="boundary_text">
-            SemeAI Gate is a release-control adapter. The public business
-            action remains SHOW, REVIEW, or BLOCK. Internally those map to
-            PROCEED, NEEDS_REVIEW, and SILENCE. These machine values are not
-            translated because audit and replay depend on them.
-          </p>
+        <h2>Pilot path after verify</h2>
+        <div class="grid-3" style="margin-top: 12px">
+          <article class="card"><h3>1. Dashboard</h3><p>Paste API key, run protected checks, inspect receipts.</p></article>
+          <article class="card"><h3>2. Pay USDT/TRC20</h3><p>Default 25 USDT to <code>TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>.</p></article>
+          <article class="card"><h3>3. Email review</h3><p>Send workspace_id + invoice_id + txid to adelayida0403@gmail.com.</p></article>
         </div>
       </section>
     </main>
-
-    <footer class="page">
-      SemeAI. Generation is not release authority. Machine values remain canonical:
-      SHOW / REVIEW / BLOCK and PROCEED / NEEDS_REVIEW / SILENCE.
-    </footer>
-
+    <footer class="site-footer" data-semeai-footer></footer>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/shell.js"></script>
     <script>
-      const apiBaseUrl = "https://api.semeai.tech";
-      const form = document.querySelector("#register-form");
       const message = document.querySelector("#form-message");
       const output = document.querySelector("#json-output");
-      const copyJsonButton = document.querySelector("#copy-json-button");
-      const verifyButton = document.querySelector("#verify-button");
-      const previewButton = document.querySelector("#preview-button");
-      const submitButton = document.querySelector("#submit-button");
-      const verifyTokenInput = document.querySelector("#verify-token");
-      const keyBox = document.querySelector("#key-box");
       const apiKeyInput = document.querySelector("#api-key");
-      const copyKeyButton = document.querySelector("#copy-key-button");
-      const stepRegister = document.querySelector("#step-register");
-      const stepVerify = document.querySelector("#step-verify");
-      const stepCopyKey = document.querySelector("#step-copy-key");
-      const stepAccount = document.querySelector("#step-account");
-
-      const translations = {
-        en: {
-          eyebrow: "Workspace registration",
-          hero_title: "Create a SemeAI Gate workspace.",
-          hero_lead:
-            "Request access, verify the workspace, copy your API key once, and use the account console to run release-control checks.",
-          cta_register: "Start registration",
-          cta_article: "Read the thesis first",
-          cta_account: "Open account console",
-          flow_title: "Registration flow",
-          flow_lead:
-            "This is a v0.1 early-access flow. It is intentionally narrow: create a workspace request, verify it, receive an API key once, then use that key from the account console or your backend integration.",
-          step_one_title: "1. Read",
-          step_one_text:
-            "Start with the article so the core boundary is clear: generation is not release authority.",
-          step_two_title: "2. Register",
-          step_two_text:
-            "Send only non-sensitive workspace metadata. The page does not collect passwords or customer data.",
-          step_three_title: "3. Verify",
-          step_three_text:
-            "The API key is shown once after verification. Store it privately and use it as a Bearer token.",
-          form_title: "Request workspace access.",
-          form_lead:
-            "Tell SemeAI what kind of release-control pilot you want to run. Do not paste customer secrets, production prompts, or private data.",
-          email_label: "Work email",
-          company_label: "Company or project",
-          use_case_label: "Primary use case",
-          volume_label: "Expected monthly checks",
-          notes_label: "Pilot notes",
-          ack_label:
-            "I will not submit sensitive customer data. I understand the v0.1 account flow does not collect passwords and does not configure paid billing.",
-          submit_button: "Submit registration",
-          preview_button: "Preview JSON",
-          article_button: "Read article",
-          form_note:
-            "In v0.1, email delivery is not configured. The API returns a verification link for manual early-access setup.",
-          response_title: "Live API response",
-          message_idle: "Submit the form to create a pending workspace request.",
-          verify_label: "Verification token",
-          verify_button: "Verify workspace",
-          copy_json: "Copy JSON",
-          api_key_label: "API key shown once",
-          copy_key: "Copy API key",
-          open_account: "Open account console",
-          next_title: "What happens next",
-          next_submit: "Submit the workspace request.",
-          next_verify: "Verify the workspace with the token shown here.",
-          next_copy_key: "Copy the API key once. The browser page does not store it.",
-          next_account: "Open Account Console, paste the key, then run the protected demo check.",
-          secret_warning: "v0.1 uses manual verification: no password, no billing, no customer data upload.",
-          boundary_title: "What this is and is not.",
-          boundary_text:
-            "SemeAI Gate is a release-control adapter. The public business action remains SHOW, REVIEW, or BLOCK. Internally those map to PROCEED, NEEDS_REVIEW, and SILENCE. These machine values are not translated because audit and replay depend on them."
-        },
-        uk: {
-          eyebrow: "Реєстрація workspace",
-          hero_title: "Створи workspace для SemeAI Gate.",
-          hero_lead:
-            "Запроси доступ, верифікуй workspace, скопіюй API key один раз і використовуй account console для release-control checks.",
-          cta_register: "Почати реєстрацію",
-          cta_article: "Спочатку прочитати thesis",
-          cta_account: "Відкрити account console",
-          flow_title: "Потік реєстрації",
-          flow_lead:
-            "Це v0.1 early-access flow. Він навмисно вузький: створити workspace request, верифікувати його, отримати API key один раз і потім використовувати ключ з account console або backend integration.",
-          step_one_title: "1. Прочитати",
-          step_one_text:
-            "Почни зі статті, щоб межа була чіткою: generation is not release authority.",
-          step_two_title: "2. Зареєструвати",
-          step_two_text:
-            "Відправляй тільки нечуйні workspace metadata. Сторінка не збирає паролі або customer data.",
-          step_three_title: "3. Верифікувати",
-          step_three_text:
-            "API key показується один раз після verification. Збережи його приватно і використовуй як Bearer token.",
-          form_title: "Запросити workspace access.",
-          form_lead:
-            "Опиши, який release-control pilot ти хочеш запускати. Не вставляй customer secrets, production prompts або private data.",
-          email_label: "Робочий email",
-          company_label: "Компанія або проект",
-          use_case_label: "Основний use case",
-          volume_label: "Очікувані checks на місяць",
-          notes_label: "Нотатки для pilot",
-          ack_label:
-            "Я не відправляю sensitive customer data. Я розумію, що v0.1 account flow не збирає паролі і не налаштовує paid billing.",
-          submit_button: "Відправити registration",
-          preview_button: "Preview JSON",
-          article_button: "Читати статтю",
-          form_note:
-            "У v0.1 email delivery ще не налаштований. API повертає verification link для ручного early-access setup.",
-          response_title: "Відповідь live API",
-          message_idle: "Відправ форму, щоб створити pending workspace request.",
-          verify_label: "Verification token",
-          verify_button: "Верифікувати workspace",
-          copy_json: "Копіювати JSON",
-          api_key_label: "API key показується один раз",
-          copy_key: "Копіювати API key",
-          open_account: "Відкрити account console",
-          next_title: "Що далі",
-          next_submit: "Відправ workspace request.",
-          next_verify: "Верифікуй workspace токеном, який показаний тут.",
-          next_copy_key: "Скопіюй API key один раз. Сторінка браузера його не зберігає.",
-          next_account: "Відкрий Account Console, встав ключ і запусти protected demo check.",
-          secret_warning: "v0.1 використовує ручну верифікацію: без пароля, без billing, без customer data upload.",
-          boundary_title: "Що це є і чим це не є.",
-          boundary_text:
-            "SemeAI Gate — release-control adapter. Публічна business action залишається SHOW, REVIEW або BLOCK. Внутрішньо вони мапляться на PROCEED, NEEDS_REVIEW і SILENCE. Ці machine values не перекладаються, бо audit і replay залежать від них."
-        },
-        ru: {
-          eyebrow: "Регистрация workspace",
-          hero_title: "Создай workspace для SemeAI Gate.",
-          hero_lead:
-            "Запроси доступ, верифицируй workspace, скопируй API key один раз и используй account console для release-control checks.",
-          cta_register: "Начать регистрацию",
-          cta_article: "Сначала прочитать thesis",
-          cta_account: "Открыть account console",
-          flow_title: "Поток регистрации",
-          flow_lead:
-            "Это v0.1 early-access flow. Он намеренно узкий: создать workspace request, верифицировать его, получить API key один раз и затем использовать ключ из account console или backend integration.",
-          step_one_title: "1. Прочитать",
-          step_one_text:
-            "Начни со статьи, чтобы граница была ясной: generation is not release authority.",
-          step_two_title: "2. Зарегистрировать",
-          step_two_text:
-            "Отправляй только нечувствительные workspace metadata. Страница не собирает пароли или customer data.",
-          step_three_title: "3. Верифицировать",
-          step_three_text:
-            "API key показывается один раз после verification. Сохрани его приватно и используй как Bearer token.",
-          form_title: "Запросить workspace access.",
-          form_lead:
-            "Опиши, какой release-control pilot ты хочешь запускать. Не вставляй customer secrets, production prompts или private data.",
-          email_label: "Рабочий email",
-          company_label: "Компания или проект",
-          use_case_label: "Основной use case",
-          volume_label: "Ожидаемые checks в месяц",
-          notes_label: "Заметки для pilot",
-          ack_label:
-            "Я не отправляю sensitive customer data. Я понимаю, что v0.1 account flow не собирает пароли и не настраивает paid billing.",
-          submit_button: "Отправить registration",
-          preview_button: "Preview JSON",
-          article_button: "Читать статью",
-          form_note:
-            "В v0.1 email delivery еще не настроен. API возвращает verification link для ручного early-access setup.",
-          response_title: "Ответ live API",
-          message_idle: "Отправь форму, чтобы создать pending workspace request.",
-          verify_label: "Verification token",
-          verify_button: "Верифицировать workspace",
-          copy_json: "Копировать JSON",
-          api_key_label: "API key показывается один раз",
-          copy_key: "Копировать API key",
-          open_account: "Открыть account console",
-          next_title: "Что дальше",
-          next_submit: "Отправь workspace request.",
-          next_verify: "Верифицируй workspace токеном, который показан здесь.",
-          next_copy_key: "Скопируй API key один раз. Страница браузера его не хранит.",
-          next_account: "Открой Account Console, вставь ключ и запусти protected demo check.",
-          secret_warning: "v0.1 использует ручную верификацию: без пароля, без billing, без customer data upload.",
-          boundary_title: "Что это такое и чем это не является.",
-          boundary_text:
-            "SemeAI Gate — release-control adapter. Публичная business action остается SHOW, REVIEW или BLOCK. Внутри они мапятся на PROCEED, NEEDS_REVIEW и SILENCE. Эти machine values не переводятся, потому что audit и replay зависят от них."
-        }
-      };
+      const verifyTokenInput = document.querySelector("#verify-token");
 
       function setMessage(text, kind = "") {
+        message.className = "message" + (kind ? " " + kind : "");
         message.textContent = text;
-        message.className = `message ${kind}`.trim();
       }
-
-      function formValue(id) {
-        return String(document.querySelector(`#${id}`)?.value || "").trim();
+      function showJson(data) {
+        output.textContent = JSON.stringify(data, null, 2);
       }
-
-      function buildRequest() {
+      function payloadFromForm() {
         return {
-          schema_version: "0.1-account",
-          request_type: "early_access_workspace_request",
-          product: "SemeAI Gate",
-          email: formValue("email"),
-          company: formValue("company"),
-          use_case: formValue("use_case"),
-          expected_monthly_checks: formValue("volume"),
-          notes: formValue("notes"),
-          requested_plan: "developer",
-          canonical_actions: ["SHOW", "REVIEW", "BLOCK"],
-          canonical_internal_decisions: ["PROCEED", "NEEDS_REVIEW", "SILENCE"],
-          boundary: {
-            password_collected: false,
-            shared_api_key_embedded_in_browser: false,
-            static_page_stores_customer_data: false,
-            customer_data_should_not_be_included: true
-          },
-          created_at: new Date().toISOString(),
-          source: "https://semeai.tech/register.html"
+          email: document.querySelector("#email").value.trim(),
+          company: document.querySelector("#company").value.trim(),
+          use_case: document.querySelector("#use_case").value,
+          expected_monthly_checks: document.querySelector("#volume").value,
+          notes: document.querySelector("#notes").value.trim(),
+          source: "https://semeai.tech/register.html",
         };
       }
 
-      function showJson(value) {
-        output.textContent = JSON.stringify(value, null, 2);
-        copyJsonButton.disabled = false;
-      }
+      document.querySelector("#preview-button").addEventListener("click", () => {
+        showJson(payloadFromForm());
+        setMessage("Preview only — not submitted.", "warn");
+      });
 
-      function setCurrentStep(activeStep) {
-        [stepRegister, stepVerify, stepCopyKey, stepAccount].forEach((step) => {
-          step.classList.toggle("current", step === activeStep);
-        });
-      }
-
-      async function fetchJson(path, options = {}) {
-        const controller = new AbortController();
-        const timeout = window.setTimeout(() => controller.abort(), 15000);
+      document.querySelector("#register-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const payload = payloadFromForm();
+        setMessage("Submitting registration…", "warn");
         try {
-          const response = await fetch(`${apiBaseUrl}${path}`, {
-            ...options,
-            signal: controller.signal
-          });
-          const data = await response.json().catch(() => ({}));
-          if (!response.ok) {
-            throw new Error(data.error || `HTTP ${response.status}`);
+          const data = await SemeAI.register(payload);
+          showJson(data);
+          const tokenFromUrl = data.verification && data.verification.verification_url;
+          if (tokenFromUrl && tokenFromUrl.includes("#verify=")) {
+            verifyTokenInput.value = tokenFromUrl.split("#verify=")[1];
           }
-          return data;
-        } finally {
-          window.clearTimeout(timeout);
-        }
-      }
-
-      async function registerWorkspace(request) {
-        return fetchJson("/v0/register", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify(request)
-        });
-      }
-
-      async function verifyWorkspace(token) {
-        return fetchJson("/v0/verify", {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ verification_token: token })
-        });
-      }
-
-      function maybeShowApiKey(result) {
-        if (!result?.api_key) return;
-        apiKeyInput.value = result.api_key;
-        keyBox.classList.add("visible");
-        setCurrentStep(stepCopyKey);
-      }
-
-      function extractVerificationTokenFromUrl(url) {
-        const text = String(url || "");
-        const marker = "#verify=";
-        const index = text.indexOf(marker);
-        return index >= 0 ? decodeURIComponent(text.slice(index + marker.length)) : "";
-      }
-
-      function applyLanguage(lang) {
-        const dictionary = translations[lang] || translations.en;
-        document.documentElement.lang = lang === "uk" ? "uk" : lang === "ru" ? "ru" : "en";
-        document.querySelectorAll("[data-i18n]").forEach((element) => {
-          const key = element.dataset.i18n;
-          if (dictionary[key]) {
-            element.textContent = dictionary[key];
-          }
-        });
-        document.querySelectorAll("[data-lang]").forEach((button) => {
-          button.classList.toggle("active", button.dataset.lang === lang);
-        });
-      }
-
-      form.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        if (!form.reportValidity()) return;
-        const request = buildRequest();
-        submitButton.disabled = true;
-        setMessage("Submitting registration request to live API...");
-        showJson({ status: "submitting", endpoint: `${apiBaseUrl}/v0/register`, request });
-        try {
-          const result = await registerWorkspace(request);
-          showJson(result);
-          const verificationUrl = result?.verification?.verification_url;
-          const token = extractVerificationTokenFromUrl(verificationUrl);
-          if (token) {
-            verifyTokenInput.value = token;
-          }
+          const emailed = data.verification && data.verification.email_sent;
           setMessage(
-            verificationUrl
-              ? "Workspace request created. The token is filled below; press Verify workspace next."
-              : "Workspace request created.",
-            "ok"
+            emailed
+              ? "Registration created. Check your email for the verification link."
+              : "Registration created. Verification URL is in the JSON response (email provider may be outbox mode).",
+            emailed ? "ok" : "warn"
           );
-          setCurrentStep(stepVerify);
-        } catch (error) {
-          showJson({
-            status: "registration_failed",
-            endpoint: `${apiBaseUrl}/v0/register`,
-            error: String(error.message || error),
-            no_shared_api_key_exposed: true
-          });
-          setMessage("Registration API failed or timed out. Try again later; no shared API key was exposed.", "error");
-        } finally {
-          submitButton.disabled = false;
+        } catch (err) {
+          setMessage(err.message || String(err), "error");
         }
       });
 
-      previewButton.addEventListener("click", () => {
-        showJson({ status: "preview_only", endpoint: `${apiBaseUrl}/v0/register`, request: buildRequest() });
-        setMessage("Preview prepared locally. Nothing was sent to the API.", "warn");
-      });
-
-      verifyButton.addEventListener("click", async () => {
-        const token = verifyTokenInput.value.trim();
-        if (!token) {
-          setMessage("Paste a verification token first, or open a #verify= link.", "warn");
-          return;
-        }
-        verifyButton.disabled = true;
-        setMessage("Verifying workspace and issuing API key...");
-        showJson({ status: "verifying", endpoint: `${apiBaseUrl}/v0/verify` });
+      document.querySelector("#verify-button").addEventListener("click", async () => {
         try {
-          const result = await verifyWorkspace(token);
-          showJson(result);
-          maybeShowApiKey(result);
-          setMessage(
-            result.api_key
-              ? "Workspace verified. Copy the API key now, then open Account Console and run the protected check."
-              : "Workspace already verified. Use the API key shown during first verification.",
-            "ok"
-          );
-          if (!result.api_key) {
-            setCurrentStep(stepAccount);
+          const token = verifyTokenInput.value.trim().replace(/^.*#verify=/, "");
+          setMessage("Verifying…", "warn");
+          const data = await SemeAI.verify(token);
+          showJson(data);
+          if (data.api_key) {
+            apiKeyInput.value = data.api_key;
+            setMessage("Verified. Copy the API key now — it is shown once.", "ok");
+          } else {
+            setMessage("Verification response received.", "ok");
           }
-          if (window.location.hash.startsWith("#verify=")) {
-            history.replaceState(null, "", window.location.pathname + window.location.search);
-          }
-        } catch (error) {
-          showJson({ status: "verification_failed", error: String(error.message || error) });
-          setMessage("Verification failed. Request a new workspace link or contact support.", "error");
-        } finally {
-          verifyButton.disabled = false;
+        } catch (err) {
+          setMessage(err.message || String(err), "error");
         }
       });
 
-      copyJsonButton.addEventListener("click", async () => {
-        await navigator.clipboard.writeText(output.textContent);
-        setMessage("JSON copied.", "ok");
-      });
-
-      copyKeyButton.addEventListener("click", async () => {
+      document.querySelector("#copy-key-button").addEventListener("click", async () => {
+        if (!apiKeyInput.value) return;
         await navigator.clipboard.writeText(apiKeyInput.value);
-        setMessage("API key copied. Open Account Console, paste it, and run the protected demo check.", "ok");
-        setCurrentStep(stepAccount);
+        setMessage("API key copied.", "ok");
       });
 
-      document.querySelectorAll("[data-lang]").forEach((button) => {
-        button.addEventListener("click", () => applyLanguage(button.dataset.lang || "en"));
+      document.querySelector("#use-dashboard").addEventListener("click", () => {
+        if (apiKeyInput.value) {
+          sessionStorage.setItem("semeai_dashboard_api_key", apiKeyInput.value);
+        }
+        location.href = "dashboard.html";
       });
 
-      function maybeVerifyFromHash() {
-        if (!window.location.hash.startsWith("#verify=")) return;
-        verifyTokenInput.value = decodeURIComponent(window.location.hash.slice("#verify=".length));
-        verifyButton.click();
+      if (location.hash.startsWith("#verify=")) {
+        verifyTokenInput.value = decodeURIComponent(location.hash.slice(8));
       }
-
-      applyLanguage("en");
-      maybeVerifyFromHash();
     </script>
   </body>
 </html>

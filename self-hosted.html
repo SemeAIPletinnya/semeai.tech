@@ -3,574 +3,63 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SemeAI Gate | Self-hosted deployment model</title>
-    <meta
-      name="description"
-      content="SemeAI Gate can run as open source, hosted SaaS API, or self-hosted inside a customer's own infrastructure when documents cannot leave the security boundary."
-    />
-    <style>
-      :root {
-        color-scheme: dark;
-        --bg: #071014;
-        --panel: #101d24;
-        --panel-2: #14242b;
-        --paper: #f4f7f6;
-        --ink: #f2f7f7;
-        --ink-dark: #12191d;
-        --muted: #9fb0b8;
-        --muted-dark: #5e7078;
-        --line: rgba(214, 235, 238, 0.15);
-        --line-dark: #d7e1e1;
-        --aqua: #9dd5d6;
-        --aqua-2: #4ba3a7;
-        --red: #ff5d6c;
-        --green: #55d69a;
-        --shadow: 0 34px 100px rgba(0, 0, 0, 0.3);
-        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      }
-
-      * { box-sizing: border-box; }
-
-      html {
-        scroll-behavior: smooth;
-        background: var(--bg);
-      }
-
-      body {
-        margin: 0;
-        color: var(--ink);
-        background:
-          radial-gradient(circle at 82% 4%, rgba(157, 213, 214, 0.2), transparent 30vw),
-          radial-gradient(circle at 10% 14%, rgba(130, 199, 255, 0.12), transparent 28vw),
-          linear-gradient(180deg, #071014 0%, #0b151a 48%, #edf3f2 48%, #edf3f2 100%);
-        -webkit-font-smoothing: antialiased;
-      }
-
-      a { color: inherit; text-decoration: none; }
-
-      .wrap {
-        width: min(1180px, calc(100vw - 42px));
-        margin: 0 auto;
-      }
-
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        border-bottom: 1px solid var(--line);
-        background: rgba(7, 16, 20, 0.84);
-        backdrop-filter: blur(18px);
-      }
-
-      .topbar-inner {
-        display: flex;
-        min-height: 72px;
-        align-items: center;
-        justify-content: space-between;
-        gap: 18px;
-      }
-
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        font-weight: 780;
-      }
-
-      .mark {
-        display: grid;
-        width: 42px;
-        height: 42px;
-        place-items: center;
-        border: 1px solid rgba(157, 213, 214, 0.7);
-        border-radius: 14px;
-        color: #06282b;
-        background: linear-gradient(135deg, var(--aqua), #c7eeee);
-        font-size: 13px;
-        font-weight: 780;
-      }
-
-      .brand small {
-        display: block;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 520;
-      }
-
-      .nav {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 15px;
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      .nav a:hover { color: var(--ink); }
-
-      .nav .github {
-        min-height: 36px;
-        padding: 8px 13px;
-        border: 1px solid rgba(157, 213, 214, 0.48);
-        border-radius: 10px;
-        color: var(--ink);
-        background: rgba(255, 255, 255, 0.05);
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 0.96fr) minmax(420px, 0.84fr);
-        gap: 56px;
-        align-items: center;
-        min-height: 720px;
-        padding: 76px 0 86px;
-      }
-
-      .eyebrow,
-      .badge {
-        display: inline-flex;
-        min-height: 30px;
-        align-items: center;
-        padding: 6px 12px;
-        border: 1px solid rgba(157, 213, 214, 0.55);
-        border-radius: 999px;
-        color: var(--aqua);
-        background: rgba(157, 213, 214, 0.08);
-        font-size: 12px;
-        font-weight: 760;
-        text-transform: uppercase;
-      }
-
-      h1, h2, h3, p { margin-top: 0; }
-
-      h1 {
-        max-width: 780px;
-        margin: 22px 0;
-        font-size: clamp(54px, 7vw, 96px);
-        line-height: 0.96;
-        letter-spacing: -0.04em;
-      }
-
-      h2 {
-        margin-bottom: 18px;
-        color: var(--ink-dark);
-        font-size: clamp(34px, 4.2vw, 58px);
-        line-height: 1.04;
-        letter-spacing: -0.035em;
-      }
-
-      h3 {
-        margin-bottom: 10px;
-        font-size: 22px;
-        letter-spacing: -0.02em;
-      }
-
-      .lead {
-        max-width: 720px;
-        color: #c7d4d8;
-        font-size: 20px;
-        line-height: 1.62;
-      }
-
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 30px;
-      }
-
-      .button {
-        display: inline-flex;
-        min-height: 46px;
-        align-items: center;
-        justify-content: center;
-        padding: 0 18px;
-        border: 1px solid var(--line);
-        border-radius: 11px;
-        color: var(--ink);
-        background: rgba(255, 255, 255, 0.05);
-        font-weight: 760;
-      }
-
-      .button.primary {
-        color: #06282b;
-        border-color: var(--aqua-2);
-        background: var(--aqua);
-      }
-
-      .button.light {
-        color: var(--ink-dark);
-        border-color: var(--line-dark);
-        background: white;
-      }
-
-      .boundary-map {
-        position: relative;
-        min-height: 430px;
-        padding: 28px;
-        border: 1px solid rgba(157, 213, 214, 0.4);
-        background:
-          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-          linear-gradient(145deg, rgba(16, 29, 36, 0.94), rgba(20, 37, 45, 0.94));
-        background-size: 38px 38px, 38px 38px, auto;
-        box-shadow: var(--shadow);
-        overflow: hidden;
-      }
-
-      .lane {
-        display: grid;
-        grid-template-columns: 1fr 52px 1fr;
-        gap: 18px;
-        align-items: center;
-        margin-top: 54px;
-      }
-
-      .box {
-        min-height: 112px;
-        padding: 20px;
-        border: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.045);
-      }
-
-      .box strong {
-        display: block;
-        margin-bottom: 8px;
-        font-size: 18px;
-      }
-
-      .box span,
-      .box p {
-        color: var(--muted);
-        font-size: 14px;
-        line-height: 1.5;
-      }
-
-      .arrow {
-        height: 1px;
-        background: var(--aqua);
-        position: relative;
-      }
-
-      .arrow::after {
-        position: absolute;
-        right: -1px;
-        top: -5px;
-        width: 10px;
-        height: 10px;
-        border-top: 1px solid var(--aqua);
-        border-right: 1px solid var(--aqua);
-        content: "";
-        transform: rotate(45deg);
-      }
-
-      .shield {
-        display: grid;
-        min-height: 130px;
-        place-items: center;
-        margin: 42px auto 0;
-        border: 1px solid rgba(240, 185, 90, 0.62);
-        background: rgba(240, 185, 90, 0.06);
-        color: var(--ink);
-        font-size: 24px;
-        font-weight: 820;
-      }
-
-      .light-zone {
-        color: var(--ink-dark);
-        background: #edf3f2;
-      }
-
-      .section {
-        padding: 60px 0;
-      }
-
-      .panel {
-        padding: 44px;
-        border: 1px solid var(--line-dark);
-        background: var(--paper);
-        box-shadow: 0 24px 90px rgba(24, 38, 42, 0.08);
-      }
-
-      .section p,
-      .section li {
-        color: var(--muted-dark);
-        font-size: 17px;
-        line-height: 1.64;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 18px;
-      }
-
-      .card {
-        min-height: 250px;
-        padding: 24px;
-        border: 1px solid var(--line-dark);
-        background: white;
-      }
-
-      .tag {
-        display: block;
-        margin-bottom: 28px;
-        color: var(--aqua-2);
-        font-size: 12px;
-        font-weight: 820;
-        text-transform: uppercase;
-      }
-
-      .split {
-        display: grid;
-        grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1fr);
-        gap: 34px;
-        align-items: start;
-      }
-
-      .table {
-        border: 1px solid var(--line-dark);
-        background: white;
-      }
-
-      .row {
-        display: grid;
-        grid-template-columns: 190px minmax(0, 1fr);
-        gap: 24px;
-        padding: 18px 20px;
-        border-bottom: 1px solid var(--line-dark);
-      }
-
-      .row:last-child { border-bottom: 0; }
-
-      .row strong {
-        font-size: 13px;
-        text-transform: uppercase;
-      }
-
-      .row span {
-        color: var(--muted-dark);
-        line-height: 1.55;
-      }
-
-      .warning {
-        border-left: 4px solid var(--red);
-      }
-
-      footer {
-        padding: 34px 0 50px;
-        color: var(--muted-dark);
-        font-size: 14px;
-      }
-
-      @media (max-width: 900px) {
-        .topbar-inner,
-        .nav,
-        .actions {
-          align-items: flex-start;
-        }
-
-        .topbar-inner,
-        .hero,
-        .split {
-          grid-template-columns: 1fr;
-        }
-
-        .topbar-inner {
-          flex-direction: column;
-          padding: 14px 0;
-        }
-
-        .hero {
-          min-height: auto;
-          padding: 54px 0 70px;
-        }
-
-        h1 {
-          font-size: clamp(48px, 15vw, 68px);
-        }
-
-        .grid,
-        .lane,
-        .row {
-          grid-template-columns: 1fr;
-        }
-
-        .arrow {
-          min-height: 34px;
-          width: 1px;
-          justify-self: center;
-        }
-
-        .arrow::after {
-          right: -5px;
-          top: auto;
-          bottom: 0;
-          transform: rotate(135deg);
-        }
-
-        .panel {
-          padding: 28px;
-        }
-      }
-    </style>
+    <title>SemeAI Gate | Self-hosted deployment</title>
+    <meta name="description" content="Run SemeAI Gate open source, self-hosted, or as SaaS API without forcing document egress." />
+    <link rel="stylesheet" href="assets/css/semeai.css" />
   </head>
   <body>
-    <header class="topbar">
-      <div class="wrap topbar-inner">
-        <a class="brand" href="index.html" aria-label="SemeAI home">
-          <span class="mark">SG</span>
-          <span>SemeAI <small>Release-control systems</small></span>
-        </a>
-        <nav class="nav" aria-label="Main navigation">
-          <a href="gate.html">Gate</a>
-          <a href="index.html#platform">Platform</a>
-          <a href="index.html#api">API</a>
-          <a href="self-hosted.html">Self-hosted</a>
-          <a href="article.html">Article</a>
-          <a href="register.html">Register</a>
-          <a href="account.html">Account</a>
-          <a href="https://gate.semeai.tech">Live demo</a>
-          <a class="github" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
-        </nav>
-      </div>
-    </header>
-
-    <main>
-      <section class="wrap hero">
-        <div>
-          <span class="eyebrow">Enterprise deployment boundary</span>
-          <h1>Do not send documents out. Run the gate inside.</h1>
-          <p class="lead">
-            SemeAI Gate is not only a SaaS endpoint. The same release-control contract can run as open source,
-            a hosted API, or self-hosted software inside the customer's own infrastructure.
-          </p>
-          <div class="actions">
-            <a class="button primary" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">Open source repo</a>
-            <a class="button" href="register.html">Request SaaS workspace</a>
-            <a class="button" href="https://api.semeai.tech/health">API health</a>
-          </div>
+    <header class="nav" data-semeai-nav></header>
+    <main class="page">
+      <section class="hero">
+        <span class="eyebrow">Deployment</span>
+        <h1>Run the gate where your data is allowed to live.</h1>
+        <p class="lead">
+          Sensitive teams should not be forced into a single SaaS path.
+          The same SHOW / REVIEW / BLOCK contract runs open source, self-hosted, or hosted.
+        </p>
+        <div class="button-row">
+          <a class="button primary" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">Open source repo</a>
+          <a class="button" href="register.html">SaaS pilot access</a>
+          <a class="button" href="dashboard.html">Dashboard</a>
         </div>
-
-        <aside class="boundary-map" aria-label="Self-hosted deployment boundary">
-          <span class="eyebrow">No document egress required</span>
-          <div class="lane">
-            <div class="box">
-              <strong>Customer LLM app</strong>
-              <span>User message, AI answer, business data, business context.</span>
-            </div>
-            <div class="arrow"></div>
-            <div class="box">
-              <strong>SemeAI Gate</strong>
-              <span>Runs inside customer VPC/on-prem when policy requires it.</span>
-            </div>
-          </div>
-          <div class="shield">SHOW / REVIEW / BLOCK</div>
-          <div class="lane">
-            <div class="box">
-              <strong>Reviewer / operator</strong>
-              <span>REVIEW cases stay in the customer's own workflow.</span>
-            </div>
-            <div class="arrow"></div>
-            <div class="box">
-              <strong>Audit receipts</strong>
-              <span>Release denied / execution withheld / audit preserved.</span>
-            </div>
-          </div>
-        </aside>
       </section>
-
-      <div class="light-zone">
-        <section class="wrap section">
-          <div class="panel">
-            <span class="badge">Deployment paths</span>
-            <h2>One gate contract, three ways to run it.</h2>
-            <div class="grid">
-              <article class="card">
-                <span class="tag">01 Open source</span>
-                <h3>Run it yourself.</h3>
-                <p>
-                  Developers can inspect the basic package, run deterministic examples, and integrate it into an
-                  existing chatbot or application without a hosted account.
-                </p>
-              </article>
-              <article class="card">
-                <span class="tag">02 Self-hosted enterprise</span>
-                <h3>Keep sensitive data inside.</h3>
-                <p>
-                  Banks, medical teams, governments, studios, and large enterprises can deploy the gate in their own
-                  VPC, data center, or private cloud. SemeAI does not need to see their documents.
-                </p>
-              </article>
-              <article class="card">
-                <span class="tag">03 SaaS API</span>
-                <h3>Start quickly when policy allows.</h3>
-                <p>
-                  Smaller teams and pilots can use the hosted API for fast evaluation. The API returns SHOW, REVIEW,
-                  or BLOCK plus audit metadata.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section class="wrap section">
-          <div class="split">
-            <div class="panel warning">
-              <span class="badge">Security answer</span>
-              <h2>If documents cannot leave, they should not leave.</h2>
-              <p>
-                The correct answer to a CTO or security team is not "trust our SaaS anyway." The correct answer is:
-                run SemeAI Gate inside your boundary and keep your documents, prompts, business rules, receipts, and
-                review queues under your own control.
-              </p>
-              <p>
-                SaaS is for quick pilots and lower-sensitivity workflows. Self-hosted is for teams whose policies do
-                not permit sensitive material to leave their infrastructure.
-              </p>
-            </div>
-            <div class="table">
-              <div class="row"><strong>Input</strong><span>user_message, ai_answer, business_data, business_rules, business_context.</span></div>
-              <div class="row"><strong>Decision</strong><span>SHOW, REVIEW, or BLOCK. Machine values remain canonical for audit and replay.</span></div>
-              <div class="row"><strong>Internal</strong><span>SHOW = PROCEED, REVIEW = NEEDS_REVIEW, BLOCK = SILENCE.</span></div>
-              <div class="row"><strong>Receipts</strong><span>SILENCE means release denied / execution withheld / audit preserved, not deletion.</span></div>
-              <div class="row"><strong>Boundary</strong><span>Self-hosted deployments can keep all sensitive data inside customer infrastructure.</span></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="wrap section">
-          <div class="panel">
-            <span class="badge">What this does not claim</span>
-            <h2>Conservative by design.</h2>
-            <div class="grid">
-              <article class="card">
-                <h3>Not universal hallucination detection.</h3>
-                <p>The gate checks scoped business evidence, rules, context, and release-risk patterns.</p>
-              </article>
-              <article class="card">
-                <h3>Not a model replacement.</h3>
-                <p>Existing LLMs still generate candidate answers. SemeAI decides whether they should be released.</p>
-              </article>
-              <article class="card">
-                <h3>Not compliance certification.</h3>
-                <p>Self-hosted deployment helps with data-boundary requirements, but formal compliance still belongs to the operator.</p>
-              </article>
-            </div>
-            <div class="actions">
-              <a class="button light" href="gate.html">Read product contract</a>
-              <a class="button light" href="article.html">Read the article</a>
-              <a class="button light" href="account.html">Open account console</a>
-            </div>
-          </div>
-        </section>
-      </div>
+      <section class="section">
+        <div class="grid-3">
+          <article class="card">
+            <h3>01 · Open source</h3>
+            <p>Inspect, fork, and run the basic adapter locally for demos and integration experiments.</p>
+          </article>
+          <article class="card">
+            <h3>02 · Self-hosted</h3>
+            <p>Deploy inside your VPC/on-prem. Customer documents never need to leave your boundary.</p>
+          </article>
+          <article class="card">
+            <h3>03 · SaaS API</h3>
+            <p>Start quickly when policy allows scoped request data to leave for pilot evaluation.</p>
+          </article>
+        </div>
+      </section>
+      <section class="section">
+        <h2>Docker quick path</h2>
+        <pre>git clone https://github.com/SemeAIPletinnya/semeai-gate-basic.git
+cd semeai-gate-basic
+# set SEMEAI_GATE_API_KEYS before public bind
+docker compose -f docker-compose.api.yml up --build</pre>
+        <p style="margin-top: 14px">
+          Endpoint: <code>POST /v0/check</code> · Health: <code>GET /health</code> ·
+          Invariant: payment metadata is not gate authority.
+        </p>
+      </section>
+      <section class="section">
+        <h2>What this does not claim</h2>
+        <div class="grid-3">
+          <article class="card"><h3>Not a model</h3><p>Existing LLMs still generate candidates.</p></article>
+          <article class="card"><h3>Not universal hallucination detection</h3><p>Scoped business evidence + rules + context.</p></article>
+          <article class="card"><h3>Not compliance certification</h3><p>Self-host helps boundary requirements; formal compliance stays with the operator.</p></article>
+        </div>
+      </section>
     </main>
-
-    <footer class="wrap">
-      SemeAI Gate preserves canonical release states: PROCEED / NEEDS_REVIEW / SILENCE. Metadata and billing status are not release authority.
-    </footer>
+    <footer class="site-footer" data-semeai-footer></footer>
+    <script src="assets/js/shell.js"></script>
   </body>
 </html>
