@@ -706,10 +706,14 @@
           <span class="eyebrow">Manual activation</span>
           <h2>USDT/TRC20 payment review.</h2>
           <p>
-            Paid activation is manual in this early build. Create a payment
-            intent, send USDT on TRC20, then submit the transaction id for
-            operator review. A submitted TXID does not automatically activate
-            paid access.
+            Paid pilot activation is manual crypto-only in this build (no Stripe).
+            Create a payment intent, send USDT on TRC20 to
+            <strong>TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</strong> (default 25 USDT),
+            submit the transaction id here, then email
+            <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>
+            with workspace_id, invoice_id, and txid for operator review.
+            A submitted TXID does not automatically activate paid access.
+            Payment metadata is never gate authority.
           </p>
           <div class="summary-panel" id="billing-summary" aria-label="Billing summary">
             <div class="summary-row">
@@ -732,7 +736,17 @@
               <strong>Manual review</strong>
               <p>
                 The API records invoice and TXID evidence for the authenticated
-                workspace. Access changes only after operator review.
+                workspace. Access changes only after operator review at
+                adelayida0403@gmail.com.
+              </p>
+            </div>
+            <div class="metric">
+              <span>Feedback / review email</span>
+              <strong>
+                <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>
+              </strong>
+              <p>
+                Send workspace_id + invoice_id + TRC20 txid after payment for faster pilot activation.
               </p>
             </div>
           </div>
@@ -1095,7 +1109,8 @@
         });
         showJson(billingJson, data);
         setStatus("invoice created", "ok");
-        messageEl.textContent = "Payment intent created. Send USDT on TRC20, then submit the TXID for operator review.";
+        messageEl.textContent =
+          "Payment intent created. Send USDT on TRC20 to the address above, submit the TXID here, then email adelayida0403@gmail.com with workspace_id + invoice_id + txid.";
       }
 
       async function submitTxid() {
@@ -1130,7 +1145,8 @@
         });
         showJson(billingJson, data);
         setStatus("pending review", "warn");
-        messageEl.textContent = "TXID submitted. Paid access is still pending manual operator verification.";
+        messageEl.textContent =
+          "TXID submitted. Paid access is still pending manual operator verification. Email adelayida0403@gmail.com with workspace_id, invoice_id, and txid for faster pilot review.";
       }
 
       async function runProtectedCheck() {

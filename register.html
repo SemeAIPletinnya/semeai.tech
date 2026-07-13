@@ -561,7 +561,9 @@
             <div class="status-item"><span>Live account API</span><strong>api.semeai.tech</strong></div>
             <div class="status-item"><span>Password collection</span><strong>false</strong></div>
             <div class="status-item"><span>Shared API key in browser</span><strong>false</strong></div>
-            <div class="status-item"><span>Billing provider</span><strong>not configured</strong></div>
+            <div class="status-item"><span>Billing provider</span><strong>USDT / TRC20 manual</strong></div>
+            <div class="status-item"><span>Pilot amount</span><strong>25 USDT</strong></div>
+            <div class="status-item"><span>Feedback / review email</span><strong>adelayida0403@gmail.com</strong></div>
             <div class="status-item"><span>Canonical states</span><strong>SHOW / REVIEW / BLOCK</strong></div>
           </div>
         </aside>
@@ -656,8 +658,9 @@
               <input id="ack" name="ack" type="checkbox" required />
               <span data-i18n="ack_label">
                 I will not submit sensitive customer data. I understand the
-                v0.1 account flow does not collect passwords and does not
-                configure paid billing.
+                v0.1 account flow does not collect passwords, uses manual
+                verification links, and optional pilot billing is USDT/TRC20
+                with operator review (not Stripe).
               </span>
             </label>
 
@@ -673,9 +676,24 @@
           </form>
 
           <p class="fineprint" data-i18n="form_note">
-            In v0.1, email delivery is not configured. The API returns a
-            verification link for manual early-access setup.
+            In v0.1, automatic email delivery is not configured. The API returns a
+            verification link for early-access setup. For pilot help or paid
+            activation review, email
+            <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>.
           </p>
+          <div class="machine-note" style="margin-top: 16px">
+            <strong>Pilot pilot (crypto only)</strong>
+            <p style="margin: 8px 0 0; color: var(--muted); line-height: 1.5">
+              1) Register + verify → get API key<br />
+              2) Open Account Console → create USDT/TRC20 payment intent (default 25 USDT)<br />
+              3) Send USDT on TRC20 to
+              <code>TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code><br />
+              4) Submit TXID in console, then email
+              <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>
+              with workspace_id, invoice_id, and txid<br />
+              5) Payment metadata never becomes gate authority (SHOW / REVIEW / BLOCK stay independent)
+            </p>
+          </div>
         </div>
 
         <aside class="output-panel" aria-label="API response">
@@ -701,7 +719,8 @@
               </li>
             </ol>
             <div class="secret-warning" id="secret-warning" data-i18n="secret_warning">
-              v0.1 uses manual verification: no password, no billing, no customer data upload.
+              v0.1 uses manual verification: no password, no customer data upload.
+              Pilot billing is manual USDT/TRC20 reviewed via adelayida0403@gmail.com.
             </div>
           </div>
 
