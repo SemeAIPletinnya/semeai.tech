@@ -4,138 +4,173 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Register for SemeAI Gate</title>
-    <meta name="description" content="Create a SemeAI Gate workspace, verify email, receive an API key, and open the product dashboard." />
-    <link rel="stylesheet" href="assets/css/semeai.css" />
+    <meta name="description" content="Create a SemeAI Gate workspace in four clear steps: register, verify, copy API key, open dashboard." />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713b" />
+    <link rel="stylesheet" href="assets/css/product.css?v=20260713b" />
   </head>
-  <body>
+  <body class="product-body">
     <header class="nav" data-semeai-nav></header>
-    <main class="page">
-      <section class="hero">
-        <span class="eyebrow">Workspace registration</span>
+
+    <main class="page product-main">
+      <section class="hero-compact fade-up">
+        <span class="eyebrow">Workspace onboarding</span>
         <h1>Create a SemeAI Gate workspace.</h1>
         <p class="lead">
-          Request access, verify, copy your API key once, then use the dashboard for checks, receipts, and pilot billing.
+          Four clear steps. No password. API key shown once. Then run checks in the dashboard.
         </p>
-        <div class="button-row">
-          <a class="button primary" href="#register">Start registration</a>
-          <a class="button" href="dashboard.html">Open dashboard</a>
-          <a class="button" href="article.html">Read the thesis</a>
-        </div>
       </section>
 
-      <section class="section">
-        <div class="grid-4">
-          <div class="card metric"><span>API</span><strong>api.semeai.tech</strong></div>
-          <div class="card metric"><span>Passwords</span><strong>not collected</strong></div>
-          <div class="card metric"><span>Billing</span><strong>USDT / TRC20</strong></div>
-          <div class="card metric"><span>Feedback</span><strong style="font-size:13px">adelayida0403@gmail.com</strong></div>
+      <div class="steps fade-up d1" id="steps" aria-label="Registration progress">
+        <div class="step active" data-step="1">
+          <span class="num">1</span>
+          <strong>Register</strong>
+          <small>Work email + pilot context</small>
         </div>
-      </section>
+        <div class="step" data-step="2">
+          <span class="num">2</span>
+          <strong>Verify</strong>
+          <small>Email link or token</small>
+        </div>
+        <div class="step" data-step="3">
+          <span class="num">3</span>
+          <strong>API key</strong>
+          <small>Copy once, store safely</small>
+        </div>
+        <div class="step" data-step="4">
+          <span class="num">4</span>
+          <strong>Dashboard</strong>
+          <small>Checks · receipts · billing</small>
+        </div>
+      </div>
 
-      <section class="section grid-2" id="register">
-        <div>
-          <span class="pill info">schema 0.1-account</span>
-          <h2 style="margin-top: 12px">Request workspace access.</h2>
+      <section class="split-2">
+        <div class="section fade-up d2" id="panel-form">
+          <div class="button-row" style="margin-bottom: 10px">
+            <span class="pill info">schema 0.1-account</span>
+            <span class="pill" id="email-mode-pill">email …</span>
+          </div>
+          <h2>Request access</h2>
           <p>Do not paste customer secrets, production prompts, or private data.</p>
-          <form class="grid" id="register-form" style="margin-top: 16px; gap: 14px">
+
+          <form class="grid" id="register-form" style="margin-top: 14px; gap: 14px">
             <div class="grid-2">
               <div class="field">
                 <label for="email">Work email</label>
-                <input id="email" name="email" type="email" required placeholder="you@company.com" />
+                <input id="email" type="email" required placeholder="you@company.com" autocomplete="email" />
               </div>
               <div class="field">
                 <label for="company">Company or project</label>
-                <input id="company" name="company" required placeholder="Acme Support" />
+                <input id="company" required placeholder="Acme Support" />
               </div>
             </div>
             <div class="grid-2">
               <div class="field">
                 <label for="use_case">Primary use case</label>
-                <select id="use_case" name="use_case">
+                <select id="use_case">
                   <option value="support">Support chatbot release control</option>
-                  <option value="fintech">Fintech / account claim checks</option>
+                  <option value="fintech">Fintech / account claims</option>
                   <option value="product">Product assistant guardrail</option>
-                  <option value="gaming">Game / world-generation release gate</option>
-                  <option value="internal_tools">Internal tools / ops assistant</option>
+                  <option value="gaming">Game / world release gate</option>
+                  <option value="internal_tools">Internal tools / ops</option>
                   <option value="research">Research / evaluation</option>
                 </select>
               </div>
               <div class="field">
                 <label for="volume">Expected monthly checks</label>
-                <select id="volume" name="volume">
+                <select id="volume">
                   <option value="pilot">Pilot / evaluation</option>
                   <option value="under_10k">Under 10k</option>
-                  <option value="10k_100k">10k - 100k</option>
+                  <option value="10k_100k">10k – 100k</option>
                   <option value="100k_plus">100k+</option>
                 </select>
               </div>
             </div>
             <div class="field">
               <label for="notes">Pilot notes</label>
-              <textarea id="notes" name="notes" placeholder="Example: block fake promo codes before chatbot answers reach users."></textarea>
+              <textarea id="notes" placeholder="Example: block fake promo codes before answers reach users."></textarea>
             </div>
-            <label class="panel" style="display:grid;grid-template-columns:20px 1fr;gap:10px;align-items:start">
-              <input id="ack" type="checkbox" required style="width:18px;margin-top:3px" />
-              <span>I will not submit sensitive customer data. I understand v0.1 uses email verification links and optional USDT/TRC20 pilot billing with operator review.</span>
+            <label class="panel" style="display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start">
+              <input id="ack" type="checkbox" required style="width: 18px; margin-top: 3px" />
+              <span>I will not submit sensitive customer data. I understand v0.1 email verification and optional USDT/TRC20 pilot billing with operator review.</span>
             </label>
             <div class="button-row">
               <button class="button primary" id="submit-button" type="submit">Submit registration</button>
               <button class="button" id="preview-button" type="button">Preview JSON</button>
             </div>
           </form>
-          <p style="margin-top: 14px; color: var(--muted-2); font-size: 13px">
-            When Resend/SMTP is configured, verification email is sent automatically.
-            Otherwise the verification URL is returned here and queued for operator delivery.
-          </p>
         </div>
 
-        <aside class="panel">
-          <h3>Live API response</h3>
-          <div class="message" id="form-message" style="margin: 12px 0">Submit the form to create a pending workspace request.</div>
-          <div class="field">
-            <label for="verify-token">Verification token / URL token</label>
-            <input id="verify-token" placeholder="Paste token or open #verify= link" />
+        <aside class="section fade-up d3" id="panel-response">
+          <h2>Live progress</h2>
+          <div class="message" id="form-message">Ready when you are. Submit the form to start step 1.</div>
+
+          <div class="field" style="margin-top: 14px">
+            <label for="verify-token">Step 2 · Verification token</label>
+            <input id="verify-token" spellcheck="false" placeholder="From email or #verify= link" />
           </div>
           <div class="button-row" style="margin: 12px 0">
             <button class="button primary" id="verify-button" type="button">Verify workspace</button>
-            <a class="button" href="dashboard.html">Open dashboard</a>
           </div>
+
           <div class="field">
-            <label for="api-key">API key (shown once)</label>
-            <input id="api-key" readonly />
+            <label for="api-key">Step 3 · API key (shown once)</label>
+            <input id="api-key" readonly placeholder="Appears after verify" />
           </div>
           <div class="button-row" style="margin-top: 10px">
             <button class="button" id="copy-key-button" type="button">Copy API key</button>
-            <button class="button primary" id="use-dashboard" type="button">Use in dashboard</button>
+            <button class="button primary" id="use-dashboard" type="button">Step 4 · Open dashboard</button>
           </div>
-          <pre id="json-output" style="margin-top: 14px">{ "status": "idle" }</pre>
+
+          <details style="margin-top: 16px">
+            <summary style="cursor: pointer; color: var(--muted); font-weight: 650">API JSON</summary>
+            <pre id="json-output" style="margin-top: 10px">{ "status": "idle" }</pre>
+          </details>
+
+          <div class="panel" style="margin-top: 14px">
+            <strong>After verify</strong>
+            <p style="margin: 8px 0 0; font-size: 13px">
+              Dashboard → gate checks · receipts · REVIEW queue · USDT/TRC20 pilot
+              (<code>TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>). Review email:
+              <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>
+            </p>
+          </div>
         </aside>
       </section>
-
-      <section class="section">
-        <h2>Pilot path after verify</h2>
-        <div class="grid-3" style="margin-top: 12px">
-          <article class="card"><h3>1. Dashboard</h3><p>Paste API key, run protected checks, inspect receipts.</p></article>
-          <article class="card"><h3>2. Pay USDT/TRC20</h3><p>Default 25 USDT to <code>TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>.</p></article>
-          <article class="card"><h3>3. Email review</h3><p>Send workspace_id + invoice_id + txid to adelayida0403@gmail.com.</p></article>
-        </div>
-      </section>
     </main>
+
     <footer class="site-footer" data-semeai-footer></footer>
-    <script src="assets/js/api.js"></script>
-    <script src="assets/js/shell.js"></script>
+
+    <script src="assets/js/api.js?v=20260713b"></script>
+    <script src="assets/js/shell.js?v=20260713b"></script>
+    <script src="assets/js/cache-bust.js?v=20260713b"></script>
     <script>
       const message = document.querySelector("#form-message");
       const output = document.querySelector("#json-output");
       const apiKeyInput = document.querySelector("#api-key");
       const verifyTokenInput = document.querySelector("#verify-token");
+      const submitBtn = document.querySelector("#submit-button");
+      const verifyBtn = document.querySelector("#verify-button");
 
       function setMessage(text, kind = "") {
         message.className = "message" + (kind ? " " + kind : "");
         message.textContent = text;
+        if (kind === "ok") message.classList.add("pulse-ok");
       }
       function showJson(data) {
         output.textContent = JSON.stringify(data, null, 2);
+      }
+      function setStep(n) {
+        document.querySelectorAll(".step").forEach((el) => {
+          const s = Number(el.dataset.step);
+          el.classList.toggle("active", s === n);
+          el.classList.toggle("done", s < n);
+        });
+      }
+      function busy(btn, on) {
+        btn.classList.toggle("btn-busy", on);
+        btn.disabled = on;
       }
       function payloadFromForm() {
         return {
@@ -148,6 +183,24 @@
         };
       }
 
+      async function bootHealth() {
+        try {
+          const h = await SemeAI.health();
+          const ev = h.email_verification || {};
+          const pill = document.querySelector("#email-mode-pill");
+          if (ev.automatic_email_delivery) {
+            pill.textContent = "email auto · " + (ev.provider || "resend");
+            pill.className = "pill ok";
+          } else {
+            pill.textContent = "email " + (ev.provider || "manual");
+            pill.className = "pill warn";
+          }
+        } catch {
+          document.querySelector("#email-mode-pill").textContent = "API offline";
+          document.querySelector("#email-mode-pill").className = "pill bad";
+        }
+      }
+
       document.querySelector("#preview-button").addEventListener("click", () => {
         showJson(payloadFromForm());
         setMessage("Preview only — not submitted.", "warn");
@@ -156,45 +209,58 @@
       document.querySelector("#register-form").addEventListener("submit", async (e) => {
         e.preventDefault();
         const payload = payloadFromForm();
+        busy(submitBtn, true);
+        setStep(1);
         setMessage("Submitting registration…", "warn");
         try {
           const data = await SemeAI.register(payload);
           showJson(data);
-          const tokenFromUrl = data.verification && data.verification.verification_url;
-          if (tokenFromUrl && tokenFromUrl.includes("#verify=")) {
-            verifyTokenInput.value = tokenFromUrl.split("#verify=")[1];
+          document.querySelector("#panel-response").classList.add("panel-enter");
+          const url = data.verification && data.verification.verification_url;
+          if (url && url.includes("#verify=")) {
+            verifyTokenInput.value = url.split("#verify=")[1];
           }
+          setStep(2);
           const emailed = data.verification && data.verification.email_sent;
           setMessage(
             emailed
-              ? "Registration created. Check your email for the verification link."
-              : "Registration created. Verification URL is in the JSON response (email provider may be outbox mode).",
+              ? "Step 1 done. Check your email for the verification link."
+              : "Step 1 done. Use the verification token from the JSON / API response.",
             emailed ? "ok" : "warn"
           );
+          verifyTokenInput.focus();
         } catch (err) {
           setMessage(err.message || String(err), "error");
+        } finally {
+          busy(submitBtn, false);
         }
       });
 
       document.querySelector("#verify-button").addEventListener("click", async () => {
+        const token = verifyTokenInput.value.trim().replace(/^.*#verify=/, "");
+        if (!token) return setMessage("Paste a verification token first.", "warn");
+        busy(verifyBtn, true);
+        setMessage("Verifying workspace…", "warn");
         try {
-          const token = verifyTokenInput.value.trim().replace(/^.*#verify=/, "");
-          setMessage("Verifying…", "warn");
           const data = await SemeAI.verify(token);
           showJson(data);
           if (data.api_key) {
             apiKeyInput.value = data.api_key;
-            setMessage("Verified. Copy the API key now — it is shown once.", "ok");
+            setStep(3);
+            setMessage("Step 3: API key issued. Copy it now — it is shown once.", "ok");
+            apiKeyInput.classList.add("pulse-ok");
           } else {
             setMessage("Verification response received.", "ok");
           }
         } catch (err) {
           setMessage(err.message || String(err), "error");
+        } finally {
+          busy(verifyBtn, false);
         }
       });
 
       document.querySelector("#copy-key-button").addEventListener("click", async () => {
-        if (!apiKeyInput.value) return;
+        if (!apiKeyInput.value) return setMessage("No API key yet.", "warn");
         await navigator.clipboard.writeText(apiKeyInput.value);
         setMessage("API key copied.", "ok");
       });
@@ -202,13 +268,19 @@
       document.querySelector("#use-dashboard").addEventListener("click", () => {
         if (apiKeyInput.value) {
           sessionStorage.setItem("semeai_dashboard_api_key", apiKeyInput.value);
+          setStep(4);
         }
-        location.href = "dashboard.html";
+        location.href = "dashboard.html?v=20260713b";
       });
 
       if (location.hash.startsWith("#verify=")) {
         verifyTokenInput.value = decodeURIComponent(location.hash.slice(8));
+        setStep(2);
+        setMessage("Verification token loaded from link. Click Verify workspace.", "warn");
+      } else {
+        setStep(1);
       }
+      bootHealth();
     </script>
   </body>
 </html>

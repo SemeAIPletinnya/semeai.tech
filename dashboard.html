@@ -4,57 +4,89 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SemeAI Dashboard | Workspace console</title>
-    <meta
-      name="description"
-      content="SemeAI Gate product dashboard: workspace status, gate checks, receipts, REVIEW queue, and USDT/TRC20 pilot billing."
-    />
-    <link rel="stylesheet" href="assets/css/semeai.css" />
+    <meta name="description" content="SemeAI Gate dashboard: API key, gate checks, receipts, REVIEW queue, USDT/TRC20 billing." />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713b" />
+    <link rel="stylesheet" href="assets/css/product.css?v=20260713b" />
     <style>
       .key-mask { letter-spacing: 0.04em; }
       .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; }
       @media (max-width: 960px) { .split { grid-template-columns: 1fr; } }
+      .hidden { display: none !important; }
     </style>
   </head>
-  <body>
+  <body class="product-body">
     <header class="nav" data-semeai-nav></header>
 
-    <main class="page">
-      <section class="hero" style="padding-bottom: 8px">
+    <main class="page product-main">
+      <section class="hero-compact fade-up">
         <span class="eyebrow">Product dashboard</span>
         <h1>Workspace console.</h1>
         <p class="lead">
-          Authenticate with your workspace API key. Run release-control checks, inspect receipts,
-          manage USDT/TRC20 pilot billing, and keep SHOW / REVIEW / BLOCK audit-ready.
+          Authenticate once, then move through gate checks, receipts, review, and pilot billing.
         </p>
-        <div class="button-row" style="margin-top: 14px">
+        <div class="status-bar" style="margin-top: 12px">
           <span class="pill" id="api-health-pill">API …</span>
           <span class="pill" id="email-pill">Email …</span>
           <span class="pill" id="billing-pill">Billing …</span>
+          <span class="pill" id="session-pill">session empty</span>
         </div>
       </section>
 
-      <div class="dash">
-        <aside class="dash-nav" aria-label="Dashboard sections">
-          <button type="button" class="active" data-tab="overview">Overview</button>
-          <button type="button" data-tab="auth">API key</button>
-          <button type="button" data-tab="check">Gate check</button>
-          <button type="button" data-tab="receipts">Receipts</button>
-          <button type="button" data-tab="review">Review queue</button>
-          <button type="button" data-tab="billing">Billing</button>
-          <button type="button" data-tab="verify">Verify signup</button>
+      <div class="steps fade-up d1" id="flow-steps">
+        <div class="step active" data-step="1"><span class="num">1</span><strong>Connect</strong><small>Paste API key</small></div>
+        <div class="step" data-step="2"><span class="num">2</span><strong>Check</strong><small>Run /v0/check</small></div>
+        <div class="step" data-step="3"><span class="num">3</span><strong>Audit</strong><small>Receipts + REVIEW</small></div>
+        <div class="step" data-step="4"><span class="num">4</span><strong>Pilot pay</strong><small>USDT / TRC20</small></div>
+      </div>
+
+      <div class="dash-shell fade-up d2">
+        <aside class="dash-side" aria-label="Dashboard sections">
+          <button type="button" class="active" data-tab="overview">Overview<span class="hint">Status snapshot</span></button>
+          <button type="button" data-tab="auth">API key<span class="hint">Connect workspace</span></button>
+          <button type="button" data-tab="check">Gate check<span class="hint">SHOW / REVIEW / BLOCK</span></button>
+          <button type="button" data-tab="receipts">Receipts<span class="hint">Audit trail</span></button>
+          <button type="button" data-tab="review">Review queue<span class="hint">Needs human eye</span></button>
+          <button type="button" data-tab="billing">Billing<span class="hint">USDT pilot</span></button>
+          <button type="button" data-tab="verify">Verify signup<span class="hint">Issue key once</span></button>
         </aside>
 
         <div class="dash-main">
           <div id="global-message" class="message">Load your API key to unlock workspace data.</div>
 
-          <!-- AUTH -->
-          <section class="section" id="panel-auth">
-            <h2>API key session</h2>
-            <p>The key stays in this browser session only (sessionStorage). It is never embedded in the page source.</p>
+          <section class="section tab-panel panel-enter" id="panel-overview">
+            <h2>Overview</h2>
+            <div class="grid-4" style="margin-top: 12px">
+              <div class="card metric card-hover"><span>Workspace</span><strong id="m-workspace">—</strong></div>
+              <div class="card metric card-hover"><span>Subscription</span><strong id="m-sub">—</strong></div>
+              <div class="card metric card-hover"><span>Billing</span><strong id="m-billing">—</strong></div>
+              <div class="card metric card-hover"><span>Receipts</span><strong id="m-receipts">—</strong></div>
+            </div>
+            <div class="grid-2" style="margin-top: 14px">
+              <div class="panel">
+                <h3>Gate invariant</h3>
+                <p>Payment is never release authority. Machine values stay SHOW / REVIEW / BLOCK.</p>
+              </div>
+              <div class="panel">
+                <h3>Operator</h3>
+                <p>
+                  Review:
+                  <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a><br />
+                  TRC20: <code id="ov-trc20">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
+                </p>
+              </div>
+            </div>
+            <pre id="overview-json" style="margin-top: 14px">{}</pre>
+          </section>
+
+          <section class="section tab-panel hidden" id="panel-auth">
+            <h2>Connect API key</h2>
+            <p>Stored only in this browser session (<code>sessionStorage</code>). Never embedded in page source.</p>
             <div class="grid-2" style="margin-top: 14px">
               <div class="field">
                 <label for="api-key">Workspace API key</label>
-                <input id="api-key" class="key-mask" type="password" autocomplete="off" spellcheck="false" placeholder="semeai_…" />
+                <input id="api-key" class="key-mask" type="password" autocomplete="off" spellcheck="false" placeholder="paste key…" />
               </div>
               <div class="field">
                 <label for="receipt-limit">Receipt limit</label>
@@ -68,40 +100,13 @@
             <div class="button-row" style="margin-top: 14px">
               <button class="button primary" id="btn-load" type="button">Load workspace</button>
               <button class="button" id="btn-clear" type="button">Clear session</button>
-              <a class="button" href="register.html">Register new workspace</a>
+              <a class="button" href="register.html?v=20260713b">Register</a>
             </div>
           </section>
 
-          <!-- OVERVIEW -->
-          <section class="section tab-panel" id="panel-overview">
-            <h2>Overview</h2>
-            <div class="grid-4" id="overview-metrics">
-              <div class="card metric"><span>Workspace</span><strong id="m-workspace">—</strong></div>
-              <div class="card metric"><span>Subscription</span><strong id="m-sub">—</strong></div>
-              <div class="card metric"><span>Billing</span><strong id="m-billing">—</strong></div>
-              <div class="card metric"><span>Receipts</span><strong id="m-receipts">—</strong></div>
-            </div>
-            <div class="grid-2" style="margin-top: 16px">
-              <div class="panel">
-                <h3>Gate invariant</h3>
-                <p>Payment and subscription metadata are <strong>not</strong> release authority. Machine values stay SHOW / REVIEW / BLOCK.</p>
-              </div>
-              <div class="panel">
-                <h3>Operator contact</h3>
-                <p>
-                  Feedback / activation review:
-                  <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a><br />
-                  TRC20: <code id="ov-trc20">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
-                </p>
-              </div>
-            </div>
-            <pre id="overview-json" style="margin-top: 16px">{}</pre>
-          </section>
-
-          <!-- CHECK -->
           <section class="section tab-panel hidden" id="panel-check">
             <h2>Protected gate check</h2>
-            <p>Runs authenticated <code>POST /v0/check</code> with a deterministic fake-promo example (or your custom payload).</p>
+            <p>Authenticated <code>POST /v0/check</code> with editable payload, or public demo check.</p>
             <div class="split" style="margin-top: 14px">
               <div class="field">
                 <label for="check-json">Request JSON</label>
@@ -110,7 +115,7 @@
               <div>
                 <div class="button-row">
                   <button class="button primary" id="btn-check" type="button">Run /v0/check</button>
-                  <button class="button" id="btn-demo-check" type="button">Run public demo check</button>
+                  <button class="button" id="btn-demo-check" type="button">Public demo</button>
                 </div>
                 <div class="grid-3" style="margin-top: 14px">
                   <div class="card metric"><span>Action</span><strong id="check-action">—</strong></div>
@@ -122,23 +127,15 @@
             </div>
           </section>
 
-          <!-- RECEIPTS -->
           <section class="section tab-panel hidden" id="panel-receipts">
             <h2>Receipts</h2>
-            <p>Scoped audit trail for this API key fingerprint. Raw prompt/answer text is not required for listing.</p>
             <div class="button-row" style="margin-bottom: 12px">
               <button class="button" id="btn-refresh-receipts" type="button">Refresh</button>
             </div>
-            <div style="overflow:auto">
+            <div style="overflow: auto">
               <table class="table" id="receipts-table">
                 <thead>
-                  <tr>
-                    <th>When</th>
-                    <th>Action</th>
-                    <th>Internal</th>
-                    <th>Risk</th>
-                    <th>Audit id</th>
-                  </tr>
+                  <tr><th>When</th><th>Action</th><th>Internal</th><th>Risk</th><th>Id</th></tr>
                 </thead>
                 <tbody></tbody>
               </table>
@@ -146,21 +143,18 @@
             <pre id="receipts-json" style="margin-top: 14px">{}</pre>
           </section>
 
-          <!-- REVIEW -->
           <section class="section tab-panel hidden" id="panel-review">
             <h2>Review queue</h2>
-            <p>REVIEW and BLOCK events that should not auto-release. SILENCE withholds release while preserving audit.</p>
+            <p>REVIEW and BLOCK events. SILENCE withholds release while preserving audit.</p>
             <div id="review-list" class="grid" style="margin-top: 12px"></div>
           </section>
 
-          <!-- BILLING -->
           <section class="section tab-panel hidden" id="panel-billing">
             <h2>Pilot billing · USDT/TRC20</h2>
             <p>
-              Crypto-only pilot path. Default <strong>25 USDT</strong> on TRC20.
-              After TXID submit, email
+              Default <strong>25 USDT</strong>. After TXID, email
               <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>
-              with workspace_id + invoice_id + txid. Payment is never gate authority.
+              with workspace_id + invoice_id + txid. Payment ≠ gate authority.
             </p>
             <div class="grid-2" style="margin-top: 14px">
               <div class="card metric">
@@ -173,7 +167,7 @@
               <div class="card metric">
                 <span>Status</span>
                 <strong id="bill-status">—</strong>
-                <div class="small" id="bill-note" style="color: var(--muted); margin-top: 8px; font-size: 13px"></div>
+                <div id="bill-note" style="color: var(--muted); margin-top: 8px; font-size: 13px"></div>
               </div>
             </div>
             <div class="grid-2" style="margin-top: 14px">
@@ -200,28 +194,27 @@
               </div>
               <div class="field">
                 <label for="bill-txid">TRC20 transaction id</label>
-                <input id="bill-txid" placeholder="64-char hex hash" spellcheck="false" />
+                <input id="bill-txid" placeholder="64-char hex" spellcheck="false" />
               </div>
             </div>
             <div class="button-row" style="margin-top: 12px">
-              <button class="button" id="btn-txid" type="button">Submit TXID for review</button>
+              <button class="button" id="btn-txid" type="button">Submit TXID</button>
             </div>
             <pre id="billing-json" style="margin-top: 14px">{}</pre>
           </section>
 
-          <!-- VERIFY -->
           <section class="section tab-panel hidden" id="panel-verify">
             <h2>Verify registration</h2>
-            <p>Paste the verification token from email / registration response. The API key is shown once.</p>
+            <p>Paste verification token. API key is shown once.</p>
             <div class="field" style="margin-top: 12px">
               <label for="verify-token">Verification token</label>
-              <input id="verify-token" spellcheck="false" placeholder="token from email or #verify=" />
+              <input id="verify-token" spellcheck="false" placeholder="#verify= token" />
             </div>
             <div class="button-row" style="margin-top: 12px">
-              <button class="button primary" id="btn-verify" type="button">Verify & issue API key</button>
+              <button class="button primary" id="btn-verify" type="button">Verify & issue key</button>
             </div>
             <div class="field" style="margin-top: 14px">
-              <label for="issued-key">Issued API key (copy now)</label>
+              <label for="issued-key">Issued API key</label>
               <input id="issued-key" readonly />
             </div>
             <div class="button-row" style="margin-top: 10px">
@@ -236,8 +229,9 @@
 
     <footer class="site-footer" data-semeai-footer></footer>
 
-    <script src="assets/js/api.js"></script>
-    <script src="assets/js/shell.js"></script>
+    <script src="assets/js/api.js?v=20260713b"></script>
+    <script src="assets/js/shell.js?v=20260713b"></script>
+    <script src="assets/js/cache-bust.js?v=20260713b"></script>
     <script>
       const KEY_STORAGE = "semeai_dashboard_api_key";
       const defaultCheck = {
@@ -258,24 +252,20 @@
         health: document.querySelector("#api-health-pill"),
         email: document.querySelector("#email-pill"),
         billingPill: document.querySelector("#billing-pill"),
+        session: document.querySelector("#session-pill"),
         checkJson: document.querySelector("#check-json"),
       };
 
-      let state = {
-        account: null,
-        receipts: [],
-        billing: null,
-      };
+      let state = { account: null, receipts: [], billing: null, hasCheck: false };
 
       function setMessage(text, kind = "") {
         els.msg.className = "message" + (kind ? " " + kind : "");
         els.msg.textContent = text;
+        if (kind === "ok") els.msg.classList.add("pulse-ok");
       }
-
       function getKey() {
         return (els.apiKey.value || sessionStorage.getItem(KEY_STORAGE) || "").trim();
       }
-
       function actionClass(action) {
         const a = String(action || "").toUpperCase();
         if (a === "SHOW") return "ok";
@@ -283,18 +273,43 @@
         if (a === "REVIEW") return "warn";
         return "";
       }
+      function setFlowStep(n) {
+        document.querySelectorAll("#flow-steps .step").forEach((el) => {
+          const s = Number(el.dataset.step);
+          el.classList.toggle("active", s === n);
+          el.classList.toggle("done", s < n);
+        });
+      }
+      function busy(btn, on) {
+        if (!btn) return;
+        btn.classList.toggle("btn-busy", on);
+        btn.disabled = on;
+      }
+      function escapeHtml(s) {
+        return String(s)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;");
+      }
 
       function showTab(id) {
-        document.querySelectorAll(".dash-nav button").forEach((b) => {
+        document.querySelectorAll(".dash-side button").forEach((b) => {
           b.classList.toggle("active", b.dataset.tab === id);
         });
-        // auth always visible at top of main? Keep all panels, hide tab panels
         document.querySelectorAll(".tab-panel").forEach((p) => {
-          p.classList.toggle("hidden", p.id !== "panel-" + id);
+          const on = p.id === "panel-" + id;
+          p.classList.toggle("hidden", !on);
+          if (on) {
+            p.classList.remove("panel-enter");
+            void p.offsetWidth;
+            p.classList.add("panel-enter");
+          }
         });
-        // keep auth panel always visible above? For cleaner UX show auth only on auth tab
-        document.querySelector("#panel-auth").classList.toggle("hidden", id !== "auth" && id !== "overview");
-        if (id === "overview") document.querySelector("#panel-auth").classList.remove("hidden");
+        if (id === "auth") setFlowStep(1);
+        if (id === "check") setFlowStep(2);
+        if (id === "receipts" || id === "review") setFlowStep(3);
+        if (id === "billing") setFlowStep(4);
       }
 
       async function bootHealth() {
@@ -336,6 +351,8 @@
           null,
           2
         );
+        els.session.textContent = getKey() ? "session connected" : "session empty";
+        els.session.className = "pill " + (getKey() ? "ok" : "");
       }
 
       function renderReceipts() {
@@ -362,14 +379,14 @@
         }
         for (const r of review) {
           const el = document.createElement("div");
-          el.className = "card";
+          el.className = "card card-hover";
           el.innerHTML = `
             <div class="button-row">
               <span class="pill ${actionClass(r.action)}">${escapeHtml(r.action)}</span>
               <span class="pill">${escapeHtml(r.internal_decision || "")}</span>
             </div>
             <p style="margin:10px 0 0"><strong>${escapeHtml(r.business_risk || "risk")}</strong> — ${escapeHtml(r.reason || "no reason")}</p>
-            <p class="mono" style="color:var(--muted-2);margin:8px 0 0">${escapeHtml(r.audit_id || r.receipt_id || "")}</p>`;
+            <p class="mono" style="color:var(--muted-2);margin:8px 0 0">${escapeHtml(r.receipt_id || r.audit_id || "")}</p>`;
           box.appendChild(el);
         }
       }
@@ -381,17 +398,10 @@
         document.querySelector("#bill-status").textContent =
           billing.payment_status || billing.status || "not loaded";
         document.querySelector("#bill-note").textContent =
-          manual.review_instructions ||
-          "Submit TXID after payment for operator review.";
-        if (manual.payment_address) {
-          document.querySelector("#bill-address").textContent = manual.payment_address;
-        }
-        if (manual.default_amount_usdt) {
-          document.querySelector("#bill-amount").value = manual.default_amount_usdt;
-        }
-        if (billing.latest_invoice_id) {
-          document.querySelector("#bill-invoice").value = billing.latest_invoice_id;
-        }
+          manual.review_instructions || "Submit TXID after payment for operator review.";
+        if (manual.payment_address) document.querySelector("#bill-address").textContent = manual.payment_address;
+        if (manual.default_amount_usdt) document.querySelector("#bill-amount").value = manual.default_amount_usdt;
+        if (billing.latest_invoice_id) document.querySelector("#bill-invoice").value = billing.latest_invoice_id;
         document.querySelector("#billing-json").textContent = JSON.stringify(b, null, 2);
       }
 
@@ -404,6 +414,8 @@
         }
         sessionStorage.setItem(KEY_STORAGE, key);
         els.apiKey.value = key;
+        const btn = document.querySelector("#btn-load");
+        busy(btn, true);
         setMessage("Loading workspace…", "warn");
         try {
           const limit = Number(document.querySelector("#receipt-limit").value || 25);
@@ -419,33 +431,28 @@
           renderOverview();
           renderReceipts();
           renderBilling();
+          setFlowStep(state.hasCheck ? 3 : 2);
           setMessage("Workspace loaded.", "ok");
           showTab("overview");
         } catch (e) {
           setMessage(e.message || String(e), "error");
+        } finally {
+          busy(btn, false);
         }
       }
 
-      function escapeHtml(s) {
-        return String(s)
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;");
-      }
-
-      document.querySelectorAll(".dash-nav button").forEach((btn) => {
+      document.querySelectorAll(".dash-side button").forEach((btn) => {
         btn.addEventListener("click", () => showTab(btn.dataset.tab));
       });
-
       document.querySelector("#btn-load").addEventListener("click", () => loadWorkspace());
       document.querySelector("#btn-clear").addEventListener("click", () => {
         sessionStorage.removeItem(KEY_STORAGE);
         els.apiKey.value = "";
-        state = { account: null, receipts: [], billing: null };
+        state = { account: null, receipts: [], billing: null, hasCheck: false };
         renderOverview();
         renderReceipts();
         renderBilling();
+        setFlowStep(1);
         setMessage("Session cleared.", "warn");
       });
       document.querySelector("#btn-refresh-receipts").addEventListener("click", () => loadWorkspace());
@@ -453,6 +460,8 @@
       document.querySelector("#btn-check").addEventListener("click", async () => {
         const key = getKey();
         if (!key) return setMessage("API key required for protected check.", "warn");
+        const btn = document.querySelector("#btn-check");
+        busy(btn, true);
         try {
           const payload = JSON.parse(els.checkJson.value);
           setMessage("Running protected gate check…", "warn");
@@ -461,10 +470,14 @@
           document.querySelector("#check-internal").textContent = data.internal_decision || "—";
           document.querySelector("#check-audit").textContent = data.audit_id || "—";
           document.querySelector("#check-result").textContent = JSON.stringify(data, null, 2);
+          state.hasCheck = true;
+          setFlowStep(3);
           setMessage(`Gate returned ${data.action} / ${data.internal_decision}`, "ok");
           await loadWorkspace();
         } catch (e) {
           setMessage(e.message || String(e), "error");
+        } finally {
+          busy(btn, false);
         }
       });
 
@@ -484,6 +497,8 @@
       document.querySelector("#btn-intent").addEventListener("click", async () => {
         const key = getKey();
         if (!key) return setMessage("API key required.", "warn");
+        const btn = document.querySelector("#btn-intent");
+        busy(btn, true);
         try {
           const data = await SemeAI.billingIntent(key, {
             plan: document.querySelector("#bill-plan").value,
@@ -493,13 +508,13 @@
             document.querySelector("#bill-invoice").value = data.invoice.invoice_id;
           }
           document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
-          setMessage(
-            "Payment intent created. Send USDT on TRC20, then submit TXID and email adelayida0403@gmail.com.",
-            "ok"
-          );
+          setFlowStep(4);
+          setMessage("Payment intent created. Send USDT, then submit TXID.", "ok");
           await loadWorkspace();
         } catch (e) {
           setMessage(e.message || String(e), "error");
+        } finally {
+          busy(btn, false);
         }
       });
 
@@ -512,10 +527,7 @@
             txid: document.querySelector("#bill-txid").value.trim(),
           });
           document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
-          setMessage(
-            "TXID submitted for manual review. Email adelayida0403@gmail.com with workspace_id + invoice_id + txid.",
-            "warn"
-          );
+          setMessage("TXID submitted. Email adelayida0403@gmail.com for faster review.", "warn");
           await loadWorkspace();
         } catch (e) {
           setMessage(e.message || String(e), "error");
@@ -523,22 +535,19 @@
       });
 
       document.querySelector("#btn-copy-trc20").addEventListener("click", async () => {
-        const v = document.querySelector("#bill-address").textContent.trim();
-        await navigator.clipboard.writeText(v);
+        await navigator.clipboard.writeText(document.querySelector("#bill-address").textContent.trim());
         setMessage("TRC20 address copied.", "ok");
       });
 
       document.querySelector("#btn-verify").addEventListener("click", async () => {
         try {
-          const token = document.querySelector("#verify-token").value.trim();
+          const token = document.querySelector("#verify-token").value.trim().replace(/^.*#verify=/, "");
           const data = await SemeAI.verify(token);
           document.querySelector("#verify-json").textContent = JSON.stringify(data, null, 2);
           if (data.api_key) {
             document.querySelector("#issued-key").value = data.api_key;
-            setMessage("Workspace verified. Copy the API key now — it is shown once.", "ok");
-          } else {
-            setMessage("Verification response received.", "ok");
-          }
+            setMessage("Workspace verified. Copy the API key now.", "ok");
+          } else setMessage("Verification response received.", "ok");
         } catch (e) {
           setMessage(e.message || String(e), "error");
         }
@@ -558,7 +567,6 @@
         loadWorkspace();
       });
 
-      // boot
       els.checkJson.value = JSON.stringify(defaultCheck, null, 2);
       const saved = sessionStorage.getItem(KEY_STORAGE);
       if (saved) els.apiKey.value = saved;
@@ -567,8 +575,9 @@
         document.querySelector("#verify-token").value = decodeURIComponent(hash.slice(8));
         showTab("verify");
       } else {
-        showTab("overview");
+        showTab(saved ? "overview" : "auth");
       }
+      setFlowStep(saved ? 2 : 1);
       bootHealth();
       if (saved) loadWorkspace();
     </script>

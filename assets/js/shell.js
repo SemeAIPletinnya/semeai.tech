@@ -6,8 +6,8 @@
     { href: "gate.html", label: "Contract" },
     { href: "self-hosted.html", label: "Self-hosted" },
     { href: "article.html", label: "Thesis" },
-    { href: "register.html", label: "Register" },
-    { href: "dashboard.html", label: "Dashboard", cta: true },
+    { href: "register.html?v=20260713b", label: "Register" },
+    { href: "dashboard.html?v=20260713b", label: "Dashboard", cta: true },
   ];
 
   function renderNav(target) {

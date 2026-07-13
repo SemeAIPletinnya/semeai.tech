@@ -14,8 +14,12 @@
       content="A checkpoint between your LLM and your users. Interactive demo, API, dashboard, self-hosted."
     />
     <meta property="og:url" content="https://semeai.tech/" />
-    <link rel="stylesheet" href="assets/css/semeai.css" />
-    <link rel="stylesheet" href="assets/css/landing.css" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="canonical" href="https://semeai.tech/" />
+    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713b" />
+    <link rel="stylesheet" href="assets/css/landing.css?v=20260713b" />
   </head>
   <body class="landing-body">
     <div class="glow-orb a" aria-hidden="true"></div>
@@ -30,7 +34,7 @@
           <a href="#use" data-i18n="nav_use">Use cases</a>
           <a href="self-hosted.html" data-i18n="nav_self">Self-hosted</a>
           <a href="dashboard.html" data-i18n="nav_dash">Dashboard</a>
-          <a class="cta" href="register.html" data-i18n="nav_start">Start free</a>
+          <a class="cta" href="register.html?v=20260713b" data-i18n="nav_start">Start free</a>
           <span class="lang-switch" aria-label="Language">
             <button type="button" class="active" data-lang="en">EN</button>
             <button type="button" data-lang="uk">UA</button>
@@ -56,8 +60,8 @@
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#demo" data-i18n="cta_try">Try interactive demo</a>
-            <a class="button" href="register.html" data-i18n="cta_register">Create workspace</a>
-            <a class="button" href="dashboard.html" data-i18n="cta_dash">Open dashboard</a>
+            <a class="button" href="register.html?v=20260713b" data-i18n="cta_register">Create workspace</a>
+            <a class="button" href="dashboard.html?v=20260713b" data-i18n="cta_dash">Open dashboard</a>
           </div>
           <div class="trust-row">
             <span class="pill ok" data-i18n="pill_api">API live</span>
@@ -246,8 +250,8 @@
             </p>
           </div>
           <div class="button-row" style="justify-content: flex-end">
-            <a class="button primary" href="register.html" data-i18n="cta_go">Get API access</a>
-            <a class="button" href="dashboard.html" data-i18n="cta_console">Workspace console</a>
+            <a class="button primary" href="register.html?v=20260713b" data-i18n="cta_go">Get API access</a>
+            <a class="button" href="dashboard.html?v=20260713b" data-i18n="cta_console">Workspace console</a>
           </div>
         </div>
       </section>
@@ -266,7 +270,8 @@
       </div>
     </footer>
 
-    <script src="assets/js/api.js"></script>
+    <script src="assets/js/api.js?v=20260713b"></script>
+    <script src="assets/js/cache-bust.js?v=20260713b"></script>
     <script>
       const SCENARIOS = {
         fake_promo_code: {
