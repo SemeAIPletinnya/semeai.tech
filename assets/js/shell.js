@@ -2,13 +2,12 @@
   const current = (location.pathname.split("/").pop() || "index.html").toLowerCase();
   const links = [
     { href: "index.html", label: "Home" },
+    { href: "index.html#demo", label: "Demo" },
     { href: "gate.html", label: "Contract" },
     { href: "self-hosted.html", label: "Self-hosted" },
-    { href: "research.html", label: "Research" },
     { href: "article.html", label: "Thesis" },
     { href: "register.html", label: "Register" },
     { href: "dashboard.html", label: "Dashboard", cta: true },
-    { href: "https://gate.semeai.tech", label: "Live demo", external: true },
   ];
 
   function renderNav(target) {
