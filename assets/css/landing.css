@@ -325,6 +325,83 @@
   transform: none;
 }
 
+/* Emblem badges (SSRN / Zenodo / GitHub / X) */
+.emblems {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.emblem {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+  text-decoration: none;
+  color: inherit;
+  transition: 0.18s ease;
+  min-height: 48px;
+}
+.emblem:hover {
+  transform: translateY(-2px);
+  border-color: rgba(127, 211, 208, 0.35);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+}
+.emblem .badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 900;
+  color: #0b1220;
+}
+.emblem .badge.ssrn { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+.emblem .badge.zenodo { background: linear-gradient(135deg, #2563eb, #60a5fa); color: #fff; font-size: 9px; }
+.emblem .badge.gh { background: linear-gradient(135deg, #374151, #9ca3af); color: #fff; }
+.emblem .badge.x { background: linear-gradient(135deg, #111827, #4b5563); color: #fff; }
+.emblem .meta b { display: block; color: var(--text-strong); font-size: 13px; }
+.emblem .meta small { color: var(--muted-2); font-size: 11px; }
+
+.eco-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+.eco-card {
+  padding: 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.025);
+  min-height: 150px;
+  transition: 0.18s ease;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.eco-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(127, 211, 208, 0.35);
+}
+.eco-card .tag {
+  display: inline-flex;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.eco-card .tag.g { background: rgba(167,139,250,0.15); color: #a78bfa; }
+.eco-card .tag.r { background: rgba(127,211,208,0.15); color: var(--teal); }
+.eco-card .tag.p { background: rgba(96,165,250,0.15); color: var(--blue); }
+.eco-card h3 { margin: 0 0 8px; font-size: 16px; color: var(--text-strong); }
+.eco-card p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
+
 @media (max-width: 960px) {
   .hero-grid,
   .flow-steps,
@@ -332,7 +409,8 @@
   .compare,
   .code-panel,
   .cta-band,
-  .scenario-tabs {
+  .scenario-tabs,
+  .eco-grid {
     grid-template-columns: 1fr;
   }
   .hero h1 { max-width: none; }

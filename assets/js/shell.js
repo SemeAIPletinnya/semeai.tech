@@ -38,8 +38,10 @@
         Machine values remain canonical: SHOW / REVIEW / BLOCK → PROCEED / NEEDS_REVIEW / SILENCE.<br/>
         Pilot billing: USDT/TRC20 · feedback
         <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a> ·
-        <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">gate-basic</a> ·
-        <a href="https://github.com/SemeAIPletinnya/silence-as-control">silence-as-control</a> ·
+        <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">Gate</a> ·
+        <a href="https://github.com/SemeAIPletinnya/silence-as-control">SaC</a> ·
+        <a href="https://x.com/adelayida210519" target="_blank" rel="noopener">@adelayida210519</a> ·
+        <a href="https://gate.semeai.tech/demo/saas_visible.html">Ecosystem demo</a> ·
         <a href="https://api.semeai.tech/health">API health</a>
       </div>`;
   }
