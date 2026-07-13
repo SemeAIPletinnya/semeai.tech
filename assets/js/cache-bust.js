@@ -1,6 +1,6 @@
 // Prevent stale HTML when users press Back (bfcache) or hit long CDN TTL.
 (function () {
-  const VERSION = "20260713c";
+  const VERSION = "20260713d";
 
   window.addEventListener("pageshow", function (event) {
     if (event.persisted) {

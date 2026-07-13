@@ -7,8 +7,8 @@
     <meta name="description" content="SemeAI Gate dashboard: API key, gate checks, receipts, REVIEW queue, USDT/TRC20 billing." />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
-    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713b" />
-    <link rel="stylesheet" href="assets/css/product.css?v=20260713b" />
+    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713d" />
+    <link rel="stylesheet" href="assets/css/product.css?v=20260713d" />
     <style>
       .key-mask { letter-spacing: 0.04em; }
       .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; }
@@ -30,7 +30,9 @@
           <span class="pill" id="api-health-pill">API …</span>
           <span class="pill" id="email-pill">Email …</span>
           <span class="pill" id="billing-pill">Billing …</span>
+          <span class="pill" id="usage-pill">usage …</span>
           <span class="pill" id="session-pill">session empty</span>
+          <a class="pill info" href="https://api.semeai.tech/v0/status" target="_blank" rel="noopener">/v0/status</a>
         </div>
       </section>
 
@@ -45,6 +47,7 @@
         <aside class="dash-side" aria-label="Dashboard sections">
           <button type="button" class="active" data-tab="overview">Overview<span class="hint">Status snapshot</span></button>
           <button type="button" data-tab="auth">API key<span class="hint">Connect workspace</span></button>
+          <button type="button" data-tab="keys">Key manage<span class="hint">Rotate / list</span></button>
           <button type="button" data-tab="check">Gate check<span class="hint">SHOW / REVIEW / BLOCK</span></button>
           <button type="button" data-tab="receipts">Receipts<span class="hint">Audit trail</span></button>
           <button type="button" data-tab="review">Review queue<span class="hint">Needs human eye</span></button>
@@ -63,6 +66,12 @@
               <div class="card metric card-hover"><span>Billing</span><strong id="m-billing">—</strong></div>
               <div class="card metric card-hover"><span>Receipts</span><strong id="m-receipts">—</strong></div>
             </div>
+            <div class="grid-3" style="margin-top: 12px">
+              <div class="card metric card-hover"><span>Checks today</span><strong id="m-checks">—</strong></div>
+              <div class="card metric card-hover"><span>Daily limit</span><strong id="m-limit">—</strong></div>
+              <div class="card metric card-hover"><span>Remaining</span><strong id="m-remaining">—</strong></div>
+            </div>
+            <pre id="status-json" style="margin-top: 12px">{}</pre>
             <div class="grid-2" style="margin-top: 14px">
               <div class="panel">
                 <h3>Gate invariant</h3>
@@ -102,6 +111,20 @@
               <button class="button" id="btn-clear" type="button">Clear session</button>
               <a class="button" href="register.html?v=20260713b">Register</a>
             </div>
+          </section>
+
+          <section class="section tab-panel hidden" id="panel-keys">
+            <h2>Key management</h2>
+            <p>List fingerprints, rotate the current key (shown once), never store raw keys server-side.</p>
+            <div class="button-row" style="margin: 12px 0">
+              <button class="button" id="btn-refresh-keys" type="button">Refresh keys</button>
+              <button class="button primary" id="btn-rotate-key" type="button">Rotate current key</button>
+            </div>
+            <div class="field">
+              <label for="rotated-key">New key after rotate (copy once)</label>
+              <input id="rotated-key" readonly />
+            </div>
+            <pre id="keys-json" style="margin-top: 12px">{}</pre>
           </section>
 
           <section class="section tab-panel hidden" id="panel-check">
@@ -229,9 +252,9 @@
 
     <footer class="site-footer" data-semeai-footer></footer>
 
-    <script src="assets/js/api.js?v=20260713b"></script>
-    <script src="assets/js/shell.js?v=20260713b"></script>
-    <script src="assets/js/cache-bust.js?v=20260713b"></script>
+    <script src="assets/js/api.js?v=20260713d"></script>
+    <script src="assets/js/shell.js?v=20260713d"></script>
+    <script src="assets/js/cache-bust.js?v=20260713d"></script>
     <script>
       const KEY_STORAGE = "semeai_dashboard_api_key";
       const defaultCheck = {
@@ -256,7 +279,7 @@
         checkJson: document.querySelector("#check-json"),
       };
 
-      let state = { account: null, receipts: [], billing: null, hasCheck: false };
+      let state = { account: null, receipts: [], billing: null, usage: null, keys: null, hasCheck: false };
 
       function setMessage(text, kind = "") {
         els.msg.className = "message" + (kind ? " " + kind : "");
@@ -314,7 +337,7 @@
 
       async function bootHealth() {
         try {
-          const h = await SemeAI.health();
+          const [h, st] = await Promise.all([SemeAI.health(), SemeAI.status().catch(() => null)]);
           els.health.textContent = "API " + (h.status || "ok");
           els.health.className = "pill ok";
           const email = h.email_verification || {};
@@ -329,6 +352,11 @@
             document.querySelector("#ov-trc20").textContent = bill.payment_address;
             document.querySelector("#bill-address").textContent = bill.payment_address;
           }
+          const limits = (h.rate_limits && h.rate_limits.daily_limits_by_tier) || {};
+          document.querySelector("#usage-pill").textContent =
+            "limits pilot " + (limits.pilot || 1000) + "/day";
+          document.querySelector("#usage-pill").className = "pill";
+          if (st) document.querySelector("#status-json").textContent = JSON.stringify(st, null, 2);
         } catch (e) {
           els.health.textContent = "API down";
           els.health.className = "pill bad";
@@ -346,11 +374,24 @@
         const bill = (state.billing && state.billing.billing) || acc.billing || {};
         document.querySelector("#m-billing").textContent = bill.payment_status || bill.status || "—";
         document.querySelector("#m-receipts").textContent = String(state.receipts.length || 0);
+        const usage = state.usage || acc.usage || {};
+        document.querySelector("#m-checks").textContent = usage.checks_today ?? "—";
+        document.querySelector("#m-limit").textContent = usage.daily_limit ?? "—";
+        document.querySelector("#m-remaining").textContent = usage.remaining_today ?? "—";
+        if (usage.daily_limit != null) {
+          document.querySelector("#usage-pill").textContent =
+            "usage " + (usage.checks_today || 0) + "/" + usage.daily_limit;
+          document.querySelector("#usage-pill").className =
+            "pill " + ((usage.remaining_today || 0) > 0 ? "ok" : "bad");
+        }
         document.querySelector("#overview-json").textContent = JSON.stringify(
-          { account: state.account, billing: state.billing },
+          { account: state.account, billing: state.billing, usage: state.usage, keys: state.keys },
           null,
           2
         );
+        if (state.keys) {
+          document.querySelector("#keys-json").textContent = JSON.stringify(state.keys, null, 2);
+        }
         els.session.textContent = getKey() ? "session connected" : "session empty";
         els.session.className = "pill " + (getKey() ? "ok" : "");
       }
@@ -419,13 +460,17 @@
         setMessage("Loading workspace…", "warn");
         try {
           const limit = Number(document.querySelector("#receipt-limit").value || 25);
-          const [account, billing, receiptsPayload] = await Promise.all([
+          const [account, billing, receiptsPayload, usage, keys] = await Promise.all([
             SemeAI.account(key),
             SemeAI.billingStatus(key),
             SemeAI.receipts(key, limit),
+            SemeAI.usage(key).catch(() => null),
+            SemeAI.keys(key).catch(() => null),
           ]);
           state.account = account;
           state.billing = billing;
+          state.usage = usage || account.usage || null;
+          state.keys = keys || account.keys || null;
           state.receipts = receiptsPayload.receipts || receiptsPayload.items || receiptsPayload || [];
           if (!Array.isArray(state.receipts)) state.receipts = [];
           renderOverview();
@@ -456,6 +501,34 @@
         setMessage("Session cleared.", "warn");
       });
       document.querySelector("#btn-refresh-receipts").addEventListener("click", () => loadWorkspace());
+      document.querySelector("#btn-refresh-keys").addEventListener("click", async () => {
+        const key = getKey();
+        if (!key) return setMessage("API key required.", "warn");
+        try {
+          state.keys = await SemeAI.keys(key);
+          renderOverview();
+          setMessage("Keys refreshed.", "ok");
+        } catch (e) {
+          setMessage(e.message || String(e), "error");
+        }
+      });
+      document.querySelector("#btn-rotate-key").addEventListener("click", async () => {
+        const key = getKey();
+        if (!key) return setMessage("API key required.", "warn");
+        if (!confirm("Rotate key? Current key will stop working immediately.")) return;
+        try {
+          const data = await SemeAI.rotateKey(key, "dashboard-rotate");
+          if (data.api_key) {
+            document.querySelector("#rotated-key").value = data.api_key;
+            sessionStorage.setItem(KEY_STORAGE, data.api_key);
+            els.apiKey.value = data.api_key;
+            setMessage("Key rotated. Copy the new key now.", "ok");
+            await loadWorkspace();
+          }
+        } catch (e) {
+          setMessage(e.message || String(e), "error");
+        }
+      });
 
       document.querySelector("#btn-check").addEventListener("click", async () => {
         const key = getKey();

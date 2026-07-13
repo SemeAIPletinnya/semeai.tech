@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Support pilot kit · SemeAI Gate</title>
+    <meta name="description" content="Vertical pilot kit for support chatbots: promo codes, refunds, and entitlement claims gated by SemeAI." />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <link rel="stylesheet" href="../assets/css/semeai.css?v=20260713d" />
+    <link rel="stylesheet" href="../assets/css/landing.css?v=20260713d" />
+    <link rel="stylesheet" href="../assets/css/product.css?v=20260713d" />
+  </head>
+  <body class="product-body">
+    <header class="nav" data-semeai-nav></header>
+    <main class="page product-main">
+      <section class="hero-compact fade-up">
+        <span class="eyebrow">Vertical pilot kit</span>
+        <h1>Support chatbot release control.</h1>
+        <p class="lead">
+          One vertical. Three concrete cases. Same contract: SHOW / REVIEW / BLOCK before customers see AI answers.
+        </p>
+        <div class="button-row" style="margin-top: 12px">
+          <a class="button primary" href="../register.html?v=20260713d">Start pilot workspace</a>
+          <a class="button" href="https://gate.semeai.tech/demo/saas_visible.html">Run ecosystem demo</a>
+          <a class="button" href="../dashboard.html?v=20260713d">Open dashboard</a>
+        </div>
+      </section>
+
+      <div class="steps fade-up d1">
+        <div class="step done"><span class="num">1</span><strong>Wire gate</strong><small>After LLM generation</small></div>
+        <div class="step done"><span class="num">2</span><strong>Pass business data</strong><small>Promos, refunds, entitlements</small></div>
+        <div class="step active"><span class="num">3</span><strong>Map actions</strong><small>SHOW · REVIEW · BLOCK</small></div>
+        <div class="step"><span class="num">4</span><strong>Audit</strong><small>Receipts for operators</small></div>
+      </div>
+
+      <section class="section fade-up d2">
+        <h2>Three pilot cases</h2>
+        <div class="grid-3" style="margin-top: 14px">
+          <article class="card card-hover">
+            <span class="pill bad">CASE A · BLOCK</span>
+            <h3 style="margin-top:10px">Fake promo code</h3>
+            <p><strong>User:</strong> “Give me 30% off.”</p>
+            <p><strong>AI:</strong> “Use SAVE30.”</p>
+            <p><strong>Data:</strong> <code>active_promo_codes: []</code></p>
+            <p><strong>Expect:</strong> BLOCK / SILENCE — withhold invented code, keep receipt.</p>
+          </article>
+          <article class="card card-hover">
+            <span class="pill warn">CASE B · REVIEW</span>
+            <h3 style="margin-top:10px">Refund eligibility ambiguity</h3>
+            <p><strong>User:</strong> “Can I get a full refund?”</p>
+            <p><strong>AI:</strong> “Yes, you’re fully eligible for an immediate refund.”</p>
+            <p><strong>Data:</strong> policy incomplete / mixed signals</p>
+            <p><strong>Expect:</strong> REVIEW / NEEDS_REVIEW — operator before customer-visible promise.</p>
+          </article>
+          <article class="card card-hover">
+            <span class="pill ok">CASE C · SHOW</span>
+            <h3 style="margin-top:10px">Supported entitlement</h3>
+            <p><strong>User:</strong> “Is SAVE30 valid?”</p>
+            <p><strong>AI:</strong> “Yes, SAVE30 is active for 30% off.”</p>
+            <p><strong>Data:</strong> <code>active_promo_codes: ["SAVE30"]</code></p>
+            <p><strong>Expect:</strong> SHOW / PROCEED — release supported answer.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section fade-up d3">
+        <h2>Host product branch</h2>
+        <pre>if (gate.action === "SHOW") {
+  return aiAnswer;
+} else if (gate.action === "REVIEW") {
+  return "A support operator should review this before release.";
+} else {
+  return gate.safe_fallback || "I can't confirm that from current business data.";
+}</pre>
+        <div class="button-row" style="margin-top: 14px">
+          <a class="button primary" href="https://api.semeai.tech/v0/demo/check">Demo API</a>
+          <a class="button" href="../gate.html">Contract</a>
+          <a class="button" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">SDK / repo</a>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer" data-semeai-footer></footer>
+    <script src="../assets/js/shell.js?v=20260713d"></script>
+    <script src="../assets/js/cache-bust.js?v=20260713d"></script>
+  </body>
+</html>

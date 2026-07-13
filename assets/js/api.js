@@ -29,10 +29,17 @@
   window.SemeAI = {
     API_BASE,
     health: () => request("/health"),
+    status: () => request("/v0/status"),
     demoAccount: () => request("/v0/demo/account"),
     register: (payload) => request("/v0/register", { method: "POST", body: payload }),
     verify: (token) => request("/v0/verify", { method: "POST", body: { verification_token: token } }),
     account: (apiKey) => request("/v0/account", { token: apiKey }),
+    usage: (apiKey) => request("/v0/usage", { token: apiKey }),
+    keys: (apiKey) => request("/v0/keys", { token: apiKey }),
+    rotateKey: (apiKey, label = "rotated") =>
+      request("/v0/keys/rotate", { method: "POST", token: apiKey, body: { label } }),
+    revokeKey: (apiKey, fingerprint) =>
+      request("/v0/keys/revoke", { method: "POST", token: apiKey, body: { fingerprint } }),
     receipts: (apiKey, limit = 25) => request(`/v0/receipts?limit=${limit}`, { token: apiKey }),
     receipt: (apiKey, id) => request(`/v0/receipts/${encodeURIComponent(id)}`, { token: apiKey }),
     billingStatus: (apiKey) => request("/v0/billing/status", { token: apiKey }),

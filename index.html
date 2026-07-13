@@ -18,8 +18,8 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <link rel="canonical" href="https://semeai.tech/" />
-    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713c" />
-    <link rel="stylesheet" href="assets/css/landing.css?v=20260713c" />
+    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713d" />
+    <link rel="stylesheet" href="assets/css/landing.css?v=20260713d" />
   </head>
   <body class="landing-body">
     <div class="glow-orb a" aria-hidden="true"></div>
@@ -60,14 +60,36 @@
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#demo" data-i18n="cta_try">Try interactive demo</a>
-            <a class="button" href="register.html?v=20260713b" data-i18n="cta_register">Create workspace</a>
-            <a class="button" href="dashboard.html?v=20260713b" data-i18n="cta_dash">Open dashboard</a>
+            <a class="button" href="register.html?v=20260713d" data-i18n="cta_register">Create workspace</a>
+            <a class="button" href="dashboard.html?v=20260713d" data-i18n="cta_dash">Open dashboard</a>
+            <a class="button" href="pilots/support.html">Support pilot kit</a>
           </div>
           <div class="trust-row">
             <span class="pill ok" data-i18n="pill_api">API live</span>
             <span class="pill info" data-i18n="pill_oss">Open source</span>
             <span class="pill" data-i18n="pill_crypto">USDT pilot billing</span>
             <span class="pill" data-i18n="pill_self">Self-hosted ready</span>
+          </div>
+          <div class="panel" style="margin-top:16px">
+            <div class="button-row" style="margin-bottom:8px">
+              <button class="button primary" type="button" id="sdk-tab-py">Python</button>
+              <button class="button" type="button" id="sdk-tab-js">Node</button>
+            </div>
+            <pre id="sdk-snippet" style="max-height:none;margin:0"># local package
+pip install -e .
+
+from semeai_gate_basic import check_ai_answer
+print(check_ai_answer({
+  "user_message": "Give me a promo code",
+  "ai_answer": "Use SAVE30",
+  "business_data": {"active_promo_codes": []},
+  "business_rules": {"only_show_confirmed_promos": True},
+  "business_risk": "fake_promo_code",
+})["action"])
+
+# remote SaaS
+# from sdks.python.semeai_gate import GateClient
+# GateClient(api_key).check({...})</pre>
           </div>
         </div>
 
@@ -322,9 +344,42 @@
       </div>
     </footer>
 
-    <script src="assets/js/api.js?v=20260713c"></script>
-    <script src="assets/js/cache-bust.js?v=20260713c"></script>
+    <script src="assets/js/api.js?v=20260713d"></script>
+    <script src="assets/js/cache-bust.js?v=20260713d"></script>
     <script>
+      const SDK_PY = `# local package
+pip install -e .
+
+from semeai_gate_basic import check_ai_answer
+print(check_ai_answer({
+  "user_message": "Give me a promo code",
+  "ai_answer": "Use SAVE30",
+  "business_data": {"active_promo_codes": []},
+  "business_rules": {"only_show_confirmed_promos": True},
+  "business_risk": "fake_promo_code",
+})["action"])
+
+# remote SaaS client (sdks/python)
+# GateClient("semeai_...").check({...})`;
+
+      const SDK_JS = `// remote SaaS
+const { createClient } = require("semeai-gate-basic/remote");
+// or: const { createClient } = require("./sdks/node/remote");
+
+const gate = createClient({
+  apiKey: process.env.SEMEAI_GATE_API_KEY,
+  baseUrl: "https://api.semeai.tech",
+});
+
+const result = await gate.check({
+  user_message: "Give me a promo code",
+  ai_answer: "Use SAVE30",
+  business_data: { active_promo_codes: [] },
+  business_rules: { only_show_confirmed_promos: true },
+  business_risk: "fake_promo_code",
+});
+console.log(result.action); // BLOCK`;
+
       const SCENARIOS = {
         fake_promo_code: {
           user: "Give me a 30% discount promo code.",
@@ -620,6 +675,22 @@
       setTimeout(() => {
         runDemo();
       }, 600);
+
+      const sdkPyBtn = document.querySelector("#sdk-tab-py");
+      const sdkJsBtn = document.querySelector("#sdk-tab-js");
+      const sdkSnippet = document.querySelector("#sdk-snippet");
+      if (sdkPyBtn && sdkJsBtn && sdkSnippet) {
+        sdkPyBtn.addEventListener("click", () => {
+          sdkPyBtn.classList.add("active");
+          sdkJsBtn.classList.remove("active");
+          sdkSnippet.textContent = SDK_PY;
+        });
+        sdkJsBtn.addEventListener("click", () => {
+          sdkJsBtn.classList.add("active");
+          sdkPyBtn.classList.remove("active");
+          sdkSnippet.textContent = SDK_JS;
+        });
+      }
     </script>
   </body>
 </html>
