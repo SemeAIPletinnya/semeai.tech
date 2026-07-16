@@ -6,20 +6,20 @@
     <title>SemeAI Gate — Stop unsupported AI answers before users see them</title>
     <meta
       name="description"
-      content="SemeAI Gate is a release-control layer for AI products. Check candidate answers against business data and rules, then SHOW, REVIEW, or BLOCK."
+      content="SemeAI Gate is the release-control layer for AI products. Block invented promos, finance claims, and unsafe actions — SHOW, REVIEW, or BLOCK with an audit receipt."
     />
     <meta property="og:title" content="SemeAI Gate — generation is not release authority" />
     <meta
       property="og:description"
-      content="A checkpoint between your LLM and your users. Interactive demo, API, dashboard, self-hosted."
+      content="Ship AI answers only when business data supports them. Live demo, API, dashboard, self-hosted."
     />
     <meta property="og:url" content="https://semeai.tech/" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <link rel="canonical" href="https://semeai.tech/" />
-    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713d" />
-    <link rel="stylesheet" href="assets/css/landing.css?v=20260713d" />
+    <link rel="stylesheet" href="assets/css/semeai.css?v=20260716a" />
+    <link rel="stylesheet" href="assets/css/landing.css?v=20260716a" />
   </head>
   <body class="landing-body">
     <div class="glow-orb a" aria-hidden="true"></div>
@@ -31,10 +31,11 @@
         <nav class="links" aria-label="Primary">
           <a href="#how" data-i18n="nav_how">How it works</a>
           <a href="#demo" data-i18n="nav_demo_sec">Live demo</a>
+          <a href="#outcomes" data-i18n="nav_out">Outcomes</a>
           <a href="#use" data-i18n="nav_use">Use cases</a>
           <a href="self-hosted.html" data-i18n="nav_self">Self-hosted</a>
           <a href="dashboard.html" data-i18n="nav_dash">Dashboard</a>
-          <a class="cta" href="register.html?v=20260713b" data-i18n="nav_start">Start free</a>
+          <a class="cta" href="register.html?v=20260716a" data-i18n="nav_start">Start free</a>
           <span class="lang-switch" aria-label="Language">
             <button type="button" class="active" data-lang="en">EN</button>
             <button type="button" data-lang="uk">UA</button>
@@ -50,18 +51,19 @@
         <div class="reveal">
           <div class="hero-kicker">
             <span class="live-dot" aria-hidden="true"></span>
-            <span class="eyebrow" data-i18n="hero_eyebrow">Live release-control API</span>
+            <span class="eyebrow" data-i18n="hero_eyebrow">Live release-control API · pilot ready</span>
           </div>
           <h1 data-i18n="hero_title">Stop unsupported AI answers before users see them.</h1>
           <p class="thesis" data-i18n="hero_thesis">Generation is not release authority.</p>
           <p class="lead" data-i18n="hero_lead">
-            Your LLM writes a candidate answer. SemeAI Gate checks business data, context, and rules —
-            then returns <strong>SHOW</strong>, <strong>REVIEW</strong>, or <strong>BLOCK</strong> before anything reaches a user.
+            Your LLM can sound perfect and still invent promo codes, refunds, or finance claims.
+            SemeAI Gate is the narrow checkpoint after generation: check business data &amp; rules,
+            then return <strong>SHOW</strong>, <strong>REVIEW</strong>, or <strong>BLOCK</strong> — with an audit trail.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="#demo" data-i18n="cta_try">Try interactive demo</a>
-            <a class="button" href="register.html?v=20260713d" data-i18n="cta_register">Create workspace</a>
-            <a class="button" href="dashboard.html?v=20260713d" data-i18n="cta_dash">Open dashboard</a>
+            <a class="button" href="register.html?v=20260716a" data-i18n="cta_register">Start free pilot</a>
+            <a class="button" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener" data-i18n="cta_console">Open live console</a>
             <a class="button" href="pilots/support.html">Support pilot kit</a>
           </div>
           <div class="trust-row">
@@ -69,6 +71,11 @@
             <span class="pill info" data-i18n="pill_oss">Open source</span>
             <span class="pill" data-i18n="pill_crypto">USDT pilot billing</span>
             <span class="pill" data-i18n="pill_self">Self-hosted ready</span>
+          </div>
+          <div class="social-proof">
+            <span><b>Research-backed</b> · SSRN + Zenodo</span>
+            <span><b>3-action contract</b> · SHOW / REVIEW / BLOCK</span>
+            <span><b>Drop-in</b> · after any LLM</span>
           </div>
           <div class="panel" style="margin-top:16px">
             <div class="button-row" style="margin-bottom:8px">
@@ -136,6 +143,54 @@ print(check_ai_answer({
         </aside>
       </section>
 
+      <!-- METRICS -->
+      <section class="page section-tight reveal">
+        <div class="metrics-strip">
+          <div class="metric-card">
+            <div class="mv">SHOW · REVIEW · BLOCK</div>
+            <div class="ml" data-i18n="m1">One canonical contract your product can enforce</div>
+          </div>
+          <div class="metric-card">
+            <div class="mv">After LLM</div>
+            <div class="ml" data-i18n="m2">Not a chatbot — a release checkpoint</div>
+          </div>
+          <div class="metric-card">
+            <div class="mv">Fail closed</div>
+            <div class="ml" data-i18n="m3">Unsupported claims never reach the user by default</div>
+          </div>
+          <div class="metric-card">
+            <div class="mv">Audit ready</div>
+            <div class="ml" data-i18n="m4">Receipts even when the answer is blocked</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAIN -->
+      <section class="page section-tight reveal">
+        <div class="pain-band">
+          <span class="eyebrow" data-i18n="pain_eyebrow">The hidden cost of ungoverned AI</span>
+          <h2 data-i18n="pain_title">Fluent models already invent policy. Your brand pays for it.</h2>
+          <p class="lead" data-i18n="pain_lead">
+            Every support and ops surface that “just answers” is a silent product decision.
+            Without a gate, invented promos, refunds, and eligibility claims look authoritative.
+          </p>
+          <div class="pain-grid">
+            <div class="pain-item">
+              <strong data-i18n="pain_1t">Support leakage</strong>
+              <p data-i18n="pain_1p">Bots invent SAVE30 when active_promo_codes is empty — and customers expect it to work.</p>
+            </div>
+            <div class="pain-item">
+              <strong data-i18n="pain_2t">Finance risk</strong>
+              <p data-i18n="pain_2p">Eligibility and return claims drift off-context into confident, wrong advice.</p>
+            </div>
+            <div class="pain-item">
+              <strong data-i18n="pain_3t">No proof of “no”</strong>
+              <p data-i18n="pain_3p">When something should have been withheld, you need a receipt — not a chat log guess.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- HOW -->
       <section class="page section-tight reveal" id="how">
         <span class="eyebrow" data-i18n="how_eyebrow">How it works</span>
@@ -143,7 +198,16 @@ print(check_ai_answer({
         <p class="lead" data-i18n="how_lead">
           SemeAI is not another chatbot. It is a narrow checkpoint your product calls after generation.
         </p>
-        <div class="flow-steps">
+        <div class="live-pipeline" id="live-pipeline" aria-hidden="true">
+          <div class="pipe-node" data-step="0"><div class="pn">1</div><strong data-i18n="s1_t">Generate</strong><span data-i18n="s1_p">LLM writes a candidate — nothing shown yet</span></div>
+          <div class="pipe-arrow" data-arrow="0">→</div>
+          <div class="pipe-node" data-step="1"><div class="pn">2</div><strong data-i18n="s2_t">Check</strong><span data-i18n="s2_p">Business data, rules, risk, context</span></div>
+          <div class="pipe-arrow" data-arrow="1">→</div>
+          <div class="pipe-node" data-step="2"><div class="pn">3</div><strong data-i18n="s3_t">Decide</strong><span>SHOW · REVIEW · BLOCK</span></div>
+          <div class="pipe-arrow" data-arrow="2">→</div>
+          <div class="pipe-node" data-step="3"><div class="pn">4</div><strong data-i18n="s4_t">Prove</strong><span data-i18n="s4_p">Audit receipt for release or silence</span></div>
+        </div>
+        <div class="flow-steps" style="margin-top:18px">
           <article class="flow-step">
             <span class="n">1</span>
             <h3 data-i18n="s1_t">Generate</h3>
@@ -163,6 +227,32 @@ print(check_ai_answer({
             <span class="n">4</span>
             <h3 data-i18n="s4_t">Prove</h3>
             <p data-i18n="s4_p">Even blocked answers leave audit metadata for replay and review.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- OUTCOMES -->
+      <section class="page section reveal" id="outcomes">
+        <span class="eyebrow" data-i18n="out_eyebrow">What you get</span>
+        <h2 data-i18n="out_title">Ship confidence. Keep the receipt.</h2>
+        <p class="lead" data-i18n="out_lead">
+          Buy the boundary, not another model. Plug SemeAI between generation and the user.
+        </p>
+        <div class="outcomes">
+          <article class="outcome">
+            <div class="icon">01</div>
+            <h3 data-i18n="o1_t">Fewer invented policies</h3>
+            <p data-i18n="o1_p">Promos, refunds, and account states only release when business data supports them.</p>
+          </article>
+          <article class="outcome">
+            <div class="icon">02</div>
+            <h3 data-i18n="o2_t">Human path when unsure</h3>
+            <p data-i18n="o2_p">Ambiguous cases go to REVIEW — not a confident wrong answer.</p>
+          </article>
+          <article class="outcome">
+            <div class="icon">03</div>
+            <h3 data-i18n="o3_t">Compliance-friendly silence</h3>
+            <p data-i18n="o3_p">BLOCK is a first-class product decision with audit metadata, not a missing log.</p>
           </article>
         </div>
       </section>
@@ -243,8 +333,11 @@ print(check_ai_answer({
       <!-- ECOSYSTEM -->
       <section class="page section reveal" id="ecosystem">
         <span class="eyebrow">Ecosystem</span>
-        <h2>One contract · three repositories</h2>
-        <p class="lead">Governance, runtime gate, and product site share the same release-control boundary.</p>
+        <h2 data-i18n="eco_title">One contract · three public layers</h2>
+        <p class="lead" data-i18n="eco_lead">
+          Governance semantics, Gate runtime, and product surface — open repositories customers can inspect.
+          Internal tooling stays private; the public stack is what you integrate.
+        </p>
         <div class="eco-grid">
           <a class="eco-card" href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener">
             <span class="tag g">GOVERNANCE</span>
@@ -254,7 +347,7 @@ print(check_ai_answer({
           <a class="eco-card" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">
             <span class="tag r">RUNTIME / API</span>
             <h3>semeai-gate-basic</h3>
-            <p>SHOW / REVIEW / BLOCK adapter, live API, receipts, pilot billing, ecosystem demo.</p>
+            <p>SHOW / REVIEW / BLOCK adapter, live API, receipts, pilot billing, product console.</p>
           </a>
           <a class="eco-card" href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener">
             <span class="tag p">PRODUCT SITE</span>
@@ -263,8 +356,43 @@ print(check_ai_answer({
           </a>
         </div>
         <div class="button-row" style="margin-top: 14px">
-          <a class="button primary" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener">Open ecosystem demo</a>
+          <a class="button primary" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener">Open live product console</a>
           <a class="button" href="https://gate.semeai.tech/" target="_blank" rel="noopener">gate.semeai.tech</a>
+        </div>
+      </section>
+
+      <!-- PILOT -->
+      <section class="page section-tight reveal" id="pilot">
+        <span class="eyebrow" data-i18n="pilot_eyebrow">Pilot path</span>
+        <h2 data-i18n="pilot_title">Start free. Prove value on real support traffic.</h2>
+        <div class="pilot-pricing">
+          <div class="pilot-card">
+            <div class="price-tag" data-i18n="pilot_price">Free pilot <small>· then USDT activation</small></div>
+            <p class="lead" style="margin:10px 0 0" data-i18n="pilot_copy">
+              Register → verify email → API key → dashboard. Optional USDT/TRC20 pilot billing.
+              Payment metadata is never gate authority.
+            </p>
+            <ul>
+              <li data-i18n="pilot_1">Live /v0/demo/check without a key</li>
+              <li data-i18n="pilot_2">Authenticated gate + usage meter + key rotation</li>
+              <li data-i18n="pilot_3">Support pilot kit with real scenarios</li>
+              <li data-i18n="pilot_4">Self-host when data cannot leave your VPC</li>
+            </ul>
+            <div class="button-row" style="margin-top:16px">
+              <a class="button primary" href="register.html?v=20260716a" data-i18n="cta_go">Get API access</a>
+              <a class="button" href="pilots/support.html">Support pilot kit</a>
+            </div>
+          </div>
+          <div class="pilot-card">
+            <h3 data-i18n="pilot_side_t">Ideal first vertical</h3>
+            <p data-i18n="pilot_side_p">
+              Customer support with promo / refund / account-state risk.
+              Run the kit, capture blocked inventions, show the receipt to stakeholders.
+            </p>
+            <div class="button-row" style="margin-top:16px">
+              <a class="button" href="dashboard.html?v=20260716a" data-i18n="cta_console2">Open dashboard</a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -319,13 +447,13 @@ print(check_ai_answer({
             <span class="eyebrow" data-i18n="cta_eyebrow">Start in minutes</span>
             <h2 data-i18n="cta_title">Create a workspace. Run a gate check. Keep the receipt.</h2>
             <p data-i18n="cta_copy">
-              Pilot path: register → verify email → dashboard → optional USDT activation reviewed at adelayida0403@gmail.com.
-              Payment metadata is never gate authority.
+              Pilot path: register → verify email → dashboard → optional USDT activation.
+              Payment metadata is never gate authority. Questions: adelayida0403@gmail.com
             </p>
           </div>
           <div class="button-row" style="justify-content: flex-end">
-            <a class="button primary" href="register.html?v=20260713b" data-i18n="cta_go">Get API access</a>
-            <a class="button" href="dashboard.html?v=20260713b" data-i18n="cta_console">Workspace console</a>
+            <a class="button primary" href="register.html?v=20260716a" data-i18n="cta_go">Get API access</a>
+            <a class="button" href="dashboard.html?v=20260716a" data-i18n="cta_console2">Open dashboard</a>
           </div>
         </div>
       </section>
@@ -344,8 +472,8 @@ print(check_ai_answer({
       </div>
     </footer>
 
-    <script src="assets/js/api.js?v=20260713d"></script>
-    <script src="assets/js/cache-bust.js?v=20260713d"></script>
+    <script src="assets/js/api.js?v=20260716a"></script>
+    <script src="assets/js/cache-bust.js?v=20260716a"></script>
     <script>
       const SDK_PY = `# local package
 pip install -e .
@@ -408,17 +536,19 @@ console.log(result.action); // BLOCK`;
         uk: {
           nav_how: "Як працює",
           nav_demo_sec: "Демо",
+          nav_out: "Результат",
           nav_use: "Кейси",
           nav_self: "Self-hosted",
           nav_dash: "Dashboard",
           nav_start: "Почати",
-          hero_eyebrow: "Live release-control API",
+          hero_eyebrow: "Live release-control API · pilot ready",
           hero_title: "Зупиняйте непідтверджені AI-відповіді до того, як їх побачить користувач.",
           hero_thesis: "Генерація — це не право на release.",
           hero_lead:
-            "Ваш LLM пише кандидат-відповідь. SemeAI Gate перевіряє бізнес-дані, контекст і правила — і повертає SHOW, REVIEW або BLOCK, перш ніж щось потрапить до користувача.",
+            "LLM може звучати ідеально і все одно вигадати промокоди, refunds чи фінансові claims. SemeAI Gate — вузький checkpoint після генерації: перевірка бізнес-даних і правил, потім SHOW, REVIEW або BLOCK — з audit trail.",
           cta_try: "Спробувати інтерактивне демо",
-          cta_register: "Створити workspace",
+          cta_register: "Почати free pilot",
+          cta_console: "Відкрити live console",
           cta_dash: "Відкрити dashboard",
           pill_api: "API live",
           pill_oss: "Open source",
@@ -432,6 +562,19 @@ console.log(result.action); // BLOCK`;
           lab_ai: "Кандидат AI",
           lab_data: "Бізнес-дані",
           btn_run: "Запустити live /v0/demo/check",
+          m1: "Один канонічний контракт, який можна enforce-ити",
+          m2: "Не чатбот — checkpoint перед release",
+          m3: "Непідтверджені claims не доходять до юзера за замовчуванням",
+          m4: "Receipts навіть коли відповідь blocked",
+          pain_eyebrow: "Прихована ціна ungoverned AI",
+          pain_title: "Плавні моделі вже вигадують політику. Платить ваш бренд.",
+          pain_lead: "Кожен support/ops, що «просто відповідає», — тихе product-рішення. Без gate вигадані промо й claims виглядають авторитетно.",
+          pain_1t: "Support leakage",
+          pain_1p: "Боти вигадують SAVE30, коли active_promo_codes порожній — і клієнти чекають, що спрацює.",
+          pain_2t: "Фінансовий ризик",
+          pain_2p: "Eligibility і return claims з’їжджають у впевнені, але хибні поради.",
+          pain_3t: "Немає доказу «ні»",
+          pain_3p: "Коли треба було утримати відповідь — потрібен receipt, не здогад з chat log.",
           how_eyebrow: "Як це працює",
           how_title: "Чотири кроки. Одне рішення. Receipt.",
           how_lead: "SemeAI — не ще один чатбот. Це вузький checkpoint після генерації.",
@@ -443,6 +586,15 @@ console.log(result.action); // BLOCK`;
           s3_p: "SHOW, REVIEW або BLOCK — у канонічних станах PROCEED / NEEDS_REVIEW / SILENCE.",
           s4_t: "Prove",
           s4_p: "Навіть blocked відповіді зберігають audit metadata.",
+          out_eyebrow: "Що ви отримуєте",
+          out_title: "Впевнений ship. Збережений receipt.",
+          out_lead: "Купуєте boundary, не нову модель. SemeAI — між генерацією і користувачем.",
+          o1_t: "Менше вигаданих політик",
+          o1_p: "Промо, refunds і стани акаунта — лише коли business data підтверджує.",
+          o2_t: "Людина, коли сумнівно",
+          o2_p: "Сумнівні кейси йдуть у REVIEW — не впевнена хибна відповідь.",
+          o3_t: "Silence з compliance",
+          o3_p: "BLOCK — first-class рішення з audit metadata, не «зниклий» лог.",
           why_eyebrow: "Навіщо",
           why_title: "Плавний текст ≠ дозвіл ship-ити.",
           without_t: "Без gate",
@@ -473,6 +625,18 @@ console.log(result.action); // BLOCK`;
           api_lead: "Один authenticated endpoint. Версіонований контракт.",
           api_contract: "Повний contract",
           api_self: "Self-hosted model",
+          eco_title: "Один контракт · три публічні шари",
+          eco_lead: "Governance, Gate runtime і product surface — відкриті репозиторії. Внутрішній tooling лишається приватним.",
+          pilot_eyebrow: "Pilot path",
+          pilot_title: "Почніть free. Доведіть цінність на real support traffic.",
+          pilot_price: "Free pilot · потім USDT activation",
+          pilot_copy: "Register → verify email → API key → dashboard. Optional USDT/TRC20. Оплата ніколи не є gate authority.",
+          pilot_1: "Live /v0/demo/check без ключа",
+          pilot_2: "Authenticated gate + usage + key rotation",
+          pilot_3: "Support pilot kit з реальними сценаріями",
+          pilot_4: "Self-host, коли дані не можуть вийти з VPC",
+          pilot_side_t: "Ідеальний перший vertical",
+          pilot_side_p: "Customer support з ризиком promo / refund / account-state. Запустіть kit, покажіть receipts стейкхолдерам.",
           dep_eyebrow: "Деплой там, де можна дані",
           dep_title: "Open source · Self-hosted · SaaS",
           d1_t: "Open source",
@@ -486,23 +650,25 @@ console.log(result.action); // BLOCK`;
           cta_copy:
             "Pilot: register → email verify → dashboard → optional USDT. Оплата ніколи не є gate authority.",
           cta_go: "Отримати API доступ",
-          cta_console: "Workspace console",
+          cta_console2: "Відкрити dashboard",
           foot: "генерація — не право на release. Машинні значення канонічні: SHOW / REVIEW / BLOCK.",
         },
         ru: {
           nav_how: "Как работает",
           nav_demo_sec: "Демо",
+          nav_out: "Результат",
           nav_use: "Кейсы",
           nav_self: "Self-hosted",
           nav_dash: "Dashboard",
           nav_start: "Начать",
-          hero_eyebrow: "Live release-control API",
+          hero_eyebrow: "Live release-control API · pilot ready",
           hero_title: "Останавливайте неподтверждённые AI-ответы до показа пользователю.",
           hero_thesis: "Генерация — не право на release.",
           hero_lead:
-            "Ваш LLM пишет кандидат-ответ. SemeAI Gate проверяет бизнес-данные, контекст и правила — и возвращает SHOW, REVIEW или BLOCK до показа пользователю.",
+            "LLM может звучать идеально и всё равно выдумать промокоды, refunds или finance claims. SemeAI Gate — узкий checkpoint после генерации: бизнес-данные и правила, затем SHOW, REVIEW или BLOCK — с audit trail.",
           cta_try: "Интерактивное демо",
-          cta_register: "Создать workspace",
+          cta_register: "Начать free pilot",
+          cta_console: "Открыть live console",
           cta_dash: "Открыть dashboard",
           pill_api: "API live",
           pill_oss: "Open source",
@@ -516,6 +682,19 @@ console.log(result.action); // BLOCK`;
           lab_ai: "Кандидат AI",
           lab_data: "Бизнес-данные",
           btn_run: "Запустить live /v0/demo/check",
+          m1: "Один канонический контракт, который можно enforce-ить",
+          m2: "Не чатбот — checkpoint перед release",
+          m3: "Неподтверждённые claims не доходят до юзера по умолчанию",
+          m4: "Receipts даже когда ответ blocked",
+          pain_eyebrow: "Скрытая цена ungoverned AI",
+          pain_title: "Плавные модели уже выдумывают политику. Платит ваш бренд.",
+          pain_lead: "Каждый support/ops, который «просто отвечает», — тихое product-решение. Без gate выдуманные промо и claims выглядят авторитетно.",
+          pain_1t: "Support leakage",
+          pain_1p: "Боты выдумывают SAVE30, когда active_promo_codes пуст — и клиенты ждут, что сработает.",
+          pain_2t: "Финансовый риск",
+          pain_2p: "Eligibility и return claims уезжают в уверенные, но ложные советы.",
+          pain_3t: "Нет доказательства «нет»",
+          pain_3p: "Когда ответ надо удержать — нужен receipt, не догадка из chat log.",
           how_eyebrow: "Как это работает",
           how_title: "Четыре шага. Одно решение. Receipt.",
           how_lead: "SemeAI — не ещё один чатбот. Это узкий checkpoint после генерации.",
@@ -527,6 +706,15 @@ console.log(result.action); // BLOCK`;
           s3_p: "SHOW, REVIEW или BLOCK — PROCEED / NEEDS_REVIEW / SILENCE.",
           s4_t: "Prove",
           s4_p: "Даже blocked ответы сохраняют audit metadata.",
+          out_eyebrow: "Что вы получаете",
+          out_title: "Уверенный ship. Сохранённый receipt.",
+          out_lead: "Покупаете boundary, не новую модель. SemeAI — между генерацией и пользователем.",
+          o1_t: "Меньше выдуманных политик",
+          o1_p: "Промо, refunds и статусы аккаунта — только когда business data подтверждает.",
+          o2_t: "Человек, когда сомнительно",
+          o2_p: "Сомнительные кейсы идут в REVIEW — не уверенный неверный ответ.",
+          o3_t: "Silence с compliance",
+          o3_p: "BLOCK — first-class решение с audit metadata, не «пропавший» лог.",
           why_eyebrow: "Зачем",
           why_title: "Плавный текст ≠ разрешение ship-ить.",
           without_t: "Без gate",
@@ -557,6 +745,18 @@ console.log(result.action); // BLOCK`;
           api_lead: "Один authenticated endpoint. Версионированный контракт.",
           api_contract: "Полный contract",
           api_self: "Self-hosted model",
+          eco_title: "Один контракт · три публичных слоя",
+          eco_lead: "Governance, Gate runtime и product surface — открытые репозитории. Внутренний tooling остаётся приватным.",
+          pilot_eyebrow: "Pilot path",
+          pilot_title: "Начните free. Докажите ценность на real support traffic.",
+          pilot_price: "Free pilot · затем USDT activation",
+          pilot_copy: "Register → verify email → API key → dashboard. Optional USDT/TRC20. Оплата никогда не gate authority.",
+          pilot_1: "Live /v0/demo/check без ключа",
+          pilot_2: "Authenticated gate + usage + key rotation",
+          pilot_3: "Support pilot kit с реальными сценариями",
+          pilot_4: "Self-host, когда данные не могут выйти из VPC",
+          pilot_side_t: "Идеальный первый vertical",
+          pilot_side_p: "Customer support с риском promo / refund / account-state. Запустите kit, покажите receipts стейкхолдерам.",
           dep_eyebrow: "Деплой там, где можно данные",
           dep_title: "Open source · Self-hosted · SaaS",
           d1_t: "Open source",
@@ -569,7 +769,7 @@ console.log(result.action); // BLOCK`;
           cta_title: "Создайте workspace. Запустите check. Сохраните receipt.",
           cta_copy: "Pilot: register → email verify → dashboard → optional USDT. Оплата не gate authority.",
           cta_go: "Получить API доступ",
-          cta_console: "Workspace console",
+          cta_console2: "Открыть dashboard",
           foot: "генерация — не право на release. Машинные значения каноничны: SHOW / REVIEW / BLOCK.",
         },
       };
@@ -675,6 +875,20 @@ console.log(result.action); // BLOCK`;
       setTimeout(() => {
         runDemo();
       }, 600);
+
+      // animated pipeline on how-section
+      (function pipelineAnim() {
+        const root = document.querySelector("#live-pipeline");
+        if (!root) return;
+        const nodes = root.querySelectorAll(".pipe-node");
+        const arrows = root.querySelectorAll(".pipe-arrow");
+        let step = 0;
+        setInterval(() => {
+          nodes.forEach((n, i) => n.classList.toggle("active", i === step));
+          arrows.forEach((a, i) => a.classList.toggle("pulse", i === step || i === step - 1));
+          step = (step + 1) % nodes.length;
+        }, 1100);
+      })();
 
       const sdkPyBtn = document.querySelector("#sdk-tab-py");
       const sdkJsBtn = document.querySelector("#sdk-tab-js");

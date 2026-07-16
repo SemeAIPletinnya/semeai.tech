@@ -402,6 +402,187 @@
 .eco-card h3 { margin: 0 0 8px; font-size: 16px; color: var(--text-strong); }
 .eco-card p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5; }
 
+/* —— Selling polish —— */
+.metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 8px 0 10px;
+}
+.metric-card {
+  padding: 16px 18px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015));
+  transition: 0.2s ease;
+}
+.metric-card:hover {
+  border-color: rgba(127, 211, 208, 0.35);
+  transform: translateY(-2px);
+}
+.metric-card .mv {
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 850;
+  color: var(--text-strong);
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+.metric-card .ml {
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.pain-band {
+  margin: 10px 0 6px;
+  padding: 22px 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(251, 113, 133, 0.22);
+  background:
+    radial-gradient(500px 160px at 0% 0%, rgba(251, 113, 133, 0.1), transparent 60%),
+    linear-gradient(180deg, rgba(22, 14, 18, 0.9), rgba(10, 16, 24, 0.96));
+}
+.pain-band h2 { margin: 0 0 8px; }
+.pain-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+.pain-item {
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(0,0,0,0.2);
+}
+.pain-item strong {
+  display: block;
+  color: var(--text-strong);
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.pain-item p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.45; }
+
+.live-pipeline {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 8px;
+  align-items: stretch;
+  margin-top: 16px;
+}
+.pipe-node {
+  text-align: center;
+  padding: 16px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.03);
+  transition: 0.25s ease;
+  min-height: 120px;
+}
+.pipe-node.active {
+  border-color: rgba(127, 211, 208, 0.55);
+  background: rgba(127, 211, 208, 0.1);
+  box-shadow: 0 0 28px rgba(127, 211, 208, 0.12);
+}
+.pipe-node .pn {
+  display: inline-flex;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800;
+  color: #042f2e; background: var(--teal);
+  margin-bottom: 8px;
+}
+.pipe-node strong { display: block; color: var(--text-strong); font-size: 13px; margin-bottom: 4px; }
+.pipe-node span { color: var(--muted-2); font-size: 11.5px; line-height: 1.35; }
+.pipe-arrow {
+  display: grid; place-items: center;
+  color: var(--teal); font-weight: 900; font-size: 18px; opacity: 0.55;
+}
+.pipe-arrow.pulse { animation: arrowPulse 1.2s ease infinite; }
+@keyframes arrowPulse {
+  0%, 100% { opacity: 0.3; transform: translateX(0); }
+  50% { opacity: 1; transform: translateX(3px); }
+}
+
+.outcomes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 16px;
+}
+.outcome {
+  padding: 22px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(127, 211, 208, 0.06), transparent 50%),
+    rgba(255,255,255,0.02);
+  min-height: 180px;
+  transition: 0.2s ease;
+}
+.outcome:hover {
+  transform: translateY(-3px);
+  border-color: rgba(127, 211, 208, 0.4);
+}
+.outcome .icon {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: grid; place-items: center;
+  font-weight: 900; font-size: 14px; color: #042f2e;
+  background: linear-gradient(135deg, #b8f0ed, var(--teal));
+  margin-bottom: 12px;
+}
+.outcome h3 { margin: 0 0 8px; font-size: 17px; color: var(--text-strong); }
+.outcome p { margin: 0; font-size: 14px; color: var(--muted); line-height: 1.5; }
+
+.pilot-pricing {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 14px;
+  margin-top: 16px;
+}
+.pilot-card {
+  padding: 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(127, 211, 208, 0.3);
+  background:
+    radial-gradient(400px 160px at 90% 0%, rgba(96, 165, 250, 0.12), transparent 60%),
+    linear-gradient(180deg, rgba(16, 28, 38, 0.95), rgba(10, 16, 24, 0.98));
+}
+.pilot-card h3 { margin: 0 0 8px; font-size: 22px; }
+.pilot-card ul { margin: 12px 0 0; padding-left: 18px; color: var(--muted); }
+.pilot-card li { margin: 6px 0; }
+.price-tag {
+  font-size: 28px; font-weight: 850; color: var(--text-strong);
+  letter-spacing: -0.03em;
+}
+.price-tag small { font-size: 14px; font-weight: 600; color: var(--muted); }
+
+.hero-actions .button.primary {
+  box-shadow: 0 10px 28px rgba(127, 211, 208, 0.25);
+}
+.demo-card {
+  position: relative;
+}
+.demo-card::before {
+  content: "";
+  position: absolute; inset: 0 0 auto 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(127,211,208,0.5), transparent);
+}
+
+.social-proof {
+  display: flex; flex-wrap: wrap; gap: 10px 18px;
+  align-items: center;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted-2);
+  font-size: 12.5px;
+  font-weight: 650;
+}
+.social-proof b { color: var(--muted); font-weight: 700; }
+
 @media (max-width: 960px) {
   .hero-grid,
   .flow-steps,
@@ -410,9 +591,15 @@
   .code-panel,
   .cta-band,
   .scenario-tabs,
-  .eco-grid {
+  .eco-grid,
+  .metrics-strip,
+  .pain-grid,
+  .live-pipeline,
+  .outcomes,
+  .pilot-pricing {
     grid-template-columns: 1fr;
   }
+  .pipe-arrow { display: none; }
   .hero h1 { max-width: none; }
   .result-banner { grid-template-columns: 1fr; }
 }
