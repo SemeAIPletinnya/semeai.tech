@@ -179,38 +179,35 @@
       </section>
 
       <!-- HOW IT WORKS -->
-      <section id="how" class="bg-zinc-900 py-20 sm:py-24">
+      <section id="how" class="bg-zinc-900 py-24">
         <div class="mx-auto max-w-7xl px-6">
-          <h2 class="mb-4 text-center text-4xl font-bold text-white">How it Works</h2>
-          <p class="mb-12 text-center text-zinc-400">Один checkpoint. Три рішення. Повний аудит.</p>
+          <h2 class="mb-4 text-center text-5xl font-bold text-white">How it Works</h2>
+          <p class="mb-16 text-center text-xl text-zinc-400">Один checkpoint. Три рішення. Повний аудит.</p>
 
-          <!-- Діаграма -->
-          <div class="mb-16 rounded-3xl border border-zinc-700 bg-zinc-950 p-8 sm:p-12">
-            <div class="grid grid-cols-1 gap-6 text-center md:grid-cols-4">
-              <div class="rounded-3xl bg-zinc-900 p-8 transition hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/20">
-                <div class="mb-4 text-5xl font-bold text-cyan-400">01</div>
-                <div class="font-semibold text-white">LLM Candidate</div>
-                <div class="mt-2 text-sm text-zinc-400">Генерація є — показу ще немає</div>
+          <div class="grid gap-8 text-center md:grid-cols-4">
+            <div class="card-hover rounded-3xl border border-zinc-700 bg-zinc-950 p-10">
+              <div class="mb-6 text-6xl font-bold text-cyan-400">01</div>
+              <h3 class="mb-3 text-2xl font-semibold text-white">LLM Candidate</h3>
+              <p class="text-zinc-400">Генерація відбувається, але нічого не показується</p>
+            </div>
+            <div class="card-hover rounded-3xl border border-zinc-700 bg-zinc-950 p-10">
+              <div class="mb-6 text-6xl font-bold text-cyan-400">02</div>
+              <h3 class="mb-3 text-2xl font-semibold text-white">Gate Check</h3>
+              <p class="text-zinc-400">Бізнес-дані, правила, ризик</p>
+            </div>
+            <div class="card-hover rounded-3xl border border-zinc-700 bg-zinc-950 p-10">
+              <div class="mb-6 text-6xl font-bold text-cyan-400">03</div>
+              <h3 class="mb-3 text-2xl font-semibold text-white">Decide</h3>
+              <div class="mt-6 flex flex-wrap justify-center gap-3">
+                <span class="rounded-2xl bg-emerald-500/20 px-5 py-2 text-sm text-emerald-400">SHOW</span>
+                <span class="rounded-2xl bg-amber-500/20 px-5 py-2 text-sm text-amber-400">REVIEW</span>
+                <span class="rounded-2xl bg-red-500/20 px-5 py-2 text-sm text-red-400">BLOCK</span>
               </div>
-              <div class="rounded-3xl bg-zinc-900 p-8 transition hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/20">
-                <div class="mb-4 text-5xl font-bold text-cyan-400">02</div>
-                <div class="font-semibold text-white">SemeAI Gate</div>
-                <div class="mt-2 text-sm text-zinc-400">Business data + rules + risk</div>
-              </div>
-              <div class="rounded-3xl bg-zinc-900 p-8 transition hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/20">
-                <div class="mb-4 text-5xl font-bold text-cyan-400">03</div>
-                <div class="font-semibold text-white">Decide</div>
-                <div class="mt-4 flex flex-wrap justify-center gap-3">
-                  <span class="rounded-full bg-emerald-500/20 px-4 py-1 text-sm text-emerald-400">SHOW</span>
-                  <span class="rounded-full bg-amber-500/20 px-4 py-1 text-sm text-amber-400">REVIEW</span>
-                  <span class="rounded-full bg-red-500/20 px-4 py-1 text-sm text-red-400">BLOCK</span>
-                </div>
-              </div>
-              <div class="rounded-3xl bg-zinc-900 p-8 transition hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/20">
-                <div class="mb-4 text-5xl font-bold text-cyan-400">04</div>
-                <div class="font-semibold text-white">Prove</div>
-                <div class="mt-2 text-sm text-zinc-400">Audit receipt</div>
-              </div>
+            </div>
+            <div class="card-hover rounded-3xl border border-zinc-700 bg-zinc-950 p-10">
+              <div class="mb-6 text-6xl font-bold text-cyan-400">04</div>
+              <h3 class="mb-3 text-2xl font-semibold text-white">Prove</h3>
+              <p class="text-zinc-400">Audit receipt навіть при BLOCK</p>
             </div>
           </div>
         </div>
@@ -260,26 +257,26 @@
         </div>
       </section>
 
-      <!-- Measured Impact -->
-      <section id="impact" class="border-t border-zinc-900 py-20 sm:py-24">
+      <!-- MEASURED IMPACT -->
+      <section id="impact" class="border-t border-zinc-900 py-24">
         <div class="mx-auto max-w-7xl px-6">
-          <h2 class="mb-4 text-center text-4xl font-bold text-white">Measured Impact</h2>
-          <p class="mb-12 text-center text-zinc-400">Release layer на тому ж моделі та датасеті</p>
+          <h2 class="mb-4 text-center text-5xl font-bold text-white">Measured Impact</h2>
+          <p class="mb-16 text-center text-zinc-400">Release layer на тому ж моделі та датасеті</p>
           <div class="grid gap-8 md:grid-cols-3">
-            <div class="rounded-3xl bg-zinc-900 p-10 text-center ring-1 ring-zinc-800 transition hover:ring-cyan-500/30">
-              <div class="mb-2 text-5xl font-bold text-emerald-400 sm:text-6xl">664 → 247</div>
-              <div class="text-zinc-400">False Accepts</div>
+            <div class="card-hover rounded-3xl bg-zinc-900 p-12 text-center">
+              <div class="mb-4 text-5xl font-bold text-emerald-400 sm:text-6xl lg:text-7xl">664 → 247</div>
+              <p class="text-xl text-zinc-400 sm:text-2xl">False Accepts</p>
             </div>
-            <div class="rounded-3xl bg-zinc-900 p-10 text-center ring-1 ring-zinc-800 transition hover:ring-cyan-500/30">
-              <div class="mb-2 text-5xl font-bold text-emerald-400 sm:text-6xl">~69%</div>
-              <div class="text-zinc-400">Est. Cost Saved</div>
+            <div class="card-hover rounded-3xl bg-zinc-900 p-12 text-center">
+              <div class="mb-4 text-5xl font-bold text-emerald-400 sm:text-6xl lg:text-7xl">~69%</div>
+              <p class="text-xl text-zinc-400 sm:text-2xl">Est. Cost Saved</p>
             </div>
-            <div class="rounded-3xl bg-zinc-900 p-10 text-center ring-1 ring-zinc-800 transition hover:ring-cyan-500/30">
-              <div class="mb-2 text-5xl font-bold text-emerald-400 sm:text-6xl">Same Model</div>
-              <div class="text-zinc-400">Без ретрофітингу</div>
+            <div class="card-hover rounded-3xl bg-zinc-900 p-12 text-center">
+              <div class="mb-4 text-4xl font-bold text-emerald-400 sm:text-5xl lg:text-6xl">Same Model</div>
+              <p class="text-xl text-zinc-400 sm:text-2xl">Без ретрофітингу</p>
             </div>
           </div>
-          <p class="mx-auto mt-8 max-w-2xl text-center text-xs text-zinc-500">
+          <p class="mx-auto mt-10 max-w-2xl text-center text-xs text-zinc-500">
             Open integration benchmark, fixed evaluation set. Not a universal safety claim.
             <a class="text-zinc-400 underline underline-offset-2 hover:text-cyan-400" href="https://github.com/SemeAIPletinnya/silence-as-control/blob/main/docs/langchain_openai_action_risk_benchmark.md" target="_blank" rel="noopener">Methodology</a>
             ·
@@ -487,8 +484,8 @@
       </div>
     </footer>
 
-    <script src="assets/js/api.js?v=20260716m"></script>
-    <script src="assets/js/cache-bust.js?v=20260716m"></script>
+    <script src="assets/js/api.js?v=20260716n"></script>
+    <script src="assets/js/cache-bust.js?v=20260716n"></script>
     <script>
       const FREE_LIMIT = 5, FREE_KEY = "semeai_free_checks_used";
       const SCENARIOS = {
