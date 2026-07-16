@@ -10,16 +10,21 @@ this is not automated).
 3. Or open Private Email product:  
    https://ap.www.namecheap.com/domains/dcp/privateemail/4271503/semeai.tech
 
-## Recommended mailboxes
+## Live mailboxes (created)
 
-| Address | Purpose |
-|---------|---------|
-| `noreply@semeai.tech` | Transactional: verification, receipts (Resend/SMTP From) |
-| `support@semeai.tech` | Pilot / human support |
-| `billing@semeai.tech` | USDT / invoice questions |
-| `anton@semeai.tech` or `hello@semeai.tech` | Founder / sales |
+| Address | Purpose | Wired in product |
+|---------|---------|------------------|
+| `noreply@semeai.tech` | Transactional From (Resend) | `SEMEAI_GATE_EMAIL_FROM` ✅ |
+| `support@semeai.tech` | Pilot / human support | `SEMEAI_GATE_FEEDBACK_EMAIL` ✅ site footer/dashboard |
+| `billing@semeai.tech` | USDT / invoice / TXID | Use for payment mail; forward to Anton if needed |
+| `anton_semenenko@semeai.tech` | Founder / sales | `SEMEAI_GATE_OPERATOR_EMAIL` ✅ site “Chat with Anton” |
 
-Minimum for SaaS launch: **noreply@** + **support@** (or route support to founder).
+## DNS status (checked)
+
+- MX → `mx1/mx2.privateemail.com` ✅
+- SPF → `v=spf1 include:spf.privateemail.com ~all` ✅ (inbox receive/send via Private Email)
+
+For **Resend** transactional send as `noreply@`, also complete Resend domain verify (DKIM). If Resend asks for SPF merge, keep both includes in one SPF record (do not create two SPF TXT records).
 
 ## Create a mailbox (Private Email)
 

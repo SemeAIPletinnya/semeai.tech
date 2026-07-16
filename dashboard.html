@@ -600,7 +600,7 @@
             txid: document.querySelector("#bill-txid").value.trim(),
           });
           document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
-          setMessage("TXID submitted. Email support@semeai.tech for faster review.", "warn");
+          setMessage("TXID submitted. Email billing@semeai.tech for faster review.", "warn");
           await loadWorkspace();
         } catch (e) {
           setMessage(e.message || String(e), "error");
