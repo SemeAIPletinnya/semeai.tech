@@ -188,66 +188,34 @@
       <section id="how" class="bg-zinc-900 py-20 sm:py-24">
         <div class="mx-auto max-w-7xl px-6">
           <h2 class="mb-4 text-center text-4xl font-bold text-white">How it Works</h2>
-          <p class="mx-auto mb-12 max-w-md text-center text-zinc-400">Один checkpoint. Три рішення. Повний аудит.</p>
+          <p class="mb-12 text-center text-zinc-400">Один checkpoint. Три рішення. Повний аудит.</p>
 
-          <!-- Large diagram -->
-          <div class="card mb-12 rounded-3xl p-8 sm:p-10">
-            <div class="mb-10 hidden lg:block" aria-label="Gate flow">
-              <svg viewBox="0 0 960 150" class="mx-auto w-full max-w-5xl" xmlns="http://www.w3.org/2000/svg" role="img">
-                <title>LLM → Gate → SHOW / REVIEW / BLOCK → User + receipt</title>
-                <defs>
-                  <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                    <path d="M0,0 L6,3 L0,6 Z" fill="#52525b" />
-                  </marker>
-                </defs>
-                <line x1="175" y1="65" x2="210" y2="65" stroke="#52525b" stroke-width="2" marker-end="url(#arr)" />
-                <line x1="385" y1="65" x2="420" y2="65" stroke="#52525b" stroke-width="2" marker-end="url(#arr)" />
-                <line x1="630" y1="65" x2="665" y2="65" stroke="#52525b" stroke-width="2" marker-end="url(#arr)" />
-                <line x1="810" y1="65" x2="845" y2="65" stroke="#52525b" stroke-width="2" marker-end="url(#arr)" />
-                <rect x="20" y="25" width="155" height="80" rx="14" fill="#09090b" stroke="#3f3f46" />
-                <text x="97" y="58" text-anchor="middle" fill="#71717a" font-size="11" font-family="Inter,sans-serif" font-weight="600">01 · LLM</text>
-                <text x="97" y="82" text-anchor="middle" fill="#fafafa" font-size="14" font-family="Inter,sans-serif" font-weight="600">Candidate</text>
-                <rect x="210" y="25" width="175" height="80" rx="14" fill="#09090b" stroke="#3f3f46" />
-                <text x="297" y="58" text-anchor="middle" fill="#71717a" font-size="11" font-family="Inter,sans-serif" font-weight="600">02 · CONTEXT</text>
-                <text x="297" y="82" text-anchor="middle" fill="#fafafa" font-size="14" font-family="Inter,sans-serif" font-weight="600">Data · rules · risk</text>
-                <rect x="420" y="18" width="210" height="94" rx="14" fill="#083344" stroke="#22d3ee" stroke-width="1.5" />
-                <text x="525" y="52" text-anchor="middle" fill="#22d3ee" font-size="11" font-family="Inter,sans-serif" font-weight="600">03 · SEMEAI GATE</text>
-                <text x="525" y="76" text-anchor="middle" fill="#fafafa" font-size="14" font-family="Inter,sans-serif" font-weight="600">Release decision</text>
-                <text x="525" y="96" text-anchor="middle" fill="#a1a1aa" font-size="11" font-family="Inter,sans-serif">fail closed</text>
-                <rect x="665" y="25" width="145" height="80" rx="14" fill="#09090b" stroke="#3f3f46" />
-                <text x="737" y="52" text-anchor="middle" fill="#71717a" font-size="11" font-family="Inter,sans-serif" font-weight="600">04 · OUTCOME</text>
-                <text x="737" y="74" text-anchor="middle" fill="#34d399" font-size="12" font-family="Inter,sans-serif" font-weight="700">SHOW</text>
-                <text x="737" y="92" text-anchor="middle" fill="#fbbf24" font-size="11" font-family="Inter,sans-serif" font-weight="700">REVIEW · BLOCK</text>
-                <rect x="845" y="25" width="95" height="80" rx="14" fill="#09090b" stroke="#3f3f46" />
-                <text x="892" y="65" text-anchor="middle" fill="#fafafa" font-size="12" font-family="Inter,sans-serif" font-weight="600">User +</text>
-                <text x="892" y="85" text-anchor="middle" fill="#fafafa" font-size="12" font-family="Inter,sans-serif" font-weight="600">receipt</text>
-              </svg>
-            </div>
-
-            <div class="grid grid-cols-1 gap-5 text-center md:grid-cols-4">
-              <div class="rounded-2xl bg-zinc-950 p-6">
-                <div class="mb-2 text-2xl font-bold text-cyan-400">01</div>
-                <div class="font-medium text-white">LLM Candidate</div>
-                <div class="mt-2 text-sm text-zinc-400">Генерація відбувається, але нічого не показується</div>
+          <!-- Діаграма -->
+          <div class="mb-16 rounded-3xl border border-zinc-700 bg-zinc-950 p-8 sm:p-12">
+            <div class="grid grid-cols-1 gap-6 text-center md:grid-cols-4">
+              <div class="rounded-3xl bg-zinc-900 p-8 transition hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/20">
+                <div class="mb-4 text-5xl font-bold text-cyan-400">01</div>
+                <div class="font-semibold text-white">LLM Candidate</div>
+                <div class="mt-2 text-sm text-zinc-400">Генерація є — показу ще немає</div>
               </div>
-              <div class="rounded-2xl bg-zinc-950 p-6">
-                <div class="mb-2 text-2xl font-bold text-cyan-400">02</div>
-                <div class="font-medium text-white">SemeAI Gate</div>
-                <div class="mt-2 text-sm text-zinc-400">Перевіряє бізнес-дані, правила, ризик</div>
+              <div class="rounded-3xl bg-zinc-900 p-8 transition hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/20">
+                <div class="mb-4 text-5xl font-bold text-cyan-400">02</div>
+                <div class="font-semibold text-white">SemeAI Gate</div>
+                <div class="mt-2 text-sm text-zinc-400">Business data + rules + risk</div>
               </div>
-              <div class="rounded-2xl bg-zinc-950 p-6">
-                <div class="mb-2 text-2xl font-bold text-cyan-400">03</div>
-                <div class="font-medium text-white">Decide</div>
-                <div class="mt-3 flex flex-wrap justify-center gap-2">
-                  <span class="rounded-full bg-emerald-500/20 px-3 py-1 text-xs text-emerald-400">SHOW</span>
-                  <span class="rounded-full bg-amber-500/20 px-3 py-1 text-xs text-amber-400">REVIEW</span>
-                  <span class="rounded-full bg-red-500/20 px-3 py-1 text-xs text-red-400">BLOCK</span>
+              <div class="rounded-3xl bg-zinc-900 p-8 transition hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/20">
+                <div class="mb-4 text-5xl font-bold text-cyan-400">03</div>
+                <div class="font-semibold text-white">Decide</div>
+                <div class="mt-4 flex flex-wrap justify-center gap-3">
+                  <span class="rounded-full bg-emerald-500/20 px-4 py-1 text-sm text-emerald-400">SHOW</span>
+                  <span class="rounded-full bg-amber-500/20 px-4 py-1 text-sm text-amber-400">REVIEW</span>
+                  <span class="rounded-full bg-red-500/20 px-4 py-1 text-sm text-red-400">BLOCK</span>
                 </div>
               </div>
-              <div class="rounded-2xl bg-zinc-950 p-6">
-                <div class="mb-2 text-2xl font-bold text-cyan-400">04</div>
-                <div class="font-medium text-white">Prove</div>
-                <div class="mt-2 text-sm text-zinc-400">Audit receipt навіть при BLOCK</div>
+              <div class="rounded-3xl bg-zinc-900 p-8 transition hover:border-cyan-500/30 hover:ring-1 hover:ring-cyan-500/20">
+                <div class="mb-4 text-5xl font-bold text-cyan-400">04</div>
+                <div class="font-semibold text-white">Prove</div>
+                <div class="mt-2 text-sm text-zinc-400">Audit receipt</div>
               </div>
             </div>
           </div>
@@ -298,48 +266,27 @@
         </div>
       </section>
 
-      <!-- MEASURED IMPACT -->
-      <section id="impact" class="border-t border-zinc-900 bg-zinc-900 py-20 sm:py-24">
+      <!-- Measured Impact -->
+      <section id="impact" class="border-t border-zinc-900 py-20 sm:py-24">
         <div class="mx-auto max-w-7xl px-6">
           <h2 class="mb-4 text-center text-4xl font-bold text-white">Measured Impact</h2>
-          <p class="mb-12 text-center text-zinc-400">Release layer на тій самій моделі та датасеті</p>
-
-          <div class="mb-6 grid gap-5 lg:grid-cols-2">
-            <div class="card rounded-3xl p-8">
-              <p class="text-xs font-semibold uppercase tracking-wide text-zinc-500">Baseline · release by default</p>
-              <p class="mt-4 text-5xl font-bold text-white">664</p>
-              <p class="mt-2 text-zinc-400">False accepts</p>
-              <div class="bar mt-5"><i style="width:100%;background:#f87171"></i></div>
-              <p class="mt-4 text-sm text-zinc-400">Est. savings vs all-release: ~18%</p>
+          <p class="mb-12 text-center text-zinc-400">Release layer на тому ж моделі та датасеті</p>
+          <div class="grid gap-8 md:grid-cols-3">
+            <div class="rounded-3xl bg-zinc-900 p-10 text-center ring-1 ring-zinc-800 transition hover:ring-cyan-500/30">
+              <div class="mb-2 text-5xl font-bold text-emerald-400 sm:text-6xl">664 → 247</div>
+              <div class="text-zinc-400">False Accepts</div>
             </div>
-            <div class="card rounded-3xl border-cyan-500/30 p-8">
-              <p class="text-xs font-semibold uppercase tracking-wide text-cyan-400">With release layer</p>
-              <p class="mt-4 text-5xl font-bold text-emerald-400">247</p>
-              <p class="mt-2 text-zinc-400">False accepts</p>
-              <div class="bar mt-5"><i style="width:37%;background:#34d399"></i></div>
-              <p class="mt-4 text-sm text-zinc-400">Est. savings vs all-release: <strong class="text-cyan-400">~69%</strong></p>
+            <div class="rounded-3xl bg-zinc-900 p-10 text-center ring-1 ring-zinc-800 transition hover:ring-cyan-500/30">
+              <div class="mb-2 text-5xl font-bold text-emerald-400 sm:text-6xl">~69%</div>
+              <div class="text-zinc-400">Est. Cost Saved</div>
+            </div>
+            <div class="rounded-3xl bg-zinc-900 p-10 text-center ring-1 ring-zinc-800 transition hover:ring-cyan-500/30">
+              <div class="mb-2 text-5xl font-bold text-emerald-400 sm:text-6xl">Same Model</div>
+              <div class="text-zinc-400">Без ретрофітингу</div>
             </div>
           </div>
-
-          <div class="grid gap-6 md:grid-cols-3">
-            <div class="card rounded-3xl p-8 text-center">
-              <div class="text-4xl font-bold text-emerald-400 sm:text-5xl">664 → 247</div>
-              <div class="mt-2 text-zinc-400">False Accepts</div>
-              <p class="mt-1 text-sm text-zinc-500">−63% on evaluation set</p>
-            </div>
-            <div class="card rounded-3xl p-8 text-center">
-              <div class="text-4xl font-bold text-emerald-400 sm:text-5xl">~69%</div>
-              <div class="mt-2 text-zinc-400">Est. Cost Saved*</div>
-              <p class="mt-1 text-sm text-zinc-500">Asymmetric cost model</p>
-            </div>
-            <div class="card rounded-3xl p-8 text-center">
-              <div class="text-4xl font-bold text-emerald-400 sm:text-5xl">Same Model</div>
-              <div class="mt-2 text-zinc-400">Без ретрофітингу</div>
-              <p class="mt-1 text-sm text-zinc-500">Release layer only</p>
-            </div>
-          </div>
-          <p class="mx-auto mt-8 max-w-3xl text-center text-xs text-zinc-500">
-            *Open integration benchmark, fixed evaluation set. Not a universal safety claim.
+          <p class="mx-auto mt-8 max-w-2xl text-center text-xs text-zinc-500">
+            Open integration benchmark, fixed evaluation set. Not a universal safety claim.
             <a class="text-zinc-400 underline underline-offset-2 hover:text-cyan-400" href="https://github.com/SemeAIPletinnya/silence-as-control/blob/main/docs/langchain_openai_action_risk_benchmark.md" target="_blank" rel="noopener">Methodology</a>
             ·
             <a class="text-zinc-400 underline underline-offset-2 hover:text-cyan-400" href="https://github.com/SemeAIPletinnya/silence-as-control/blob/main/reports/langchain_openai_summary_06_1000case_hardened_v4.md" target="_blank" rel="noopener">Report</a>
@@ -546,8 +493,8 @@
       </div>
     </footer>
 
-    <script src="assets/js/api.js?v=20260716j"></script>
-    <script src="assets/js/cache-bust.js?v=20260716j"></script>
+    <script src="assets/js/api.js?v=20260716k"></script>
+    <script src="assets/js/cache-bust.js?v=20260716k"></script>
     <script>
       const FREE_LIMIT = 5, FREE_KEY = "semeai_free_checks_used";
       const SCENARIOS = {
