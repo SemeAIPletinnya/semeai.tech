@@ -7,7 +7,7 @@
     { href: "self-hosted.html", label: "Self-hosted" },
     { href: "article.html", label: "Thesis" },
     { href: "register.html?v=20260716r", label: "Register" },
-    { href: "dashboard.html?v=20260713b", label: "Dashboard", cta: true },
+    { href: "dashboard.html?v=20260716s", label: "Dashboard", cta: true },
   ];
 
   function renderNav(target) {
