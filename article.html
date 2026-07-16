@@ -1,69 +1,76 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Generation is not release authority | SemeAI</title>
     <meta name="description" content="SemeAI release-control thesis: generation is not release authority." />
-    <link rel="stylesheet" href="assets/css/semeai.css" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <link rel="canonical" href="https://semeai.tech/article.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260716t" />
   </head>
   <body>
-    <header class="nav" data-semeai-nav></header>
-    <main class="page">
-      <section class="hero">
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="content">
+      <div data-semeai-nav></div>
+      <main class="site-main">
         <span class="eyebrow" data-i18n="eyebrow">Article</span>
-        <h1 data-i18n="title">Generation is not release authority.</h1>
+        <h1 class="page-title" data-i18n="title">Generation is not release authority.</h1>
         <p class="lead" data-i18n="lead">
           Transformers made generation scalable. Production systems still need a separate decision about what may be released.
         </p>
-        <div class="button-row">
-          <button class="button" type="button" data-lang="en">EN</button>
-          <button class="button" type="button" data-lang="uk">UA</button>
-          <button class="button" type="button" data-lang="ru">RU</button>
+        <div class="btn-row mt-6">
+          <button class="btn-ghost" type="button" data-lang="en">EN</button>
+          <button class="btn-ghost" type="button" data-lang="uk">UA</button>
+          <button class="btn-ghost" type="button" data-lang="ru">RU</button>
         </div>
-      </section>
 
-      <article class="section">
-        <p data-i18n="p1">
-          A language model generates a candidate answer. That candidate can be useful, fluent, and still unsupported by the current business data or unsafe for the current user context. The production mistake is treating generation as permission to show the answer.
-        </p>
-        <div class="panel" style="margin: 18px 0">
-          <strong>Transformer = generation engine.</strong><br />
-          <strong>Gate = release authority.</strong><br />
-          <strong>Receipt = proof of what happened.</strong>
-        </div>
-        <h2 data-i18n="boundary_title">The transformer boundary</h2>
-        <p data-i18n="p2">
-          Attention helps a model decide what to focus on. It does not decide whether a claim is supported by business data, whether an action is allowed by business rules, or whether an answer should be withheld for review.
-        </p>
-        <h2 data-i18n="candidate_title">The candidate problem</h2>
-        <p data-i18n="p3">
-          Generated does not mean verified. Generated does not mean allowed. Generated does not mean released. SemeAI treats model output as a candidate that must pass a release-control layer before it reaches a user.
-        </p>
-        <h2 data-i18n="states_title">Release states</h2>
-        <ul>
-          <li><strong>PROCEED</strong> / <strong>SHOW</strong>: the answer may be released.</li>
-          <li><strong>NEEDS_REVIEW</strong> / <strong>REVIEW</strong>: do not auto-release; route to an operator.</li>
-          <li><strong>SILENCE</strong> / <strong>BLOCK</strong>: withhold the answer and preserve audit metadata.</li>
-        </ul>
-        <h2 data-i18n="silence_title">SILENCE is not deletion</h2>
-        <p data-i18n="p4">
-          A blocked answer should not disappear from the audit trail. SILENCE means release denied, execution withheld, audit preserved.
-        </p>
-        <h2 data-i18n="why_title">Why this matters</h2>
-        <p data-i18n="p5">
-          A support chatbot can invent a promo code. A financial assistant can make an unsupported claim. An internal copilot can suggest bypassing an approval step. SemeAI Gate is the checkpoint between the generated answer and the real user.
-        </p>
-        <div class="button-row" style="margin-top: 22px">
-          <a class="button primary" href="register.html" data-i18n="cta_register">Request access</a>
-          <a class="button" href="dashboard.html">Dashboard</a>
-          <a class="button" href="https://gate.semeai.tech" data-i18n="cta_demo">Live demo</a>
-          <a class="button" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718">SSRN</a>
-        </div>
-      </article>
-    </main>
-    <footer class="site-footer" data-semeai-footer></footer>
-    <script src="assets/js/shell.js"></script>
+        <article class="prose mt-10" style="max-width:44rem">
+          <p data-i18n="p1">
+            A language model generates a candidate answer. That candidate can be useful, fluent, and still unsupported by the current business data or unsafe for the current user context. The production mistake is treating generation as permission to show the answer.
+          </p>
+          <div class="panel" style="margin: 1.25rem 0">
+            <strong style="color:#fff">Transformer = generation engine.</strong><br />
+            <strong style="color:#fff">Gate = release authority.</strong><br />
+            <strong style="color:#fff">Receipt = proof of what happened.</strong>
+          </div>
+          <h2 data-i18n="boundary_title">The transformer boundary</h2>
+          <p data-i18n="p2">
+            Attention helps a model decide what to focus on. It does not decide whether a claim is supported by business data, whether an action is allowed by business rules, or whether an answer should be withheld for review.
+          </p>
+          <h2 data-i18n="candidate_title">The candidate problem</h2>
+          <p data-i18n="p3">
+            Generated does not mean verified. Generated does not mean allowed. Generated does not mean released. SemeAI treats model output as a candidate that must pass a release-control layer before it reaches a user.
+          </p>
+          <h2 data-i18n="states_title">Release states</h2>
+          <ul>
+            <li><strong>PROCEED</strong> / <strong>SHOW</strong>: the answer may be released.</li>
+            <li><strong>NEEDS_REVIEW</strong> / <strong>REVIEW</strong>: do not auto-release; route to an operator.</li>
+            <li><strong>SILENCE</strong> / <strong>BLOCK</strong>: withhold the answer and preserve audit metadata.</li>
+          </ul>
+          <h2 data-i18n="silence_title">SILENCE is not deletion</h2>
+          <p data-i18n="p4">
+            A blocked answer should not disappear from the audit trail. SILENCE means release denied, execution withheld, audit preserved.
+          </p>
+          <h2 data-i18n="why_title">Why this matters</h2>
+          <p data-i18n="p5">
+            A support chatbot can invent a promo code. A financial assistant can make an unsupported claim. An internal copilot can suggest bypassing an approval step. SemeAI Gate is the checkpoint between the generated answer and the real user.
+          </p>
+          <div class="btn-row mt-8">
+            <a class="btn-primary" href="register.html?v=20260716r" data-i18n="cta_register">Request access</a>
+            <a class="btn-ghost" href="dashboard.html?v=20260716s">Dashboard</a>
+            <a class="btn-ghost" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener" data-i18n="cta_demo">Live demo</a>
+            <a class="btn-ghost" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">SSRN</a>
+          </div>
+        </article>
+      </main>
+      <div data-semeai-footer></div>
+    </div>
+    <script src="assets/js/site-shell.js?v=20260716t"></script>
     <script>
       const t = {
         en: {},

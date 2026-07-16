@@ -1,55 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SemeAI Gate | Product contract</title>
     <meta name="description" content="SemeAI Gate product contract: SHOW, REVIEW, BLOCK release decisions for AI answers." />
-    <link rel="stylesheet" href="assets/css/semeai.css" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <link rel="canonical" href="https://semeai.tech/gate.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260716t" />
   </head>
   <body>
-    <header class="nav" data-semeai-nav></header>
-    <main class="page">
-      <section class="hero">
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="content">
+      <div data-semeai-nav></div>
+      <main class="site-main">
         <span class="eyebrow">Product contract</span>
-        <h1>A checkpoint between your LLM and your user.</h1>
+        <h1 class="page-title">A checkpoint between your LLM and your user.</h1>
         <p class="lead">
           Your product sends a user message, AI answer, business data, rules, and context.
-          SemeAI Gate returns a business action: SHOW, REVIEW, or BLOCK.
+          SemeAI Gate returns a business action:
+          <span class="pill tag-show">SHOW</span>
+          <span class="pill tag-review">REVIEW</span>
+          or
+          <span class="pill tag-block">BLOCK</span>.
         </p>
-        <div class="button-row">
-          <a class="button primary" href="https://gate.semeai.tech">Open live demo</a>
-          <a class="button" href="dashboard.html">Open dashboard</a>
-          <a class="button" href="register.html">Register workspace</a>
+        <div class="btn-row mt-6">
+          <a class="btn-primary" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener">Open live console</a>
+          <a class="btn-ghost" href="dashboard.html?v=20260716s">Open dashboard</a>
+          <a class="btn-ghost" href="register.html?v=20260716r">Register workspace</a>
         </div>
-      </section>
 
-      <section class="section">
-        <div class="grid-3">
+        <div class="grid-3 mt-10">
           <article class="card">
             <h3>SHOW</h3>
-            <p>Maps to <strong>PROCEED</strong>. Supported enough for release.</p>
+            <p>Maps to <strong style="color:#fff">PROCEED</strong>. Supported enough for release.</p>
           </article>
           <article class="card">
             <h3>REVIEW</h3>
-            <p>Maps to <strong>NEEDS_REVIEW</strong>. Do not auto-release. Route to an operator.</p>
+            <p>Maps to <strong style="color:#fff">NEEDS_REVIEW</strong>. Do not auto-release. Route to an operator.</p>
           </article>
           <article class="card">
             <h3>BLOCK</h3>
-            <p>Maps to <strong>SILENCE</strong>. Withhold the answer and preserve audit metadata.</p>
+            <p>Maps to <strong style="color:#fff">SILENCE</strong>. Withhold the answer and preserve audit metadata.</p>
           </article>
         </div>
-      </section>
 
-      <section class="section">
-        <h2>Contract shape</h2>
-        <div class="grid" style="gap: 12px; margin-top: 16px">
-          <div class="panel"><strong>Input</strong><p>user_message, ai_answer, business_data, business_rules, business_context, business_risk, metadata</p></div>
-          <div class="panel"><strong>Output</strong><p>action, internal_decision, show_to_user, reason, context_integrity, next_step, audit_id, audit_preserved</p></div>
-          <div class="panel"><strong>Invariant</strong><p>Business labels may be localized. Machine values remain canonical for audit and replay. Payment is not gate authority.</p></div>
-        </div>
-        <pre style="margin-top: 18px">{
-POST /v0/check
+        <section class="mt-10 stack-md">
+          <h2 class="section-title">Contract shape</h2>
+          <div class="stack-sm">
+            <div class="panel">
+              <strong style="color:#fff">Input</strong>
+              <p style="margin:0.5rem 0 0;color:var(--mute);font-size:0.9rem;line-height:1.55">
+                user_message, ai_answer, business_data, business_rules, business_context, business_risk, metadata
+              </p>
+            </div>
+            <div class="panel">
+              <strong style="color:#fff">Output</strong>
+              <p style="margin:0.5rem 0 0;color:var(--mute);font-size:0.9rem;line-height:1.55">
+                action, internal_decision, show_to_user, reason, context_integrity, next_step, audit_id, audit_preserved
+              </p>
+            </div>
+            <div class="panel">
+              <strong style="color:#fff">Invariant</strong>
+              <p style="margin:0.5rem 0 0;color:var(--mute);font-size:0.9rem;line-height:1.55">
+                Business labels may be localized. Machine values remain canonical for audit and replay.
+                <strong style="color:#fff">Payment is not gate authority.</strong>
+              </p>
+            </div>
+          </div>
+          <pre class="code-block">POST /v0/check
 Authorization: Bearer &lt;workspace_api_key&gt;
 
 {
@@ -59,9 +82,10 @@ Authorization: Bearer &lt;workspace_api_key&gt;
   "business_rules": { "only_show_confirmed_promos": true },
   "business_risk": "fake_promo_code"
 }</pre>
-      </section>
-    </main>
-    <footer class="site-footer" data-semeai-footer></footer>
-    <script src="assets/js/shell.js"></script>
+        </section>
+      </main>
+      <div data-semeai-footer></div>
+    </div>
+    <script src="assets/js/site-shell.js?v=20260716t"></script>
   </body>
 </html>

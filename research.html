@@ -1,75 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SemeAI Research and public proof</title>
     <meta name="description" content="SSRN, Zenodo, GitHub, and X for SemeAI Gate and Silence-as-Control." />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713c" />
-    <link rel="stylesheet" href="assets/css/landing.css?v=20260713c" />
+    <link rel="canonical" href="https://semeai.tech/research.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260716t" />
   </head>
   <body>
-    <header class="nav" data-semeai-nav></header>
-    <main class="page">
-      <section class="hero">
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="content">
+      <div data-semeai-nav></div>
+      <main class="site-main">
         <span class="eyebrow">Research</span>
-        <h1>Working software plus public proof.</h1>
+        <h1 class="page-title">Working software plus <span class="glow-text">public proof</span>.</h1>
         <p class="lead">
           SemeAI is a release-control architecture for AI outputs — with public research artifacts,
           open-source adapters, and ongoing updates.
         </p>
-      </section>
 
-      <section class="section">
-        <h2>Emblems</h2>
-        <div class="emblems">
-          <a class="emblem" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">
-            <span class="badge ssrn">SSRN</span>
-            <span class="meta"><b>SSRN paper</b><small>abstract_id=6613718</small></span>
-          </a>
-          <a class="emblem" href="https://zenodo.org/records/20525820" target="_blank" rel="noopener">
-            <span class="badge zenodo">ZENO</span>
-            <span class="meta"><b>Zenodo archive</b><small>record 20525820</small></span>
-          </a>
-          <a class="emblem" href="https://github.com/SemeAIPletinnya" target="_blank" rel="noopener">
-            <span class="badge gh">GH</span>
-            <span class="meta"><b>GitHub org</b><small>SemeAIPletinnya</small></span>
-          </a>
-          <a class="emblem" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">
-            <span class="badge gh">GT</span>
-            <span class="meta"><b>semeai-gate-basic</b><small>runtime / API</small></span>
-          </a>
-          <a class="emblem" href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener">
-            <span class="badge gh">SaC</span>
-            <span class="meta"><b>silence-as-control</b><small>governance</small></span>
-          </a>
-          <a class="emblem" href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener">
-            <span class="badge gh">WEB</span>
-            <span class="meta"><b>semeai.tech</b><small>product site</small></span>
-          </a>
-          <a class="emblem" href="https://x.com/adelayida210519" target="_blank" rel="noopener">
-            <span class="badge x">𝕏</span>
-            <span class="meta"><b>X / Twitter</b><small>@adelayida210519</small></span>
-          </a>
-        </div>
-      </section>
+        <section class="mt-10">
+          <h2 class="section-title mb-4">Emblems</h2>
+          <div class="emblems">
+            <a class="emblem" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">
+              <span class="badge ssrn">SSRN</span>
+              <span class="meta"><b>SSRN paper</b><small>abstract_id=6613718</small></span>
+            </a>
+            <a class="emblem" href="https://zenodo.org/records/20525820" target="_blank" rel="noopener">
+              <span class="badge zenodo">ZENO</span>
+              <span class="meta"><b>Zenodo archive</b><small>record 20525820</small></span>
+            </a>
+            <a class="emblem" href="https://github.com/SemeAIPletinnya" target="_blank" rel="noopener">
+              <span class="badge gh">GH</span>
+              <span class="meta"><b>GitHub org</b><small>SemeAIPletinnya</small></span>
+            </a>
+            <a class="emblem" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">
+              <span class="badge gh">GT</span>
+              <span class="meta"><b>semeai-gate-basic</b><small>runtime / API</small></span>
+            </a>
+            <a class="emblem" href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener">
+              <span class="badge gh">SaC</span>
+              <span class="meta"><b>silence-as-control</b><small>governance</small></span>
+            </a>
+            <a class="emblem" href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener">
+              <span class="badge gh">WEB</span>
+              <span class="meta"><b>semeai.tech</b><small>product site</small></span>
+            </a>
+            <a class="emblem" href="https://x.com/adelayida210519" target="_blank" rel="noopener">
+              <span class="badge x">𝕏</span>
+              <span class="meta"><b>X / Twitter</b><small>@adelayida210519</small></span>
+            </a>
+          </div>
+        </section>
 
-      <section class="section">
-        <h2>Evidence posture</h2>
-        <div class="grid-3" style="margin-top: 14px">
-          <article class="card"><h3>Software</h3><p>Versioned contract, live API, dashboard, ecosystem demo.</p></article>
-          <article class="card"><h3>Research</h3><p>Generation is not release authority. No universal hallucination claims.</p></article>
-          <article class="card"><h3>Audit</h3><p>Blocked outputs preserve metadata. SILENCE is not deletion.</p></article>
-        </div>
-        <div class="button-row" style="margin-top: 16px">
-          <a class="button primary" href="https://gate.semeai.tech/demo/saas_visible.html">Ecosystem demo</a>
-          <a class="button" href="article.html">Thesis</a>
-        </div>
-      </section>
-    </main>
-    <footer class="site-footer" data-semeai-footer></footer>
-    <script src="assets/js/shell.js?v=20260713c"></script>
-    <script src="assets/js/cache-bust.js?v=20260713c"></script>
+        <section class="mt-10">
+          <h2 class="section-title mb-4">Evidence posture</h2>
+          <div class="grid-3">
+            <article class="card"><h3>Software</h3><p>Versioned contract, live API, dashboard, ecosystem demo.</p></article>
+            <article class="card"><h3>Research</h3><p>Generation is not release authority. No universal hallucination claims.</p></article>
+            <article class="card"><h3>Audit</h3><p>Blocked outputs preserve metadata. SILENCE is not deletion.</p></article>
+          </div>
+          <div class="btn-row mt-6">
+            <a class="btn-primary" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener">Ecosystem demo</a>
+            <a class="btn-ghost" href="article.html?v=20260716t">Thesis</a>
+            <a class="btn-ghost" href="register.html?v=20260716r">Start pilot</a>
+          </div>
+        </section>
+      </main>
+      <div data-semeai-footer></div>
+    </div>
+    <script src="assets/js/site-shell.js?v=20260716t"></script>
   </body>
 </html>

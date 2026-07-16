@@ -1,30 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SemeAI Gate | Self-hosted deployment</title>
     <meta name="description" content="Run SemeAI Gate open source, self-hosted, or as SaaS API without forcing document egress." />
-    <link rel="stylesheet" href="assets/css/semeai.css" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <link rel="canonical" href="https://semeai.tech/self-hosted.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260716t" />
   </head>
   <body>
-    <header class="nav" data-semeai-nav></header>
-    <main class="page">
-      <section class="hero">
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="content">
+      <div data-semeai-nav></div>
+      <main class="site-main">
         <span class="eyebrow">Deployment</span>
-        <h1>Run the gate where your data is allowed to live.</h1>
+        <h1 class="page-title">Run the gate where your data is allowed to live.</h1>
         <p class="lead">
           Sensitive teams should not be forced into a single SaaS path.
           The same SHOW / REVIEW / BLOCK contract runs open source, self-hosted, or hosted.
         </p>
-        <div class="button-row">
-          <a class="button primary" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">Open source repo</a>
-          <a class="button" href="register.html">SaaS pilot access</a>
-          <a class="button" href="dashboard.html">Dashboard</a>
+        <div class="btn-row mt-6">
+          <a class="btn-primary" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">Open source repo</a>
+          <a class="btn-ghost" href="register.html?v=20260716r">SaaS pilot access</a>
+          <a class="btn-ghost" href="dashboard.html?v=20260716s">Dashboard</a>
         </div>
-      </section>
-      <section class="section">
-        <div class="grid-3">
+
+        <div class="grid-3 mt-10">
           <article class="card">
             <h3>01 · Open source</h3>
             <p>Inspect, fork, and run the basic adapter locally for demos and integration experiments.</p>
@@ -38,28 +44,30 @@
             <p>Start quickly when policy allows scoped request data to leave for pilot evaluation.</p>
           </article>
         </div>
-      </section>
-      <section class="section">
-        <h2>Docker quick path</h2>
-        <pre>git clone https://github.com/SemeAIPletinnya/semeai-gate-basic.git
+
+        <section class="mt-10 stack-md">
+          <h2 class="section-title">Docker quick path</h2>
+          <pre class="code-block">git clone https://github.com/SemeAIPletinnya/semeai-gate-basic.git
 cd semeai-gate-basic
 # set SEMEAI_GATE_API_KEYS before public bind
 docker compose -f docker-compose.api.yml up --build</pre>
-        <p style="margin-top: 14px">
-          Endpoint: <code>POST /v0/check</code> · Health: <code>GET /health</code> ·
-          Invariant: payment metadata is not gate authority.
-        </p>
-      </section>
-      <section class="section">
-        <h2>What this does not claim</h2>
-        <div class="grid-3">
-          <article class="card"><h3>Not a model</h3><p>Existing LLMs still generate candidates.</p></article>
-          <article class="card"><h3>Not universal hallucination detection</h3><p>Scoped business evidence + rules + context.</p></article>
-          <article class="card"><h3>Not compliance certification</h3><p>Self-host helps boundary requirements; formal compliance stays with the operator.</p></article>
-        </div>
-      </section>
-    </main>
-    <footer class="site-footer" data-semeai-footer></footer>
-    <script src="assets/js/shell.js"></script>
+          <p style="margin:0;color:var(--mute);font-size:0.9rem;line-height:1.55">
+            Endpoint: <code>POST /v0/check</code> · Health: <code>GET /health</code> ·
+            Invariant: payment metadata is not gate authority.
+          </p>
+        </section>
+
+        <section class="mt-10">
+          <h2 class="section-title mb-4">What this does not claim</h2>
+          <div class="grid-3">
+            <article class="card"><h3>Not a model</h3><p>Existing LLMs still generate candidates.</p></article>
+            <article class="card"><h3>Not universal hallucination detection</h3><p>Scoped business evidence + rules + context.</p></article>
+            <article class="card"><h3>Not compliance certification</h3><p>Self-host helps boundary requirements; formal compliance stays with the operator.</p></article>
+          </div>
+        </section>
+      </main>
+      <div data-semeai-footer></div>
+    </div>
+    <script src="assets/js/site-shell.js?v=20260716t"></script>
   </body>
 </html>
