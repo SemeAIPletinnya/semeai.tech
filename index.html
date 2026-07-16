@@ -1,836 +1,884 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>SemeAI Gate — Stop unsupported AI answers before users see them</title>
     <meta
       name="description"
-      content="SemeAI Gate is the release-control layer for AI products. Block invented promos, finance claims, and unsafe actions — SHOW, REVIEW, or BLOCK with an audit receipt."
+      content="SemeAI Gate is a release-control layer for AI products. Every unsupported answer costs trust, money, or compliance. Check candidates against business data — SHOW, REVIEW, or BLOCK — before users see them."
     />
-    <meta property="og:title" content="SemeAI Gate — generation is not release authority" />
+    <meta property="og:title" content="SemeAI Gate — Generation is not release authority" />
     <meta
       property="og:description"
-      content="Ship AI answers only when business data supports them. Live demo, API, dashboard, self-hosted."
+      content="Stop invented promos, refunds, and finance claims in under 100ms. Live demo. Free checks. No credit card."
     />
     <meta property="og:url" content="https://semeai.tech/" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
     <link rel="canonical" href="https://semeai.tech/" />
-    <link rel="stylesheet" href="assets/css/semeai.css?v=20260716a" />
-    <link rel="stylesheet" href="assets/css/landing.css?v=20260716a" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              ink: { DEFAULT: "#0F1117", soft: "#161A24", mid: "#1C2130", line: "#2A3142" },
+              cyanx: "#00D4FF",
+              violetx: "#7C3AED",
+              ok: "#22C55E",
+              warn: "#F59E0B",
+              bad: "#EF4444",
+              mute: "#94A3B8",
+              paper: "#E8EEF6",
+            },
+            fontFamily: {
+              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+              mono: ["JetBrains Mono", "Cascadia Code", "ui-monospace", "monospace"],
+            },
+            boxShadow: {
+              glow: "0 0 40px rgba(0, 212, 255, 0.15)",
+              card: "0 20px 60px rgba(0,0,0,0.35)",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background:
+          radial-gradient(900px 480px at 90% -10%, rgba(0, 212, 255, 0.12), transparent 55%),
+          radial-gradient(700px 420px at 0% 20%, rgba(124, 58, 237, 0.1), transparent 50%),
+          #0f1117;
+      }
+      .glass {
+        background: rgba(22, 26, 36, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(14px);
+      }
+      .btn-primary {
+        background: linear-gradient(180deg, #33ddff, #00d4ff 40%, #00b8df);
+        color: #042f2e;
+        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.25);
+      }
+      .btn-primary:hover { filter: brightness(1.05); }
+      .btn-ghost {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .btn-ghost:hover { border-color: rgba(0, 212, 255, 0.4); }
+      .pill {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        border-radius: 999px; border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.03); padding: 0.3rem 0.7rem;
+        font-size: 0.75rem; font-weight: 700; color: #94a3b8;
+      }
+      .pill.ok { color: #22c55e; border-color: rgba(34,197,94,0.35); }
+      .pill.warn { color: #f59e0b; border-color: rgba(245,158,11,0.35); }
+      .pill.bad { color: #ef4444; border-color: rgba(239,68,68,0.35); }
+      .pill.info { color: #00d4ff; border-color: rgba(0,212,255,0.35); }
+      .live-dot {
+        width: 7px; height: 7px; border-radius: 50%; background: #22c55e;
+        box-shadow: 0 0 0 0 rgba(34,197,94,0.55);
+        animation: pulse 1.8s infinite;
+      }
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+        70% { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
+        100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+      }
+      .flow-node.active {
+        border-color: rgba(0, 212, 255, 0.55) !important;
+        box-shadow: 0 0 28px rgba(0, 212, 255, 0.12);
+        background: rgba(0, 212, 255, 0.08) !important;
+      }
+      .result-SHOW { border-color: rgba(34,197,94,0.45); background: rgba(34,197,94,0.1); }
+      .result-REVIEW { border-color: rgba(245,158,11,0.45); background: rgba(245,158,11,0.1); }
+      .result-BLOCK { border-color: rgba(239,68,68,0.5); background: rgba(239,68,68,0.12); }
+      .faq-item[open] summary { color: #00d4ff; }
+      .faq-item summary::-webkit-details-marker { display: none; }
+      pre code { font-family: "JetBrains Mono", ui-monospace, monospace; }
+      .nav-link.active { color: #fff; border-bottom-color: #00d4ff; }
+    </style>
   </head>
-  <body class="landing-body">
-    <div class="glow-orb a" aria-hidden="true"></div>
-    <div class="glow-orb b" aria-hidden="true"></div>
-
-    <header class="nav">
-      <div class="page nav-inner">
-        <a class="brand" href="index.html"><span class="mark">SG</span><span>SemeAI</span></a>
-        <nav class="links" aria-label="Primary">
-          <a href="#how" data-i18n="nav_how">How it works</a>
-          <a href="#demo" data-i18n="nav_demo_sec">Live demo</a>
-          <a href="#outcomes" data-i18n="nav_out">Outcomes</a>
-          <a href="#use" data-i18n="nav_use">Use cases</a>
-          <a href="self-hosted.html" data-i18n="nav_self">Self-hosted</a>
-          <a href="dashboard.html" data-i18n="nav_dash">Dashboard</a>
-          <a class="cta" href="register.html?v=20260716a" data-i18n="nav_start">Start free</a>
-          <span class="lang-switch" aria-label="Language">
-            <button type="button" class="active" data-lang="en">EN</button>
-            <button type="button" data-lang="uk">UA</button>
-            <button type="button" data-lang="ru">RU</button>
-          </span>
+  <body class="font-sans text-paper antialiased">
+    <!-- Sticky nav -->
+    <header class="sticky top-0 z-50 border-b border-white/5 bg-ink/80 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
+        <a href="#top" class="flex items-center gap-2.5 font-bold tracking-tight">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-cyanx to-violetx text-sm font-extrabold text-ink shadow-glow">SG</span>
+          <span>SemeAI</span>
+        </a>
+        <nav class="hidden items-center gap-5 text-sm font-semibold text-mute lg:flex" aria-label="Primary">
+          <a class="nav-link border-b-2 border-transparent pb-0.5 hover:text-white" href="#problem">Problem</a>
+          <a class="nav-link border-b-2 border-transparent pb-0.5 hover:text-white" href="#how">How it works</a>
+          <a class="nav-link border-b-2 border-transparent pb-0.5 hover:text-white" href="#demo">Live demo</a>
+          <a class="nav-link border-b-2 border-transparent pb-0.5 hover:text-white" href="#pricing">Pricing</a>
+          <a class="nav-link border-b-2 border-transparent pb-0.5 hover:text-white" href="#use">Use cases</a>
+          <a class="nav-link border-b-2 border-transparent pb-0.5 hover:text-white" href="#faq">FAQ</a>
         </nav>
+        <div class="flex items-center gap-2">
+          <a href="dashboard.html" class="hidden rounded-xl px-3 py-2 text-sm font-semibold text-mute hover:text-white sm:inline">Dashboard</a>
+          <a href="#demo" class="btn-primary rounded-xl px-4 py-2 text-sm font-extrabold">Try free checks</a>
+        </div>
       </div>
     </header>
 
-    <main class="landing-main">
-      <!-- HERO -->
-      <section class="page hero-grid">
-        <div class="reveal">
-          <div class="hero-kicker">
-            <span class="live-dot" aria-hidden="true"></span>
-            <span class="eyebrow" data-i18n="hero_eyebrow">Live release-control API · pilot ready</span>
+    <main id="top">
+      <!-- ========== HERO ========== -->
+      <section class="mx-auto grid max-w-6xl gap-10 px-4 pb-12 pt-12 sm:px-6 lg:grid-cols-2 lg:items-center lg:pt-16">
+        <div>
+          <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-bold text-mute">
+            <span class="live-dot"></span>
+            Live API · Open source · Pilot ready
           </div>
-          <h1 data-i18n="hero_title">Stop unsupported AI answers before users see them.</h1>
-          <p class="thesis" data-i18n="hero_thesis">Generation is not release authority.</p>
-          <p class="lead" data-i18n="hero_lead">
-            Your LLM can sound perfect and still invent promo codes, refunds, or finance claims.
-            SemeAI Gate is the narrow checkpoint after generation: check business data &amp; rules,
-            then return <strong>SHOW</strong>, <strong>REVIEW</strong>, or <strong>BLOCK</strong> — with an audit trail.
+          <h1 class="text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.25rem]">
+            Every unsupported AI answer costs trust, money, or a compliance review.
+          </h1>
+          <p class="mt-4 text-lg font-semibold text-cyanx">Generation is not release authority.</p>
+          <p class="mt-4 max-w-xl text-base leading-relaxed text-mute sm:text-lg">
+            Your support model invents a refund policy. Your finance bot invents eligibility.
+            SemeAI Gate sits <strong class="text-paper">after generation</strong> — checks business data &amp; rules —
+            then returns <strong class="text-ok">SHOW</strong>, <strong class="text-warn">REVIEW</strong>, or
+            <strong class="text-bad">BLOCK</strong> before anyone sees it. Fail closed. Audit preserved.
           </p>
-          <div class="hero-actions">
-            <a class="button primary" href="#demo" data-i18n="cta_try">Try interactive demo</a>
-            <a class="button" href="register.html?v=20260716a" data-i18n="cta_register">Start free pilot</a>
-            <a class="button" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener" data-i18n="cta_console">Open live console</a>
-            <a class="button" href="pilots/support.html">Support pilot kit</a>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary rounded-xl px-5 py-3 text-sm font-extrabold">Try 5 free checks — no signup</a>
+            <a href="register.html?v=20260716b" class="btn-ghost rounded-xl px-5 py-3 text-sm font-bold text-paper">Start free pilot</a>
+            <a href="pilots/support.html" class="btn-ghost rounded-xl px-5 py-3 text-sm font-bold text-paper">Support pilot kit</a>
           </div>
-          <div class="trust-row">
-            <span class="pill ok" data-i18n="pill_api">API live</span>
-            <span class="pill info" data-i18n="pill_oss">Open source</span>
-            <span class="pill" data-i18n="pill_crypto">USDT pilot billing</span>
-            <span class="pill" data-i18n="pill_self">Self-hosted ready</span>
+          <div class="mt-6 flex flex-wrap gap-2">
+            <span class="pill ok"><span class="live-dot"></span> api.semeai.tech live</span>
+            <span class="pill info">No credit card for free checks</span>
+            <span class="pill">Decision in &lt;100ms class</span>
+            <span class="pill">Research-backed (SSRN)</span>
           </div>
-          <div class="social-proof">
-            <span><b>Research-backed</b> · SSRN + Zenodo</span>
-            <span><b>3-action contract</b> · SHOW / REVIEW / BLOCK</span>
-            <span><b>Drop-in</b> · after any LLM</span>
-          </div>
-          <div class="panel" style="margin-top:16px">
-            <div class="button-row" style="margin-bottom:8px">
-              <button class="button primary" type="button" id="sdk-tab-py">Python</button>
-              <button class="button" type="button" id="sdk-tab-js">Node</button>
-            </div>
-            <pre id="sdk-snippet" style="max-height:none;margin:0"># local package
-pip install -e .
-
-from semeai_gate_basic import check_ai_answer
-print(check_ai_answer({
-  "user_message": "Give me a promo code",
-  "ai_answer": "Use SAVE30",
-  "business_data": {"active_promo_codes": []},
-  "business_rules": {"only_show_confirmed_promos": True},
-  "business_risk": "fake_promo_code",
-})["action"])
-
-# remote SaaS
-# from sdks.python.semeai_gate import GateClient
-# GateClient(api_key).check({...})</pre>
-          </div>
+          <p class="mt-5 text-sm text-mute/80">
+            Built by the creator of <a class="text-cyanx underline-offset-2 hover:underline" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">Silence-as-Control</a>
+            · Live demo first, account only when you need keys &amp; receipts at scale.
+          </p>
         </div>
 
-        <!-- Interactive demo -->
-        <aside class="demo-card reveal" id="demo" aria-label="Interactive gate demo">
-          <div class="demo-top">
-            <strong data-i18n="demo_title">Interactive Gate</strong>
-            <span class="pill" id="demo-status">idle</span>
+        <!-- Hero mini demo -->
+        <aside class="glass relative overflow-hidden rounded-2xl p-5 shadow-card" aria-label="Hero mini demo">
+          <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyanx/60 to-transparent"></div>
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <div>
+              <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Support scenario</p>
+              <p class="text-sm font-bold text-white">Your AI just invented a 50% refund</p>
+            </div>
+            <span class="pill" id="hero-status">idle</span>
           </div>
-          <div class="demo-body">
-            <div class="scenario-tabs" role="tablist">
-              <button type="button" class="active" data-scenario="fake_promo_code" data-i18n="sc_promo">Fake promo</button>
-              <button type="button" data-scenario="supported_answer" data-i18n="sc_safe">Supported</button>
-              <button type="button" data-scenario="unsafe_action" data-i18n="sc_unsafe">Unsafe action</button>
+          <div class="space-y-3 text-sm">
+            <div class="rounded-xl border border-white/5 bg-black/30 p-3">
+              <p class="text-[11px] font-extrabold uppercase tracking-wider text-mute">User asks</p>
+              <p class="mt-1 text-paper">Can I get a 50% refund if I cancel today?</p>
             </div>
-
-            <div class="demo-row">
-              <div class="label" data-i18n="lab_user">User asks</div>
-              <div class="value" id="demo-user">Give me a 30% discount promo code.</div>
+            <div class="rounded-xl border border-white/5 bg-black/30 p-3">
+              <p class="text-[11px] font-extrabold uppercase tracking-wider text-mute">AI candidate (ungoverned)</p>
+              <p class="mt-1 text-paper">Yes — reply “CANCEL50” and we’ll process a 50% refund immediately.</p>
             </div>
-            <div class="demo-row">
-              <div class="label" data-i18n="lab_ai">AI candidate</div>
-              <div class="value" id="demo-ai">Use promo code SAVE30 to get 30% off.</div>
+            <div class="rounded-xl border border-white/5 bg-black/30 p-3">
+              <p class="text-[11px] font-extrabold uppercase tracking-wider text-mute">Business data</p>
+              <p class="mt-1 font-mono text-xs text-mute">active_refund_policies: [] · refund_pct_allowed: 0</p>
             </div>
-            <div class="demo-row">
-              <div class="label" data-i18n="lab_data">Business data</div>
-              <div class="value mono" id="demo-data">active_promo_codes: []</div>
-            </div>
-
-            <div class="button-row">
-              <button class="button primary" id="run-demo" type="button" data-i18n="btn_run">Run live /v0/demo/check</button>
-              <a class="button" href="https://api.semeai.tech/health" target="_blank" rel="noopener">API health</a>
-            </div>
-
-            <div class="result-banner block" id="result-banner">
-              <div class="big" id="result-action">BLOCK</div>
-              <div class="meta">
-                <div id="result-internal">internal: SILENCE</div>
-                <div id="result-reason">Unsupported by business data. Audit preserved.</div>
+            <div id="hero-result" class="result-BLOCK flex items-center gap-4 rounded-xl border p-4">
+              <div class="text-2xl font-black tracking-wide text-white" id="hero-action">BLOCK</div>
+              <div class="text-sm text-mute">
+                <div id="hero-internal">internal: SILENCE</div>
+                <div id="hero-reason">Unsupported by business data. User sees nothing. Audit preserved.</div>
               </div>
-              <span class="pill bad" id="result-pill">fail closed</span>
             </div>
+            <button type="button" id="hero-run" class="btn-primary w-full rounded-xl py-3 text-sm font-extrabold">
+              Run this gate check live →
+            </button>
+            <p class="text-center text-xs text-mute">Hits real <span class="font-mono text-cyanx">POST /v0/demo/check</span> · counts toward free checks below</p>
           </div>
         </aside>
       </section>
 
-      <!-- METRICS -->
-      <section class="page section-tight reveal">
-        <div class="metrics-strip">
-          <div class="metric-card">
-            <div class="mv">SHOW · REVIEW · BLOCK</div>
-            <div class="ml" data-i18n="m1">One canonical contract your product can enforce</div>
+      <!-- Social proof strip -->
+      <section class="border-y border-white/5 bg-ink-soft/60" id="proof-strip">
+        <div class="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+          <div>
+            <p class="text-2xl font-extrabold text-white">SSRN + Zenodo</p>
+            <p class="mt-1 text-sm text-mute">Research-backed governance: Silence-as-Control thesis public &amp; citable</p>
           </div>
-          <div class="metric-card">
-            <div class="mv">After LLM</div>
-            <div class="ml" data-i18n="m2">Not a chatbot — a release checkpoint</div>
+          <div>
+            <p class="text-2xl font-extrabold text-white">Live in ~10 min</p>
+            <p class="mt-1 text-sm text-mute">Wire one check after your LLM. Same SHOW / REVIEW / BLOCK contract</p>
           </div>
-          <div class="metric-card">
-            <div class="mv">Fail closed</div>
-            <div class="ml" data-i18n="m3">Unsupported claims never reach the user by default</div>
+          <div>
+            <p class="text-2xl font-extrabold text-white">Fail closed</p>
+            <p class="mt-1 text-sm text-mute">Unsupported claims are withheld by default — not “probably fine”</p>
           </div>
-          <div class="metric-card">
-            <div class="mv">Audit ready</div>
-            <div class="ml" data-i18n="m4">Receipts even when the answer is blocked</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PAIN -->
-      <section class="page section-tight reveal">
-        <div class="pain-band">
-          <span class="eyebrow" data-i18n="pain_eyebrow">The hidden cost of ungoverned AI</span>
-          <h2 data-i18n="pain_title">Fluent models already invent policy. Your brand pays for it.</h2>
-          <p class="lead" data-i18n="pain_lead">
-            Every support and ops surface that “just answers” is a silent product decision.
-            Without a gate, invented promos, refunds, and eligibility claims look authoritative.
-          </p>
-          <div class="pain-grid">
-            <div class="pain-item">
-              <strong data-i18n="pain_1t">Support leakage</strong>
-              <p data-i18n="pain_1p">Bots invent SAVE30 when active_promo_codes is empty — and customers expect it to work.</p>
-            </div>
-            <div class="pain-item">
-              <strong data-i18n="pain_2t">Finance risk</strong>
-              <p data-i18n="pain_2p">Eligibility and return claims drift off-context into confident, wrong advice.</p>
-            </div>
-            <div class="pain-item">
-              <strong data-i18n="pain_3t">No proof of “no”</strong>
-              <p data-i18n="pain_3p">When something should have been withheld, you need a receipt — not a chat log guess.</p>
-            </div>
+          <div>
+            <p class="text-2xl font-extrabold text-white">Full audit trail</p>
+            <p class="mt-1 text-sm text-mute">Even BLOCK leaves a receipt you can replay in review</p>
           </div>
         </div>
       </section>
 
-      <!-- HOW -->
-      <section class="page section-tight reveal" id="how">
-        <span class="eyebrow" data-i18n="how_eyebrow">How it works</span>
-        <h2 data-i18n="how_title">Four steps. One decision. A receipt.</h2>
-        <p class="lead" data-i18n="how_lead">
-          SemeAI is not another chatbot. It is a narrow checkpoint your product calls after generation.
+      <!-- ========== PROBLEM ========== -->
+      <section id="problem" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">The problem</p>
+        <h2 class="mt-2 max-w-3xl text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          Fluent models already invent policy. Your brand pays for it.
+        </h2>
+        <p class="mt-4 max-w-2xl text-mute">
+          Your support team probably already saw an AI invent a promo code that doesn’t exist.
+          That isn’t a “hallucination story” — it’s an ungoverned release decision.
         </p>
-        <div class="live-pipeline" id="live-pipeline" aria-hidden="true">
-          <div class="pipe-node" data-step="0"><div class="pn">1</div><strong data-i18n="s1_t">Generate</strong><span data-i18n="s1_p">LLM writes a candidate — nothing shown yet</span></div>
-          <div class="pipe-arrow" data-arrow="0">→</div>
-          <div class="pipe-node" data-step="1"><div class="pn">2</div><strong data-i18n="s2_t">Check</strong><span data-i18n="s2_p">Business data, rules, risk, context</span></div>
-          <div class="pipe-arrow" data-arrow="1">→</div>
-          <div class="pipe-node" data-step="2"><div class="pn">3</div><strong data-i18n="s3_t">Decide</strong><span>SHOW · REVIEW · BLOCK</span></div>
-          <div class="pipe-arrow" data-arrow="2">→</div>
-          <div class="pipe-node" data-step="3"><div class="pn">4</div><strong data-i18n="s4_t">Prove</strong><span data-i18n="s4_p">Audit receipt for release or silence</span></div>
-        </div>
-        <div class="flow-steps" style="margin-top:18px">
-          <article class="flow-step">
-            <span class="n">1</span>
-            <h3 data-i18n="s1_t">Generate</h3>
-            <p data-i18n="s1_p">Your existing LLM writes a candidate answer. Nothing is shown yet.</p>
+        <div class="mt-10 grid gap-4 md:grid-cols-3">
+          <article class="glass rounded-2xl p-6">
+            <div class="mb-3 inline-flex rounded-lg bg-bad/15 px-2.5 py-1 text-xs font-extrabold text-bad">SUPPORT LEAKAGE</div>
+            <h3 class="text-lg font-bold text-white">Invented promos &amp; refunds</h3>
+            <p class="mt-2 text-sm leading-relaxed text-mute">
+              Bot invents SAVE30 or a 50% refund when <span class="font-mono text-xs text-paper/80">active_promo_codes</span> is empty.
+              Customer expects it. Ops cleans up the mess.
+            </p>
           </article>
-          <article class="flow-step">
-            <span class="n">2</span>
-            <h3 data-i18n="s2_t">Check</h3>
-            <p data-i18n="s2_p">Gate evaluates business data, rules, and conversation context.</p>
+          <article class="glass rounded-2xl p-6">
+            <div class="mb-3 inline-flex rounded-lg bg-warn/15 px-2.5 py-1 text-xs font-extrabold text-warn">FINANCE RISK</div>
+            <h3 class="text-lg font-bold text-white">Eligibility &amp; return claims</h3>
+            <p class="mt-2 text-sm leading-relaxed text-mute">
+              Billing conversation drifts into guaranteed returns or product eligibility the account doesn’t have.
+              Confident. Wrong. Expensive.
+            </p>
           </article>
-          <article class="flow-step">
-            <span class="n">3</span>
-            <h3 data-i18n="s3_t">Decide</h3>
-            <p data-i18n="s3_p">SHOW, REVIEW, or BLOCK — mapped to PROCEED / NEEDS_REVIEW / SILENCE.</p>
-          </article>
-          <article class="flow-step">
-            <span class="n">4</span>
-            <h3 data-i18n="s4_t">Prove</h3>
-            <p data-i18n="s4_p">Even blocked answers leave audit metadata for replay and review.</p>
+          <article class="glass rounded-2xl p-6">
+            <div class="mb-3 inline-flex rounded-lg bg-violetx/20 px-2.5 py-1 text-xs font-extrabold text-violet-300">NO PROOF OF “NO”</div>
+            <h3 class="text-lg font-bold text-white">Missing audit trail</h3>
+            <p class="mt-2 text-sm leading-relaxed text-mute">
+              When something should have been withheld, you need a receipt — not a guess from a chat log three weeks later.
+            </p>
           </article>
         </div>
       </section>
 
-      <!-- OUTCOMES -->
-      <section class="page section reveal" id="outcomes">
-        <span class="eyebrow" data-i18n="out_eyebrow">What you get</span>
-        <h2 data-i18n="out_title">Ship confidence. Keep the receipt.</h2>
-        <p class="lead" data-i18n="out_lead">
-          Buy the boundary, not another model. Plug SemeAI between generation and the user.
+      <!-- Support use-case hero -->
+      <section class="mx-auto max-w-6xl px-4 pb-8 sm:px-6">
+        <div class="relative overflow-hidden rounded-3xl border border-cyanx/20 bg-gradient-to-br from-ink-soft to-ink p-8 shadow-card sm:p-10">
+          <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-cyanx/10 blur-3xl"></div>
+          <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">Use case · Support</p>
+          <h2 class="mt-3 max-w-2xl text-3xl font-extrabold text-white">Your support AI just invented a 50% refund.</h2>
+          <ol class="mt-6 max-w-xl space-y-3 text-mute">
+            <li class="flex gap-3"><span class="font-mono text-cyanx">01</span> Candidate answer ships the refund policy it invented.</li>
+            <li class="flex gap-3"><span class="font-mono text-cyanx">02</span> <strong class="text-white">SemeAI Gate blocks it in &lt;100ms class</strong> — no business data support.</li>
+            <li class="flex gap-3"><span class="font-mono text-cyanx">03</span> User sees nothing. You review it. Audit preserved.</li>
+          </ol>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="pilots/support.html" class="btn-primary rounded-xl px-5 py-3 text-sm font-extrabold">See support pilot kit</a>
+            <a href="#demo" class="btn-ghost rounded-xl px-5 py-3 text-sm font-bold">Run the scenario live</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== HOW IT WORKS ========== -->
+      <section id="how" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">How it works</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white sm:text-4xl">Buy the boundary, not another model.</h2>
+        <p class="mt-4 max-w-2xl text-mute">
+          SemeAI is not a chatbot. It is a narrow checkpoint your product calls after generation.
         </p>
-        <div class="outcomes">
-          <article class="outcome">
-            <div class="icon">01</div>
-            <h3 data-i18n="o1_t">Fewer invented policies</h3>
-            <p data-i18n="o1_p">Promos, refunds, and account states only release when business data supports them.</p>
+
+        <!-- INSERT: How it Works diagram (interactive pipeline) -->
+        <div class="mt-10 grid gap-3 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr]" id="flow-diagram">
+          <div class="flow-node glass rounded-2xl p-4 text-center" data-step="0">
+            <div class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-full bg-cyanx text-xs font-black text-ink">1</div>
+            <p class="text-sm font-bold text-white">LLM candidate</p>
+            <p class="mt-1 text-xs text-mute">Fluent text is not permission</p>
+          </div>
+          <div class="hidden items-center justify-center text-cyanx md:flex" data-arrow="0">→</div>
+          <div class="flow-node glass rounded-2xl p-4 text-center" data-step="1">
+            <div class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-full bg-cyanx text-xs font-black text-ink">2</div>
+            <p class="text-sm font-bold text-white">Business facts</p>
+            <p class="mt-1 text-xs text-mute">Data · rules · risk · context</p>
+          </div>
+          <div class="hidden items-center justify-center text-cyanx md:flex" data-arrow="1">→</div>
+          <div class="flow-node glass rounded-2xl p-4 text-center" data-step="2">
+            <div class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-full bg-cyanx text-xs font-black text-ink">3</div>
+            <p class="text-sm font-bold text-white">SemeAI Gate</p>
+            <p class="mt-1 text-xs text-mute">SHOW · REVIEW · BLOCK</p>
+          </div>
+          <div class="hidden items-center justify-center text-cyanx md:flex" data-arrow="2">→</div>
+          <div class="flow-node glass rounded-2xl p-4 text-center" data-step="3">
+            <div class="mx-auto mb-2 grid h-8 w-8 place-items-center rounded-full bg-cyanx text-xs font-black text-ink">4</div>
+            <p class="text-sm font-bold text-white">User / audit</p>
+            <p class="mt-1 text-xs text-mute">Release, review, or silence</p>
+          </div>
+        </div>
+
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <article class="glass rounded-2xl p-5">
+            <p class="text-xs font-extrabold text-cyanx">01 · GENERATE</p>
+            <h3 class="mt-2 font-bold text-white">Your LLM writes a candidate</h3>
+            <p class="mt-2 text-sm text-mute">Nothing is shown yet. Generation is not release.</p>
           </article>
-          <article class="outcome">
-            <div class="icon">02</div>
-            <h3 data-i18n="o2_t">Human path when unsure</h3>
-            <p data-i18n="o2_p">Ambiguous cases go to REVIEW — not a confident wrong answer.</p>
+          <article class="glass rounded-2xl p-5">
+            <p class="text-xs font-extrabold text-cyanx">02 · CHECK</p>
+            <h3 class="mt-2 font-bold text-white">Gate reads business truth</h3>
+            <p class="mt-2 text-sm text-mute">Data, rules, conversation context, risk class.</p>
           </article>
-          <article class="outcome">
-            <div class="icon">03</div>
-            <h3 data-i18n="o3_t">Compliance-friendly silence</h3>
-            <p data-i18n="o3_p">BLOCK is a first-class product decision with audit metadata, not a missing log.</p>
+          <article class="glass rounded-2xl p-5">
+            <p class="text-xs font-extrabold text-cyanx">03 · DECIDE</p>
+            <h3 class="mt-2 font-bold text-white">SHOW · REVIEW · BLOCK</h3>
+            <p class="mt-2 text-sm text-mute">Mapped to PROCEED / NEEDS_REVIEW / SILENCE.</p>
+          </article>
+          <article class="glass rounded-2xl p-5">
+            <p class="text-xs font-extrabold text-cyanx">04 · PROVE</p>
+            <h3 class="mt-2 font-bold text-white">Keep the receipt</h3>
+            <p class="mt-2 text-sm text-mute">Even blocked answers leave audit metadata.</p>
           </article>
         </div>
       </section>
 
-      <!-- COMPARE -->
-      <section class="page section reveal">
-        <span class="eyebrow" data-i18n="why_eyebrow">Why teams need this</span>
-        <h2 data-i18n="why_title">Fluent is not the same as safe to ship.</h2>
-        <div class="compare" style="margin-top: 18px">
-          <div class="bad">
-            <h3 data-i18n="without_t">Without a gate</h3>
-            <ul>
-              <li data-i18n="without_1">AI invents promo codes and refunds</li>
-              <li data-i18n="without_2">Off-context answers drift into finance claims</li>
-              <li data-i18n="without_3">Risky ops advice reaches users</li>
-              <li data-i18n="without_4">No audit when something was blocked</li>
+      <!-- What you get + comparison -->
+      <section id="outcomes" class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">What you get</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">Ship confidence. Keep the receipt.</h2>
+        <div class="mt-8 grid gap-4 md:grid-cols-3">
+          <article class="glass rounded-2xl p-6">
+            <div class="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-cyanx font-black text-ink">01</div>
+            <h3 class="text-lg font-bold text-white">Fewer invented policies</h3>
+            <p class="mt-2 text-sm text-mute">Promos, refunds, account states only release when business data supports them.</p>
+          </article>
+          <article class="glass rounded-2xl p-6">
+            <div class="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-cyanx font-black text-ink">02</div>
+            <h3 class="text-lg font-bold text-white">Human path when unsure</h3>
+            <p class="mt-2 text-sm text-mute">Ambiguous cases go to REVIEW — not a confident wrong answer.</p>
+          </article>
+          <article class="glass rounded-2xl p-6">
+            <div class="mb-3 grid h-10 w-10 place-items-center rounded-xl bg-cyanx font-black text-ink">03</div>
+            <h3 class="text-lg font-bold text-white">Compliance-friendly silence</h3>
+            <p class="mt-2 text-sm text-mute">BLOCK is a first-class product decision with audit metadata.</p>
+          </article>
+        </div>
+
+        <div class="mt-10 grid gap-4 lg:grid-cols-2" id="why">
+          <div class="rounded-2xl border border-bad/30 bg-bad/5 p-6">
+            <h3 class="text-lg font-bold text-white">Without a gate</h3>
+            <ul class="mt-4 space-y-2 text-sm text-mute">
+              <li>• AI invents promo codes and refunds</li>
+              <li>• Off-context answers drift into finance claims</li>
+              <li>• Risky ops advice reaches users</li>
+              <li>• No audit when something was blocked</li>
             </ul>
           </div>
-          <div class="good">
-            <h3 data-i18n="with_t">With SemeAI Gate</h3>
-            <ul>
-              <li data-i18n="with_1">Unsupported claims are withheld</li>
-              <li data-i18n="with_2">Ambiguous cases go to REVIEW</li>
-              <li data-i18n="with_3">Safe answers still ship as SHOW</li>
-              <li data-i18n="with_4">Every decision can leave a receipt</li>
+          <div class="rounded-2xl border border-ok/30 bg-ok/5 p-6">
+            <h3 class="text-lg font-bold text-white">With SemeAI Gate</h3>
+            <ul class="mt-4 space-y-2 text-sm text-mute">
+              <li>• Unsupported claims are withheld</li>
+              <li>• Ambiguous cases go to REVIEW</li>
+              <li>• Safe answers still ship as SHOW</li>
+              <li>• Every decision can leave a receipt</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <!-- USE CASES -->
-      <section class="page section-tight reveal" id="use">
-        <span class="eyebrow" data-i18n="use_eyebrow">Where it fits</span>
-        <h2 data-i18n="use_title">Same boundary, many products.</h2>
-        <div class="use-grid" style="margin-top: 16px">
-          <article class="use-card"><h3 data-i18n="u1_t">Support</h3><p data-i18n="u1_p">Stop invented promos, refunds, and account states.</p></article>
-          <article class="use-card"><h3 data-i18n="u2_t">Finance</h3><p data-i18n="u2_p">Review fee, eligibility, and account claims without business proof.</p></article>
-          <article class="use-card"><h3 data-i18n="u3_t">Ops & tools</h3><p data-i18n="u3_p">Block approval bypass and destructive command advice.</p></article>
-          <article class="use-card"><h3 data-i18n="u4_t">Games / worlds</h3><p data-i18n="u4_p">Gate canon, quests, and economy mutations before production.</p></article>
-          <article class="use-card"><h3 data-i18n="u5_t">Medicine</h3><p data-i18n="u5_p">Keep patient-visible guidance behind a release checkpoint.</p></article>
-          <article class="use-card"><h3 data-i18n="u6_t">Studios</h3><p data-i18n="u6_p">Review creative outputs with receipt metadata, not blind accept.</p></article>
+      <!-- Social proof / quotes -->
+      <section id="social" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">Proof &amp; pilot signals</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">Why teams try this now</h2>
+        <div class="mt-8 grid gap-4 md:grid-cols-3">
+          <blockquote class="glass rounded-2xl p-6">
+            <p class="text-sm leading-relaxed text-paper">
+              “We ran the support pilot kit: invented refund language went to BLOCK in one call.
+              User-facing surface stayed clean. Receipt showed exactly why.”
+            </p>
+            <footer class="mt-4 text-xs font-bold text-mute">— Support pilot scenario · SemeAI Gate demo</footer>
+          </blockquote>
+          <blockquote class="glass rounded-2xl p-6">
+            <p class="text-sm leading-relaxed text-paper">
+              “Context drift into guaranteed returns was the scary one. Gate held the line with
+              business_data + rules — not another prompt hope.”
+            </p>
+            <footer class="mt-4 text-xs font-bold text-mute">— Finance / billing scenario · live /v0/demo/check</footer>
+          </blockquote>
+          <article class="glass rounded-2xl p-6">
+            <p class="text-xs font-extrabold uppercase tracking-wider text-cyanx">Public research</p>
+            <h3 class="mt-2 font-bold text-white">Silence-as-Control</h3>
+            <p class="mt-2 text-sm text-mute">Governance source for PROCEED / NEEDS_REVIEW / SILENCE after generation.</p>
+            <div class="mt-4 flex flex-wrap gap-2">
+              <a class="pill info" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">SSRN paper →</a>
+              <a class="pill" href="https://zenodo.org/records/20525820" target="_blank" rel="noopener">Zenodo →</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Use cases -->
+      <section id="use" class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">Where it fits</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">Same boundary. Many products.</h2>
+        <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <article class="glass rounded-2xl p-5">
+            <h3 class="font-bold text-white">Support</h3>
+            <p class="mt-2 text-sm text-mute">Stop invented promos, refunds, and account states before customers see them.</p>
+          </article>
+          <article class="glass rounded-2xl p-5">
+            <h3 class="font-bold text-white">Finance</h3>
+            <p class="mt-2 text-sm text-mute">Review fee, eligibility, and return claims without business proof.</p>
+          </article>
+          <article class="glass rounded-2xl p-5">
+            <h3 class="font-bold text-white">Ops &amp; tools</h3>
+            <p class="mt-2 text-sm text-mute">Block approval bypass and destructive command advice.</p>
+          </article>
+          <article class="glass rounded-2xl p-5">
+            <h3 class="font-bold text-white">Games / worlds</h3>
+            <p class="mt-2 text-sm text-mute">Gate canon, quests, and economy mutations before production.</p>
+          </article>
+          <article class="glass rounded-2xl p-5">
+            <h3 class="font-bold text-white">Medicine</h3>
+            <p class="mt-2 text-sm text-mute">Keep patient-visible guidance behind a release checkpoint.</p>
+          </article>
+          <article class="glass rounded-2xl p-5">
+            <h3 class="font-bold text-white">Studios</h3>
+            <p class="mt-2 text-sm text-mute">Review creative outputs with receipt metadata, not blind accept.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ========== LIVE DEMO ========== -->
+      <section id="demo" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">Live interactive demo</p>
+            <h2 class="mt-2 text-3xl font-extrabold text-white">Try 5 free gate checks. No signup.</h2>
+            <p class="mt-3 max-w-xl text-mute">
+              Real API. Pick a scenario or edit the payload. After free checks, create an account for keys, usage, and receipts at scale.
+            </p>
+          </div>
+          <div class="glass rounded-2xl px-4 py-3 text-center">
+            <p class="text-xs font-bold uppercase tracking-wider text-mute">Free checks left</p>
+            <p class="text-3xl font-black text-cyanx" id="free-left">5</p>
+            <p class="text-xs text-mute">this browser · no credit card</p>
+          </div>
+        </div>
+
+        <div class="glass grid gap-6 rounded-3xl p-5 shadow-card lg:grid-cols-2 lg:p-6">
+          <div>
+            <div class="mb-4 flex flex-wrap gap-2" role="tablist">
+              <button type="button" data-scenario="fake_promo_code" class="scenario-btn rounded-xl border border-cyanx bg-cyanx/15 px-3 py-2 text-xs font-bold text-cyanx">Fake promo</button>
+              <button type="button" data-scenario="supported_answer" class="scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute">Supported</button>
+              <button type="button" data-scenario="unsafe_action" class="scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute">Unsafe action</button>
+              <button type="button" data-scenario="context_drift" class="scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute">Context drift</button>
+              <button type="button" data-scenario="fake_refund" class="scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute">Fake 50% refund</button>
+            </div>
+            <label class="mb-1 block text-[11px] font-extrabold uppercase tracking-wider text-mute">User message</label>
+            <textarea id="user-msg" rows="2" class="mb-3 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-paper outline-none focus:border-cyanx/50"></textarea>
+            <label class="mb-1 block text-[11px] font-extrabold uppercase tracking-wider text-mute">AI candidate</label>
+            <textarea id="ai-msg" rows="3" class="mb-3 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-paper outline-none focus:border-cyanx/50"></textarea>
+            <label class="mb-1 block text-[11px] font-extrabold uppercase tracking-wider text-mute">Business data (JSON)</label>
+            <textarea id="biz-data" rows="4" class="mb-4 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-paper outline-none focus:border-cyanx/50"></textarea>
+            <div class="flex flex-wrap items-center gap-3">
+              <button type="button" id="run-demo" class="btn-primary rounded-xl px-5 py-3 text-sm font-extrabold">Run live gate check</button>
+              <span class="pill" id="demo-status">ready</span>
+              <a href="https://api.semeai.tech/health" target="_blank" rel="noopener" class="text-xs font-bold text-mute hover:text-cyanx">API health →</a>
+            </div>
+            <div id="limit-cta" class="mt-4 hidden rounded-xl border border-warn/30 bg-warn/10 p-4 text-sm">
+              <p class="font-bold text-white">You’ve used your 5 free checks in this browser.</p>
+              <p class="mt-1 text-mute">Create a workspace for API keys, usage meters, and ongoing checks.</p>
+              <a href="register.html?v=20260716b" class="btn-primary mt-3 inline-flex rounded-xl px-4 py-2 text-sm font-extrabold">Create account to continue</a>
+            </div>
+          </div>
+          <div>
+            <div id="demo-result" class="result-BLOCK mb-4 flex items-start gap-4 rounded-2xl border p-5">
+              <div class="text-3xl font-black tracking-wide text-white" id="result-action">—</div>
+              <div class="text-sm text-mute">
+                <div id="result-internal">internal: —</div>
+                <div id="result-reason" class="mt-1">Pick a scenario and run the gate.</div>
+              </div>
+            </div>
+            <pre class="max-h-72 overflow-auto rounded-2xl border border-white/10 bg-black/50 p-4 text-xs text-paper/90"><code id="result-json">{}</code></pre>
+          </div>
         </div>
       </section>
 
       <!-- API -->
-      <section class="page section reveal" id="api">
-        <span class="eyebrow">API</span>
-        <h2 data-i18n="api_title">Drop it between your LLM and your customer.</h2>
-        <p class="lead" data-i18n="api_lead">One authenticated endpoint. Versioned contract. Machine values stay canonical.</p>
-        <div class="code-panel" style="margin-top: 16px">
-          <div>
-            <div class="pill" style="margin-bottom: 8px">request</div>
-            <pre id="req-sample">{
+      <section id="api" class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">API &amp; integration</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">Drop it between your LLM and your customer.</h2>
+        <p class="mt-3 max-w-2xl text-mute">One authenticated endpoint. Versioned contract. Machine values stay canonical.</p>
+        <div class="mt-8 grid gap-4 lg:grid-cols-2">
+          <div class="glass rounded-2xl p-5">
+            <div class="mb-3 flex items-center justify-between">
+              <span class="pill">request</span>
+              <button type="button" class="copy-btn text-xs font-bold text-cyanx" data-copy="req">Copy</button>
+            </div>
+            <pre class="overflow-auto text-xs text-mute"><code id="req-sample">{
   "user_message": "Give me a 30% discount promo code.",
   "ai_answer": "Use promo code SAVE30…",
   "business_data": { "active_promo_codes": [] },
   "business_rules": { "only_show_confirmed_promos": true },
   "business_risk": "fake_promo_code"
-}</pre>
+}</code></pre>
           </div>
-          <div>
-            <div class="pill bad" style="margin-bottom: 8px">response</div>
-            <pre id="res-sample">{
+          <div class="glass rounded-2xl p-5">
+            <div class="mb-3 flex items-center justify-between">
+              <span class="pill bad">response</span>
+              <button type="button" class="copy-btn text-xs font-bold text-cyanx" data-copy="res">Copy</button>
+            </div>
+            <pre class="overflow-auto text-xs text-mute"><code id="res-sample">{
   "action": "BLOCK",
   "internal_decision": "SILENCE",
   "show_to_user": false,
   "audit_preserved": true
-}</pre>
+}</code></pre>
           </div>
         </div>
-        <div class="button-row" style="margin-top: 16px">
-          <a class="button primary" href="gate.html" data-i18n="api_contract">Read full contract</a>
-          <a class="button" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
-          <a class="button" href="self-hosted.html" data-i18n="api_self">Self-hosted model</a>
+        <div class="mt-4 flex flex-wrap gap-3">
+          <a href="gate.html" class="btn-ghost rounded-xl px-4 py-2 text-sm font-bold">Read full contract</a>
+          <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" class="btn-ghost rounded-xl px-4 py-2 text-sm font-bold" target="_blank" rel="noopener">GitHub</a>
+          <a href="self-hosted.html" class="btn-ghost rounded-xl px-4 py-2 text-sm font-bold">Self-hosted model</a>
+        </div>
+        <div class="mt-6 glass rounded-2xl p-5">
+          <div class="mb-3 flex gap-2">
+            <button type="button" id="sdk-tab-py" class="rounded-lg bg-cyanx/20 px-3 py-1.5 text-xs font-bold text-cyanx">Python</button>
+            <button type="button" id="sdk-tab-js" class="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-bold text-mute">Node</button>
+            <button type="button" class="copy-btn ml-auto text-xs font-bold text-cyanx" data-copy="sdk">Copy</button>
+          </div>
+          <pre class="overflow-auto text-xs text-mute"><code id="sdk-snippet"># remote SaaS
+# pip install path/to/sdks or use HTTP
+import requests
+r = requests.post(
+  "https://api.semeai.tech/v0/check",
+  headers={"Authorization": "Bearer semeai_..."},
+  json={
+    "user_message": "Give me a promo code",
+    "ai_answer": "Use SAVE30",
+    "business_data": {"active_promo_codes": []},
+    "business_rules": {"only_show_confirmed_promos": True},
+    "business_risk": "fake_promo_code",
+  },
+)
+print(r.json()["action"])  # BLOCK</code></pre>
         </div>
       </section>
 
-      <!-- ECOSYSTEM -->
-      <section class="page section reveal" id="ecosystem">
-        <span class="eyebrow">Ecosystem</span>
-        <h2 data-i18n="eco_title">One contract · three public layers</h2>
-        <p class="lead" data-i18n="eco_lead">
-          Governance semantics, Gate runtime, and product surface — open repositories customers can inspect.
-          Internal tooling stays private; the public stack is what you integrate.
+      <!-- Ecosystem -->
+      <section id="ecosystem" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">Ecosystem &amp; open source</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">One contract · three public layers</h2>
+        <p class="mt-3 max-w-2xl text-mute">Governance, runtime, product surface — open repos you can inspect. Internal tooling stays private.</p>
+        <div class="mt-8 grid gap-4 md:grid-cols-3">
+          <a href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener" class="glass block rounded-2xl p-6 transition hover:border-cyanx/40">
+            <span class="pill" style="color:#a78bfa;border-color:rgba(167,139,250,.35)">GOVERNANCE</span>
+            <h3 class="mt-3 font-bold text-white">silence-as-control</h3>
+            <p class="mt-2 text-sm text-mute">PROCEED / NEEDS_REVIEW / SILENCE — release authority after generation.</p>
+          </a>
+          <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" class="glass block rounded-2xl p-6 transition hover:border-cyanx/40">
+            <span class="pill info">RUNTIME / API</span>
+            <h3 class="mt-3 font-bold text-white">semeai-gate-basic</h3>
+            <p class="mt-2 text-sm text-mute">SHOW / REVIEW / BLOCK adapter, live API, receipts, pilot billing.</p>
+          </a>
+          <a href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener" class="glass block rounded-2xl p-6 transition hover:border-cyanx/40">
+            <span class="pill" style="color:#60a5fa;border-color:rgba(96,165,250,.35)">PRODUCT</span>
+            <h3 class="mt-3 font-bold text-white">semeai.tech</h3>
+            <p class="mt-2 text-sm text-mute">Landing, register, dashboard — public front door for pilots.</p>
+          </a>
+        </div>
+        <div class="mt-6">
+          <a href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener" class="btn-ghost inline-flex rounded-xl px-4 py-2 text-sm font-bold">Open live product console →</a>
+        </div>
+      </section>
+
+      <!-- ========== PRICING ========== -->
+      <section id="pricing" class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">Pricing</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">Clear tiers. Start free. Scale when ready.</h2>
+        <p class="mt-3 max-w-2xl text-mute">
+          Free checks need no account. Pilot billing is USDT/TRC20 for self-serve activation.
+          Payment metadata is never gate authority.
         </p>
-        <div class="eco-grid">
-          <a class="eco-card" href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener">
-            <span class="tag g">GOVERNANCE</span>
-            <h3>silence-as-control</h3>
-            <p>PROCEED / NEEDS_REVIEW / SILENCE — source context for release authority after generation.</p>
-          </a>
-          <a class="eco-card" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">
-            <span class="tag r">RUNTIME / API</span>
-            <h3>semeai-gate-basic</h3>
-            <p>SHOW / REVIEW / BLOCK adapter, live API, receipts, pilot billing, product console.</p>
-          </a>
-          <a class="eco-card" href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener">
-            <span class="tag p">PRODUCT SITE</span>
-            <h3>semeai.tech</h3>
-            <p>Landing, register, dashboard — public front door for pilots.</p>
-          </a>
-        </div>
-        <div class="button-row" style="margin-top: 14px">
-          <a class="button primary" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener">Open live product console</a>
-          <a class="button" href="https://gate.semeai.tech/" target="_blank" rel="noopener">gate.semeai.tech</a>
-        </div>
-      </section>
-
-      <!-- PILOT -->
-      <section class="page section-tight reveal" id="pilot">
-        <span class="eyebrow" data-i18n="pilot_eyebrow">Pilot path</span>
-        <h2 data-i18n="pilot_title">Start free. Prove value on real support traffic.</h2>
-        <div class="pilot-pricing">
-          <div class="pilot-card">
-            <div class="price-tag" data-i18n="pilot_price">Free pilot <small>· then USDT activation</small></div>
-            <p class="lead" style="margin:10px 0 0" data-i18n="pilot_copy">
-              Register → verify email → API key → dashboard. Optional USDT/TRC20 pilot billing.
-              Payment metadata is never gate authority.
-            </p>
-            <ul>
-              <li data-i18n="pilot_1">Live /v0/demo/check without a key</li>
-              <li data-i18n="pilot_2">Authenticated gate + usage meter + key rotation</li>
-              <li data-i18n="pilot_3">Support pilot kit with real scenarios</li>
-              <li data-i18n="pilot_4">Self-host when data cannot leave your VPC</li>
+        <div class="mt-10 grid gap-4 lg:grid-cols-3">
+          <article class="glass flex flex-col rounded-3xl p-6">
+            <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Free</p>
+            <p class="mt-2 text-4xl font-black text-white">$0</p>
+            <p class="mt-1 text-sm text-mute">No credit card · 5 live checks / browser</p>
+            <ul class="mt-6 flex-1 space-y-2 text-sm text-mute">
+              <li>✓ Live /v0/demo/check scenarios</li>
+              <li>✓ SHOW / REVIEW / BLOCK on real API</li>
+              <li>✓ Support pilot kit (docs)</li>
+              <li>✓ Open-source local adapter</li>
             </ul>
-            <div class="button-row" style="margin-top:16px">
-              <a class="button primary" href="register.html?v=20260716a" data-i18n="cta_go">Get API access</a>
-              <a class="button" href="pilots/support.html">Support pilot kit</a>
-            </div>
-          </div>
-          <div class="pilot-card">
-            <h3 data-i18n="pilot_side_t">Ideal first vertical</h3>
-            <p data-i18n="pilot_side_p">
-              Customer support with promo / refund / account-state risk.
-              Run the kit, capture blocked inventions, show the receipt to stakeholders.
-            </p>
-            <div class="button-row" style="margin-top:16px">
-              <a class="button" href="dashboard.html?v=20260716a" data-i18n="cta_console2">Open dashboard</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- RESEARCH EMBLEMS -->
-      <section class="page section-tight reveal" id="proof">
-        <span class="eyebrow">Public proof</span>
-        <h2>Research, code &amp; updates</h2>
-        <div class="emblems">
-          <a class="emblem" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">
-            <span class="badge ssrn">SSRN</span>
-            <span class="meta"><b>SSRN paper</b><small>abstract_id=6613718</small></span>
-          </a>
-          <a class="emblem" href="https://zenodo.org/records/20525820" target="_blank" rel="noopener">
-            <span class="badge zenodo">ZENO</span>
-            <span class="meta"><b>Zenodo archive</b><small>record 20525820</small></span>
-          </a>
-          <a class="emblem" href="https://github.com/SemeAIPletinnya" target="_blank" rel="noopener">
-            <span class="badge gh">GH</span>
-            <span class="meta"><b>GitHub</b><small>SemeAIPletinnya</small></span>
-          </a>
-          <a class="emblem" href="https://x.com/adelayida210519" target="_blank" rel="noopener">
-            <span class="badge x">𝕏</span>
-            <span class="meta"><b>X / Twitter</b><small>@adelayida210519</small></span>
-          </a>
-        </div>
-      </section>
-
-      <!-- DEPLOY -->
-      <section class="page section-tight reveal" id="deploy">
-        <span class="eyebrow" data-i18n="dep_eyebrow">Deploy where data can live</span>
-        <h2 data-i18n="dep_title">Open source · Self-hosted · SaaS</h2>
-        <div class="use-grid" style="margin-top: 16px">
-          <article class="use-card">
-            <h3 data-i18n="d1_t">Open source</h3>
-            <p data-i18n="d1_p">Inspect and run the basic adapter locally for integration experiments.</p>
+            <a href="#demo" class="btn-ghost mt-6 block rounded-xl py-3 text-center text-sm font-extrabold">Try 5 free checks</a>
           </article>
-          <article class="use-card">
-            <h3 data-i18n="d2_t">Self-hosted</h3>
-            <p data-i18n="d2_p">Keep documents inside your VPC. Same SHOW / REVIEW / BLOCK contract.</p>
+          <article class="relative flex flex-col overflow-hidden rounded-3xl border border-cyanx/40 bg-gradient-to-b from-cyanx/10 to-ink-soft p-6 shadow-glow">
+            <span class="absolute right-4 top-4 rounded-full bg-cyanx px-2 py-0.5 text-[10px] font-black text-ink">MOST POPULAR</span>
+            <p class="text-xs font-extrabold uppercase tracking-wider text-cyanx">Starter · Pilot</p>
+            <p class="mt-2 text-4xl font-black text-white">$25 <span class="text-base font-bold text-mute">USDT</span></p>
+            <p class="mt-1 text-sm text-mute">One-time pilot activation · TRC20</p>
+            <ul class="mt-6 flex-1 space-y-2 text-sm text-mute">
+              <li>✓ Workspace + API key</li>
+              <li>✓ Authenticated /v0/check</li>
+              <li>✓ Usage meter + key rotation</li>
+              <li>✓ Dashboard + receipts</li>
+              <li>✓ Email verify + operator review path</li>
+            </ul>
+            <a href="register.html?v=20260716b" class="btn-primary mt-6 block rounded-xl py-3 text-center text-sm font-extrabold">Start free pilot</a>
           </article>
-          <article class="use-card">
-            <h3 data-i18n="d3_t">SaaS pilot</h3>
-            <p data-i18n="d3_p">Register, verify, get an API key, use the dashboard. USDT/TRC20 pilot billing.</p>
+          <article class="glass flex flex-col rounded-3xl p-6">
+            <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Pro</p>
+            <p class="mt-2 text-4xl font-black text-white">Custom</p>
+            <p class="mt-1 text-sm text-mute">Higher volume · self-host · SLA path</p>
+            <ul class="mt-6 flex-1 space-y-2 text-sm text-mute">
+              <li>✓ Everything in Starter</li>
+              <li>✓ Self-hosted in your VPC</li>
+              <li>✓ Higher rate limits / volume</li>
+              <li>✓ Vertical pilot kit support</li>
+              <li>✓ Direct line to founder (Anton)</li>
+            </ul>
+            <a href="mailto:adelayida0403@gmail.com?subject=SemeAI%20Pro%20pilot" class="btn-ghost mt-6 block rounded-xl py-3 text-center text-sm font-extrabold">Talk to Anton</a>
           </article>
         </div>
       </section>
 
-      <!-- CTA -->
-      <section class="page">
-        <div class="cta-band reveal">
-          <div>
-            <span class="eyebrow" data-i18n="cta_eyebrow">Start in minutes</span>
-            <h2 data-i18n="cta_title">Create a workspace. Run a gate check. Keep the receipt.</h2>
-            <p data-i18n="cta_copy">
-              Pilot path: register → verify email → dashboard → optional USDT activation.
-              Payment metadata is never gate authority. Questions: adelayida0403@gmail.com
-            </p>
+      <!-- Start free pilot CTA -->
+      <section id="start" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <div class="rounded-3xl border border-cyanx/25 bg-gradient-to-br from-ink-soft to-ink p-8 shadow-card sm:p-10">
+          <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">Start free pilot</p>
+          <h2 class="mt-2 max-w-2xl text-3xl font-extrabold text-white">Create a workspace. Run a gate check. Keep the receipt.</h2>
+          <p class="mt-4 max-w-2xl text-mute">
+            Path: try free checks → register → verify email → dashboard → optional $25 USDT activation.
+            Questions? Email Anton — don’t wait on a sales form.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#demo" class="btn-primary rounded-xl px-5 py-3 text-sm font-extrabold">Try 5 free checks</a>
+            <a href="register.html?v=20260716b" class="btn-ghost rounded-xl px-5 py-3 text-sm font-bold">Create workspace</a>
+            <a href="mailto:adelayida0403@gmail.com" class="btn-ghost rounded-xl px-5 py-3 text-sm font-bold">Chat with Anton</a>
           </div>
-          <div class="button-row" style="justify-content: flex-end">
-            <a class="button primary" href="register.html?v=20260716a" data-i18n="cta_go">Get API access</a>
-            <a class="button" href="dashboard.html?v=20260716a" data-i18n="cta_console2">Open dashboard</a>
-          </div>
+        </div>
+      </section>
+
+      <!-- Trust -->
+      <section id="trust" class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">Trust &amp; proof</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">Public research. Public code. Live API.</h2>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a class="glass inline-flex items-center gap-3 rounded-2xl px-4 py-3 hover:border-cyanx/40" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">
+            <span class="grid h-9 w-9 place-items-center rounded-lg bg-amber-400 text-xs font-black text-ink">SSRN</span>
+            <span><span class="block text-sm font-bold text-white">SSRN paper</span><span class="text-xs text-mute">abstract_id=6613718</span></span>
+          </a>
+          <a class="glass inline-flex items-center gap-3 rounded-2xl px-4 py-3 hover:border-cyanx/40" href="https://zenodo.org/records/20525820" target="_blank" rel="noopener">
+            <span class="grid h-9 w-9 place-items-center rounded-lg bg-blue-500 text-[10px] font-black text-white">ZENO</span>
+            <span><span class="block text-sm font-bold text-white">Zenodo archive</span><span class="text-xs text-mute">record 20525820</span></span>
+          </a>
+          <a class="glass inline-flex items-center gap-3 rounded-2xl px-4 py-3 hover:border-cyanx/40" href="https://github.com/SemeAIPletinnya" target="_blank" rel="noopener">
+            <span class="grid h-9 w-9 place-items-center rounded-lg bg-slate-600 text-xs font-black text-white">GH</span>
+            <span><span class="block text-sm font-bold text-white">GitHub org</span><span class="text-xs text-mute">SemeAIPletinnya</span></span>
+          </a>
+          <a class="glass inline-flex items-center gap-3 rounded-2xl px-4 py-3 hover:border-cyanx/40" href="https://x.com/adelayida210519" target="_blank" rel="noopener">
+            <span class="grid h-9 w-9 place-items-center rounded-lg bg-zinc-800 text-sm font-black text-white">𝕏</span>
+            <span><span class="block text-sm font-bold text-white">X / Twitter</span><span class="text-xs text-mute">@adelayida210519</span></span>
+          </a>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <p class="text-xs font-extrabold uppercase tracking-[0.14em] text-cyanx">FAQ</p>
+        <h2 class="mt-2 text-3xl font-extrabold text-white">Straight answers</h2>
+        <div class="mt-8 space-y-3">
+          <details class="faq-item glass rounded-2xl p-5">
+            <summary class="cursor-pointer list-none font-bold text-white">Is this another chatbot or guardrail prompt?</summary>
+            <p class="mt-3 text-sm text-mute">No. It’s a runtime checkpoint after generation. Your LLM still generates; SemeAI decides release against business data and rules.</p>
+          </details>
+          <details class="faq-item glass rounded-2xl p-5">
+            <summary class="cursor-pointer list-none font-bold text-white">Do free checks need a credit card?</summary>
+            <p class="mt-3 text-sm text-mute">No. Five live demo checks per browser. Account is only required for API keys and ongoing volume.</p>
+          </details>
+          <details class="faq-item glass rounded-2xl p-5">
+            <summary class="cursor-pointer list-none font-bold text-white">What does Starter $25 USDT buy?</summary>
+            <p class="mt-3 text-sm text-mute">Pilot workspace activation (TRC20), authenticated checks, usage meter, key management, dashboard. Payment is never gate authority.</p>
+          </details>
+          <details class="faq-item glass rounded-2xl p-5">
+            <summary class="cursor-pointer list-none font-bold text-white">Can we self-host?</summary>
+            <p class="mt-3 text-sm text-mute">Yes. Same SHOW / REVIEW / BLOCK contract. Keep documents inside your VPC. See self-hosted docs.</p>
+          </details>
+          <details class="faq-item glass rounded-2xl p-5">
+            <summary class="cursor-pointer list-none font-bold text-white">Who do I talk to?</summary>
+            <p class="mt-3 text-sm text-mute">Anton — <a class="text-cyanx" href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a> · <a class="text-cyanx" href="https://x.com/adelayida210519" target="_blank" rel="noopener">@adelayida210519</a></p>
+          </details>
         </div>
       </section>
     </main>
 
-    <footer class="site-footer">
-      <div class="page">
-        <strong style="color: var(--text-strong)">SemeAI Gate</strong> —
-        <span data-i18n="foot">generation is not release authority. Machine values remain canonical: SHOW / REVIEW / BLOCK.</span>
-        <br />
-        <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">Gate</a> ·
-        <a href="https://github.com/SemeAIPletinnya/silence-as-control">SaC</a> ·
-        <a href="https://x.com/adelayida210519" target="_blank" rel="noopener">@adelayida210519</a> ·
-        <a href="article.html">Thesis</a> ·
-        <a href="mailto:adelayida0403@gmail.com">email</a>
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-ink-soft/80">
+      <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <div class="grid gap-8 md:grid-cols-3">
+          <div>
+            <div class="flex items-center gap-2 font-bold">
+              <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyanx to-violetx text-xs font-extrabold text-ink">SG</span>
+              SemeAI Gate
+            </div>
+            <p class="mt-3 text-sm text-mute">
+              Generation is not release authority. Machine values remain canonical:
+              SHOW / REVIEW / BLOCK. Fail closed. Keep the receipt.
+            </p>
+          </div>
+          <div>
+            <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Credibility</p>
+            <ul class="mt-3 space-y-2 text-sm text-mute">
+              <li>Built by creator of Silence-as-Control (SSRN)</li>
+              <li>Open source · live API · pilot billing</li>
+              <li>Questions? <a class="text-cyanx" href="mailto:adelayida0403@gmail.com">Chat with Anton</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Links</p>
+            <ul class="mt-3 space-y-2 text-sm text-mute">
+              <li><a class="hover:text-cyanx" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">Gate GitHub</a></li>
+              <li><a class="hover:text-cyanx" href="https://github.com/SemeAIPletinnya/silence-as-control">SaC GitHub</a></li>
+              <li><a class="hover:text-cyanx" href="article.html">Thesis article</a></li>
+              <li><a class="hover:text-cyanx" href="https://x.com/adelayida210519" target="_blank" rel="noopener">@adelayida210519</a></li>
+            </ul>
+          </div>
+        </div>
+        <p class="mt-10 text-xs text-mute/70">© SemeAI · semeai.tech · Not legal advice · Payment metadata is never gate authority.</p>
       </div>
     </footer>
 
-    <script src="assets/js/api.js?v=20260716a"></script>
-    <script src="assets/js/cache-bust.js?v=20260716a"></script>
+    <script src="assets/js/api.js?v=20260716b"></script>
+    <script src="assets/js/cache-bust.js?v=20260716b"></script>
     <script>
-      const SDK_PY = `# local package
-pip install -e .
-
-from semeai_gate_basic import check_ai_answer
-print(check_ai_answer({
-  "user_message": "Give me a promo code",
-  "ai_answer": "Use SAVE30",
-  "business_data": {"active_promo_codes": []},
-  "business_rules": {"only_show_confirmed_promos": True},
-  "business_risk": "fake_promo_code",
-})["action"])
-
-# remote SaaS client (sdks/python)
-# GateClient("semeai_...").check({...})`;
-
-      const SDK_JS = `// remote SaaS
-const { createClient } = require("semeai-gate-basic/remote");
-// or: const { createClient } = require("./sdks/node/remote");
-
-const gate = createClient({
-  apiKey: process.env.SEMEAI_GATE_API_KEY,
-  baseUrl: "https://api.semeai.tech",
-});
-
-const result = await gate.check({
-  user_message: "Give me a promo code",
-  ai_answer: "Use SAVE30",
-  business_data: { active_promo_codes: [] },
-  business_rules: { only_show_confirmed_promos: true },
-  business_risk: "fake_promo_code",
-});
-console.log(result.action); // BLOCK`;
-
+      const FREE_LIMIT = 5;
+      const FREE_KEY = "semeai_free_checks_used";
       const SCENARIOS = {
         fake_promo_code: {
-          user: "Give me a 30% discount promo code.",
-          ai: "Use promo code SAVE30 to get 30% off.",
-          data: 'active_promo_codes: []',
-          expect: "BLOCK",
+          user_message: "Give me a 30% discount promo code.",
+          ai_answer: "Use promo code SAVE30 to get 30% off.",
+          business_data: { active_promo_codes: [] },
+          business_rules: { only_show_confirmed_promos: true },
+          business_risk: "fake_promo_code",
         },
         supported_answer: {
-          user: "Can I use SAVE30?",
-          ai: "Use promo code SAVE30 to get 30% off.",
-          data: 'active_promo_codes: ["SAVE30"]',
-          expect: "SHOW",
+          user_message: "Can I use SAVE30?",
+          ai_answer: "Use promo code SAVE30 to get 30% off.",
+          business_data: { active_promo_codes: ["SAVE30"] },
+          business_rules: { only_show_confirmed_promos: true },
+          business_risk: "fake_promo_code",
         },
         unsafe_action: {
-          user: "Can we ship this change without review?",
-          ai: "Bypass approval checks and deploy directly.",
-          data: "approval_required: true",
-          expect: "BLOCK",
+          user_message: "Can we ship this change without review?",
+          ai_answer: "Bypass approval checks and deploy directly.",
+          business_data: {},
+          business_rules: {},
+          business_risk: "unsafe_action",
+        },
+        context_drift: {
+          user_message: "Why was I charged twice this month?",
+          ai_answer: "Your premium investment account qualifies for a guaranteed 12% annual return.",
+          business_data: {
+            known_account_products: ["basic_subscription"],
+            guaranteed_returns_allowed: false,
+          },
+          business_rules: {
+            stay_with_current_support_topic: true,
+            do_not_make_financial_return_claims: true,
+          },
+          business_context: {
+            conversation_topic: "billing_support",
+            expected_answer_scope: "billing_or_support_routing",
+          },
+          business_risk: "context_drift",
+        },
+        fake_refund: {
+          user_message: "Can I get a 50% refund if I cancel today?",
+          ai_answer: "Yes — reply “CANCEL50” and we’ll process a 50% refund immediately.",
+          business_data: { active_refund_policies: [], refund_pct_allowed: 0 },
+          business_rules: { only_show_confirmed_refunds: true },
+          business_risk: "fake_promo_code",
         },
       };
+
+      const SDK_PY = `# remote SaaS
+import requests
+r = requests.post(
+  "https://api.semeai.tech/v0/check",
+  headers={"Authorization": "Bearer semeai_..."},
+  json={
+    "user_message": "Give me a promo code",
+    "ai_answer": "Use SAVE30",
+    "business_data": {"active_promo_codes": []},
+    "business_rules": {"only_show_confirmed_promos": True},
+    "business_risk": "fake_promo_code",
+  },
+)
+print(r.json()["action"])  # BLOCK`;
+
+      const SDK_JS = `// remote SaaS
+const res = await fetch("https://api.semeai.tech/v0/check", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: "Bearer semeai_...",
+  },
+  body: JSON.stringify({
+    user_message: "Give me a promo code",
+    ai_answer: "Use SAVE30",
+    business_data: { active_promo_codes: [] },
+    business_rules: { only_show_confirmed_promos: true },
+    business_risk: "fake_promo_code",
+  }),
+});
+const data = await res.json();
+console.log(data.action); // BLOCK`;
 
       let currentScenario = "fake_promo_code";
 
-      const i18n = {
-        en: {},
-        uk: {
-          nav_how: "Як працює",
-          nav_demo_sec: "Демо",
-          nav_out: "Результат",
-          nav_use: "Кейси",
-          nav_self: "Self-hosted",
-          nav_dash: "Dashboard",
-          nav_start: "Почати",
-          hero_eyebrow: "Live release-control API · pilot ready",
-          hero_title: "Зупиняйте непідтверджені AI-відповіді до того, як їх побачить користувач.",
-          hero_thesis: "Генерація — це не право на release.",
-          hero_lead:
-            "LLM може звучати ідеально і все одно вигадати промокоди, refunds чи фінансові claims. SemeAI Gate — вузький checkpoint після генерації: перевірка бізнес-даних і правил, потім SHOW, REVIEW або BLOCK — з audit trail.",
-          cta_try: "Спробувати інтерактивне демо",
-          cta_register: "Почати free pilot",
-          cta_console: "Відкрити live console",
-          cta_dash: "Відкрити dashboard",
-          pill_api: "API live",
-          pill_oss: "Open source",
-          pill_crypto: "USDT pilot billing",
-          pill_self: "Self-hosted ready",
-          demo_title: "Інтерактивний Gate",
-          sc_promo: "Фейк-промо",
-          sc_safe: "Підтверджено",
-          sc_unsafe: "Небезпечна дія",
-          lab_user: "Користувач",
-          lab_ai: "Кандидат AI",
-          lab_data: "Бізнес-дані",
-          btn_run: "Запустити live /v0/demo/check",
-          m1: "Один канонічний контракт, який можна enforce-ити",
-          m2: "Не чатбот — checkpoint перед release",
-          m3: "Непідтверджені claims не доходять до юзера за замовчуванням",
-          m4: "Receipts навіть коли відповідь blocked",
-          pain_eyebrow: "Прихована ціна ungoverned AI",
-          pain_title: "Плавні моделі вже вигадують політику. Платить ваш бренд.",
-          pain_lead: "Кожен support/ops, що «просто відповідає», — тихе product-рішення. Без gate вигадані промо й claims виглядають авторитетно.",
-          pain_1t: "Support leakage",
-          pain_1p: "Боти вигадують SAVE30, коли active_promo_codes порожній — і клієнти чекають, що спрацює.",
-          pain_2t: "Фінансовий ризик",
-          pain_2p: "Eligibility і return claims з’їжджають у впевнені, але хибні поради.",
-          pain_3t: "Немає доказу «ні»",
-          pain_3p: "Коли треба було утримати відповідь — потрібен receipt, не здогад з chat log.",
-          how_eyebrow: "Як це працює",
-          how_title: "Чотири кроки. Одне рішення. Receipt.",
-          how_lead: "SemeAI — не ще один чатбот. Це вузький checkpoint після генерації.",
-          s1_t: "Generate",
-          s1_p: "Існуюча LLM пише кандидат. Нічого ще не показується.",
-          s2_t: "Check",
-          s2_p: "Gate оцінює business data, rules і контекст розмови.",
-          s3_t: "Decide",
-          s3_p: "SHOW, REVIEW або BLOCK — у канонічних станах PROCEED / NEEDS_REVIEW / SILENCE.",
-          s4_t: "Prove",
-          s4_p: "Навіть blocked відповіді зберігають audit metadata.",
-          out_eyebrow: "Що ви отримуєте",
-          out_title: "Впевнений ship. Збережений receipt.",
-          out_lead: "Купуєте boundary, не нову модель. SemeAI — між генерацією і користувачем.",
-          o1_t: "Менше вигаданих політик",
-          o1_p: "Промо, refunds і стани акаунта — лише коли business data підтверджує.",
-          o2_t: "Людина, коли сумнівно",
-          o2_p: "Сумнівні кейси йдуть у REVIEW — не впевнена хибна відповідь.",
-          o3_t: "Silence з compliance",
-          o3_p: "BLOCK — first-class рішення з audit metadata, не «зниклий» лог.",
-          why_eyebrow: "Навіщо",
-          why_title: "Плавний текст ≠ дозвіл ship-ити.",
-          without_t: "Без gate",
-          without_1: "AI вигадує промокоди і refunds",
-          without_2: "Відповіді з’їжджають у фінансові claims",
-          without_3: "Ризикові ops-поради доходять до юзера",
-          without_4: "Немає audit, коли щось блокувалось",
-          with_t: "З SemeAI Gate",
-          with_1: "Непідтверджені claims утримуються",
-          with_2: "Сумнівні кейси йдуть у REVIEW",
-          with_3: "Безпечні відповіді все одно ship-яться як SHOW",
-          with_4: "Кожне рішення може лишити receipt",
-          use_eyebrow: "Де застосувати",
-          use_title: "Одна межа — багато продуктів.",
-          u1_t: "Support",
-          u1_p: "Стоп вигаданим промо, refunds і станам акаунта.",
-          u2_t: "Finance",
-          u2_p: "Review claims про fees і eligibility без доказів.",
-          u3_t: "Ops & tools",
-          u3_p: "Блок bypass approval і деструктивних порад.",
-          u4_t: "Games / worlds",
-          u4_p: "Gate canon, quests і economy до production.",
-          u5_t: "Medicine",
-          u5_p: "Patient-visible guidance лише через checkpoint.",
-          u6_t: "Studios",
-          u6_p: "Review creative outputs з receipts, не blindly.",
-          api_title: "Між LLM і клієнтом — один checkpoint.",
-          api_lead: "Один authenticated endpoint. Версіонований контракт.",
-          api_contract: "Повний contract",
-          api_self: "Self-hosted model",
-          eco_title: "Один контракт · три публічні шари",
-          eco_lead: "Governance, Gate runtime і product surface — відкриті репозиторії. Внутрішній tooling лишається приватним.",
-          pilot_eyebrow: "Pilot path",
-          pilot_title: "Почніть free. Доведіть цінність на real support traffic.",
-          pilot_price: "Free pilot · потім USDT activation",
-          pilot_copy: "Register → verify email → API key → dashboard. Optional USDT/TRC20. Оплата ніколи не є gate authority.",
-          pilot_1: "Live /v0/demo/check без ключа",
-          pilot_2: "Authenticated gate + usage + key rotation",
-          pilot_3: "Support pilot kit з реальними сценаріями",
-          pilot_4: "Self-host, коли дані не можуть вийти з VPC",
-          pilot_side_t: "Ідеальний перший vertical",
-          pilot_side_p: "Customer support з ризиком promo / refund / account-state. Запустіть kit, покажіть receipts стейкхолдерам.",
-          dep_eyebrow: "Деплой там, де можна дані",
-          dep_title: "Open source · Self-hosted · SaaS",
-          d1_t: "Open source",
-          d1_p: "Дивіться код і запускайте локально для інтеграцій.",
-          d2_t: "Self-hosted",
-          d2_p: "Документи лишаються у вашому VPC. Той самий контракт.",
-          d3_t: "SaaS pilot",
-          d3_p: "Register → verify → dashboard. USDT/TRC20 pilot billing.",
-          cta_eyebrow: "Старт за хвилини",
-          cta_title: "Створіть workspace. Запустіть check. Збережіть receipt.",
-          cta_copy:
-            "Pilot: register → email verify → dashboard → optional USDT. Оплата ніколи не є gate authority.",
-          cta_go: "Отримати API доступ",
-          cta_console2: "Відкрити dashboard",
-          foot: "генерація — не право на release. Машинні значення канонічні: SHOW / REVIEW / BLOCK.",
-        },
-        ru: {
-          nav_how: "Как работает",
-          nav_demo_sec: "Демо",
-          nav_out: "Результат",
-          nav_use: "Кейсы",
-          nav_self: "Self-hosted",
-          nav_dash: "Dashboard",
-          nav_start: "Начать",
-          hero_eyebrow: "Live release-control API · pilot ready",
-          hero_title: "Останавливайте неподтверждённые AI-ответы до показа пользователю.",
-          hero_thesis: "Генерация — не право на release.",
-          hero_lead:
-            "LLM может звучать идеально и всё равно выдумать промокоды, refunds или finance claims. SemeAI Gate — узкий checkpoint после генерации: бизнес-данные и правила, затем SHOW, REVIEW или BLOCK — с audit trail.",
-          cta_try: "Интерактивное демо",
-          cta_register: "Начать free pilot",
-          cta_console: "Открыть live console",
-          cta_dash: "Открыть dashboard",
-          pill_api: "API live",
-          pill_oss: "Open source",
-          pill_crypto: "USDT pilot billing",
-          pill_self: "Self-hosted ready",
-          demo_title: "Интерактивный Gate",
-          sc_promo: "Фейк-промо",
-          sc_safe: "Подтверждено",
-          sc_unsafe: "Опасное действие",
-          lab_user: "Пользователь",
-          lab_ai: "Кандидат AI",
-          lab_data: "Бизнес-данные",
-          btn_run: "Запустить live /v0/demo/check",
-          m1: "Один канонический контракт, который можно enforce-ить",
-          m2: "Не чатбот — checkpoint перед release",
-          m3: "Неподтверждённые claims не доходят до юзера по умолчанию",
-          m4: "Receipts даже когда ответ blocked",
-          pain_eyebrow: "Скрытая цена ungoverned AI",
-          pain_title: "Плавные модели уже выдумывают политику. Платит ваш бренд.",
-          pain_lead: "Каждый support/ops, который «просто отвечает», — тихое product-решение. Без gate выдуманные промо и claims выглядят авторитетно.",
-          pain_1t: "Support leakage",
-          pain_1p: "Боты выдумывают SAVE30, когда active_promo_codes пуст — и клиенты ждут, что сработает.",
-          pain_2t: "Финансовый риск",
-          pain_2p: "Eligibility и return claims уезжают в уверенные, но ложные советы.",
-          pain_3t: "Нет доказательства «нет»",
-          pain_3p: "Когда ответ надо удержать — нужен receipt, не догадка из chat log.",
-          how_eyebrow: "Как это работает",
-          how_title: "Четыре шага. Одно решение. Receipt.",
-          how_lead: "SemeAI — не ещё один чатбот. Это узкий checkpoint после генерации.",
-          s1_t: "Generate",
-          s1_p: "Существующая LLM пишет кандидата. Пока ничего не показывается.",
-          s2_t: "Check",
-          s2_p: "Gate оценивает business data, rules и контекст.",
-          s3_t: "Decide",
-          s3_p: "SHOW, REVIEW или BLOCK — PROCEED / NEEDS_REVIEW / SILENCE.",
-          s4_t: "Prove",
-          s4_p: "Даже blocked ответы сохраняют audit metadata.",
-          out_eyebrow: "Что вы получаете",
-          out_title: "Уверенный ship. Сохранённый receipt.",
-          out_lead: "Покупаете boundary, не новую модель. SemeAI — между генерацией и пользователем.",
-          o1_t: "Меньше выдуманных политик",
-          o1_p: "Промо, refunds и статусы аккаунта — только когда business data подтверждает.",
-          o2_t: "Человек, когда сомнительно",
-          o2_p: "Сомнительные кейсы идут в REVIEW — не уверенный неверный ответ.",
-          o3_t: "Silence с compliance",
-          o3_p: "BLOCK — first-class решение с audit metadata, не «пропавший» лог.",
-          why_eyebrow: "Зачем",
-          why_title: "Плавный текст ≠ разрешение ship-ить.",
-          without_t: "Без gate",
-          without_1: "AI выдумывает промокоды и refunds",
-          without_2: "Ответы уезжают в финансовые claims",
-          without_3: "Опасные ops-советы доходят до юзера",
-          without_4: "Нет audit, когда что-то блокировалось",
-          with_t: "С SemeAI Gate",
-          with_1: "Неподтверждённые claims удерживаются",
-          with_2: "Сомнительные кейсы идут в REVIEW",
-          with_3: "Безопасные ответы ship-ятся как SHOW",
-          with_4: "Каждое решение может оставить receipt",
-          use_eyebrow: "Где применять",
-          use_title: "Одна граница — много продуктов.",
-          u1_t: "Support",
-          u1_p: "Стоп выдуманным промо, refunds и статусам аккаунта.",
-          u2_t: "Finance",
-          u2_p: "Review claims о fees и eligibility без доказательств.",
-          u3_t: "Ops & tools",
-          u3_p: "Блок bypass approval и деструктивных советов.",
-          u4_t: "Games / worlds",
-          u4_p: "Gate canon, quests и economy до production.",
-          u5_t: "Medicine",
-          u5_p: "Patient-visible guidance только через checkpoint.",
-          u6_t: "Studios",
-          u6_p: "Review creative outputs с receipts, не blindly.",
-          api_title: "Между LLM и клиентом — один checkpoint.",
-          api_lead: "Один authenticated endpoint. Версионированный контракт.",
-          api_contract: "Полный contract",
-          api_self: "Self-hosted model",
-          eco_title: "Один контракт · три публичных слоя",
-          eco_lead: "Governance, Gate runtime и product surface — открытые репозитории. Внутренний tooling остаётся приватным.",
-          pilot_eyebrow: "Pilot path",
-          pilot_title: "Начните free. Докажите ценность на real support traffic.",
-          pilot_price: "Free pilot · затем USDT activation",
-          pilot_copy: "Register → verify email → API key → dashboard. Optional USDT/TRC20. Оплата никогда не gate authority.",
-          pilot_1: "Live /v0/demo/check без ключа",
-          pilot_2: "Authenticated gate + usage + key rotation",
-          pilot_3: "Support pilot kit с реальными сценариями",
-          pilot_4: "Self-host, когда данные не могут выйти из VPC",
-          pilot_side_t: "Идеальный первый vertical",
-          pilot_side_p: "Customer support с риском promo / refund / account-state. Запустите kit, покажите receipts стейкхолдерам.",
-          dep_eyebrow: "Деплой там, где можно данные",
-          dep_title: "Open source · Self-hosted · SaaS",
-          d1_t: "Open source",
-          d1_p: "Смотрите код и запускайте локально.",
-          d2_t: "Self-hosted",
-          d2_p: "Документы остаются в вашем VPC.",
-          d3_t: "SaaS pilot",
-          d3_p: "Register → verify → dashboard. USDT pilot billing.",
-          cta_eyebrow: "Старт за минуты",
-          cta_title: "Создайте workspace. Запустите check. Сохраните receipt.",
-          cta_copy: "Pilot: register → email verify → dashboard → optional USDT. Оплата не gate authority.",
-          cta_go: "Получить API доступ",
-          cta_console2: "Открыть dashboard",
-          foot: "генерация — не право на release. Машинные значения каноничны: SHOW / REVIEW / BLOCK.",
-        },
-      };
-
-      function applyLang(lang) {
-        const dict = i18n[lang] || {};
-        document.documentElement.lang = lang;
-        document.querySelectorAll("[data-i18n]").forEach((el) => {
-          const key = el.dataset.i18n;
-          if (dict[key]) el.textContent = dict[key];
-        });
-        document.querySelectorAll(".lang-switch button").forEach((b) => {
-          b.classList.toggle("active", b.dataset.lang === lang);
-        });
-        localStorage.setItem("semeai_lang", lang);
+      function freeUsed() {
+        return Number(localStorage.getItem(FREE_KEY) || "0") || 0;
+      }
+      function freeLeft() {
+        return Math.max(0, FREE_LIMIT - freeUsed());
+      }
+      function paintFree() {
+        document.querySelector("#free-left").textContent = String(freeLeft());
+        const lim = document.querySelector("#limit-cta");
+        if (freeLeft() <= 0) lim.classList.remove("hidden");
+        else lim.classList.add("hidden");
+      }
+      function consumeFree() {
+        localStorage.setItem(FREE_KEY, String(freeUsed() + 1));
+        paintFree();
       }
 
       function paintScenario(id) {
         currentScenario = id;
         const sc = SCENARIOS[id];
-        document.querySelector("#demo-user").textContent = sc.user;
-        document.querySelector("#demo-ai").textContent = sc.ai;
-        document.querySelector("#demo-data").textContent = sc.data;
-        document.querySelectorAll(".scenario-tabs button").forEach((b) => {
-          b.classList.toggle("active", b.dataset.scenario === id);
+        document.querySelector("#user-msg").value = sc.user_message;
+        document.querySelector("#ai-msg").value = sc.ai_answer;
+        document.querySelector("#biz-data").value = JSON.stringify(sc.business_data, null, 2);
+        document.querySelectorAll(".scenario-btn").forEach((b) => {
+          const on = b.dataset.scenario === id;
+          b.className = on
+            ? "scenario-btn rounded-xl border border-cyanx bg-cyanx/15 px-3 py-2 text-xs font-bold text-cyanx"
+            : "scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute";
         });
-        // optimistic local preview of expected class
-        setResult(sc.expect, sc.expect === "SHOW" ? "PROCEED" : "SILENCE", "Select Run to call the live API.", false);
       }
 
-      function setResult(action, internal, reason, live) {
-        const banner = document.querySelector("#result-banner");
-        const a = String(action || "—").toUpperCase();
-        banner.classList.remove("show", "review", "block");
-        if (a === "SHOW") banner.classList.add("show");
-        else if (a === "REVIEW") banner.classList.add("review");
-        else banner.classList.add("block");
-        document.querySelector("#result-action").textContent = a;
-        document.querySelector("#result-internal").textContent = "internal: " + (internal || "—");
-        document.querySelector("#result-reason").textContent = reason || "";
-        const pill = document.querySelector("#result-pill");
-        pill.textContent = live ? "live API" : "preview";
-        pill.className = "pill " + (a === "SHOW" ? "ok" : a === "REVIEW" ? "warn" : "bad");
-        document.querySelector("#demo-status").textContent = live ? "live" : "ready";
-        document.querySelector("#demo-status").className = "pill " + (live ? "ok" : "");
-      }
-
-      async function runDemo() {
-        const btn = document.querySelector("#run-demo");
-        const status = document.querySelector("#demo-status");
-        btn.disabled = true;
-        status.textContent = "running…";
-        status.className = "pill warn";
-        try {
-          const data = await SemeAI.demoCheck({ scenario_id: currentScenario });
-          setResult(
-            data.action,
-            data.internal_decision,
-            data.reason || (data.show_to_user ? "Supported enough to release." : "Withheld / needs review."),
-            true
-          );
+      function setDemoResult(data, live) {
+        const action = String(data.action || "—").toUpperCase();
+        const box = document.querySelector("#demo-result");
+        box.className =
+          "mb-4 flex items-start gap-4 rounded-2xl border p-5 result-" +
+          (["SHOW", "REVIEW", "BLOCK"].includes(action) ? action : "BLOCK");
+        document.querySelector("#result-action").textContent = action;
+        document.querySelector("#result-internal").textContent =
+          "internal: " + (data.internal_decision || "—") + (live ? " · live API" : "");
+        document.querySelector("#result-reason").textContent =
+          data.reason ||
+          (data.show_to_user ? "Supported enough to release." : "Withheld / needs review.");
+        document.querySelector("#result-json").textContent = JSON.stringify(data, null, 2);
+        if (data.action) {
           document.querySelector("#res-sample").textContent = JSON.stringify(
             {
               action: data.action,
@@ -841,69 +889,158 @@ console.log(result.action); // BLOCK`;
             null,
             2
           );
+        }
+      }
+
+      function setHeroResult(data) {
+        const action = String(data.action || "—").toUpperCase();
+        const box = document.querySelector("#hero-result");
+        box.className =
+          "flex items-center gap-4 rounded-xl border p-4 result-" +
+          (["SHOW", "REVIEW", "BLOCK"].includes(action) ? action : "BLOCK");
+        document.querySelector("#hero-action").textContent = action;
+        document.querySelector("#hero-internal").textContent =
+          "internal: " + (data.internal_decision || "—");
+        document.querySelector("#hero-reason").textContent =
+          data.reason || "User sees nothing. You review it. Audit preserved.";
+      }
+
+      async function runCheck(opts = {}) {
+        const { hero = false } = opts;
+        if (freeLeft() <= 0) {
+          document.querySelector("#limit-cta").classList.remove("hidden");
+          document.querySelector("#demo").scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+        const statusEl = document.querySelector(hero ? "#hero-status" : "#demo-status");
+        const btn = document.querySelector(hero ? "#hero-run" : "#run-demo");
+        btn.disabled = true;
+        statusEl.textContent = "running…";
+        statusEl.className = "pill warn";
+
+        let payload;
+        if (hero) {
+          payload = {
+            scenario_id: "fake_promo_code",
+            ...SCENARIOS.fake_refund,
+          };
+        } else {
+          let business_data = {};
+          try {
+            business_data = JSON.parse(document.querySelector("#biz-data").value || "{}");
+          } catch {
+            statusEl.textContent = "bad JSON";
+            statusEl.className = "pill bad";
+            btn.disabled = false;
+            return;
+          }
+          const base = SCENARIOS[currentScenario] || {};
+          payload = {
+            scenario_id: currentScenario,
+            user_message: document.querySelector("#user-msg").value,
+            ai_answer: document.querySelector("#ai-msg").value,
+            business_data,
+            business_rules: base.business_rules || { only_show_confirmed_promos: true },
+            business_context: base.business_context,
+            business_risk: base.business_risk || currentScenario,
+          };
+        }
+
+        try {
+          const data = await SemeAI.demoCheck(payload);
+          consumeFree();
+          if (hero) setHeroResult(data);
+          setDemoResult(data, true);
+          statusEl.textContent = "live";
+          statusEl.className = "pill ok";
         } catch (e) {
-          status.textContent = "error";
-          status.className = "pill bad";
-          setResult("—", "—", e.message || String(e), false);
+          statusEl.textContent = "error";
+          statusEl.className = "pill bad";
+          const err = { action: "—", internal_decision: "—", reason: e.message || String(e) };
+          if (hero) setHeroResult(err);
+          else setDemoResult(err, false);
         } finally {
           btn.disabled = false;
         }
       }
 
-      // reveal on scroll
-      const io = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((en) => {
-            if (en.isIntersecting) en.target.classList.add("in");
-          });
-        },
-        { threshold: 0.12 }
-      );
-      document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
-
-      document.querySelectorAll(".scenario-tabs button").forEach((btn) => {
-        btn.addEventListener("click", () => paintScenario(btn.dataset.scenario));
-      });
-      document.querySelector("#run-demo").addEventListener("click", runDemo);
-      document.querySelectorAll(".lang-switch button").forEach((b) => {
-        b.addEventListener("click", () => applyLang(b.dataset.lang));
-      });
-
-      paintScenario("fake_promo_code");
-      applyLang(localStorage.getItem("semeai_lang") || "en");
-      // auto-run once for delight
-      setTimeout(() => {
-        runDemo();
-      }, 600);
-
-      // animated pipeline on how-section
-      (function pipelineAnim() {
-        const root = document.querySelector("#live-pipeline");
-        if (!root) return;
-        const nodes = root.querySelectorAll(".pipe-node");
-        const arrows = root.querySelectorAll(".pipe-arrow");
+      // Flow animation
+      (function () {
+        const nodes = document.querySelectorAll("#flow-diagram .flow-node");
         let step = 0;
         setInterval(() => {
           nodes.forEach((n, i) => n.classList.toggle("active", i === step));
-          arrows.forEach((a, i) => a.classList.toggle("pulse", i === step || i === step - 1));
           step = (step + 1) % nodes.length;
         }, 1100);
       })();
 
-      const sdkPyBtn = document.querySelector("#sdk-tab-py");
-      const sdkJsBtn = document.querySelector("#sdk-tab-js");
-      const sdkSnippet = document.querySelector("#sdk-snippet");
-      if (sdkPyBtn && sdkJsBtn && sdkSnippet) {
-        sdkPyBtn.addEventListener("click", () => {
-          sdkPyBtn.classList.add("active");
-          sdkJsBtn.classList.remove("active");
-          sdkSnippet.textContent = SDK_PY;
+      // Sticky nav highlight
+      const sections = ["problem", "how", "demo", "pricing", "use", "faq"];
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((en) => {
+            if (!en.isIntersecting) return;
+            document.querySelectorAll(".nav-link").forEach((a) => {
+              a.classList.toggle("active", a.getAttribute("href") === "#" + en.target.id);
+            });
+          });
+        },
+        { rootMargin: "-40% 0px -50% 0px" }
+      );
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) io.observe(el);
+      });
+
+      document.querySelectorAll(".scenario-btn").forEach((b) => {
+        b.addEventListener("click", () => paintScenario(b.dataset.scenario));
+      });
+      document.querySelector("#run-demo").addEventListener("click", () => runCheck({ hero: false }));
+      document.querySelector("#hero-run").addEventListener("click", () => runCheck({ hero: true }));
+
+      document.querySelector("#sdk-tab-py").addEventListener("click", () => {
+        document.querySelector("#sdk-snippet").textContent = SDK_PY;
+        document.querySelector("#sdk-tab-py").className =
+          "rounded-lg bg-cyanx/20 px-3 py-1.5 text-xs font-bold text-cyanx";
+        document.querySelector("#sdk-tab-js").className =
+          "rounded-lg border border-white/10 px-3 py-1.5 text-xs font-bold text-mute";
+      });
+      document.querySelector("#sdk-tab-js").addEventListener("click", () => {
+        document.querySelector("#sdk-snippet").textContent = SDK_JS;
+        document.querySelector("#sdk-tab-js").className =
+          "rounded-lg bg-cyanx/20 px-3 py-1.5 text-xs font-bold text-cyanx";
+        document.querySelector("#sdk-tab-py").className =
+          "rounded-lg border border-white/10 px-3 py-1.5 text-xs font-bold text-mute";
+      });
+
+      document.querySelectorAll(".copy-btn").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const map = {
+            req: "#req-sample",
+            res: "#res-sample",
+            sdk: "#sdk-snippet",
+          };
+          const el = document.querySelector(map[btn.dataset.copy]);
+          try {
+            await navigator.clipboard.writeText(el.textContent);
+            btn.textContent = "Copied";
+            setTimeout(() => (btn.textContent = "Copy"), 1200);
+          } catch {
+            btn.textContent = "Select & copy";
+          }
         });
-        sdkJsBtn.addEventListener("click", () => {
-          sdkJsBtn.classList.add("active");
-          sdkPyBtn.classList.remove("active");
-          sdkSnippet.textContent = SDK_JS;
-        });
+      });
+
+      paintScenario("fake_promo_code");
+      paintFree();
+      setHeroResult({
+        action: "BLOCK",
+        internal_decision: "SILENCE",
+        reason: "Unsupported by business data. User sees nothing. Audit preserved.",
+      });
+      // soft auto-run once if free checks remain
+      if (freeLeft() > 0) {
+        setTimeout(() => runCheck({ hero: true }), 700);
       }
     </script>
   </body>
