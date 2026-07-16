@@ -31,4 +31,4 @@ Governance source: [silence-as-control](https://github.com/SemeAIPletinnya/silen
 
 - USDT / TRC20: `TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27`
 - Default: 25 USDT
-- Review email: `adelayida0403@gmail.com`
+- Review email: `support@semeai.tech` · founder: `anton_semenenko@semeai.tech`

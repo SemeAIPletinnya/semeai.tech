@@ -81,7 +81,7 @@
                 <h3>Operator</h3>
                 <p>
                   Review:
-                  <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a><br />
+                  <a href="mailto:support@semeai.tech">support@semeai.tech</a><br />
                   TRC20: <code id="ov-trc20">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
                 </p>
               </div>
@@ -176,7 +176,7 @@
             <h2>Pilot billing · USDT/TRC20</h2>
             <p>
               Default <strong>25 USDT</strong>. After TXID, email
-              <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a>
+              <a href="mailto:support@semeai.tech">support@semeai.tech</a>
               with workspace_id + invoice_id + txid. Payment ≠ gate authority.
             </p>
             <div class="grid-2" style="margin-top: 14px">
@@ -600,7 +600,7 @@
             txid: document.querySelector("#bill-txid").value.trim(),
           });
           document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
-          setMessage("TXID submitted. Email adelayida0403@gmail.com for faster review.", "warn");
+          setMessage("TXID submitted. Email support@semeai.tech for faster review.", "warn");
           await loadWorkspace();
         } catch (e) {
           setMessage(e.message || String(e), "error");

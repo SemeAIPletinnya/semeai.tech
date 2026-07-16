@@ -37,7 +37,7 @@
         generation is not release authority.
         Machine values remain canonical: SHOW / REVIEW / BLOCK → PROCEED / NEEDS_REVIEW / SILENCE.<br/>
         Pilot billing: USDT/TRC20 · feedback
-        <a href="mailto:adelayida0403@gmail.com">adelayida0403@gmail.com</a> ·
+        <a href="mailto:support@semeai.tech">support@semeai.tech</a> ·
         <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">Gate</a> ·
         <a href="https://github.com/SemeAIPletinnya/silence-as-control">SaC</a> ·
         <a href="https://x.com/adelayida210519" target="_blank" rel="noopener">@adelayida210519</a> ·
