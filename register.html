@@ -1,151 +1,450 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register for SemeAI Gate</title>
-    <meta name="description" content="Create a SemeAI Gate workspace in four clear steps: register, verify, copy API key, open dashboard." />
+    <meta
+      name="description"
+      content="Create a SemeAI Gate workspace in four clear steps: register, verify, copy API key, open dashboard."
+    />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
-    <link rel="stylesheet" href="assets/css/semeai.css?v=20260713b" />
-    <link rel="stylesheet" href="assets/css/product.css?v=20260713b" />
-  </head>
-  <body class="product-body">
-    <header class="nav" data-semeai-nav></header>
-
-    <main class="page product-main">
-      <section class="hero-compact fade-up">
-        <span class="eyebrow">Workspace onboarding</span>
-        <h1>Create a SemeAI Gate workspace.</h1>
-        <p class="lead">
-          Four clear steps. No password. API key shown once. Then run checks in the dashboard.
-        </p>
-      </section>
-
-      <div class="steps fade-up d1" id="steps" aria-label="Registration progress">
-        <div class="step active" data-step="1">
-          <span class="num">1</span>
-          <strong>Register</strong>
-          <small>Work email + pilot context</small>
-        </div>
-        <div class="step" data-step="2">
-          <span class="num">2</span>
-          <strong>Verify</strong>
-          <small>Email link or token</small>
-        </div>
-        <div class="step" data-step="3">
-          <span class="num">3</span>
-          <strong>API key</strong>
-          <small>Copy once, store safely</small>
-        </div>
-        <div class="step" data-step="4">
-          <span class="num">4</span>
-          <strong>Dashboard</strong>
-          <small>Checks · receipts · billing</small>
-        </div>
-      </div>
-
-      <section class="split-2">
-        <div class="section fade-up d2" id="panel-form">
-          <div class="button-row" style="margin-bottom: 10px">
-            <span class="pill info">schema 0.1-account</span>
-            <span class="pill" id="email-mode-pill">email …</span>
-          </div>
-          <h2>Request access</h2>
-          <p>Do not paste customer secrets, production prompts, or private data.</p>
-
-          <form class="grid" id="register-form" style="margin-top: 14px; gap: 14px">
-            <div class="grid-2">
-              <div class="field">
-                <label for="email">Work email</label>
-                <input id="email" type="email" required placeholder="you@company.com" autocomplete="email" />
-              </div>
-              <div class="field">
-                <label for="company">Company or project</label>
-                <input id="company" required placeholder="Acme Support" />
-              </div>
-            </div>
-            <div class="grid-2">
-              <div class="field">
-                <label for="use_case">Primary use case</label>
-                <select id="use_case">
-                  <option value="support">Support chatbot release control</option>
-                  <option value="fintech">Fintech / account claims</option>
-                  <option value="product">Product assistant guardrail</option>
-                  <option value="gaming">Game / world release gate</option>
-                  <option value="internal_tools">Internal tools / ops</option>
-                  <option value="research">Research / evaluation</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="volume">Expected monthly checks</label>
-                <select id="volume">
-                  <option value="pilot">Pilot / evaluation</option>
-                  <option value="under_10k">Under 10k</option>
-                  <option value="10k_100k">10k – 100k</option>
-                  <option value="100k_plus">100k+</option>
-                </select>
-              </div>
-            </div>
-            <div class="field">
-              <label for="notes">Pilot notes</label>
-              <textarea id="notes" placeholder="Example: block fake promo codes before answers reach users."></textarea>
-            </div>
-            <label class="panel" style="display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: start">
-              <input id="ack" type="checkbox" required style="width: 18px; margin-top: 3px" />
-              <span>I will not submit sensitive customer data. I understand v0.1 email verification and optional USDT/TRC20 pilot billing with operator review.</span>
-            </label>
-            <div class="button-row">
-              <button class="button primary" id="submit-button" type="submit">Submit registration</button>
-              <button class="button" id="preview-button" type="button">Preview JSON</button>
-            </div>
-          </form>
-        </div>
-
-        <aside class="section fade-up d3" id="panel-response">
-          <h2>Live progress</h2>
-          <div class="message" id="form-message">Ready when you are. Submit the form to start step 1.</div>
-
-          <div class="field" style="margin-top: 14px">
-            <label for="verify-token">Step 2 · Verification token</label>
-            <input id="verify-token" spellcheck="false" placeholder="From email or #verify= link" />
-          </div>
-          <div class="button-row" style="margin: 12px 0">
-            <button class="button primary" id="verify-button" type="button">Verify workspace</button>
-          </div>
-
-          <div class="field">
-            <label for="api-key">Step 3 · API key (shown once)</label>
-            <input id="api-key" readonly placeholder="Appears after verify" />
-          </div>
-          <div class="button-row" style="margin-top: 10px">
-            <button class="button" id="copy-key-button" type="button">Copy API key</button>
-            <button class="button primary" id="use-dashboard" type="button">Step 4 · Open dashboard</button>
-          </div>
-
-          <details style="margin-top: 16px">
-            <summary style="cursor: pointer; color: var(--muted); font-weight: 650">API JSON</summary>
-            <pre id="json-output" style="margin-top: 10px">{ "status": "idle" }</pre>
-          </details>
-
-          <div class="panel" style="margin-top: 14px">
-            <strong>After verify</strong>
-            <p style="margin: 8px 0 0; font-size: 13px">
-              Dashboard → gate checks · receipts · REVIEW queue · USDT/TRC20 pilot
-              (<code>TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>). Review email:
-              <a href="mailto:support@semeai.tech">support@semeai.tech</a>
-            </p>
-          </div>
-        </aside>
-      </section>
-    </main>
-
-    <footer class="site-footer" data-semeai-footer></footer>
-
-    <script src="assets/js/api.js?v=20260713b"></script>
-    <script src="assets/js/shell.js?v=20260713b"></script>
-    <script src="assets/js/cache-bust.js?v=20260713b"></script>
+    <link rel="canonical" href="https://semeai.tech/register.html" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              void: "#030306",
+              ink: "#f4f4f5",
+              mute: "#a1a1aa",
+              faint: "#71717a",
+              accent: "#22d3ee",
+              show: "#4ade80",
+              review: "#fbbf24",
+              block: "#f87171",
+            },
+            fontFamily: {
+              sans: ["Inter", "system-ui", "sans-serif"],
+              mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+            },
+            maxWidth: { site: "72rem" },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root { color-scheme: dark; }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, sans-serif;
+        background: #030306;
+        color: #f4f4f5;
+        -webkit-font-smoothing: antialiased;
+      }
+      #bg-canvas {
+        position: fixed; inset: 0; width: 100%; height: 100%;
+        z-index: 0; pointer-events: none;
+      }
+      .vignette {
+        position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        background:
+          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(34, 211, 238, 0.07), transparent 50%),
+          linear-gradient(180deg, rgba(3, 3, 6, 0.15) 0%, rgba(3, 3, 6, 0.55) 55%, rgba(3, 3, 6, 0.92) 100%);
+      }
+      .content { position: relative; z-index: 1; }
+      .panel {
+        background: rgba(12, 12, 18, 0.78);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02) inset, 0 20px 60px rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(14px);
+      }
+      .btn-primary {
+        display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+        background: linear-gradient(180deg, #67e8f9, #22d3ee 55%, #06b6d4);
+        color: #030306; font-weight: 700; border-radius: 999px;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 12px 40px rgba(34, 211, 238, 0.35);
+        transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .btn-primary:hover {
+        filter: brightness(1.08);
+        transform: translateY(-1px);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 16px 48px rgba(34, 211, 238, 0.45);
+      }
+      .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+      .btn-ghost {
+        display: inline-flex; align-items: center; justify-content: center;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        color: #f4f4f5; font-weight: 600; border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        transition: border-color 0.2s ease, background 0.2s ease;
+      }
+      .btn-ghost:hover { border-color: rgba(34, 211, 238, 0.5); background: rgba(34, 211, 238, 0.08); }
+      .pill {
+        display: inline-flex; align-items: center; gap: 0.4rem;
+        border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.35rem 0.8rem; font-size: 0.75rem; font-weight: 600; color: #a1a1aa;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .pill.ok { color: #4ade80; border-color: rgba(74, 222, 128, 0.35); background: rgba(74, 222, 128, 0.1); }
+      .pill.warn { color: #fbbf24; border-color: rgba(251, 191, 36, 0.35); background: rgba(251, 191, 36, 0.1); }
+      .pill.bad { color: #f87171; border-color: rgba(248, 113, 113, 0.4); background: rgba(248, 113, 113, 0.1); }
+      .pill.info { color: #67e8f9; border-color: rgba(34, 211, 238, 0.35); background: rgba(34, 211, 238, 0.1); }
+      .nav-link { color: #a1a1aa; transition: color 0.2s; }
+      .nav-link:hover, .nav-link.active { color: #fff; }
+      .glow-text {
+        background: linear-gradient(90deg, #fff 0%, #a5f3fc 50%, #67e8f9 100%);
+        -webkit-background-clip: text; background-clip: text; color: transparent;
+      }
+      .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+      input, select, textarea {
+        width: 100%;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        background: rgba(3, 3, 6, 0.65);
+        padding: 0.7rem 0.85rem;
+        color: #f4f4f5;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+      input:focus, select:focus, textarea:focus {
+        border-color: rgba(34, 211, 238, 0.45);
+        box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12);
+      }
+      select option { background: #0c0c12; color: #f4f4f5; }
+      textarea { min-height: 96px; resize: vertical; }
+      label.field-label {
+        display: block;
+        margin-bottom: 0.4rem;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: #71717a;
+      }
+      .step-card {
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.02);
+        padding: 1rem;
+        transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+      }
+      .step-card.active {
+        border-color: rgba(34, 211, 238, 0.45);
+        background: rgba(34, 211, 238, 0.08);
+        box-shadow: 0 0 28px rgba(34, 211, 238, 0.1);
+      }
+      .step-card.done {
+        border-color: rgba(74, 222, 128, 0.3);
+        background: rgba(74, 222, 128, 0.06);
+      }
+      .step-card .num {
+        display: inline-flex; width: 1.6rem; height: 1.6rem;
+        align-items: center; justify-content: center;
+        border-radius: 999px; font-size: 0.75rem; font-weight: 800;
+        background: rgba(255, 255, 255, 0.08); color: #a1a1aa;
+      }
+      .step-card.active .num {
+        background: linear-gradient(180deg, #67e8f9, #22d3ee);
+        color: #030306;
+      }
+      .step-card.done .num {
+        background: rgba(74, 222, 128, 0.25); color: #4ade80;
+      }
+      .message {
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.03);
+        padding: 0.85rem 1rem;
+        font-size: 0.9rem;
+        color: #a1a1aa;
+        line-height: 1.5;
+      }
+      .message.ok { color: #4ade80; border-color: rgba(74, 222, 128, 0.35); background: rgba(74, 222, 128, 0.08); }
+      .message.warn { color: #fbbf24; border-color: rgba(251, 191, 36, 0.35); background: rgba(251, 191, 36, 0.08); }
+      .message.error { color: #f87171; border-color: rgba(248, 113, 113, 0.4); background: rgba(248, 113, 113, 0.08); }
+      details summary::-webkit-details-marker { display: none; }
+      pre {
+        margin: 0; padding: 0.85rem;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(3, 3, 6, 0.7);
+        color: #d4d4d8;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.75rem;
+        white-space: pre-wrap;
+        max-height: 240px;
+        overflow: auto;
+      }
+      @keyframes pulse-ok {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+        50% { box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.25); }
+      }
+      .pulse-ok { animation: pulse-ok 0.9s ease 2; }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <div class="content">
+      <header class="sticky top-0 z-50 border-b border-white/[0.07] bg-void/75 backdrop-blur-xl">
+        <div class="mx-auto flex max-w-site items-center justify-between gap-4 px-5 py-4 sm:px-6">
+          <a href="index.html?v=20260716r" class="flex items-center gap-2.5 text-sm font-bold tracking-tight">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyan-300 to-cyan-500 text-xs font-extrabold text-void shadow-[0_0_24px_rgba(34,211,238,0.4)]">SG</span>
+            SemeAI Gate
+          </a>
+          <nav class="hidden items-center gap-7 text-[13px] font-medium md:flex">
+            <a href="index.html?v=20260716r#problem" class="nav-link">Problem</a>
+            <a href="index.html?v=20260716r#demo" class="nav-link">Demo</a>
+            <a href="index.html?v=20260716r#pricing" class="nav-link">Pricing</a>
+            <a href="register.html?v=20260716r" class="nav-link active">Register</a>
+          </nav>
+          <div class="flex items-center gap-2">
+            <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" class="hidden text-[13px] font-medium text-mute hover:text-white sm:inline">GitHub</a>
+            <a href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener" class="btn-ghost px-4 py-2 text-[13px]">Live console</a>
+          </div>
+        </div>
+      </header>
+
+      <main class="mx-auto max-w-site px-5 pb-20 pt-12 sm:px-6 sm:pt-16">
+        <section class="mb-10 max-w-2xl">
+          <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-mute">
+            Workspace onboarding
+          </div>
+          <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl sm:leading-tight">
+            Create a <span class="glow-text">SemeAI Gate</span> workspace.
+          </h1>
+          <p class="mt-4 text-base leading-relaxed text-mute sm:text-lg">
+            Four clear steps. No password. API key shown once. Then run checks in the dashboard.
+          </p>
+        </section>
+
+        <div class="mb-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" id="steps" aria-label="Registration progress">
+          <div class="step-card active" data-step="1">
+            <span class="num">1</span>
+            <strong class="mt-2 block text-sm text-white">Register</strong>
+            <small class="mt-0.5 block text-xs text-faint">Work email + pilot context</small>
+          </div>
+          <div class="step-card" data-step="2">
+            <span class="num">2</span>
+            <strong class="mt-2 block text-sm text-white">Verify</strong>
+            <small class="mt-0.5 block text-xs text-faint">Email link or token</small>
+          </div>
+          <div class="step-card" data-step="3">
+            <span class="num">3</span>
+            <strong class="mt-2 block text-sm text-white">API key</strong>
+            <small class="mt-0.5 block text-xs text-faint">Copy once, store safely</small>
+          </div>
+          <div class="step-card" data-step="4">
+            <span class="num">4</span>
+            <strong class="mt-2 block text-sm text-white">Dashboard</strong>
+            <small class="mt-0.5 block text-xs text-faint">Checks · receipts · billing</small>
+          </div>
+        </div>
+
+        <div class="grid gap-6 lg:grid-cols-2">
+          <section class="panel rounded-2xl p-6 sm:p-7" id="panel-form">
+            <div class="mb-4 flex flex-wrap gap-2">
+              <span class="pill info">schema 0.1-account</span>
+              <span class="pill" id="email-mode-pill">email …</span>
+            </div>
+            <h2 class="text-xl font-bold tracking-tight text-white">Request access</h2>
+            <p class="mt-2 text-sm text-mute">Do not paste customer secrets, production prompts, or private data.</p>
+
+            <form class="mt-6 grid gap-4" id="register-form">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="field-label" for="email">Work email</label>
+                  <input id="email" type="email" required placeholder="you@company.com" autocomplete="email" />
+                </div>
+                <div>
+                  <label class="field-label" for="company">Company or project</label>
+                  <input id="company" required placeholder="Acme Support" />
+                </div>
+              </div>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="field-label" for="use_case">Primary use case</label>
+                  <select id="use_case">
+                    <option value="support">Support chatbot release control</option>
+                    <option value="fintech">Fintech / account claims</option>
+                    <option value="product">Product assistant guardrail</option>
+                    <option value="gaming">Game / world release gate</option>
+                    <option value="internal_tools">Internal tools / ops</option>
+                    <option value="research">Research / evaluation</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="field-label" for="volume">Expected monthly checks</label>
+                  <select id="volume">
+                    <option value="pilot">Pilot / evaluation</option>
+                    <option value="under_10k">Under 10k</option>
+                    <option value="10k_100k">10k – 100k</option>
+                    <option value="100k_plus">100k+</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label class="field-label" for="notes">Pilot notes</label>
+                <textarea id="notes" placeholder="Example: block fake promo codes before answers reach users."></textarea>
+              </div>
+              <label class="flex gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 text-sm leading-relaxed text-mute">
+                <input id="ack" type="checkbox" required class="mt-1 h-4 w-4 shrink-0 accent-cyan-400" />
+                <span>I will not submit sensitive customer data. I understand v0.1 email verification and optional USDT/TRC20 pilot billing with operator review.</span>
+              </label>
+              <div class="flex flex-wrap gap-3 pt-1">
+                <button class="btn-primary px-6 py-3 text-sm" id="submit-button" type="submit">Submit registration</button>
+                <button class="btn-ghost px-6 py-3 text-sm" id="preview-button" type="button">Preview JSON</button>
+              </div>
+            </form>
+          </section>
+
+          <aside class="panel rounded-2xl p-6 sm:p-7" id="panel-response">
+            <h2 class="text-xl font-bold tracking-tight text-white">Live progress</h2>
+            <div class="message mt-4" id="form-message">Ready when you are. Submit the form to start step 1.</div>
+
+            <div class="mt-5">
+              <label class="field-label" for="verify-token">Step 2 · Verification token</label>
+              <input id="verify-token" spellcheck="false" placeholder="From email or #verify= link" class="mono text-sm" />
+            </div>
+            <div class="mt-3">
+              <button class="btn-primary px-5 py-2.5 text-sm" id="verify-button" type="button">Verify workspace</button>
+            </div>
+
+            <div class="mt-5">
+              <label class="field-label" for="api-key">Step 3 · API key (shown once)</label>
+              <input id="api-key" readonly placeholder="Appears after verify" class="mono text-sm" />
+            </div>
+            <div class="mt-3 flex flex-wrap gap-2">
+              <button class="btn-ghost px-5 py-2.5 text-sm" id="copy-key-button" type="button">Copy API key</button>
+              <button class="btn-primary px-5 py-2.5 text-sm" id="use-dashboard" type="button">Step 4 · Open dashboard</button>
+            </div>
+
+            <details class="mt-6">
+              <summary class="cursor-pointer text-sm font-semibold text-mute hover:text-white">API JSON</summary>
+              <pre id="json-output" class="mt-3">{ "status": "idle" }</pre>
+            </details>
+
+            <div class="mt-5 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
+              <strong class="text-sm text-white">After verify</strong>
+              <p class="mt-2 text-[13px] leading-relaxed text-mute">
+                Dashboard → gate checks · receipts · REVIEW queue · USDT/TRC20 pilot
+                (<code class="mono text-accent/90">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>). Review email:
+                <a href="mailto:support@semeai.tech" class="text-accent hover:underline">support@semeai.tech</a>
+              </p>
+            </div>
+          </aside>
+        </div>
+      </main>
+
+      <footer class="border-t border-white/[0.07] py-10">
+        <div class="mx-auto flex max-w-site flex-col gap-4 px-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <div class="flex items-center gap-2.5 text-sm font-bold">
+            <span class="grid h-7 w-7 place-items-center rounded-md bg-gradient-to-br from-cyan-300 to-cyan-500 text-[10px] font-extrabold text-void">SG</span>
+            SemeAI Gate
+          </div>
+          <div class="flex flex-wrap gap-5 text-[13px] text-mute">
+            <a href="index.html?v=20260716r" class="hover:text-white">Home</a>
+            <a href="https://gate.semeai.tech/demo/saas_visible.html" class="hover:text-white" target="_blank" rel="noopener">Console</a>
+            <a href="dashboard.html?v=20260716r" class="hover:text-white">Dashboard</a>
+            <a href="mailto:support@semeai.tech" class="hover:text-white">Support</a>
+          </div>
+          <p class="text-xs text-faint">© SemeAI · Generation is not release authority</p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="assets/js/api.js?v=20260716r"></script>
+    <script>
+      /* Canvas particle field — same language as landing */
+      (function () {
+        const canvas = document.getElementById("bg-canvas");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+        let w = 0, h = 0, particles = [], raf = 0;
+        let mx = 0.5, my = 0.3, tmx = 0.5, tmy = 0.3;
+        const COUNT = 55, LINK = 120;
+
+        function resize() {
+          w = canvas.width = window.innerWidth;
+          h = canvas.height = window.innerHeight;
+        }
+        function seed() {
+          particles = Array.from({ length: COUNT }, () => ({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - 0.5) * 0.25,
+            vy: (Math.random() - 0.5) * 0.25,
+            r: Math.random() * 1.4 + 0.4,
+            a: Math.random() * 0.5 + 0.25,
+          }));
+        }
+        function frame() {
+          mx += (tmx - mx) * 0.04;
+          my += (tmy - my) * 0.04;
+          const mpx = mx * w, mpy = my * h;
+          ctx.clearRect(0, 0, w, h);
+          for (const p of particles) {
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+            const dx = p.x - mpx, dy = p.y - mpy;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 220) {
+              const pull = (1 - dist / 220) * 0.03;
+              p.vx += (-dx / (dist || 1)) * pull;
+              p.vy += (-dy / (dist || 1)) * pull;
+            }
+            p.vx *= 0.996; p.vy *= 0.996;
+            ctx.beginPath();
+            ctx.fillStyle = `rgba(244, 244, 245, ${p.a * 0.55})`;
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const a = particles[i], b = particles[j];
+              const dx = a.x - b.x, dy = a.y - b.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < LINK * LINK) {
+                const alpha = 0.06 * (1 - Math.sqrt(d2) / LINK);
+                ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
+                ctx.beginPath();
+                ctx.moveTo(a.x, a.y);
+                ctx.lineTo(b.x, b.y);
+                ctx.stroke();
+              }
+            }
+          }
+          const core = ctx.createRadialGradient(mpx, mpy, 0, mpx, mpy, 100);
+          core.addColorStop(0, "rgba(34, 211, 238, 0.12)");
+          core.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = core;
+          ctx.fillRect(mpx - 120, mpy - 120, 240, 240);
+          raf = requestAnimationFrame(frame);
+        }
+        window.addEventListener("resize", () => { resize(); seed(); });
+        window.addEventListener("pointermove", (e) => {
+          tmx = e.clientX / Math.max(w, 1);
+          tmy = e.clientY / Math.max(h, 1);
+        }, { passive: true });
+        resize(); seed();
+        raf = requestAnimationFrame(frame);
+        document.addEventListener("visibilitychange", () => {
+          if (document.hidden) cancelAnimationFrame(raf);
+          else raf = requestAnimationFrame(frame);
+        });
+      })();
+
       const message = document.querySelector("#form-message");
       const output = document.querySelector("#json-output");
       const apiKeyInput = document.querySelector("#api-key");
@@ -162,14 +461,13 @@
         output.textContent = JSON.stringify(data, null, 2);
       }
       function setStep(n) {
-        document.querySelectorAll(".step").forEach((el) => {
+        document.querySelectorAll("[data-step]").forEach((el) => {
           const s = Number(el.dataset.step);
           el.classList.toggle("active", s === n);
           el.classList.toggle("done", s < n);
         });
       }
       function busy(btn, on) {
-        btn.classList.toggle("btn-busy", on);
         btn.disabled = on;
       }
       function payloadFromForm() {
@@ -215,7 +513,6 @@
         try {
           const data = await SemeAI.register(payload);
           showJson(data);
-          document.querySelector("#panel-response").classList.add("panel-enter");
           const url = data.verification && data.verification.verification_url;
           if (url && url.includes("#verify=")) {
             verifyTokenInput.value = url.split("#verify=")[1];
@@ -270,7 +567,7 @@
           sessionStorage.setItem("semeai_dashboard_api_key", apiKeyInput.value);
           setStep(4);
         }
-        location.href = "dashboard.html?v=20260713b";
+        location.href = "dashboard.html?v=20260716r";
       });
 
       if (location.hash.startsWith("#verify=")) {

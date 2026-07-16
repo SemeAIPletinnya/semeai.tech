@@ -6,7 +6,7 @@
     { href: "gate.html", label: "Contract" },
     { href: "self-hosted.html", label: "Self-hosted" },
     { href: "article.html", label: "Thesis" },
-    { href: "register.html?v=20260713b", label: "Register" },
+    { href: "register.html?v=20260716r", label: "Register" },
     { href: "dashboard.html?v=20260713b", label: "Dashboard", cta: true },
   ];
 
