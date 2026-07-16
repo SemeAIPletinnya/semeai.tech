@@ -6,54 +6,49 @@
     <title>SemeAI Gate — Generation is not release authority</title>
     <meta
       name="description"
-      content="SemeAI Gate is a runtime release-control layer for LLMs. After generation, check business data and rules — then SHOW, REVIEW, or BLOCK with a full audit trail."
+      content="SemeAI Gate is a runtime release-control layer for LLMs. After generation, evaluate business data and rules — SHOW, REVIEW, or BLOCK — with a full audit trail. Fail closed."
     />
     <meta property="og:title" content="SemeAI Gate — Generation is not release authority" />
     <meta
       property="og:description"
-      content="Stop unsupported AI answers before users see them. Live demo. Free checks. Open source."
+      content="Buy the boundary, not another model. Live demo. Free checks. Ship confidence. Keep the receipt."
     />
     <meta property="og:url" content="https://semeai.tech/" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
     <link rel="canonical" href="https://semeai.tech/" />
+
+    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
         theme: {
           extend: {
             colors: {
-              ink: { DEFAULT: "#0B0D12", soft: "#12151E", card: "#161A24", line: "#252A38" },
-              cyanx: "#00D4FF",
-              violetx: "#8B5CF6",
-              ok: "#22C55E",
-              warn: "#F59E0B",
-              bad: "#EF4444",
-              mute: "#94A3B8",
-              paper: "#E8EEF6",
+              surface: {
+                DEFAULT: "#0A0C10",
+                50: "#0F1218",
+                100: "#141821",
+                200: "#1A1F2B",
+                300: "#232836",
+              },
+              line: "rgba(255,255,255,0.08)",
+              accent: "#00D4FF",
+              accent2: "#7C3AED",
+              show: "#22C55E",
+              review: "#F59E0B",
+              block: "#EF4444",
+              mute: "#8B97A8",
+              soft: "#C5CED9",
             },
             fontFamily: {
-              sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"],
+              sans: ["Inter", "system-ui", "sans-serif"],
               mono: ["JetBrains Mono", "ui-monospace", "monospace"],
             },
-            maxWidth: { content: "72rem" },
-            animation: {
-              "pulse-soft": "pulseSoft 2.4s ease-in-out infinite",
-              "float": "float 6s ease-in-out infinite",
-              "gate-glow": "gateGlow 2.8s ease-in-out infinite",
-            },
-            keyframes: {
-              pulseSoft: {
-                "0%, 100%": { opacity: "0.55" },
-                "50%": { opacity: "1" },
-              },
-              float: {
-                "0%, 100%": { transform: "translateY(0)" },
-                "50%": { transform: "translateY(-8px)" },
-              },
-              gateGlow: {
-                "0%, 100%": { boxShadow: "0 0 0 0 rgba(0,212,255,0.15)" },
-                "50%": { boxShadow: "0 0 40px 4px rgba(0,212,255,0.25)" },
-              },
+            maxWidth: { site: "72rem" },
+            boxShadow: {
+              glow: "0 0 60px rgba(0,212,255,0.18)",
+              card: "0 24px 80px rgba(0,0,0,0.45)",
             },
           },
         },
@@ -62,289 +57,305 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
       body {
         background:
-          radial-gradient(ellipse 80% 50% at 70% -10%, rgba(0, 212, 255, 0.14), transparent 50%),
-          radial-gradient(ellipse 60% 40% at 0% 30%, rgba(139, 92, 246, 0.1), transparent 45%),
-          radial-gradient(ellipse 50% 30% at 100% 80%, rgba(34, 197, 94, 0.05), transparent 40%),
-          #0b0d12;
+          radial-gradient(ellipse 90% 55% at 80% -5%, rgba(0, 212, 255, 0.13), transparent 55%),
+          radial-gradient(ellipse 70% 45% at -5% 25%, rgba(124, 58, 237, 0.1), transparent 50%),
+          radial-gradient(ellipse 50% 35% at 50% 100%, rgba(34, 197, 94, 0.04), transparent 45%),
+          #0a0c10;
       }
-      .glass {
-        background: linear-gradient(180deg, rgba(22, 26, 36, 0.92), rgba(18, 21, 30, 0.88));
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        backdrop-filter: blur(16px);
+      .card {
+        background: linear-gradient(180deg, rgba(26, 31, 43, 0.95), rgba(20, 24, 33, 0.92));
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
       }
-      .glass-shine { position: relative; overflow: hidden; }
-      .glass-shine::before {
+      .card-shine { position: relative; overflow: hidden; }
+      .card-shine::after {
         content: "";
-        position: absolute; inset: 0 0 auto 0; height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.5), transparent);
+        position: absolute; left: 0; right: 0; top: 0; height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.55), transparent);
       }
       .btn-primary {
-        background: linear-gradient(180deg, #5ce7ff 0%, #00d4ff 45%, #00b4d8 100%);
-        color: #042f2e;
-        box-shadow: 0 8px 28px rgba(0, 212, 255, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        background: linear-gradient(180deg, #5ceaff 0%, #00d4ff 42%, #00b4d8 100%);
+        color: #032a2c;
+        box-shadow: 0 10px 32px rgba(0, 212, 255, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.4);
         transition: transform 0.15s ease, filter 0.15s ease;
       }
       .btn-primary:hover { filter: brightness(1.06); transform: translateY(-1px); }
-      .btn-primary:disabled { opacity: 0.55; transform: none; cursor: not-allowed; }
+      .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
       .btn-secondary {
         border: 1px solid rgba(255, 255, 255, 0.12);
         background: rgba(255, 255, 255, 0.04);
-        transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+        transition: 0.15s ease;
       }
       .btn-secondary:hover {
         border-color: rgba(0, 212, 255, 0.45);
-        background: rgba(0, 212, 255, 0.06);
+        background: rgba(0, 212, 255, 0.07);
         transform: translateY(-1px);
       }
-      .badge-show { color: #22c55e; background: rgba(34, 197, 94, 0.12); border-color: rgba(34, 197, 94, 0.35); }
-      .badge-review { color: #f59e0b; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); }
-      .badge-block { color: #ef4444; background: rgba(239, 68, 68, 0.12); border-color: rgba(239, 68, 68, 0.4); }
-      .result-SHOW { border-color: rgba(34, 197, 94, 0.45); background: rgba(34, 197, 94, 0.1); }
-      .result-REVIEW { border-color: rgba(245, 158, 11, 0.45); background: rgba(245, 158, 11, 0.1); }
-      .result-BLOCK { border-color: rgba(239, 68, 68, 0.5); background: rgba(239, 68, 68, 0.12); }
-      .live-dot {
-        width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
-        animation: livePulse 1.8s infinite;
+      .badge {
+        display: inline-flex; align-items: center; gap: 0.35rem;
+        border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 0.28rem 0.7rem; font-size: 0.72rem; font-weight: 700;
+        letter-spacing: 0.02em; color: #8b97a8; background: rgba(255, 255, 255, 0.03);
       }
-      @keyframes livePulse {
-        0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55); }
-        70% { box-shadow: 0 0 0 12px rgba(34, 197, 94, 0); }
+      .badge-show { color: #22c55e; border-color: rgba(34, 197, 94, 0.4); background: rgba(34, 197, 94, 0.12); }
+      .badge-review { color: #f59e0b; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.12); }
+      .badge-block { color: #ef4444; border-color: rgba(239, 68, 68, 0.45); background: rgba(239, 68, 68, 0.12); }
+      .result-SHOW { border-color: rgba(34, 197, 94, 0.5) !important; background: rgba(34, 197, 94, 0.1) !important; }
+      .result-REVIEW { border-color: rgba(245, 158, 11, 0.5) !important; background: rgba(245, 158, 11, 0.1) !important; }
+      .result-BLOCK { border-color: rgba(239, 68, 68, 0.55) !important; background: rgba(239, 68, 68, 0.12) !important; }
+      .live-dot {
+        width: 7px; height: 7px; border-radius: 999px; background: #22c55e;
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.55);
+        animation: pulseDot 1.8s infinite;
+      }
+      @keyframes pulseDot {
+        0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
+        70% { box-shadow: 0 0 0 10px rgba(34, 197, 94, 0); }
         100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
       }
-      .flow-step.is-active {
+      .nav-a { position: relative; }
+      .nav-a.is-active { color: #fff; }
+      .nav-a.is-active::after {
+        content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px;
+        border-radius: 2px; background: #00d4ff;
+      }
+      .flow-node.active {
         border-color: rgba(0, 212, 255, 0.55) !important;
-        background: rgba(0, 212, 255, 0.08) !important;
-        box-shadow: 0 0 32px rgba(0, 212, 255, 0.12);
+        background: rgba(0, 212, 255, 0.1) !important;
+        box-shadow: 0 0 28px rgba(0, 212, 255, 0.15);
       }
-      .nav-link.is-active { color: #fff; }
-      .nav-link.is-active::after {
-        content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px;
-        background: #00d4ff; border-radius: 2px;
-      }
-      details summary::-webkit-details-marker { display: none; }
-      pre { scrollbar-width: thin; scrollbar-color: #2a3142 transparent; }
-      .icon-box {
-        width: 44px; height: 44px; border-radius: 12px;
-        display: grid; place-items: center;
-        background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(139, 92, 246, 0.12));
-        border: 1px solid rgba(0, 212, 255, 0.2);
-      }
-      /* Hero decision card animation */
-      .hero-decision-pop { animation: decisionPop 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
-      @keyframes decisionPop {
-        from { transform: scale(0.92); opacity: 0.4; }
+      .pop { animation: popIn 0.35s cubic-bezier(0.22, 1, 0.36, 1); }
+      @keyframes popIn {
+        from { transform: scale(0.94); opacity: 0.35; }
         to { transform: scale(1); opacity: 1; }
       }
+      details summary::-webkit-details-marker { display: none; }
+      textarea:focus, input:focus { outline: none; box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.18); border-color: rgba(0, 212, 255, 0.45); }
+      /* SVG flow connector pulse */
+      .flow-line { stroke-dasharray: 6 8; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
     </style>
   </head>
-  <body class="font-sans text-paper antialiased">
+  <body class="font-sans text-soft antialiased">
     <!-- ========== STICKY NAV ========== -->
-    <header class="sticky top-0 z-50 border-b border-white/[0.06] bg-ink/75 backdrop-blur-xl">
-      <div class="mx-auto flex max-w-content items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
-        <a href="#top" class="group flex items-center gap-2.5">
-          <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-cyanx to-violetx text-sm font-black text-ink shadow-[0_0_24px_rgba(0,212,255,0.3)]">SG</span>
-          <span class="text-[15px] font-bold tracking-tight text-white">SemeAI<span class="text-mute font-semibold"> Gate</span></span>
+    <header class="sticky top-0 z-50 border-b border-white/[0.06] bg-surface/80 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-site items-center justify-between gap-4 px-4 py-3.5 sm:px-6">
+        <a href="#top" class="flex items-center gap-2.5">
+          <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-accent to-accent2 text-sm font-black text-surface shadow-glow">SG</span>
+          <span class="text-[15px] font-bold tracking-tight text-white">SemeAI <span class="font-semibold text-mute">Gate</span></span>
         </a>
         <nav class="hidden items-center gap-6 text-[13px] font-semibold text-mute lg:flex" aria-label="Primary">
-          <a href="#problem" class="nav-link relative hover:text-white transition">Problem</a>
-          <a href="#how" class="nav-link relative hover:text-white transition">How it works</a>
-          <a href="#demo" class="nav-link relative hover:text-white transition">Live demo</a>
-          <a href="#use" class="nav-link relative hover:text-white transition">Use cases</a>
-          <a href="#pricing" class="nav-link relative hover:text-white transition">Pricing</a>
-          <a href="#trust" class="nav-link relative hover:text-white transition">Proof</a>
+          <a href="#problem" class="nav-a hover:text-white transition">Problem</a>
+          <a href="#how" class="nav-a hover:text-white transition">How it works</a>
+          <a href="#demo" class="nav-a hover:text-white transition">Live demo</a>
+          <a href="#use" class="nav-a hover:text-white transition">Use cases</a>
+          <a href="#pilot" class="nav-a hover:text-white transition">Pilot</a>
+          <a href="#trust" class="nav-a hover:text-white transition">Proof</a>
         </nav>
         <div class="flex items-center gap-2">
-          <a href="dashboard.html" class="hidden rounded-xl px-3 py-2 text-[13px] font-semibold text-mute hover:text-white sm:inline">Dashboard</a>
-          <a href="#demo" class="btn-primary rounded-xl px-4 py-2.5 text-[13px] font-extrabold">Try Demo</a>
+          <a href="dashboard.html" class="hidden text-[13px] font-semibold text-mute hover:text-white sm:inline">Dashboard</a>
+          <a href="#demo" class="btn-primary rounded-xl px-4 py-2.5 text-[13px] font-extrabold">Try 5 free checks</a>
         </div>
       </div>
     </header>
 
     <main id="top">
       <!-- ========== HERO ========== -->
-      <section class="relative mx-auto max-w-content overflow-hidden px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:pb-24">
-        <!-- INSERT: optional hero background illustration -->
-        <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <section class="mx-auto max-w-site px-4 pb-16 pt-14 sm:px-6 sm:pt-18 lg:pb-24 lg:pt-20">
+        <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-14">
+          <!-- Left: copy + CTAs -->
           <div>
             <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-xs font-bold text-mute">
               <span class="live-dot"></span>
               Live API · Open Source · Pilot Ready
             </div>
-            <h1 class="text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
+
+            <h1 class="text-4xl font-extrabold leading-[1.07] tracking-tight text-white sm:text-5xl lg:text-[3.35rem]">
               Generation is not<br class="hidden sm:block" />
-              <span class="bg-gradient-to-r from-cyanx to-violetx bg-clip-text text-transparent">release authority.</span>
+              <span class="bg-gradient-to-r from-accent via-cyan-200 to-accent2 bg-clip-text text-transparent">release authority.</span>
             </h1>
-            <p class="mt-5 max-w-lg text-lg leading-relaxed text-mute">
-              Your LLM writes a candidate answer. <strong class="text-paper">SemeAI Gate</strong> checks business data, rules, and risk — then returns
-              <span class="inline-flex items-center rounded-md border px-1.5 py-0.5 text-xs font-bold badge-show">SHOW</span>
-              <span class="inline-flex items-center rounded-md border px-1.5 py-0.5 text-xs font-bold badge-review">REVIEW</span>
+
+            <p class="mt-5 max-w-xl text-lg leading-relaxed text-mute">
+              SemeAI Gate is a <strong class="text-soft">runtime checkpoint after your LLM</strong>.
+              It checks business data and rules — then returns
+              <span class="badge badge-show mx-0.5">SHOW</span>
+              <span class="badge badge-review mx-0.5">REVIEW</span>
               or
-              <span class="inline-flex items-center rounded-md border px-1.5 py-0.5 text-xs font-bold badge-block">BLOCK</span>
-              before anyone sees it.
+              <span class="badge badge-block mx-0.5">BLOCK</span>
+              before users ever see the answer.
             </p>
+
             <div class="mt-8 flex flex-wrap gap-3">
               <a href="#demo" class="btn-primary inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-extrabold">
-                <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                Try Live Demo
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                Try 5 free checks
               </a>
-              <a href="register.html?v=20260716c" class="btn-secondary inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold text-white">
-                Start Free Pilot
-                <svg class="h-4 w-4 text-cyanx" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+              <a href="register.html?v=20260716d" class="btn-secondary inline-flex items-center gap-2 rounded-2xl px-6 py-3.5 text-sm font-bold text-white">
+                Start free pilot
+                <svg class="h-4 w-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
               </a>
             </div>
-            <div class="mt-8 flex flex-wrap gap-2">
-              <span class="inline-flex items-center gap-1.5 rounded-full border border-ok/30 bg-ok/10 px-3 py-1 text-xs font-bold text-ok"><span class="live-dot"></span> api.semeai.tech</span>
-              <span class="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs font-bold text-mute">No credit card for free checks</span>
-              <span class="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs font-bold text-mute">Fail closed</span>
-              <span class="inline-flex items-center rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-xs font-bold text-mute">Audit receipts</span>
+
+            <div class="mt-6 flex flex-wrap gap-2">
+              <span class="badge"><span class="live-dot"></span> Live API</span>
+              <span class="badge">Open Source</span>
+              <span class="badge">Pilot Ready</span>
+              <span class="badge">Fail closed</span>
             </div>
+
+            <p class="mt-6 text-sm text-mute/90">
+              Live demo first. Account only when you need keys &amp; receipts at scale.
+            </p>
           </div>
 
-          <!-- Hero visual: gate decision preview -->
-          <div class="relative animate-float">
-            <!-- INSERT: replace with custom product screenshot if available -->
-            <div class="glass glass-shine rounded-3xl p-5 shadow-[0_40px_100px_rgba(0,0,0,0.45)] sm:p-6">
-              <div class="mb-4 flex items-center justify-between">
-                <div class="flex items-center gap-2">
-                  <span class="grid h-8 w-8 place-items-center rounded-lg bg-cyanx/15 text-xs font-black text-cyanx">GT</span>
+          <!-- Right: product preview / gate visual -->
+          <div class="relative">
+            <!-- INSERT: optional product screenshot overlay -->
+            <div class="absolute -inset-4 rounded-[2rem] bg-gradient-to-br from-accent/20 via-transparent to-accent2/20 blur-2xl"></div>
+            <div class="card card-shine relative rounded-3xl p-5 sm:p-6">
+              <div class="mb-4 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                  <div class="grid h-10 w-10 place-items-center rounded-xl bg-accent/15 font-black text-accent">GT</div>
                   <div>
-                    <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Live gate preview</p>
+                    <p class="text-[11px] font-extrabold uppercase tracking-wider text-mute">Gate preview</p>
                     <p class="text-sm font-bold text-white">Support · invented refund</p>
                   </div>
                 </div>
-                <span id="hero-status" class="rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-bold text-mute">idle</span>
+                <span id="hero-status" class="badge">idle</span>
               </div>
 
-              <!-- Mini pipeline -->
+              <!-- Mini status rail -->
               <div class="mb-4 grid grid-cols-3 gap-2">
                 <div class="rounded-xl border border-white/8 bg-black/30 p-3 text-center">
                   <p class="text-[10px] font-bold uppercase tracking-wider text-mute">Candidate</p>
-                  <p class="mt-1 text-xs font-semibold text-paper">“50% refund…”</p>
+                  <p class="mt-1 truncate text-xs font-semibold text-white">“50% refund…”</p>
                 </div>
-                <div class="rounded-xl border border-cyanx/30 bg-cyanx/10 p-3 text-center animate-gate-glow">
-                  <p class="text-[10px] font-bold uppercase tracking-wider text-cyanx">Gate</p>
-                  <p class="mt-1 text-xs font-semibold text-white">Checking…</p>
+                <div class="rounded-xl border border-accent/35 bg-accent/10 p-3 text-center shadow-glow">
+                  <p class="text-[10px] font-bold uppercase tracking-wider text-accent">Gate</p>
+                  <p class="mt-1 text-xs font-semibold text-white">Evaluating</p>
                 </div>
                 <div class="rounded-xl border border-white/8 bg-black/30 p-3 text-center">
                   <p class="text-[10px] font-bold uppercase tracking-wider text-mute">User sees</p>
-                  <p class="mt-1 text-xs font-semibold text-paper">—</p>
+                  <p class="mt-1 text-xs font-semibold text-white">—</p>
                 </div>
               </div>
 
-              <div class="space-y-2.5 text-[13px]">
+              <div class="space-y-2 text-[13px]">
                 <div class="rounded-xl border border-white/[0.06] bg-black/25 px-3.5 py-2.5">
-                  <span class="text-[10px] font-extrabold uppercase tracking-wider text-mute">User</span>
-                  <p class="mt-0.5 text-paper">Can I get a 50% refund if I cancel today?</p>
+                  <p class="text-[10px] font-extrabold uppercase tracking-wider text-mute">User</p>
+                  <p class="mt-0.5 text-white">Can I get a 50% refund if I cancel today?</p>
                 </div>
                 <div class="rounded-xl border border-white/[0.06] bg-black/25 px-3.5 py-2.5">
-                  <span class="text-[10px] font-extrabold uppercase tracking-wider text-mute">AI candidate</span>
-                  <p class="mt-0.5 text-paper">Yes — use CANCEL50 for an immediate 50% refund.</p>
+                  <p class="text-[10px] font-extrabold uppercase tracking-wider text-mute">AI candidate</p>
+                  <p class="mt-0.5 text-white">Yes — use CANCEL50 for an immediate 50% refund.</p>
                 </div>
                 <div class="rounded-xl border border-white/[0.06] bg-black/25 px-3.5 py-2.5">
-                  <span class="text-[10px] font-extrabold uppercase tracking-wider text-mute">Business data</span>
+                  <p class="text-[10px] font-extrabold uppercase tracking-wider text-mute">Business data</p>
                   <p class="mt-0.5 font-mono text-[11px] text-mute">refund_pct_allowed: 0 · policies: []</p>
                 </div>
               </div>
 
-              <div id="hero-result" class="result-BLOCK mt-4 flex items-center gap-4 rounded-2xl border p-4 hero-decision-pop">
-                <div class="text-3xl font-black tracking-wide text-white" id="hero-action">BLOCK</div>
+              <div id="hero-result" class="result-BLOCK mt-4 flex items-center gap-4 rounded-2xl border p-4 pop">
+                <div id="hero-action" class="text-3xl font-black tracking-wide text-white">BLOCK</div>
                 <div class="min-w-0 text-sm">
-                  <div class="font-mono text-xs text-mute" id="hero-internal">internal: SILENCE</div>
-                  <div class="mt-0.5 text-mute" id="hero-reason">User sees nothing. Audit preserved.</div>
+                  <div id="hero-internal" class="font-mono text-xs text-mute">internal: SILENCE</div>
+                  <div id="hero-reason" class="mt-0.5 text-mute">User sees nothing. Audit preserved.</div>
                 </div>
               </div>
 
               <button type="button" id="hero-run" class="btn-primary mt-4 w-full rounded-2xl py-3.5 text-sm font-extrabold">
                 Run this check live →
               </button>
-              <p class="mt-2.5 text-center text-[11px] text-mute">Real <span class="font-mono text-cyanx">POST /v0/demo/check</span> · free checks, no signup</p>
+              <p class="mt-2.5 text-center text-[11px] text-mute">
+                Real <span class="font-mono text-accent">POST /v0/demo/check</span> · counts toward free checks
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- Trust strip -->
-      <section class="border-y border-white/[0.06] bg-ink-soft/50">
-        <div class="mx-auto grid max-w-content gap-6 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
-          <div class="flex items-start gap-3">
-            <div class="icon-box shrink-0">
-              <svg class="h-5 w-5 text-cyanx" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      <!-- Trust metrics strip -->
+      <section class="border-y border-white/[0.06] bg-surface-50/70">
+        <div class="mx-auto grid max-w-site gap-6 px-4 py-8 sm:grid-cols-2 sm:px-6 lg:grid-cols-4">
+          <div class="flex gap-3">
+            <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-accent/20 bg-accent/10 text-accent">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
             </div>
             <div>
               <p class="font-bold text-white">Fail closed</p>
-              <p class="mt-0.5 text-sm text-mute">Unsupported claims withheld by default</p>
+              <p class="text-sm text-mute">Unsupported claims withheld by default</p>
             </div>
           </div>
-          <div class="flex items-start gap-3">
-            <div class="icon-box shrink-0">
-              <svg class="h-5 w-5 text-cyanx" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div class="flex gap-3">
+            <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-accent/20 bg-accent/10 text-accent">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div>
+              <p class="font-bold text-white">Ship confidence</p>
+              <p class="text-sm text-mute">Keep the receipt on every decision</p>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-accent/20 bg-accent/10 text-accent">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
             <div>
               <p class="font-bold text-white">Live in ~10 min</p>
-              <p class="mt-0.5 text-sm text-mute">One check after your existing LLM</p>
+              <p class="text-sm text-mute">One check after your existing LLM</p>
             </div>
           </div>
-          <div class="flex items-start gap-3">
-            <div class="icon-box shrink-0">
-              <svg class="h-5 w-5 text-cyanx" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-            </div>
-            <div>
-              <p class="font-bold text-white">Full audit trail</p>
-              <p class="mt-0.5 text-sm text-mute">Receipts even when you BLOCK</p>
-            </div>
-          </div>
-          <div class="flex items-start gap-3">
-            <div class="icon-box shrink-0">
-              <svg class="h-5 w-5 text-cyanx" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+          <div class="flex gap-3">
+            <div class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-accent/20 bg-accent/10 text-accent">
+              <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             </div>
             <div>
               <p class="font-bold text-white">Research-backed</p>
-              <p class="mt-0.5 text-sm text-mute">Silence-as-Control · SSRN + Zenodo</p>
+              <p class="text-sm text-mute">Silence-as-Control · SSRN + Zenodo</p>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ========== PROBLEM ========== -->
-      <section id="problem" class="mx-auto max-w-content px-4 py-20 sm:px-6">
+      <section id="problem" class="mx-auto max-w-site px-4 py-20 sm:px-6">
         <div class="max-w-2xl">
-          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">The problem</p>
+          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">The problem</p>
           <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
             Fluent models invent policy.<br class="hidden sm:block" /> Your brand pays for it.
           </h2>
           <p class="mt-4 text-lg text-mute">
-            Ungoverned AI doesn’t just “hallucinate” — it <em class="text-paper not-italic">releases</em> invented promos, refunds, and eligibility claims as if they were product truth.
+            Ungoverned AI doesn’t just “hallucinate” — it <span class="text-soft">releases</span> invented promos, refunds, and eligibility claims as product truth.
           </p>
         </div>
+
         <div class="mt-12 grid gap-5 md:grid-cols-3">
-          <article class="group glass glass-shine rounded-3xl p-6 transition hover:-translate-y-1 hover:border-bad/30">
-            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-bad/15 text-bad">
+          <article class="card card-shine rounded-3xl p-6 transition hover:-translate-y-1 hover:border-block/30">
+            <div class="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-block/15 text-block">
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </div>
-            <span class="rounded-full border border-bad/30 bg-bad/10 px-2.5 py-0.5 text-[11px] font-extrabold text-bad">SUPPORT LEAKAGE</span>
+            <span class="badge badge-block">SUPPORT LEAKAGE</span>
             <h3 class="mt-3 text-xl font-bold text-white">Invented promos &amp; refunds</h3>
             <p class="mt-2 text-sm leading-relaxed text-mute">Bot invents SAVE30 or a 50% refund when business data is empty. Customer expects it. Ops cleans the mess.</p>
           </article>
-          <article class="group glass glass-shine rounded-3xl p-6 transition hover:-translate-y-1 hover:border-warn/30">
-            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-warn/15 text-warn">
+          <article class="card card-shine rounded-3xl p-6 transition hover:-translate-y-1 hover:border-review/30">
+            <div class="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-review/15 text-review">
               <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
             </div>
-            <span class="rounded-full border border-warn/30 bg-warn/10 px-2.5 py-0.5 text-[11px] font-extrabold text-warn">FINANCE RISK</span>
+            <span class="badge badge-review">FINANCE RISK</span>
             <h3 class="mt-3 text-xl font-bold text-white">Eligibility drift</h3>
             <p class="mt-2 text-sm leading-relaxed text-mute">Billing chat slides into guaranteed returns or products the account doesn’t have. Confident. Wrong. Expensive.</p>
           </article>
-          <article class="group glass glass-shine rounded-3xl p-6 transition hover:-translate-y-1 hover:border-violetx/30">
-            <div class="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-violetx/15 text-violet-300">
-              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM20.485 8.485l-1.414 1.414M4.929 19.071l1.414-1.414"/></svg>
+          <article class="card card-shine rounded-3xl p-6 transition hover:-translate-y-1 hover:border-accent2/30">
+            <div class="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-accent2/15 text-purple-300">
+              <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             </div>
-            <span class="rounded-full border border-violetx/30 bg-violetx/10 px-2.5 py-0.5 text-[11px] font-extrabold text-violet-300">NO PROOF OF “NO”</span>
+            <span class="badge" style="color:#c4b5fd;border-color:rgba(124,58,237,.35);background:rgba(124,58,237,.12)">NO PROOF OF “NO”</span>
             <h3 class="mt-3 text-xl font-bold text-white">Missing audit trail</h3>
             <p class="mt-2 text-sm leading-relaxed text-mute">When something should have been withheld, you need a receipt — not a guess from a chat log weeks later.</p>
           </article>
@@ -352,112 +363,155 @@
       </section>
 
       <!-- ========== HOW IT WORKS ========== -->
-      <section id="how" class="relative border-y border-white/[0.06] bg-ink-soft/40 py-20">
-        <div class="mx-auto max-w-content px-4 sm:px-6">
+      <section id="how" class="border-y border-white/[0.06] bg-surface-50/50 py-20">
+        <div class="mx-auto max-w-site px-4 sm:px-6">
           <div class="max-w-2xl">
-            <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">How it works</p>
+            <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">How it works</p>
             <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-              One boundary. Three decisions. A receipt.
+              Buy the boundary, not another model.
             </h2>
             <p class="mt-4 text-lg text-mute">
-              Not another chatbot. A narrow checkpoint <strong class="text-paper">after generation</strong> — before release.
+              A narrow checkpoint <strong class="text-soft">after generation</strong> — before release. Fail closed. Keep the receipt.
             </p>
           </div>
 
-          <!-- INSERT: large custom How-it-Works diagram asset if desired -->
-          <!-- Visual flow diagram (SVG + cards) -->
-          <div class="mt-12 glass glass-shine rounded-3xl p-6 sm:p-8">
-            <div class="mb-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3" id="flow-diagram" aria-label="Release control flow">
-              <div class="flow-step glass w-full max-w-[140px] rounded-2xl border border-white/10 p-4 text-center sm:w-auto" data-step="0">
-                <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-black text-white">1</div>
-                <p class="text-sm font-bold text-white">LLM</p>
-                <p class="mt-1 text-[11px] text-mute">Candidate answer</p>
+          <!-- Large visual flow diagram -->
+          <div class="card card-shine mt-12 rounded-3xl p-6 sm:p-8">
+            <p class="mb-6 text-center text-xs font-extrabold uppercase tracking-[0.14em] text-mute">Release-control flow</p>
+
+            <!-- Desktop SVG flow -->
+            <div class="mb-8 hidden lg:block" aria-hidden="true">
+              <!-- INSERT: replace with custom illustrated diagram asset if available -->
+              <svg viewBox="0 0 1000 180" class="mx-auto w-full max-w-5xl" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- connectors -->
+                <path class="flow-line" d="M160 90 H230" stroke="#00D4FF" stroke-width="2" opacity="0.5"/>
+                <path class="flow-line" d="M360 90 H430" stroke="#00D4FF" stroke-width="2" opacity="0.5"/>
+                <path class="flow-line" d="M560 90 H630" stroke="#00D4FF" stroke-width="2" opacity="0.5"/>
+                <path class="flow-line" d="M760 90 H830" stroke="#00D4FF" stroke-width="2" opacity="0.5"/>
+                <!-- nodes -->
+                <g>
+                  <rect x="20" y="40" width="140" height="100" rx="16" fill="#141821" stroke="rgba(255,255,255,0.1)"/>
+                  <text x="90" y="78" text-anchor="middle" fill="#8B97A8" font-size="11" font-family="Inter" font-weight="700">1 · USER</text>
+                  <text x="90" y="102" text-anchor="middle" fill="#fff" font-size="14" font-family="Inter" font-weight="700">Message</text>
+                  <text x="90" y="122" text-anchor="middle" fill="#8B97A8" font-size="11" font-family="Inter">asks the AI</text>
+                </g>
+                <g>
+                  <rect x="220" y="40" width="140" height="100" rx="16" fill="#141821" stroke="rgba(255,255,255,0.1)"/>
+                  <text x="290" y="78" text-anchor="middle" fill="#8B97A8" font-size="11" font-family="Inter" font-weight="700">2 · LLM</text>
+                  <text x="290" y="102" text-anchor="middle" fill="#fff" font-size="14" font-family="Inter" font-weight="700">Candidate</text>
+                  <text x="290" y="122" text-anchor="middle" fill="#8B97A8" font-size="11" font-family="Inter">not released yet</text>
+                </g>
+                <g>
+                  <rect x="420" y="40" width="140" height="100" rx="16" fill="rgba(0,212,255,0.1)" stroke="#00D4FF" stroke-width="1.5"/>
+                  <text x="490" y="78" text-anchor="middle" fill="#00D4FF" font-size="11" font-family="Inter" font-weight="700">3 · GATE</text>
+                  <text x="490" y="102" text-anchor="middle" fill="#fff" font-size="14" font-family="Inter" font-weight="700">SemeAI</text>
+                  <text x="490" y="122" text-anchor="middle" fill="#8B97A8" font-size="11" font-family="Inter">data + rules</text>
+                </g>
+                <g>
+                  <rect x="620" y="40" width="140" height="100" rx="16" fill="#141821" stroke="rgba(255,255,255,0.1)"/>
+                  <text x="690" y="72" text-anchor="middle" fill="#8B97A8" font-size="11" font-family="Inter" font-weight="700">4 · DECIDE</text>
+                  <text x="690" y="96" text-anchor="middle" fill="#22C55E" font-size="12" font-family="Inter" font-weight="800">SHOW</text>
+                  <text x="690" y="114" text-anchor="middle" fill="#F59E0B" font-size="12" font-family="Inter" font-weight="800">REVIEW</text>
+                  <text x="690" y="132" text-anchor="middle" fill="#EF4444" font-size="12" font-family="Inter" font-weight="800">BLOCK</text>
+                </g>
+                <g>
+                  <rect x="840" y="40" width="140" height="100" rx="16" fill="#141821" stroke="rgba(255,255,255,0.1)"/>
+                  <text x="910" y="78" text-anchor="middle" fill="#8B97A8" font-size="11" font-family="Inter" font-weight="700">5 · OUTCOME</text>
+                  <text x="910" y="102" text-anchor="middle" fill="#fff" font-size="14" font-family="Inter" font-weight="700">User + receipt</text>
+                  <text x="910" y="122" text-anchor="middle" fill="#8B97A8" font-size="11" font-family="Inter">audit preserved</text>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Mobile / tablet flow cards -->
+            <div class="grid gap-3 sm:grid-cols-2 lg:hidden" id="flow-diagram">
+              <div class="flow-node rounded-2xl border border-white/10 bg-black/20 p-4" data-step="0">
+                <p class="text-[11px] font-extrabold text-accent">01</p>
+                <p class="mt-1 font-bold text-white">User message</p>
+                <p class="text-xs text-mute">Asks the AI</p>
               </div>
-              <svg class="hidden h-6 w-8 text-cyanx/60 sm:block" fill="none" viewBox="0 0 32 24"><path d="M2 12h24m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <div class="flow-step glass w-full max-w-[140px] rounded-2xl border border-white/10 p-4 text-center sm:w-auto" data-step="1">
-                <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-black text-white">2</div>
-                <p class="text-sm font-bold text-white">Facts</p>
-                <p class="mt-1 text-[11px] text-mute">Data · rules · risk</p>
+              <div class="flow-node rounded-2xl border border-white/10 bg-black/20 p-4" data-step="1">
+                <p class="text-[11px] font-extrabold text-accent">02</p>
+                <p class="mt-1 font-bold text-white">LLM candidate</p>
+                <p class="text-xs text-mute">Generated · not released</p>
               </div>
-              <svg class="hidden h-6 w-8 text-cyanx/60 sm:block" fill="none" viewBox="0 0 32 24"><path d="M2 12h24m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <div class="flow-step glass w-full max-w-[160px] rounded-2xl border border-cyanx/40 bg-cyanx/5 p-4 text-center sm:w-auto animate-gate-glow" data-step="2">
-                <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-cyanx text-sm font-black text-ink">3</div>
-                <p class="text-sm font-bold text-white">SemeAI Gate</p>
-                <p class="mt-1 text-[11px] text-cyanx">Release control</p>
+              <div class="flow-node rounded-2xl border border-accent/40 bg-accent/10 p-4" data-step="2">
+                <p class="text-[11px] font-extrabold text-accent">03</p>
+                <p class="mt-1 font-bold text-white">SemeAI Gate</p>
+                <p class="text-xs text-mute">Business data + rules</p>
               </div>
-              <svg class="hidden h-6 w-8 text-cyanx/60 sm:block" fill="none" viewBox="0 0 32 24"><path d="M2 12h24m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <div class="flow-step glass w-full max-w-[140px] rounded-2xl border border-white/10 p-4 text-center sm:w-auto" data-step="3">
-                <div class="mx-auto mb-2 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sm font-black text-white">4</div>
-                <p class="text-sm font-bold text-white">Outcome</p>
-                <p class="mt-1 text-[11px] text-mute">User + receipt</p>
+              <div class="flow-node rounded-2xl border border-white/10 bg-black/20 p-4" data-step="3">
+                <p class="text-[11px] font-extrabold text-accent">04</p>
+                <p class="mt-1 font-bold text-white">SHOW · REVIEW · BLOCK</p>
+                <p class="text-xs text-mute">User outcome + audit receipt</p>
               </div>
             </div>
 
-            <!-- Color-coded decisions -->
-            <div class="grid gap-3 sm:grid-cols-3">
-              <div class="rounded-2xl border border-ok/30 bg-ok/10 p-5 text-center">
-                <span class="inline-flex rounded-full border px-3 py-1 text-sm font-black tracking-wide badge-show">SHOW</span>
-                <p class="mt-3 text-sm font-semibold text-white">Supported · release</p>
+            <!-- Decision badges -->
+            <div class="mt-8 grid gap-3 sm:grid-cols-3">
+              <div class="rounded-2xl border border-show/30 bg-show/10 p-5 text-center">
+                <span class="badge badge-show text-sm font-black tracking-wider">SHOW</span>
+                <p class="mt-3 text-sm font-semibold text-white">Supported · release to user</p>
                 <p class="mt-1 text-xs text-mute">Business data backs the claim</p>
               </div>
-              <div class="rounded-2xl border border-warn/30 bg-warn/10 p-5 text-center">
-                <span class="inline-flex rounded-full border px-3 py-1 text-sm font-black tracking-wide badge-review">REVIEW</span>
+              <div class="rounded-2xl border border-review/30 bg-review/10 p-5 text-center">
+                <span class="badge badge-review text-sm font-black tracking-wider">REVIEW</span>
                 <p class="mt-3 text-sm font-semibold text-white">Ambiguous · human path</p>
                 <p class="mt-1 text-xs text-mute">Not confident enough to auto-ship</p>
               </div>
-              <div class="rounded-2xl border border-bad/30 bg-bad/10 p-5 text-center">
-                <span class="inline-flex rounded-full border px-3 py-1 text-sm font-black tracking-wide badge-block">BLOCK</span>
+              <div class="rounded-2xl border border-block/30 bg-block/10 p-5 text-center">
+                <span class="badge badge-block text-sm font-black tracking-wider">BLOCK</span>
                 <p class="mt-3 text-sm font-semibold text-white">Unsupported · silence</p>
                 <p class="mt-1 text-xs text-mute">User sees nothing · audit kept</p>
               </div>
             </div>
           </div>
 
+          <!-- 4 step cards -->
           <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <article class="glass rounded-2xl p-5">
-              <p class="text-xs font-extrabold text-cyanx">01 · GENERATE</p>
-              <h3 class="mt-2 font-bold text-white">LLM writes candidate</h3>
-              <p class="mt-2 text-sm text-mute">Nothing is shown yet. Generation ≠ release.</p>
+            <article class="card rounded-2xl p-5">
+              <div class="mb-3 grid h-9 w-9 place-items-center rounded-full bg-accent text-sm font-black text-surface">1</div>
+              <h3 class="font-bold text-white">Generate</h3>
+              <p class="mt-2 text-sm text-mute">Your LLM writes a candidate. Nothing is shown yet.</p>
             </article>
-            <article class="glass rounded-2xl p-5">
-              <p class="text-xs font-extrabold text-cyanx">02 · CHECK</p>
-              <h3 class="mt-2 font-bold text-white">Gate reads truth</h3>
-              <p class="mt-2 text-sm text-mute">Business data, rules, context, risk class.</p>
+            <article class="card rounded-2xl p-5">
+              <div class="mb-3 grid h-9 w-9 place-items-center rounded-full bg-accent text-sm font-black text-surface">2</div>
+              <h3 class="font-bold text-white">Check</h3>
+              <p class="mt-2 text-sm text-mute">Gate evaluates business data, rules, context, and risk.</p>
             </article>
-            <article class="glass rounded-2xl p-5">
-              <p class="text-xs font-extrabold text-cyanx">03 · DECIDE</p>
-              <h3 class="mt-2 font-bold text-white">SHOW · REVIEW · BLOCK</h3>
-              <p class="mt-2 text-sm text-mute">Mapped to PROCEED / NEEDS_REVIEW / SILENCE.</p>
+            <article class="card rounded-2xl p-5">
+              <div class="mb-3 grid h-9 w-9 place-items-center rounded-full bg-accent text-sm font-black text-surface">3</div>
+              <h3 class="font-bold text-white">Decide</h3>
+              <p class="mt-2 text-sm text-mute">SHOW, REVIEW, or BLOCK — mapped to PROCEED / NEEDS_REVIEW / SILENCE.</p>
             </article>
-            <article class="glass rounded-2xl p-5">
-              <p class="text-xs font-extrabold text-cyanx">04 · PROVE</p>
-              <h3 class="mt-2 font-bold text-white">Keep the receipt</h3>
-              <p class="mt-2 text-sm text-mute">Even blocked answers leave audit metadata.</p>
+            <article class="card rounded-2xl p-5">
+              <div class="mb-3 grid h-9 w-9 place-items-center rounded-full bg-accent text-sm font-black text-surface">4</div>
+              <h3 class="font-bold text-white">Prove</h3>
+              <p class="mt-2 text-sm text-mute">Even blocked answers leave audit metadata for replay.</p>
             </article>
           </div>
         </div>
       </section>
 
       <!-- ========== WHAT YOU GET ========== -->
-      <section id="outcomes" class="mx-auto max-w-content px-4 py-20 sm:px-6">
+      <section id="outcomes" class="mx-auto max-w-site px-4 py-20 sm:px-6">
         <div class="max-w-2xl">
-          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">What you get</p>
+          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">What you get</p>
           <h2 class="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Ship confidence. Keep the receipt.</h2>
-          <p class="mt-4 text-lg text-mute">Buy the boundary — not another model.</p>
         </div>
         <div class="mt-12 grid gap-5 md:grid-cols-3">
-          <article class="glass glass-shine rounded-3xl p-7">
-            <div class="icon-box mb-5"><span class="text-sm font-black text-cyanx">01</span></div>
+          <article class="card card-shine rounded-3xl p-7">
+            <div class="mb-5 grid h-11 w-11 place-items-center rounded-xl border border-accent/25 bg-accent/10 text-sm font-black text-accent">01</div>
             <h3 class="text-xl font-bold text-white">Fewer invented policies</h3>
             <p class="mt-3 text-sm leading-relaxed text-mute">Promos, refunds, and account states only release when business data supports them.</p>
           </article>
-          <article class="glass glass-shine rounded-3xl p-7">
-            <div class="icon-box mb-5"><span class="text-sm font-black text-cyanx">02</span></div>
+          <article class="card card-shine rounded-3xl p-7">
+            <div class="mb-5 grid h-11 w-11 place-items-center rounded-xl border border-accent/25 bg-accent/10 text-sm font-black text-accent">02</div>
             <h3 class="text-xl font-bold text-white">Human path when unsure</h3>
             <p class="mt-3 text-sm leading-relaxed text-mute">Ambiguous cases go to REVIEW — not a confident wrong answer in production.</p>
           </article>
-          <article class="glass glass-shine rounded-3xl p-7">
-            <div class="icon-box mb-5"><span class="text-sm font-black text-cyanx">03</span></div>
+          <article class="card card-shine rounded-3xl p-7">
+            <div class="mb-5 grid h-11 w-11 place-items-center rounded-xl border border-accent/25 bg-accent/10 text-sm font-black text-accent">03</div>
             <h3 class="text-xl font-bold text-white">Compliance-friendly silence</h3>
             <p class="mt-3 text-sm leading-relaxed text-mute">BLOCK is a first-class product decision with audit metadata you can replay.</p>
           </article>
@@ -465,73 +519,73 @@
       </section>
 
       <!-- ========== WHY TEAMS ========== -->
-      <section id="why" class="mx-auto max-w-content px-4 pb-8 sm:px-6">
+      <section id="why" class="mx-auto max-w-site px-4 pb-8 sm:px-6">
         <div class="max-w-2xl">
-          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">Why teams need this</p>
+          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">Why teams need this</p>
           <h2 class="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Fluent is not the same as safe to ship.</h2>
         </div>
         <div class="mt-10 grid gap-5 lg:grid-cols-2">
-          <div class="rounded-3xl border border-bad/25 bg-gradient-to-br from-bad/10 to-transparent p-7">
+          <div class="rounded-3xl border border-block/25 bg-gradient-to-br from-block/10 to-transparent p-7">
             <div class="mb-4 flex items-center gap-2">
-              <span class="flex h-8 w-8 items-center justify-center rounded-full bg-bad/20 text-bad">✕</span>
+              <span class="grid h-8 w-8 place-items-center rounded-full bg-block/20 font-bold text-block">✕</span>
               <h3 class="text-lg font-bold text-white">Without a gate</h3>
             </div>
             <ul class="space-y-3 text-sm text-mute">
-              <li class="flex gap-2"><span class="text-bad">·</span> AI invents promo codes and refunds</li>
-              <li class="flex gap-2"><span class="text-bad">·</span> Off-context answers drift into finance claims</li>
-              <li class="flex gap-2"><span class="text-bad">·</span> Risky ops advice reaches users</li>
-              <li class="flex gap-2"><span class="text-bad">·</span> No audit when something should have been blocked</li>
+              <li class="flex gap-2"><span class="text-block">·</span> AI invents promo codes and refunds</li>
+              <li class="flex gap-2"><span class="text-block">·</span> Off-context answers drift into finance claims</li>
+              <li class="flex gap-2"><span class="text-block">·</span> Risky ops advice reaches users</li>
+              <li class="flex gap-2"><span class="text-block">·</span> No audit when something should have been blocked</li>
             </ul>
           </div>
-          <div class="rounded-3xl border border-ok/25 bg-gradient-to-br from-ok/10 to-transparent p-7">
+          <div class="rounded-3xl border border-show/25 bg-gradient-to-br from-show/10 to-transparent p-7">
             <div class="mb-4 flex items-center gap-2">
-              <span class="flex h-8 w-8 items-center justify-center rounded-full bg-ok/20 text-ok">✓</span>
+              <span class="grid h-8 w-8 place-items-center rounded-full bg-show/20 font-bold text-show">✓</span>
               <h3 class="text-lg font-bold text-white">With SemeAI Gate</h3>
             </div>
             <ul class="space-y-3 text-sm text-mute">
-              <li class="flex gap-2"><span class="text-ok">·</span> Unsupported claims are withheld</li>
-              <li class="flex gap-2"><span class="text-ok">·</span> Ambiguous cases go to REVIEW</li>
-              <li class="flex gap-2"><span class="text-ok">·</span> Safe answers still ship as SHOW</li>
-              <li class="flex gap-2"><span class="text-ok">·</span> Every decision can leave a receipt</li>
+              <li class="flex gap-2"><span class="text-show">·</span> Unsupported claims are withheld</li>
+              <li class="flex gap-2"><span class="text-show">·</span> Ambiguous cases go to REVIEW</li>
+              <li class="flex gap-2"><span class="text-show">·</span> Safe answers still ship as SHOW</li>
+              <li class="flex gap-2"><span class="text-show">·</span> Every decision can leave a receipt</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <!-- ========== USE CASES ========== -->
-      <section id="use" class="mx-auto max-w-content px-4 py-20 sm:px-6">
+      <!-- ========== WHERE IT FITS ========== -->
+      <section id="use" class="mx-auto max-w-site px-4 py-20 sm:px-6">
         <div class="max-w-2xl">
-          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">Where it fits</p>
+          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">Where it fits</p>
           <h2 class="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Same boundary. Many products.</h2>
         </div>
         <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <article class="glass rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-cyanx/30">
-            <div class="mb-3 text-2xl">🎧</div>
+          <article class="card rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-accent/30">
+            <div class="mb-3 text-2xl" aria-hidden="true">🎧</div>
             <h3 class="font-bold text-white">Support</h3>
             <p class="mt-2 text-sm text-mute">Stop invented promos, refunds, and account states before customers see them.</p>
           </article>
-          <article class="glass rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-cyanx/30">
-            <div class="mb-3 text-2xl">💳</div>
+          <article class="card rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-accent/30">
+            <div class="mb-3 text-2xl" aria-hidden="true">💳</div>
             <h3 class="font-bold text-white">Finance</h3>
             <p class="mt-2 text-sm text-mute">Review fee, eligibility, and return claims without business proof.</p>
           </article>
-          <article class="glass rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-cyanx/30">
-            <div class="mb-3 text-2xl">⚙️</div>
+          <article class="card rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-accent/30">
+            <div class="mb-3 text-2xl" aria-hidden="true">⚙️</div>
             <h3 class="font-bold text-white">Ops &amp; tools</h3>
             <p class="mt-2 text-sm text-mute">Block approval bypass and destructive command advice.</p>
           </article>
-          <article class="glass rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-cyanx/30">
-            <div class="mb-3 text-2xl">🎮</div>
+          <article class="card rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-accent/30">
+            <div class="mb-3 text-2xl" aria-hidden="true">🎮</div>
             <h3 class="font-bold text-white">Games / worlds</h3>
             <p class="mt-2 text-sm text-mute">Gate canon, quests, and economy mutations before production.</p>
           </article>
-          <article class="glass rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-cyanx/30">
-            <div class="mb-3 text-2xl">🏥</div>
+          <article class="card rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-accent/30">
+            <div class="mb-3 text-2xl" aria-hidden="true">🏥</div>
             <h3 class="font-bold text-white">Medicine</h3>
             <p class="mt-2 text-sm text-mute">Keep patient-visible guidance behind a release checkpoint.</p>
           </article>
-          <article class="glass rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-cyanx/30">
-            <div class="mb-3 text-2xl">🎬</div>
+          <article class="card rounded-2xl p-6 transition hover:-translate-y-0.5 hover:border-accent/30">
+            <div class="mb-3 text-2xl" aria-hidden="true">🎬</div>
             <h3 class="font-bold text-white">Studios</h3>
             <p class="mt-2 text-sm text-mute">Review creative outputs with receipt metadata, not blind accept.</p>
           </article>
@@ -539,53 +593,53 @@
         <div class="mt-8">
           <a href="pilots/support.html" class="btn-secondary inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-bold text-white">
             See support pilot kit
-            <svg class="h-4 w-4 text-cyanx" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            <svg class="h-4 w-4 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
           </a>
         </div>
       </section>
 
       <!-- ========== LIVE DEMO ========== -->
-      <section id="demo" class="border-y border-white/[0.06] bg-ink-soft/40 py-20">
-        <div class="mx-auto max-w-content px-4 sm:px-6">
+      <section id="demo" class="border-y border-white/[0.06] bg-surface-50/50 py-20">
+        <div class="mx-auto max-w-site px-4 sm:px-6">
           <div class="flex flex-wrap items-end justify-between gap-6">
             <div class="max-w-xl">
-              <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">Live interactive demo</p>
+              <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">Live interactive demo</p>
               <h2 class="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Try 5 free gate checks.</h2>
-              <p class="mt-4 text-lg text-mute">No signup. Real API. Pick a scenario — or edit the payload.</p>
+              <p class="mt-4 text-lg text-mute">No signup. Real API. Pick a scenario — or edit the payload yourself.</p>
             </div>
-            <div class="glass rounded-2xl px-6 py-4 text-center">
+            <div class="card rounded-2xl px-6 py-4 text-center">
               <p class="text-[11px] font-extrabold uppercase tracking-wider text-mute">Free checks left</p>
-              <p class="text-4xl font-black text-cyanx" id="free-left">5</p>
+              <p class="text-4xl font-black text-accent" id="free-left">5</p>
               <p class="text-xs text-mute">this browser · no card</p>
             </div>
           </div>
 
           <div class="mt-10 grid gap-6 lg:grid-cols-2">
-            <div class="glass glass-shine rounded-3xl p-5 sm:p-6">
+            <div class="card card-shine rounded-3xl p-5 sm:p-6">
               <div class="mb-4 flex flex-wrap gap-2" role="tablist">
-                <button type="button" data-scenario="fake_promo_code" class="scenario-btn rounded-xl border border-cyanx bg-cyanx/15 px-3 py-2 text-xs font-bold text-cyanx">Fake promo</button>
+                <button type="button" data-scenario="fake_promo_code" class="scenario-btn rounded-xl border border-accent bg-accent/15 px-3 py-2 text-xs font-bold text-accent">Fake promo</button>
                 <button type="button" data-scenario="supported_answer" class="scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute">Supported</button>
                 <button type="button" data-scenario="unsafe_action" class="scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute">Unsafe action</button>
                 <button type="button" data-scenario="context_drift" class="scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute">Context drift</button>
                 <button type="button" data-scenario="fake_refund" class="scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute">50% refund</button>
               </div>
               <label class="mb-1.5 block text-[11px] font-extrabold uppercase tracking-wider text-mute">User message</label>
-              <textarea id="user-msg" rows="2" class="mb-3 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-paper outline-none ring-cyanx/30 focus:ring-2"></textarea>
+              <textarea id="user-msg" rows="2" class="mb-3 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-soft"></textarea>
               <label class="mb-1.5 block text-[11px] font-extrabold uppercase tracking-wider text-mute">AI candidate</label>
-              <textarea id="ai-msg" rows="3" class="mb-3 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-paper outline-none ring-cyanx/30 focus:ring-2"></textarea>
+              <textarea id="ai-msg" rows="3" class="mb-3 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-soft"></textarea>
               <label class="mb-1.5 block text-[11px] font-extrabold uppercase tracking-wider text-mute">Business data (JSON)</label>
-              <textarea id="biz-data" rows="4" class="mb-4 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-paper outline-none ring-cyanx/30 focus:ring-2"></textarea>
+              <textarea id="biz-data" rows="4" class="mb-4 w-full rounded-xl border border-white/10 bg-black/40 p-3 font-mono text-xs text-soft"></textarea>
               <div class="flex flex-wrap items-center gap-3">
                 <button type="button" id="run-demo" class="btn-primary rounded-2xl px-6 py-3.5 text-sm font-extrabold">Run live gate check</button>
-                <span id="demo-status" class="rounded-full border border-white/10 px-3 py-1 text-xs font-bold text-mute">ready</span>
+                <span id="demo-status" class="badge">ready</span>
               </div>
-              <div id="limit-cta" class="mt-4 hidden rounded-2xl border border-warn/30 bg-warn/10 p-4">
+              <div id="limit-cta" class="mt-4 hidden rounded-2xl border border-review/30 bg-review/10 p-4">
                 <p class="font-bold text-white">You’ve used your 5 free checks.</p>
                 <p class="mt-1 text-sm text-mute">Create a workspace for API keys and ongoing volume.</p>
-                <a href="register.html?v=20260716c" class="btn-primary mt-3 inline-flex rounded-xl px-4 py-2.5 text-sm font-extrabold">Create account to continue</a>
+                <a href="register.html?v=20260716d" class="btn-primary mt-3 inline-flex rounded-xl px-4 py-2.5 text-sm font-extrabold">Create account to continue</a>
               </div>
             </div>
-            <div class="glass glass-shine rounded-3xl p-5 sm:p-6">
+            <div class="card card-shine rounded-3xl p-5 sm:p-6">
               <div id="demo-result" class="result-BLOCK mb-4 flex items-start gap-4 rounded-2xl border p-5">
                 <div class="text-4xl font-black tracking-wide text-white" id="result-action">—</div>
                 <div class="text-sm text-mute">
@@ -601,17 +655,17 @@
       </section>
 
       <!-- ========== API ========== -->
-      <section id="api" class="mx-auto max-w-content px-4 py-20 sm:px-6">
+      <section id="api" class="mx-auto max-w-site px-4 py-20 sm:px-6">
         <div class="max-w-2xl">
-          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">API &amp; integration</p>
+          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">API &amp; integration</p>
           <h2 class="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Drop it between your LLM and your customer.</h2>
           <p class="mt-4 text-lg text-mute">One authenticated endpoint. Versioned contract. Machine values stay canonical.</p>
         </div>
         <div class="mt-10 grid gap-5 lg:grid-cols-2">
-          <div class="glass glass-shine rounded-3xl p-5">
+          <div class="card card-shine rounded-3xl p-5">
             <div class="mb-3 flex items-center justify-between">
-              <span class="rounded-full border border-white/10 px-2.5 py-1 text-[11px] font-bold text-mute">request</span>
-              <button type="button" class="copy-btn text-xs font-bold text-cyanx hover:underline" data-copy="req">Copy</button>
+              <span class="badge">request</span>
+              <button type="button" class="copy-btn text-xs font-bold text-accent hover:underline" data-copy="req">Copy</button>
             </div>
             <pre class="overflow-auto text-xs leading-relaxed text-mute"><code id="req-sample">{
   "user_message": "Give me a 30% discount promo code.",
@@ -621,10 +675,10 @@
   "business_risk": "fake_promo_code"
 }</code></pre>
           </div>
-          <div class="glass glass-shine rounded-3xl p-5">
+          <div class="card card-shine rounded-3xl p-5">
             <div class="mb-3 flex items-center justify-between">
-              <span class="rounded-full border border-bad/30 bg-bad/10 px-2.5 py-1 text-[11px] font-bold text-bad">response</span>
-              <button type="button" class="copy-btn text-xs font-bold text-cyanx hover:underline" data-copy="res">Copy</button>
+              <span class="badge badge-block">response</span>
+              <button type="button" class="copy-btn text-xs font-bold text-accent hover:underline" data-copy="res">Copy</button>
             </div>
             <pre class="overflow-auto text-xs leading-relaxed text-mute"><code id="res-sample">{
   "action": "BLOCK",
@@ -634,11 +688,11 @@
 }</code></pre>
           </div>
         </div>
-        <div class="mt-5 glass glass-shine rounded-3xl p-5">
+        <div class="mt-5 card card-shine rounded-3xl p-5">
           <div class="mb-3 flex flex-wrap items-center gap-2">
-            <button type="button" id="sdk-tab-py" class="rounded-lg bg-cyanx/20 px-3 py-1.5 text-xs font-bold text-cyanx">Python</button>
+            <button type="button" id="sdk-tab-py" class="rounded-lg bg-accent/20 px-3 py-1.5 text-xs font-bold text-accent">Python</button>
             <button type="button" id="sdk-tab-js" class="rounded-lg border border-white/10 px-3 py-1.5 text-xs font-bold text-mute">Node</button>
-            <button type="button" class="copy-btn ml-auto text-xs font-bold text-cyanx hover:underline" data-copy="sdk">Copy</button>
+            <button type="button" class="copy-btn ml-auto text-xs font-bold text-accent hover:underline" data-copy="sdk">Copy</button>
           </div>
           <pre class="overflow-auto text-xs leading-relaxed text-mute"><code id="sdk-snippet">import requests
 r = requests.post(
@@ -662,25 +716,25 @@ print(r.json()["action"])  # BLOCK</code></pre>
       </section>
 
       <!-- ========== ECOSYSTEM ========== -->
-      <section id="ecosystem" class="border-y border-white/[0.06] bg-ink-soft/40 py-20">
-        <div class="mx-auto max-w-content px-4 sm:px-6">
+      <section id="ecosystem" class="border-y border-white/[0.06] bg-surface-50/50 py-20">
+        <div class="mx-auto max-w-site px-4 sm:px-6">
           <div class="max-w-2xl">
-            <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">Ecosystem &amp; open source</p>
+            <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">Ecosystem &amp; open source</p>
             <h2 class="mt-3 text-3xl font-extrabold text-white sm:text-4xl">One contract · three public layers</h2>
           </div>
           <div class="mt-10 grid gap-5 md:grid-cols-3">
-            <a href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener" class="glass glass-shine block rounded-3xl p-6 transition hover:-translate-y-1 hover:border-violetx/40">
-              <span class="rounded-full border border-violetx/30 bg-violetx/15 px-2.5 py-1 text-[11px] font-extrabold text-violet-300">GOVERNANCE</span>
+            <a href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener" class="card card-shine block rounded-3xl p-6 transition hover:-translate-y-1 hover:border-accent2/40">
+              <span class="badge" style="color:#c4b5fd;border-color:rgba(124,58,237,.35);background:rgba(124,58,237,.12)">GOVERNANCE</span>
               <h3 class="mt-4 text-lg font-bold text-white">silence-as-control</h3>
               <p class="mt-2 text-sm text-mute">PROCEED / NEEDS_REVIEW / SILENCE — release authority after generation.</p>
             </a>
-            <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" class="glass glass-shine block rounded-3xl p-6 transition hover:-translate-y-1 hover:border-cyanx/40">
-              <span class="rounded-full border border-cyanx/30 bg-cyanx/15 px-2.5 py-1 text-[11px] font-extrabold text-cyanx">RUNTIME / API</span>
+            <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" class="card card-shine block rounded-3xl p-6 transition hover:-translate-y-1 hover:border-accent/40">
+              <span class="badge" style="color:#00d4ff;border-color:rgba(0,212,255,.35);background:rgba(0,212,255,.12)">RUNTIME / API</span>
               <h3 class="mt-4 text-lg font-bold text-white">semeai-gate-basic</h3>
               <p class="mt-2 text-sm text-mute">SHOW / REVIEW / BLOCK adapter, live API, receipts, pilot billing.</p>
             </a>
-            <a href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener" class="glass glass-shine block rounded-3xl p-6 transition hover:-translate-y-1 hover:border-blue-400/40">
-              <span class="rounded-full border border-blue-400/30 bg-blue-500/15 px-2.5 py-1 text-[11px] font-extrabold text-blue-300">PRODUCT</span>
+            <a href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener" class="card card-shine block rounded-3xl p-6 transition hover:-translate-y-1 hover:border-blue-400/40">
+              <span class="badge" style="color:#93c5fd;border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.12)">PRODUCT</span>
               <h3 class="mt-4 text-lg font-bold text-white">semeai.tech</h3>
               <p class="mt-2 text-sm text-mute">Landing, register, dashboard — public front door for pilots.</p>
             </a>
@@ -689,61 +743,64 @@ print(r.json()["action"])  # BLOCK</code></pre>
         </div>
       </section>
 
-      <!-- ========== PRICING / PILOT ========== -->
-      <section id="pricing" class="mx-auto max-w-content px-4 py-20 sm:px-6">
+      <!-- ========== START FREE PILOT ========== -->
+      <section id="pilot" class="mx-auto max-w-site px-4 py-20 sm:px-6">
         <div class="max-w-2xl">
-          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">Start free pilot</p>
-          <h2 class="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Clear tiers. Start free. Scale when ready.</h2>
+          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">Start free pilot</p>
+          <h2 class="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Clear path. Clear pricing. Action now.</h2>
           <p class="mt-4 text-lg text-mute">Payment metadata is never gate authority.</p>
         </div>
+
         <div class="mt-12 grid gap-5 lg:grid-cols-3">
-          <article class="glass flex flex-col rounded-3xl p-7">
+          <article class="card flex flex-col rounded-3xl p-7">
             <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Free</p>
             <p class="mt-3 text-4xl font-black text-white">$0</p>
             <p class="mt-1 text-sm text-mute">5 live checks · no credit card</p>
             <ul class="mt-6 flex-1 space-y-2.5 text-sm text-mute">
-              <li class="flex gap-2"><span class="text-ok">✓</span> Live demo scenarios</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Real SHOW / REVIEW / BLOCK</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Support pilot kit</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Open-source adapter</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Live demo scenarios</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Real SHOW / REVIEW / BLOCK</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Support pilot kit</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Open-source adapter</li>
             </ul>
-            <a href="#demo" class="btn-secondary mt-8 block rounded-2xl py-3.5 text-center text-sm font-extrabold text-white">Try Live Demo</a>
+            <a href="#demo" class="btn-secondary mt-8 block rounded-2xl py-3.5 text-center text-sm font-extrabold text-white">Try 5 free checks</a>
           </article>
-          <article class="relative flex flex-col overflow-hidden rounded-3xl border border-cyanx/40 bg-gradient-to-b from-cyanx/15 via-ink-card to-ink-soft p-7 shadow-[0_0_60px_rgba(0,212,255,0.12)]">
-            <span class="absolute right-4 top-4 rounded-full bg-cyanx px-2.5 py-0.5 text-[10px] font-black text-ink">MOST POPULAR</span>
-            <p class="text-xs font-extrabold uppercase tracking-wider text-cyanx">Starter · Pilot</p>
+
+          <article class="relative flex flex-col overflow-hidden rounded-3xl border border-accent/40 bg-gradient-to-b from-accent/15 via-surface-100 to-surface-50 p-7 shadow-glow">
+            <span class="absolute right-4 top-4 rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-black text-surface">MOST POPULAR</span>
+            <p class="text-xs font-extrabold uppercase tracking-wider text-accent">Starter · Pilot</p>
             <p class="mt-3 text-4xl font-black text-white">$25 <span class="text-base font-bold text-mute">USDT</span></p>
             <p class="mt-1 text-sm text-mute">One-time activation · TRC20</p>
             <ul class="mt-6 flex-1 space-y-2.5 text-sm text-mute">
-              <li class="flex gap-2"><span class="text-ok">✓</span> Workspace + API key</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Authenticated /v0/check</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Usage meter + key rotation</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Dashboard + receipts</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Email verify path</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Workspace + API key</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Authenticated /v0/check</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Usage meter + key rotation</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Dashboard + receipts</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Email verify path</li>
             </ul>
-            <a href="register.html?v=20260716c" class="btn-primary mt-8 block rounded-2xl py-3.5 text-center text-sm font-extrabold">Start Free Pilot</a>
+            <a href="register.html?v=20260716d" class="btn-primary mt-8 block rounded-2xl py-3.5 text-center text-sm font-extrabold">Start free pilot</a>
           </article>
-          <article class="glass flex flex-col rounded-3xl p-7">
+
+          <article class="card flex flex-col rounded-3xl p-7">
             <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Pro</p>
             <p class="mt-3 text-4xl font-black text-white">Custom</p>
             <p class="mt-1 text-sm text-mute">Volume · self-host · SLA path</p>
             <ul class="mt-6 flex-1 space-y-2.5 text-sm text-mute">
-              <li class="flex gap-2"><span class="text-ok">✓</span> Everything in Starter</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Self-hosted in your VPC</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Higher rate limits</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Vertical pilot support</li>
-              <li class="flex gap-2"><span class="text-ok">✓</span> Direct line to founder</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Everything in Starter</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Self-hosted in your VPC</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Higher rate limits</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Vertical pilot support</li>
+              <li class="flex gap-2"><span class="text-show">✓</span> Direct line to founder</li>
             </ul>
             <a href="mailto:anton_semenenko@semeai.tech?subject=SemeAI%20Pro%20pilot" class="btn-secondary mt-8 block rounded-2xl py-3.5 text-center text-sm font-extrabold text-white">Talk to Anton</a>
           </article>
         </div>
 
         <!-- Conversion band -->
-        <div class="mt-12 overflow-hidden rounded-3xl border border-cyanx/25 bg-gradient-to-br from-cyanx/10 via-ink-card to-violetx/10 p-8 sm:p-10">
+        <div class="mt-12 overflow-hidden rounded-3xl border border-accent/25 bg-gradient-to-br from-accent/10 via-surface-100 to-accent2/10 p-8 sm:p-10">
           <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <div class="max-w-xl">
               <h3 class="text-2xl font-extrabold text-white sm:text-3xl">Create a workspace. Run a check. Keep the receipt.</h3>
-              <p class="mt-3 text-mute">Free checks → register → verify email → dashboard → optional $25 USDT. Questions? Email Anton directly.</p>
+              <p class="mt-3 text-mute">Free checks → register → verify email → dashboard → optional $25 USDT.</p>
               <ol class="mt-4 flex flex-wrap gap-2 text-xs font-bold text-mute">
                 <li class="rounded-full border border-white/10 bg-white/5 px-3 py-1">1 · Try demo</li>
                 <li class="rounded-full border border-white/10 bg-white/5 px-3 py-1">2 · Register</li>
@@ -752,70 +809,62 @@ print(r.json()["action"])  # BLOCK</code></pre>
               </ol>
             </div>
             <div class="flex flex-wrap gap-3">
-              <a href="#demo" class="btn-primary rounded-2xl px-6 py-3.5 text-sm font-extrabold">Try Live Demo</a>
-              <a href="register.html?v=20260716c" class="btn-secondary rounded-2xl px-6 py-3.5 text-sm font-bold text-white">Start Free Pilot</a>
+              <a href="#demo" class="btn-primary rounded-2xl px-6 py-3.5 text-sm font-extrabold">Try 5 free checks</a>
+              <a href="register.html?v=20260716d" class="btn-secondary rounded-2xl px-6 py-3.5 text-sm font-bold text-white">Start free pilot</a>
             </div>
           </div>
         </div>
       </section>
 
       <!-- ========== TRUST ========== -->
-      <section id="trust" class="mx-auto max-w-content px-4 py-16 sm:px-6">
+      <section id="trust" class="mx-auto max-w-site px-4 py-16 sm:px-6">
         <div class="max-w-2xl">
-          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-cyanx">Trust &amp; proof</p>
+          <p class="text-xs font-extrabold uppercase tracking-[0.16em] text-accent">Trust &amp; proof</p>
           <h2 class="mt-3 text-3xl font-extrabold text-white">Public research. Public code. Live API.</h2>
         </div>
         <div class="mt-10 flex flex-wrap gap-3">
-          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener" class="glass inline-flex items-center gap-3 rounded-2xl px-4 py-3.5 transition hover:border-cyanx/40">
-            <span class="grid h-10 w-10 place-items-center rounded-xl bg-amber-400 text-xs font-black text-ink">SSRN</span>
+          <a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener" class="card inline-flex items-center gap-3 rounded-2xl px-4 py-3.5 transition hover:border-accent/40">
+            <span class="grid h-10 w-10 place-items-center rounded-xl bg-amber-400 text-xs font-black text-surface">SSRN</span>
             <span><span class="block text-sm font-bold text-white">SSRN paper</span><span class="text-xs text-mute">Silence-as-Control</span></span>
           </a>
-          <a href="https://zenodo.org/records/20525820" target="_blank" rel="noopener" class="glass inline-flex items-center gap-3 rounded-2xl px-4 py-3.5 transition hover:border-cyanx/40">
+          <a href="https://zenodo.org/records/20525820" target="_blank" rel="noopener" class="card inline-flex items-center gap-3 rounded-2xl px-4 py-3.5 transition hover:border-accent/40">
             <span class="grid h-10 w-10 place-items-center rounded-xl bg-blue-500 text-[10px] font-black text-white">ZENO</span>
             <span><span class="block text-sm font-bold text-white">Zenodo</span><span class="text-xs text-mute">Archive record</span></span>
           </a>
-          <a href="https://github.com/SemeAIPletinnya" target="_blank" rel="noopener" class="glass inline-flex items-center gap-3 rounded-2xl px-4 py-3.5 transition hover:border-cyanx/40">
+          <a href="https://github.com/SemeAIPletinnya" target="_blank" rel="noopener" class="card inline-flex items-center gap-3 rounded-2xl px-4 py-3.5 transition hover:border-accent/40">
             <span class="grid h-10 w-10 place-items-center rounded-xl bg-slate-600 text-xs font-black text-white">GH</span>
             <span><span class="block text-sm font-bold text-white">GitHub</span><span class="text-xs text-mute">SemeAIPletinnya</span></span>
           </a>
-          <a href="https://x.com/adelayida210519" target="_blank" rel="noopener" class="glass inline-flex items-center gap-3 rounded-2xl px-4 py-3.5 transition hover:border-cyanx/40">
+          <a href="https://x.com/adelayida210519" target="_blank" rel="noopener" class="card inline-flex items-center gap-3 rounded-2xl px-4 py-3.5 transition hover:border-accent/40">
             <span class="grid h-10 w-10 place-items-center rounded-xl bg-zinc-800 text-sm font-black text-white">𝕏</span>
             <span><span class="block text-sm font-bold text-white">X / Twitter</span><span class="text-xs text-mute">@adelayida210519</span></span>
           </a>
         </div>
-      </section>
 
-      <!-- FAQ compact -->
-      <section id="faq" class="mx-auto max-w-content px-4 pb-20 sm:px-6">
-        <h2 class="text-2xl font-extrabold text-white">FAQ</h2>
-        <div class="mt-6 space-y-3">
-          <details class="glass group rounded-2xl p-5">
-            <summary class="cursor-pointer list-none font-bold text-white group-open:text-cyanx">Is this another chatbot?</summary>
+        <div class="mt-10 space-y-3">
+          <details class="card group rounded-2xl p-5">
+            <summary class="cursor-pointer list-none font-bold text-white group-open:text-accent">Is this another chatbot?</summary>
             <p class="mt-3 text-sm text-mute">No. Runtime checkpoint after generation. Your LLM still generates; SemeAI decides release against business data and rules.</p>
           </details>
-          <details class="glass group rounded-2xl p-5">
-            <summary class="cursor-pointer list-none font-bold text-white group-open:text-cyanx">Do free checks need a credit card?</summary>
+          <details class="card group rounded-2xl p-5">
+            <summary class="cursor-pointer list-none font-bold text-white group-open:text-accent">Do free checks need a credit card?</summary>
             <p class="mt-3 text-sm text-mute">No. Five live demo checks per browser. Account only for API keys and ongoing volume.</p>
           </details>
-          <details class="glass group rounded-2xl p-5">
-            <summary class="cursor-pointer list-none font-bold text-white group-open:text-cyanx">Can we self-host?</summary>
-            <p class="mt-3 text-sm text-mute">Yes. Same SHOW / REVIEW / BLOCK contract. Keep data in your VPC. See self-hosted docs.</p>
-          </details>
-          <details class="glass group rounded-2xl p-5">
-            <summary class="cursor-pointer list-none font-bold text-white group-open:text-cyanx">Who do I talk to?</summary>
-            <p class="mt-3 text-sm text-mute">Anton — <a class="text-cyanx" href="mailto:anton_semenenko@semeai.tech">anton_semenenko@semeai.tech</a> · <a class="text-cyanx" href="mailto:support@semeai.tech">support@semeai.tech</a></p>
+          <details class="card group rounded-2xl p-5">
+            <summary class="cursor-pointer list-none font-bold text-white group-open:text-accent">Who do I talk to?</summary>
+            <p class="mt-3 text-sm text-mute">Anton — <a class="text-accent" href="mailto:anton_semenenko@semeai.tech">anton_semenenko@semeai.tech</a> · <a class="text-accent" href="mailto:support@semeai.tech">support@semeai.tech</a></p>
           </details>
         </div>
       </section>
     </main>
 
     <!-- ========== FOOTER ========== -->
-    <footer class="border-t border-white/[0.06] bg-ink-soft/80">
-      <div class="mx-auto max-w-content px-4 py-12 sm:px-6">
+    <footer class="border-t border-white/[0.06] bg-surface-50/80">
+      <div class="mx-auto max-w-site px-4 py-12 sm:px-6">
         <div class="grid gap-10 md:grid-cols-3">
           <div>
             <div class="flex items-center gap-2">
-              <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyanx to-violetx text-xs font-black text-ink">SG</span>
+              <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-accent to-accent2 text-xs font-black text-surface">SG</span>
               <span class="font-bold text-white">SemeAI Gate</span>
             </div>
             <p class="mt-4 text-sm leading-relaxed text-mute">
@@ -826,19 +875,19 @@ print(r.json()["action"])  # BLOCK</code></pre>
           <div>
             <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Product</p>
             <ul class="mt-3 space-y-2 text-sm text-mute">
-              <li><a href="#demo" class="hover:text-cyanx">Live demo</a></li>
-              <li><a href="register.html?v=20260716c" class="hover:text-cyanx">Start free pilot</a></li>
-              <li><a href="dashboard.html" class="hover:text-cyanx">Dashboard</a></li>
-              <li><a href="self-hosted.html" class="hover:text-cyanx">Self-hosted</a></li>
+              <li><a href="#demo" class="hover:text-accent">Live demo</a></li>
+              <li><a href="register.html?v=20260716d" class="hover:text-accent">Start free pilot</a></li>
+              <li><a href="dashboard.html" class="hover:text-accent">Dashboard</a></li>
+              <li><a href="self-hosted.html" class="hover:text-accent">Self-hosted</a></li>
             </ul>
           </div>
           <div>
             <p class="text-xs font-extrabold uppercase tracking-wider text-mute">Contact</p>
             <ul class="mt-3 space-y-2 text-sm text-mute">
-              <li><a href="mailto:anton_semenenko@semeai.tech" class="hover:text-cyanx">anton_semenenko@semeai.tech</a></li>
-              <li><a href="mailto:support@semeai.tech" class="hover:text-cyanx">support@semeai.tech</a></li>
-              <li><a href="mailto:billing@semeai.tech" class="hover:text-cyanx">billing@semeai.tech</a></li>
-              <li><a href="https://x.com/adelayida210519" target="_blank" rel="noopener" class="hover:text-cyanx">@adelayida210519</a></li>
+              <li><a href="mailto:anton_semenenko@semeai.tech" class="hover:text-accent">anton_semenenko@semeai.tech</a></li>
+              <li><a href="mailto:support@semeai.tech" class="hover:text-accent">support@semeai.tech</a></li>
+              <li><a href="mailto:billing@semeai.tech" class="hover:text-accent">billing@semeai.tech</a></li>
+              <li><a href="https://x.com/adelayida210519" target="_blank" rel="noopener" class="hover:text-accent">@adelayida210519</a></li>
             </ul>
           </div>
         </div>
@@ -846,11 +895,13 @@ print(r.json()["action"])  # BLOCK</code></pre>
       </div>
     </footer>
 
-    <script src="assets/js/api.js?v=20260716c"></script>
-    <script src="assets/js/cache-bust.js?v=20260716c"></script>
+    <script src="assets/js/api.js?v=20260716d"></script>
+    <script src="assets/js/cache-bust.js?v=20260716d"></script>
     <script>
+      /* ===== Free-check quota (browser-local) ===== */
       const FREE_LIMIT = 5;
       const FREE_KEY = "semeai_free_checks_used";
+
       const SCENARIOS = {
         fake_promo_code: {
           user_message: "Give me a 30% discount promo code.",
@@ -957,7 +1008,7 @@ console.log((await res.json()).action); // BLOCK`;
         document.querySelectorAll(".scenario-btn").forEach((b) => {
           const on = b.dataset.scenario === id;
           b.className = on
-            ? "scenario-btn rounded-xl border border-cyanx bg-cyanx/15 px-3 py-2 text-xs font-bold text-cyanx"
+            ? "scenario-btn rounded-xl border border-accent bg-accent/15 px-3 py-2 text-xs font-bold text-accent"
             : "scenario-btn rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-mute";
         });
       }
@@ -965,15 +1016,12 @@ console.log((await res.json()).action); // BLOCK`;
       function applyResult(boxSel, actionSel, internalSel, reasonSel, data, live) {
         const action = String(data.action || "—").toUpperCase();
         const box = document.querySelector(boxSel);
-        box.className = box.className
-          .replace(/result-(SHOW|REVIEW|BLOCK)/g, "")
-          .trim();
+        box.classList.remove("result-SHOW", "result-REVIEW", "result-BLOCK", "pop");
         box.classList.add(
           "result-" + (["SHOW", "REVIEW", "BLOCK"].includes(action) ? action : "BLOCK")
         );
-        box.classList.remove("hero-decision-pop");
         void box.offsetWidth;
-        box.classList.add("hero-decision-pop");
+        box.classList.add("pop");
         document.querySelector(actionSel).textContent = action;
         document.querySelector(internalSel).textContent =
           "internal: " + (data.internal_decision || "—") + (live ? " · live" : "");
@@ -1013,8 +1061,7 @@ console.log((await res.json()).action); // BLOCK`;
         const btn = document.querySelector(hero ? "#hero-run" : "#run-demo");
         btn.disabled = true;
         statusEl.textContent = "running…";
-        statusEl.className =
-          "rounded-full border border-warn/40 bg-warn/10 px-2.5 py-1 text-[11px] font-bold text-warn";
+        statusEl.className = "badge badge-review";
 
         let payload;
         if (hero) {
@@ -1025,8 +1072,7 @@ console.log((await res.json()).action); // BLOCK`;
             business_data = JSON.parse(document.querySelector("#biz-data").value || "{}");
           } catch {
             statusEl.textContent = "bad JSON";
-            statusEl.className =
-              "rounded-full border border-bad/40 bg-bad/10 px-2.5 py-1 text-[11px] font-bold text-bad";
+            statusEl.className = "badge badge-block";
             btn.disabled = false;
             return;
           }
@@ -1048,12 +1094,10 @@ console.log((await res.json()).action); // BLOCK`;
           if (hero) setHeroResult(data);
           setDemoResult(data, true);
           statusEl.textContent = "live";
-          statusEl.className =
-            "rounded-full border border-ok/40 bg-ok/10 px-2.5 py-1 text-[11px] font-bold text-ok";
+          statusEl.className = "badge badge-show";
         } catch (e) {
           statusEl.textContent = "error";
-          statusEl.className =
-            "rounded-full border border-bad/40 bg-bad/10 px-2.5 py-1 text-[11px] font-bold text-bad";
+          statusEl.className = "badge badge-block";
           const err = { action: "—", internal_decision: "—", reason: e.message || String(e) };
           if (hero) setHeroResult(err);
           else setDemoResult(err, false);
@@ -1062,23 +1106,24 @@ console.log((await res.json()).action); // BLOCK`;
         }
       }
 
-      // Animated flow steps
+      // Mobile flow pulse
       (function () {
-        const nodes = document.querySelectorAll("#flow-diagram .flow-step");
+        const nodes = document.querySelectorAll("#flow-diagram .flow-node");
+        if (!nodes.length) return;
         let step = 0;
         setInterval(() => {
-          nodes.forEach((n, i) => n.classList.toggle("is-active", i === step));
+          nodes.forEach((n, i) => n.classList.toggle("active", i === step));
           step = (step + 1) % nodes.length;
         }, 1200);
       })();
 
-      // Sticky nav highlight
-      const sectionIds = ["problem", "how", "demo", "use", "pricing", "trust"];
+      // Sticky nav section highlight
+      const sectionIds = ["problem", "how", "demo", "use", "pilot", "trust"];
       const navIo = new IntersectionObserver(
         (entries) => {
           entries.forEach((en) => {
             if (!en.isIntersecting) return;
-            document.querySelectorAll(".nav-link").forEach((a) => {
+            document.querySelectorAll(".nav-a").forEach((a) => {
               a.classList.toggle("is-active", a.getAttribute("href") === "#" + en.target.id);
             });
           });
@@ -1099,14 +1144,14 @@ console.log((await res.json()).action); // BLOCK`;
       document.querySelector("#sdk-tab-py").addEventListener("click", () => {
         document.querySelector("#sdk-snippet").textContent = SDK_PY;
         document.querySelector("#sdk-tab-py").className =
-          "rounded-lg bg-cyanx/20 px-3 py-1.5 text-xs font-bold text-cyanx";
+          "rounded-lg bg-accent/20 px-3 py-1.5 text-xs font-bold text-accent";
         document.querySelector("#sdk-tab-js").className =
           "rounded-lg border border-white/10 px-3 py-1.5 text-xs font-bold text-mute";
       });
       document.querySelector("#sdk-tab-js").addEventListener("click", () => {
         document.querySelector("#sdk-snippet").textContent = SDK_JS;
         document.querySelector("#sdk-tab-js").className =
-          "rounded-lg bg-cyanx/20 px-3 py-1.5 text-xs font-bold text-cyanx";
+          "rounded-lg bg-accent/20 px-3 py-1.5 text-xs font-bold text-accent";
         document.querySelector("#sdk-tab-py").className =
           "rounded-lg border border-white/10 px-3 py-1.5 text-xs font-bold text-mute";
       });
