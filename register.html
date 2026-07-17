@@ -11,7 +11,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <link rel="canonical" href="https://semeai.tech/register.html" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260717c" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260717d" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -255,7 +255,17 @@
                 </div>
                 <div>
                   <label class="field-label" for="company" data-i18n="reg.company">Company or project</label>
-                  <input id="company" required placeholder="Acme Support" data-i18n-placeholder="reg.company.ph" />
+                  <input id="company" required placeholder="Acme Support" data-i18n-placeholder="reg.company.ph" autocomplete="organization" />
+                </div>
+              </div>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="field-label" for="password" data-i18n="reg.password">Password</label>
+                  <input id="password" type="password" required minlength="8" autocomplete="new-password" data-i18n-placeholder="reg.password.ph" placeholder="min 8 characters" />
+                </div>
+                <div>
+                  <label class="field-label" for="password_confirm" data-i18n="reg.password2">Confirm password</label>
+                  <input id="password_confirm" type="password" required minlength="8" autocomplete="new-password" data-i18n-placeholder="reg.password2.ph" placeholder="repeat password" />
                 </div>
               </div>
               <details class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
@@ -287,8 +297,8 @@
                   <textarea id="notes" placeholder="Example: block fake promo codes before answers reach users." data-i18n-placeholder="reg.notes.ph"></textarea>
                 </div>
               </details>
-              <p class="text-xs text-faint" data-i18n="reg.noPassword">
-                v0.1 has no classic password: after email confirmation you receive a one-time access key — that is how you open the cabinet.
+              <p class="text-xs text-faint" data-i18n="reg.passwordHint">
+                After email confirmation log into the cabinet with email + password. An integration API key is also issued once for servers.
               </p>
               <label class="flex gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 text-sm leading-relaxed text-mute">
                 <input id="ack" type="checkbox" required class="mt-1 h-4 w-4 shrink-0 accent-cyan-400" />
@@ -340,9 +350,9 @@
       <div data-semeai-footer></div>
     </div>
 
-    <script src="assets/js/i18n.js?v=20260717c"></script>
-    <script src="assets/js/api.js?v=20260717c"></script>
-    <script src="assets/js/site-shell.js?v=20260717c"></script>
+    <script src="assets/js/i18n.js?v=20260717d"></script>
+    <script src="assets/js/api.js?v=20260717d"></script>
+    <script src="assets/js/site-shell.js?v=20260717d"></script>
     <script>
       /* Canvas particle field — same language as landing */
       (function () {
@@ -454,6 +464,8 @@
         return {
           email: document.querySelector("#email").value.trim(),
           company: document.querySelector("#company").value.trim(),
+          password: document.querySelector("#password").value,
+          password_confirm: document.querySelector("#password_confirm").value,
           use_case: document.querySelector("#use_case").value,
           expected_monthly_checks: document.querySelector("#volume").value,
           notes: document.querySelector("#notes").value.trim(),
@@ -529,6 +541,9 @@
           } else {
             setMessage(tt("reg.msg.verified"), "ok");
           }
+          if (data.session_token && window.SemeAI) {
+            SemeAI.setSessionToken(data.session_token, { remember: true });
+          }
         } catch (err) {
           setMessage(err.message || String(err), "error");
         } finally {
@@ -543,11 +558,13 @@
       });
 
       document.querySelector("#use-dashboard").addEventListener("click", () => {
-        if (apiKeyInput.value) {
-          sessionStorage.setItem("semeai_dashboard_api_key", apiKeyInput.value);
+        if (window.SemeAI) {
+          if (apiKeyInput.value && !SemeAI.getStoredToken()) {
+            SemeAI.setSessionToken(apiKeyInput.value, { remember: true });
+          }
           setStep(4);
         }
-        location.href = "dashboard.html?v=20260717c";
+        location.href = "dashboard.html?v=20260717d";
       });
 
       if (location.hash.startsWith("#verify=")) {

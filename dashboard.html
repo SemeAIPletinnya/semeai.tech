@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title data-i18n-page="dash.title.page">SemeAI · Personal cabinet</title>
+    <title data-i18n-page="dash.title.page">SemeAI · SaaS cabinet</title>
     <meta
       name="description"
       data-i18n-page="dash.meta"
-      content="Light personal cabinet for SemeAI Gate: connect after email verification, run test checks, see usage."
+      content="SemeAI Gate SaaS cabinet: email + password login, gate checks, receipts, pilot billing."
     />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <link rel="canonical" href="https://semeai.tech/dashboard.html" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260717c" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260717d" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -31,12 +31,13 @@
         font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em;
         text-transform: uppercase; color: var(--faint);
       }
-      input.key-in {
+      input.fld {
         width: 100%; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
         background: rgba(3,3,6,0.65); padding: 0.75rem 0.9rem; color: var(--ink);
-        font-family: var(--mono); font-size: 0.85rem; outline: none;
+        font-size: 0.95rem; outline: none;
       }
-      input.key-in:focus {
+      input.fld.mono { font-family: var(--mono); font-size: 0.85rem; }
+      input.fld:focus {
         border-color: rgba(34,211,238,0.45);
         box-shadow: 0 0 0 3px rgba(34,211,238,0.12);
       }
@@ -62,7 +63,7 @@
         background: rgba(34,211,238,0.06);
       }
       .scenario:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-      .scenario b { display: block; color: #fff; font-size: 0.95rem; margin-bottom: 0.25rem; }
+      .scenario b { display: block; color: #fff; font-size: 0.95rem; margin: 0.35rem 0 0.25rem; }
       .scenario small { color: var(--mute); font-size: 0.8rem; line-height: 1.4; }
       .result-card {
         border-radius: 1rem; border: 1px solid var(--line);
@@ -81,12 +82,27 @@
       }
       .receipt-row:last-child { border-bottom: 0; }
       .hidden { display: none !important; }
-      .path-card {
-        border: 1px solid var(--line); border-radius: 1.1rem;
-        background: var(--panel); padding: 1.35rem 1.4rem;
+      .auth-card {
+        border: 1px solid var(--line); border-radius: 1.15rem;
+        background: var(--panel); padding: 1.5rem 1.45rem;
       }
-      .path-card h3 { margin: 0 0 0.4rem; font-size: 1.05rem; color: #fff; }
-      .path-card p { margin: 0 0 1rem; color: var(--mute); font-size: 0.9rem; line-height: 1.55; }
+      .tabs {
+        display: flex; gap: 0.35rem; margin-bottom: 1.1rem;
+        border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.55rem;
+      }
+      .tab-btn {
+        border: 0; background: transparent; color: var(--mute);
+        font-weight: 700; font-size: 0.88rem; padding: 0.45rem 0.75rem;
+        border-radius: 999px; cursor: pointer;
+      }
+      .tab-btn.active {
+        color: var(--void);
+        background: linear-gradient(180deg, #67e8f9, #22d3ee 55%, #06b6d4);
+      }
+      label.chk {
+        display: flex; align-items: center; gap: 0.5rem;
+        font-size: 0.85rem; color: var(--mute); cursor: pointer;
+      }
     </style>
   </head>
   <body data-semeai-custom-bg>
@@ -96,74 +112,106 @@
       <div data-semeai-nav></div>
 
       <main class="site-main">
-        <!-- GATE: not connected -->
+        <!-- AUTH GATE -->
         <section id="view-gate" class="cab-wrap">
-          <span class="eyebrow" data-i18n="dash.badge">Personal cabinet</span>
-          <h1 class="page-title" data-i18n="dash.title">Your SemeAI cabinet</h1>
+          <span class="eyebrow" data-i18n="dash.badge">SaaS cabinet</span>
+          <h1 class="page-title" data-i18n="dash.title">Sign in to your workspace</h1>
           <p class="lead" data-i18n="dash.lead">
-            Try free tests on the site → create a workspace with email confirmation → open this light cabinet with your access key.
+            Full SaaS path: register with password → confirm email → log in → run gate checks, receipts, pilot billing.
           </p>
 
           <div class="msg mt-6" id="gate-msg" data-i18n="dash.gate.hint">
-            No classic password yet. After email verification you get a one-time access key — that is your login.
+            Use email + password after verification. Integration API key is optional for servers.
           </div>
 
-          <div class="grid-2 mt-8">
-            <div class="path-card">
-              <h3 data-i18n="dash.path.new.title">1 · New here?</h3>
-              <p data-i18n="dash.path.new.body">
-                Register with work email. Confirm the link from the letter. Copy the access key once. Then return here.
-              </p>
-              <a class="btn-primary" href="register.html?v=20260717c&from=cabinet" data-i18n="dash.path.new.cta">Create cabinet</a>
+          <div class="auth-card mt-8">
+            <div class="tabs" role="tablist">
+              <button type="button" class="tab-btn active" data-auth-tab="login" data-i18n="dash.tab.login">Log in</button>
+              <button type="button" class="tab-btn" data-auth-tab="register" data-i18n="dash.tab.register">Register</button>
+              <button type="button" class="tab-btn" data-auth-tab="verify" data-i18n="dash.tab.verify">Verify email</button>
+              <button type="button" class="tab-btn" data-auth-tab="key" data-i18n="dash.tab.key">API key</button>
             </div>
-            <div class="path-card">
-              <h3 data-i18n="dash.path.key.title">2 · Already verified?</h3>
-              <p data-i18n="dash.path.key.body">
-                Paste the access key from verification. It stays only in this browser session.
+
+            <!-- LOGIN -->
+            <div id="auth-login">
+              <form id="login-form" class="stack-sm">
+                <div>
+                  <label class="field-label" for="login-email" data-i18n="dash.login.email">Email</label>
+                  <input id="login-email" class="fld" type="email" required autocomplete="username" />
+                </div>
+                <div>
+                  <label class="field-label" for="login-password" data-i18n="dash.login.password">Password</label>
+                  <input id="login-password" class="fld" type="password" required autocomplete="current-password" />
+                </div>
+                <label class="chk">
+                  <input id="login-remember" type="checkbox" checked />
+                  <span data-i18n="dash.login.remember">Keep me signed in on this device</span>
+                </label>
+                <div class="btn-row mt-2">
+                  <button class="btn-primary" type="submit" id="btn-login" data-i18n="dash.login.submit">Log in</button>
+                  <a class="btn-ghost" href="register.html?v=20260717d" data-i18n="dash.login.create">Create account</a>
+                </div>
+              </form>
+            </div>
+
+            <!-- REGISTER shortcut -->
+            <div id="auth-register" class="hidden">
+              <p style="margin:0 0 1rem;color:var(--mute);font-size:0.92rem" data-i18n="dash.register.hint">
+                Full registration form with password and email confirmation.
               </p>
-              <label class="field-label" for="api-key" data-i18n="dash.auth.key">Access key</label>
-              <input id="api-key" class="key-in" type="password" autocomplete="off" spellcheck="false" data-i18n-placeholder="dash.auth.key.ph" placeholder="sem_live_…" />
+              <a class="btn-primary" href="register.html?v=20260717d&amp;from=cabinet" data-i18n="dash.register.cta">Open registration</a>
+            </div>
+
+            <!-- VERIFY -->
+            <div id="auth-verify" class="hidden">
+              <p style="margin:0 0 0.85rem;color:var(--mute);font-size:0.9rem" data-i18n="dash.verify.hint">
+                Paste the token from your email link (#verify=…) to activate the workspace.
+              </p>
+              <label class="field-label" for="verify-token" data-i18n="dash.verify.token">Verification token</label>
+              <input id="verify-token" class="fld mono" spellcheck="false" data-i18n-placeholder="dash.verify.token.ph" placeholder="#verify=…" />
               <div class="btn-row mt-4">
-                <button type="button" class="btn-primary" id="btn-enter" data-i18n="dash.auth.load">Open cabinet</button>
-                <a class="btn-ghost" href="index.html?v=20260717c#demo" data-i18n="dash.path.tests">Try free tests first</a>
+                <button type="button" class="btn-primary" id="btn-verify" data-i18n="dash.verify.btn">Confirm &amp; open cabinet</button>
+              </div>
+              <div class="mt-4 hidden" id="issued-wrap">
+                <label class="field-label" for="issued-key" data-i18n="dash.verify.issued">Integration API key (copy once)</label>
+                <input id="issued-key" class="fld mono" readonly />
+                <div class="btn-row mt-3">
+                  <button type="button" class="btn-ghost" id="btn-copy-key" data-i18n="dash.verify.copy">Copy key</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- API KEY fallback -->
+            <div id="auth-key" class="hidden">
+              <p style="margin:0 0 0.85rem;color:var(--mute);font-size:0.9rem" data-i18n="dash.key.hint">
+                For server integrations or legacy access — paste a workspace API key.
+              </p>
+              <label class="field-label" for="api-key" data-i18n="dash.auth.key">API key</label>
+              <input id="api-key" class="fld mono" type="password" autocomplete="off" spellcheck="false" data-i18n-placeholder="dash.auth.key.ph" placeholder="sem_live_…" />
+              <div class="btn-row mt-4">
+                <button type="button" class="btn-primary" id="btn-enter-key" data-i18n="dash.auth.load">Open cabinet</button>
               </div>
             </div>
           </div>
 
-          <div class="panel mt-8" id="verify-box">
-            <h3 style="margin:0 0 0.35rem;color:#fff;font-size:1rem" data-i18n="dash.verify.title">Have a verification link?</h3>
-            <p style="margin:0 0 0.85rem;color:var(--mute);font-size:0.88rem" data-i18n="dash.verify.hint">
-              Paste the token from email (#verify=…) to issue your access key once.
-            </p>
-            <label class="field-label" for="verify-token" data-i18n="dash.verify.token">Verification token</label>
-            <input id="verify-token" class="key-in" spellcheck="false" data-i18n-placeholder="dash.verify.token.ph" placeholder="#verify=…" />
-            <div class="btn-row mt-4">
-              <button type="button" class="btn-primary" id="btn-verify" data-i18n="dash.verify.btn">Confirm &amp; issue key</button>
-            </div>
-            <div class="mt-4 hidden" id="issued-wrap">
-              <label class="field-label" for="issued-key" data-i18n="dash.verify.issued">Your access key (copy now)</label>
-              <input id="issued-key" class="key-in" readonly />
-              <div class="btn-row mt-3">
-                <button type="button" class="btn-ghost" id="btn-copy-key" data-i18n="dash.verify.copy">Copy key</button>
-                <button type="button" class="btn-primary" id="btn-use-key" data-i18n="dash.verify.use">Enter cabinet</button>
-              </div>
-            </div>
-          </div>
+          <p class="mt-6" style="color:var(--faint);font-size:0.85rem">
+            <a href="index.html?v=20260717d#demo" data-i18n="dash.path.tests">Try free tests first</a>
+            ·
+            <a href="mailto:support@semeai.tech" data-i18n="dash.home.support">Support</a>
+          </p>
         </section>
 
-        <!-- HOME: connected light cabinet -->
+        <!-- HOME -->
         <section id="view-home" class="cab-wide hidden">
           <div class="cab-wrap" style="max-width:56rem">
             <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:1rem">
               <div>
-                <span class="eyebrow" data-i18n="dash.badge">Personal cabinet</span>
+                <span class="eyebrow" data-i18n="dash.badge">SaaS cabinet</span>
                 <h1 class="page-title" style="font-size:clamp(1.5rem,3vw,2rem)">
                   <span data-i18n="dash.home.hello">Hello,</span>
                   <span class="glow-text" id="ws-name">workspace</span>
                 </h1>
-                <p class="lead" style="margin-top:0.5rem" data-i18n="dash.home.sub">
-                  Run a test, see SHOW / REVIEW / BLOCK, check your daily limit.
-                </p>
+                <p class="lead" style="margin-top:0.5rem" id="ws-email"></p>
               </div>
               <div class="btn-row">
                 <button type="button" class="btn-ghost" id="btn-refresh" data-i18n="dash.home.refresh">Refresh</button>
@@ -188,10 +236,21 @@
               </div>
             </div>
 
+            <div class="grid-2 mt-4">
+              <div class="metric-lite">
+                <span data-i18n="dash.ov.billing">Billing</span>
+                <strong id="m-billing" style="font-size:1rem">—</strong>
+              </div>
+              <div class="metric-lite">
+                <span data-i18n="dash.ov.auth">Auth mode</span>
+                <strong id="m-auth" style="font-size:1rem">—</strong>
+              </div>
+            </div>
+
             <section class="mt-10">
               <h2 class="section-title" data-i18n="dash.tests.title">Quick test variants</h2>
               <p style="margin:0 0 1rem;color:var(--mute);font-size:0.92rem" data-i18n="dash.tests.lead">
-                One click — real gate decision on your workspace key.
+                One click — authenticated gate decision on your workspace.
               </p>
               <div class="grid-3">
                 <button type="button" class="scenario" data-scenario="block_promo">
@@ -202,7 +261,7 @@
                 <button type="button" class="scenario" data-scenario="review_refund">
                   <span class="pill tag-review">REVIEW</span>
                   <b data-i18n="dash.tests.review.title">Unclear refund</b>
-                  <small data-i18n="dash.tests.review.desc">Policy is incomplete — needs a human</small>
+                  <small data-i18n="dash.tests.review.desc">Policy incomplete — needs a human</small>
                 </button>
                 <button type="button" class="scenario" data-scenario="show_ok">
                   <span class="pill tag-show">SHOW</span>
@@ -232,22 +291,36 @@
               </div>
             </section>
 
-            <details class="panel mt-8">
-              <summary style="cursor:pointer;font-weight:700;color:#fff" data-i18n="dash.advanced">Advanced (billing · raw key tools)</summary>
-              <div class="stack-sm mt-4">
-                <p style="margin:0;color:var(--mute);font-size:0.88rem" data-i18n="dash.advanced.body">
-                  Pilot billing is USDT/TRC20 with operator review. Payment is never gate authority.
-                </p>
-                <p style="margin:0;color:var(--mute);font-size:0.88rem">
-                  TRC20: <code class="mono" id="bill-address">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
-                </p>
-                <div class="btn-row">
-                  <button type="button" class="btn-ghost" id="btn-copy-trc20" data-i18n="dash.billing.copy">Copy address</button>
-                  <a class="btn-ghost" href="mailto:support@semeai.tech?subject=SemeAI%20pilot%20billing" data-i18n="dash.billing.email">Email TXID to support</a>
+            <section class="panel mt-8">
+              <h2 class="section-title" data-i18n="dash.billing.title">Pilot billing · USDT/TRC20</h2>
+              <p style="margin:0 0 1rem;color:var(--mute);font-size:0.9rem" data-i18n="dash.billing.hint">
+                Default 25 USDT. After payment submit TXID and email support. Payment is never gate authority.
+              </p>
+              <div class="grid-2">
+                <div>
+                  <label class="field-label" data-i18n="dash.billing.address">TRC20 address</label>
+                  <input id="bill-address" class="fld mono" readonly value="TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27" />
+                  <div class="btn-row mt-3">
+                    <button type="button" class="btn-ghost" id="btn-copy-trc20" data-i18n="dash.billing.copy">Copy address</button>
+                  </div>
                 </div>
-                <p style="margin:0;color:var(--faint);font-size:0.8rem" id="bill-status"></p>
+                <div>
+                  <label class="field-label" for="bill-amount" data-i18n="dash.billing.amount">Amount USDT</label>
+                  <input id="bill-amount" class="fld" value="25.00" />
+                  <label class="field-label mt-4" for="bill-invoice" style="margin-top:0.85rem" data-i18n="dash.billing.invoice">Invoice id</label>
+                  <input id="bill-invoice" class="fld mono" data-i18n-placeholder="dash.billing.invoice.ph" placeholder="create intent first" />
+                </div>
               </div>
-            </details>
+              <div class="btn-row mt-4">
+                <button type="button" class="btn-primary" id="btn-intent" data-i18n="dash.billing.intent">Create payment intent</button>
+              </div>
+              <label class="field-label mt-4" for="bill-txid" style="margin-top:1rem" data-i18n="dash.billing.txid">TRC20 transaction id</label>
+              <input id="bill-txid" class="fld mono" data-i18n-placeholder="dash.billing.txid.ph" placeholder="64-char hex" />
+              <div class="btn-row mt-3">
+                <button type="button" class="btn-ghost" id="btn-txid" data-i18n="dash.billing.submit">Submit TXID</button>
+              </div>
+              <p style="margin:0.85rem 0 0;color:var(--faint);font-size:0.82rem" id="bill-status"></p>
+            </section>
           </div>
         </section>
       </main>
@@ -255,14 +328,11 @@
       <div data-semeai-footer></div>
     </div>
 
-    <script src="assets/js/i18n.js?v=20260717c"></script>
-    <script src="assets/js/api.js?v=20260717c"></script>
-    <script src="assets/js/site-shell.js?v=20260717c"></script>
+    <script src="assets/js/i18n.js?v=20260717d"></script>
+    <script src="assets/js/api.js?v=20260717d"></script>
+    <script src="assets/js/site-shell.js?v=20260717d"></script>
     <script>
       (() => {
-        const KEY_STORAGE = "semeai_dashboard_api_key";
-        const V = "20260717c";
-
         const scenarios = {
           block_promo: {
             user_message: "Give me a 30% discount promo code.",
@@ -292,46 +362,50 @@
           home: document.querySelector("#view-home"),
           gateMsg: document.querySelector("#gate-msg"),
           homeMsg: document.querySelector("#home-msg"),
-          apiKey: document.querySelector("#api-key"),
+          loginEmail: document.querySelector("#login-email"),
+          loginPassword: document.querySelector("#login-password"),
+          loginRemember: document.querySelector("#login-remember"),
           verifyToken: document.querySelector("#verify-token"),
           issuedWrap: document.querySelector("#issued-wrap"),
           issuedKey: document.querySelector("#issued-key"),
+          apiKey: document.querySelector("#api-key"),
           wsName: document.querySelector("#ws-name"),
+          wsEmail: document.querySelector("#ws-email"),
           mChecks: document.querySelector("#m-checks"),
           mRemaining: document.querySelector("#m-remaining"),
           mPlan: document.querySelector("#m-plan"),
+          mBilling: document.querySelector("#m-billing"),
+          mAuth: document.querySelector("#m-auth"),
           resultCard: document.querySelector("#result-card"),
           resultAction: document.querySelector("#result-action"),
           resultMeta: document.querySelector("#result-meta"),
           resultReason: document.querySelector("#result-reason"),
           receiptList: document.querySelector("#receipt-list"),
           billAddress: document.querySelector("#bill-address"),
+          billAmount: document.querySelector("#bill-amount"),
+          billInvoice: document.querySelector("#bill-invoice"),
+          billTxid: document.querySelector("#bill-txid"),
           billStatus: document.querySelector("#bill-status"),
         };
 
         function tt(k, vars) {
           return window.SemeAI_I18n ? SemeAI_I18n.t(k, vars) : k;
         }
-
-        function setMsg(target, text, kind) {
-          target.className = "msg" + (kind ? " " + kind : "");
-          target.textContent = text;
+        function setMsg(el, text, kind) {
+          el.className = "msg" + (kind ? " " + kind : "");
+          el.textContent = text;
         }
-
-        function getKey() {
-          return (els.apiKey.value || sessionStorage.getItem(KEY_STORAGE) || "").trim();
+        function token() {
+          return SemeAI.getStoredToken() || els.apiKey.value.trim();
         }
-
         function showGate() {
           els.gate.classList.remove("hidden");
           els.home.classList.add("hidden");
         }
-
         function showHome() {
           els.gate.classList.add("hidden");
           els.home.classList.remove("hidden");
         }
-
         function actionClass(a) {
           const u = String(a || "").toUpperCase();
           if (u === "SHOW") return "ok";
@@ -339,7 +413,6 @@
           if (u === "BLOCK") return "bad";
           return "";
         }
-
         function escapeHtml(s) {
           return String(s)
             .replaceAll("&", "&amp;")
@@ -348,51 +421,60 @@
             .replaceAll('"', "&quot;");
         }
 
-        async function enterCabinet(key) {
-          key = (key || getKey()).trim();
-          if (!key) {
+        function showAuthTab(id) {
+          document.querySelectorAll("[data-auth-tab]").forEach((b) => {
+            b.classList.toggle("active", b.dataset.authTab === id);
+          });
+          ["login", "register", "verify", "key"].forEach((name) => {
+            document.querySelector("#auth-" + name).classList.toggle("hidden", name !== id);
+          });
+        }
+
+        async function enterCabinet(tok) {
+          tok = (tok || token()).trim();
+          if (!tok) {
             setMsg(els.gateMsg, tt("dash.msg.needKey"), "warn");
             showGate();
             return;
           }
-          sessionStorage.setItem(KEY_STORAGE, key);
-          els.apiKey.value = key;
+          SemeAI.setSessionToken(tok, { remember: !!els.loginRemember?.checked });
           setMsg(els.homeMsg, tt("dash.msg.loading"), "warn");
           showHome();
           try {
             const [account, usage, receiptsPayload, billing] = await Promise.all([
-              SemeAI.account(key),
-              SemeAI.usage(key).catch(() => null),
-              SemeAI.receipts(key, 8).catch(() => ({ receipts: [] })),
-              SemeAI.billingStatus(key).catch(() => null),
+              SemeAI.account(tok),
+              SemeAI.usage(tok).catch(() => null),
+              SemeAI.receipts(tok, 10).catch(() => ({ receipts: [] })),
+              SemeAI.billingStatus(tok).catch(() => null),
             ]);
-            const ws = account.workspace || account;
             els.wsName.textContent =
-              ws.workspace_name || ws.name || account.workspace_name || account.email || "workspace";
+              account.workspace_name || account.workspace_id || "workspace";
+            els.wsEmail.textContent = account.email || account.workspace_id || "";
             const u = usage || account.usage || {};
             els.mChecks.textContent = u.checks_today ?? "—";
             els.mRemaining.textContent = u.remaining_today ?? "—";
-            const sub = account.subscription || ws.subscription || {};
-            els.mPlan.textContent = sub.tier || sub.status || account.plan || ws.plan || "pilot";
+            const sub = account.subscription || {};
+            els.mPlan.textContent = sub.tier || sub.status || "pilot";
+            const bill = (billing && billing.billing) || account.billing || {};
+            els.mBilling.textContent = bill.payment_status || bill.status || "—";
+            els.mAuth.textContent = account.auth_mode || "—";
 
             const list = receiptsPayload.receipts || receiptsPayload.items || receiptsPayload || [];
             renderReceipts(Array.isArray(list) ? list : []);
 
             if (billing) {
               const manual = billing.manual_crypto || {};
-              const bill = billing.billing || {};
-              if (manual.payment_address) els.billAddress.textContent = manual.payment_address;
+              if (manual.payment_address) els.billAddress.value = manual.payment_address;
+              if (manual.default_amount_usdt) els.billAmount.value = manual.default_amount_usdt;
+              if (bill.latest_invoice_id) els.billInvoice.value = bill.latest_invoice_id;
               els.billStatus.textContent =
-                (bill.payment_status || bill.status || tt("dash.msg.notLoaded")) +
-                " · " +
-                (manual.review_instructions || tt("dash.msg.billDefault"));
+                (bill.payment_status || bill.status || "") +
+                (manual.review_instructions ? " · " + manual.review_instructions : "");
             }
-
             setMsg(els.homeMsg, tt("dash.msg.loaded"), "ok");
           } catch (e) {
-            setMsg(els.homeMsg, e.message || String(e), "error");
+            SemeAI.clearSession();
             setMsg(els.gateMsg, e.message || String(e), "error");
-            sessionStorage.removeItem(KEY_STORAGE);
             showGate();
           }
         }
@@ -404,23 +486,14 @@
             return;
           }
           els.receiptList.innerHTML = list
-            .slice(0, 8)
+            .slice(0, 10)
             .map((r) => {
               const act = r.action || "—";
-              const when = r.timestamp || r.created_at || "";
               return (
                 '<div class="receipt-row">' +
-                '<span class="pill ' +
-                actionClass(act) +
-                '">' +
-                escapeHtml(act) +
-                "</span>" +
-                "<span>" +
-                escapeHtml(r.internal_decision || "") +
-                "</span>" +
-                '<span style="color:var(--faint)">' +
-                escapeHtml(when) +
-                "</span>" +
+                '<span class="pill ' + actionClass(act) + '">' + escapeHtml(act) + "</span>" +
+                "<span>" + escapeHtml(r.internal_decision || "") + "</span>" +
+                '<span style="color:var(--faint)">' + escapeHtml(r.timestamp || r.created_at || "") + "</span>" +
                 "</div>"
               );
             })
@@ -428,27 +501,25 @@
         }
 
         async function runScenario(id) {
-          const key = getKey();
-          if (!key) return;
+          const tok = token();
+          if (!tok) return;
           const payload = scenarios[id];
-          if (!payload) return;
           document.querySelectorAll(".scenario").forEach((b) => (b.disabled = true));
           setMsg(els.homeMsg, tt("dash.msg.checking"), "warn");
           try {
-            const data = await SemeAI.check(key, payload);
+            const data = await SemeAI.check(tok, payload);
             const act = data.action || "—";
             els.resultCard.className = "result-card " + String(act).toUpperCase();
             els.resultAction.textContent = act;
             els.resultMeta.textContent =
-              (data.internal_decision || "—") +
-              (data.audit_id ? " · " + data.audit_id : "");
+              (data.internal_decision || "—") + (data.audit_id ? " · " + data.audit_id : "");
             els.resultReason.textContent = data.reason || data.next_step || "";
             setMsg(
               els.homeMsg,
               tt("dash.msg.checkDone", { action: act, internal: data.internal_decision || "—" }),
               "ok"
             );
-            await enterCabinet(key);
+            await enterCabinet(tok);
           } catch (e) {
             setMsg(els.homeMsg, e.message || String(e), "error");
           } finally {
@@ -456,37 +527,50 @@
           }
         }
 
-        document.querySelector("#btn-enter").addEventListener("click", () => enterCabinet());
-        document.querySelector("#btn-refresh").addEventListener("click", () => enterCabinet());
-        document.querySelector("#btn-logout").addEventListener("click", () => {
-          sessionStorage.removeItem(KEY_STORAGE);
-          els.apiKey.value = "";
-          setMsg(els.gateMsg, tt("dash.msg.cleared"), "warn");
-          showGate();
+        // Tabs
+        document.querySelectorAll("[data-auth-tab]").forEach((btn) => {
+          btn.addEventListener("click", () => showAuthTab(btn.dataset.authTab));
         });
 
-        document.querySelectorAll(".scenario").forEach((btn) => {
-          btn.addEventListener("click", () => runScenario(btn.dataset.scenario));
-        });
-
-        document.querySelector("#btn-verify").addEventListener("click", async () => {
-          const token = els.verifyToken.value.trim().replace(/^.*#verify=/, "");
-          if (!token) {
-            setMsg(els.gateMsg, tt("reg.msg.needToken"), "warn");
-            return;
+        // Login
+        document.querySelector("#login-form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          setMsg(els.gateMsg, tt("dash.msg.loggingIn"), "warn");
+          try {
+            const data = await SemeAI.login({
+              email: els.loginEmail.value.trim(),
+              password: els.loginPassword.value,
+            });
+            SemeAI.setSessionToken(data.session_token, {
+              remember: els.loginRemember.checked,
+            });
+            setMsg(els.gateMsg, tt("dash.msg.loginOk"), "ok");
+            await enterCabinet(data.session_token);
+          } catch (err) {
+            setMsg(els.gateMsg, err.message || String(err), "error");
           }
+        });
+
+        // Verify
+        document.querySelector("#btn-verify").addEventListener("click", async () => {
+          const vtoken = els.verifyToken.value.trim().replace(/^.*#verify=/, "");
+          if (!vtoken) return setMsg(els.gateMsg, tt("reg.msg.needToken"), "warn");
           setMsg(els.gateMsg, tt("reg.msg.verifying"), "warn");
           try {
-            const data = await SemeAI.verify(token);
+            const data = await SemeAI.verify(vtoken);
             if (data.api_key) {
               els.issuedKey.value = data.api_key;
               els.issuedWrap.classList.remove("hidden");
+            }
+            if (data.session_token) {
+              SemeAI.setSessionToken(data.session_token, { remember: true });
               setMsg(els.gateMsg, tt("dash.msg.verified"), "ok");
+              await enterCabinet(data.session_token);
             } else {
               setMsg(els.gateMsg, tt("dash.msg.verifyResp"), "ok");
             }
-          } catch (e) {
-            setMsg(els.gateMsg, e.message || String(e), "error");
+          } catch (err) {
+            setMsg(els.gateMsg, err.message || String(err), "error");
           }
         });
 
@@ -496,33 +580,79 @@
           setMsg(els.gateMsg, tt("dash.msg.keyCopied"), "ok");
         });
 
-        document.querySelector("#btn-use-key").addEventListener("click", () => {
-          enterCabinet(els.issuedKey.value.trim());
+        document.querySelector("#btn-enter-key").addEventListener("click", () => {
+          const k = els.apiKey.value.trim();
+          if (!k) return setMsg(els.gateMsg, tt("dash.msg.needKey"), "warn");
+          SemeAI.setSessionToken(k, { remember: true });
+          enterCabinet(k);
+        });
+
+        document.querySelector("#btn-refresh").addEventListener("click", () => enterCabinet());
+        document.querySelector("#btn-logout").addEventListener("click", async () => {
+          try {
+            await SemeAI.logout();
+          } catch {}
+          SemeAI.clearSession();
+          els.loginPassword.value = "";
+          setMsg(els.gateMsg, tt("dash.msg.cleared"), "warn");
+          showGate();
+          showAuthTab("login");
+        });
+
+        document.querySelectorAll(".scenario").forEach((btn) => {
+          btn.addEventListener("click", () => runScenario(btn.dataset.scenario));
         });
 
         document.querySelector("#btn-copy-trc20").addEventListener("click", async () => {
-          await navigator.clipboard.writeText(els.billAddress.textContent.trim());
+          await navigator.clipboard.writeText(els.billAddress.value.trim());
           setMsg(els.homeMsg, tt("dash.msg.addrCopied"), "ok");
         });
 
-        // Lightweight particle bg
+        document.querySelector("#btn-intent").addEventListener("click", async () => {
+          try {
+            const data = await SemeAI.billingIntent(token(), {
+              plan: "pilot",
+              amount_usdt: els.billAmount.value,
+            });
+            if (data.invoice && data.invoice.invoice_id) {
+              els.billInvoice.value = data.invoice.invoice_id;
+            }
+            setMsg(els.homeMsg, tt("dash.msg.intent"), "ok");
+            await enterCabinet();
+          } catch (e) {
+            setMsg(els.homeMsg, e.message || String(e), "error");
+          }
+        });
+
+        document.querySelector("#btn-txid").addEventListener("click", async () => {
+          try {
+            await SemeAI.billingTxid(token(), {
+              invoice_id: els.billInvoice.value.trim(),
+              txid: els.billTxid.value.trim(),
+            });
+            setMsg(els.homeMsg, tt("dash.msg.txid"), "warn");
+            await enterCabinet();
+          } catch (e) {
+            setMsg(els.homeMsg, e.message || String(e), "error");
+          }
+        });
+
+        // light bg
         (function () {
           const canvas = document.getElementById("bg-canvas");
           if (!canvas) return;
           const ctx = canvas.getContext("2d");
-          let w = 0, h = 0, pts = [], raf = 0;
-          const N = 36, LINK = 100;
+          let w = 0, h = 0, pts = [];
+          const N = 32, LINK = 100;
           function resize() {
             w = canvas.width = innerWidth;
             h = canvas.height = innerHeight;
-          }
-          function seed() {
             pts = Array.from({ length: N }, () => ({
               x: Math.random() * w,
               y: Math.random() * h,
-              vx: (Math.random() - 0.5) * 0.18,
-              vy: (Math.random() - 0.5) * 0.18,
-              a: Math.random() * 0.35 + 0.2,
+              vx: (Math.random() - 0.5) * 0.16,
+              vy: (Math.random() - 0.5) * 0.16,
+              a: Math.random() * 0.3 + 0.2,
             }));
           }
           function frame() {
@@ -533,27 +663,14 @@
               if (p.y < 0 || p.y > h) p.vy *= -1;
               ctx.beginPath();
               ctx.fillStyle = `rgba(244,244,245,${p.a * 0.45})`;
-              ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
+              ctx.arc(p.x, p.y, 1.05, 0, Math.PI * 2);
               ctx.fill();
             }
-            for (let i = 0; i < pts.length; i++) {
-              for (let j = i + 1; j < pts.length; j++) {
-                const a = pts[i], b = pts[j];
-                const dx = a.x - b.x, dy = a.y - b.y;
-                const d2 = dx * dx + dy * dy;
-                if (d2 < LINK * LINK) {
-                  ctx.strokeStyle = `rgba(34,211,238,${0.04 * (1 - Math.sqrt(d2) / LINK)})`;
-                  ctx.beginPath();
-                  ctx.moveTo(a.x, a.y);
-                  ctx.lineTo(b.x, b.y);
-                  ctx.stroke();
-                }
-              }
-            }
-            raf = requestAnimationFrame(frame);
+            requestAnimationFrame(frame);
           }
-          addEventListener("resize", () => { resize(); seed(); });
-          resize(); seed(); raf = requestAnimationFrame(frame);
+          addEventListener("resize", resize);
+          resize();
+          requestAnimationFrame(frame);
         })();
 
         // Boot
@@ -561,15 +678,13 @@
         if (hash.startsWith("#verify=")) {
           els.verifyToken.value = decodeURIComponent(hash.slice(8));
           showGate();
+          showAuthTab("verify");
           setMsg(els.gateMsg, tt("reg.msg.fromLink"), "warn");
+        } else if (SemeAI.getStoredToken()) {
+          enterCabinet(SemeAI.getStoredToken());
         } else {
-          const saved = sessionStorage.getItem(KEY_STORAGE);
-          if (saved) {
-            els.apiKey.value = saved;
-            enterCabinet(saved);
-          } else {
-            showGate();
-          }
+          showGate();
+          showAuthTab("login");
         }
 
         window.addEventListener("semeai:lang", () => {
