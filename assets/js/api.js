@@ -140,6 +140,12 @@
         token: apiKey || getStoredToken(),
         body: {},
       }),
+    oneClickPay: (payload, apiKey) =>
+      request("/v0/billing/one-click-pay", {
+        method: "POST",
+        token: apiKey || getStoredToken(),
+        body: payload || {},
+      }),
     googleOAuthStart: () => `${API_BASE}/v0/oauth/google/start`,
   };
 })();

@@ -748,6 +748,32 @@
           }
         });
 
+        // One-click USDT pilot (primary paid path)
+        const payBtn = document.createElement("button");
+        payBtn.type = "button";
+        payBtn.className = "btn-primary";
+        payBtn.id = "btn-one-click-usdt";
+        payBtn.textContent = "Pay 25 USDT · one click";
+        const subSection = document.querySelector("#btn-stripe-starter")?.parentElement;
+        if (subSection) subSection.prepend(payBtn);
+        payBtn.addEventListener("click", async () => {
+          try {
+            const pack = await SemeAI.oneClickPay({ plan: "pilot" });
+            await navigator.clipboard.writeText(pack.payment_address || "");
+            els.billAddress.value = pack.payment_address || els.billAddress.value;
+            els.billInvoice.value = pack.invoice_id || "";
+            els.billAmount.value = pack.amount_usdt || "25.00";
+            setMsg(
+              els.homeMsg,
+              `Send ${pack.amount_usdt} USDT TRC20 to ${pack.payment_address} (copied). Then paste TXID below and submit.`,
+              "ok"
+            );
+            document.getElementById("bill-txid")?.focus();
+          } catch (e) {
+            setMsg(els.homeMsg, e.message || String(e), "error");
+          }
+        });
+
         function wireGoogle(id) {
           const a = document.querySelector(id);
           if (a) a.href = SemeAI.googleOAuthStart();

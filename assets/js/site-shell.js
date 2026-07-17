@@ -1,5 +1,5 @@
 (() => {
-  const V = "20260717e";
+  const V = "20260717f";
   const path = (location.pathname || "").toLowerCase();
   const current = (path.split("/").pop() || "index.html").split("?")[0];
   const isHome = current === "index.html" || current === "" || current === "/";
@@ -100,6 +100,7 @@
           { label: t("nav.selfhosted"), desc: t("nav.selfhosted.desc"), href: p.selfHosted, match: "self-hosted.html" },
           { label: t("nav.pilot"), desc: t("nav.pilot.desc"), href: p.pilot, match: "pilot" },
           { label: t("nav.live"), desc: t("nav.live.desc"), href: p.console, external: true },
+          { label: "Integrate", desc: "API key · free 5 · USDT pay", href: `${base}integrate.html?v=${V}`, match: "integrate.html" },
         ],
       },
       {
