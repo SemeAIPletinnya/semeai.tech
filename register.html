@@ -11,7 +11,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <link rel="canonical" href="https://semeai.tech/register.html" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260717b" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260717c" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -200,6 +200,10 @@
       <div data-semeai-nav></div>
 
       <main class="mx-auto max-w-site px-5 pb-20 pt-12 sm:px-6 sm:pt-16">
+        <div id="from-demo-banner" class="mb-6 hidden rounded-xl border border-accent/30 bg-accent/10 px-4 py-3 text-sm text-mute">
+          <strong class="text-white" data-i18n="reg.fromDemoTitle">After free tests</strong>
+          <span data-i18n="reg.fromDemoBody"> — create a cabinet: work email, confirm the letter, copy access key once.</span>
+        </div>
         <section class="mb-10 max-w-2xl">
           <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-mute" data-i18n="reg.badge">
             Workspace onboarding
@@ -238,7 +242,6 @@
         <div class="grid gap-6 lg:grid-cols-2">
           <section class="panel rounded-2xl p-6 sm:p-7" id="panel-form">
             <div class="mb-4 flex flex-wrap gap-2">
-              <span class="pill info">schema 0.1-account</span>
               <span class="pill" id="email-mode-pill">email …</span>
             </div>
             <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="reg.formTitle">Request access</h2>
@@ -255,32 +258,38 @@
                   <input id="company" required placeholder="Acme Support" data-i18n-placeholder="reg.company.ph" />
                 </div>
               </div>
-              <div class="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label class="field-label" for="use_case" data-i18n="reg.usecase">Primary use case</label>
-                  <select id="use_case">
-                    <option value="support" data-i18n="reg.usecase.support">Support chatbot release control</option>
-                    <option value="fintech" data-i18n="reg.usecase.fintech">Fintech / account claims</option>
-                    <option value="product" data-i18n="reg.usecase.product">Product assistant guardrail</option>
-                    <option value="gaming" data-i18n="reg.usecase.gaming">Game / world release gate</option>
-                    <option value="internal_tools" data-i18n="reg.usecase.internal">Internal tools / ops</option>
-                    <option value="research" data-i18n="reg.usecase.research">Research / evaluation</option>
-                  </select>
+              <details class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
+                <summary class="cursor-pointer text-sm font-semibold text-mute hover:text-white" data-i18n="reg.optional">Optional details</summary>
+                <div class="mt-4 grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label class="field-label" for="use_case" data-i18n="reg.usecase">Primary use case</label>
+                    <select id="use_case">
+                      <option value="support" data-i18n="reg.usecase.support">Support chatbot release control</option>
+                      <option value="fintech" data-i18n="reg.usecase.fintech">Fintech / account claims</option>
+                      <option value="product" data-i18n="reg.usecase.product">Product assistant guardrail</option>
+                      <option value="gaming" data-i18n="reg.usecase.gaming">Game / world release gate</option>
+                      <option value="internal_tools" data-i18n="reg.usecase.internal">Internal tools / ops</option>
+                      <option value="research" data-i18n="reg.usecase.research">Research / evaluation</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="field-label" for="volume" data-i18n="reg.volume">Expected monthly checks</label>
+                    <select id="volume">
+                      <option value="pilot" data-i18n="reg.volume.pilot">Pilot / evaluation</option>
+                      <option value="under_10k" data-i18n="reg.volume.under10k">Under 10k</option>
+                      <option value="10k_100k" data-i18n="reg.volume.10k100k">10k – 100k</option>
+                      <option value="100k_plus" data-i18n="reg.volume.100k">100k+</option>
+                    </select>
+                  </div>
                 </div>
-                <div>
-                  <label class="field-label" for="volume" data-i18n="reg.volume">Expected monthly checks</label>
-                  <select id="volume">
-                    <option value="pilot" data-i18n="reg.volume.pilot">Pilot / evaluation</option>
-                    <option value="under_10k" data-i18n="reg.volume.under10k">Under 10k</option>
-                    <option value="10k_100k" data-i18n="reg.volume.10k100k">10k – 100k</option>
-                    <option value="100k_plus" data-i18n="reg.volume.100k">100k+</option>
-                  </select>
+                <div class="mt-4">
+                  <label class="field-label" for="notes" data-i18n="reg.notes">Pilot notes</label>
+                  <textarea id="notes" placeholder="Example: block fake promo codes before answers reach users." data-i18n-placeholder="reg.notes.ph"></textarea>
                 </div>
-              </div>
-              <div>
-                <label class="field-label" for="notes" data-i18n="reg.notes">Pilot notes</label>
-                <textarea id="notes" placeholder="Example: block fake promo codes before answers reach users." data-i18n-placeholder="reg.notes.ph"></textarea>
-              </div>
+              </details>
+              <p class="text-xs text-faint" data-i18n="reg.noPassword">
+                v0.1 has no classic password: after email confirmation you receive a one-time access key — that is how you open the cabinet.
+              </p>
               <label class="flex gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 text-sm leading-relaxed text-mute">
                 <input id="ack" type="checkbox" required class="mt-1 h-4 w-4 shrink-0 accent-cyan-400" />
                 <span data-i18n="reg.ack">I will not submit sensitive customer data. I understand email verification and optional USDT/TRC20 pilot billing with operator review.</span>
@@ -331,9 +340,9 @@
       <div data-semeai-footer></div>
     </div>
 
-    <script src="assets/js/i18n.js?v=20260717b"></script>
-    <script src="assets/js/api.js?v=20260717b"></script>
-    <script src="assets/js/site-shell.js?v=20260717b"></script>
+    <script src="assets/js/i18n.js?v=20260717c"></script>
+    <script src="assets/js/api.js?v=20260717c"></script>
+    <script src="assets/js/site-shell.js?v=20260717c"></script>
     <script>
       /* Canvas particle field — same language as landing */
       (function () {
@@ -538,7 +547,7 @@
           sessionStorage.setItem("semeai_dashboard_api_key", apiKeyInput.value);
           setStep(4);
         }
-        location.href = "dashboard.html?v=20260717b";
+        location.href = "dashboard.html?v=20260717c";
       });
 
       if (location.hash.startsWith("#verify=")) {
@@ -548,6 +557,13 @@
       } else {
         setStep(1);
       }
+      try {
+        const from = new URLSearchParams(location.search).get("from");
+        if (from === "demo" || from === "landing") {
+          const b = document.querySelector("#from-demo-banner");
+          if (b) b.classList.remove("hidden");
+        }
+      } catch {}
       bootHealth();
       window.addEventListener("semeai:lang", () => {
         if (window.SemeAI_I18n) SemeAI_I18n.apply(document);

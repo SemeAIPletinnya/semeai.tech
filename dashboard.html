@@ -3,1021 +3,579 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title data-i18n-page="dash.title.page">SemeAI Cabinet | Workspace console</title>
+    <title data-i18n-page="dash.title.page">SemeAI · Personal cabinet</title>
     <meta
       name="description"
-      data-i18n-page="dash.meta" content="SemeAI Gate cabinet: API key, gate checks, receipts, REVIEW queue, USDT/TRC20 billing."
+      data-i18n-page="dash.meta"
+      content="Light personal cabinet for SemeAI Gate: connect after email verification, run test checks, see usage."
     />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta http-equiv="Pragma" content="no-cache" />
     <link rel="canonical" href="https://semeai.tech/dashboard.html" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260717b" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              void: "#030306",
-              ink: "#f4f4f5",
-              mute: "#a1a1aa",
-              faint: "#71717a",
-              accent: "#22d3ee",
-              show: "#4ade80",
-              review: "#fbbf24",
-              block: "#f87171",
-            },
-            fontFamily: {
-              sans: ["Inter", "system-ui", "sans-serif"],
-              mono: ["JetBrains Mono", "ui-monospace", "monospace"],
-            },
-            maxWidth: { site: "80rem" },
-          },
-        },
-      };
-    </script>
+    <link rel="stylesheet" href="assets/css/site.css?v=20260717c" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
-      :root { color-scheme: dark; }
-      body {
-        margin: 0;
-        font-family: Inter, system-ui, sans-serif;
-        background: #030306;
-        color: #f4f4f5;
-        -webkit-font-smoothing: antialiased;
+      .cab-wrap { max-width: 44rem; margin: 0 auto; }
+      .cab-wide { max-width: 56rem; margin: 0 auto; }
+      .msg {
+        border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.03); padding: 0.85rem 1rem;
+        font-size: 0.92rem; color: var(--mute); line-height: 1.5;
       }
-      #bg-canvas {
-        position: fixed; inset: 0; width: 100%; height: 100%;
-        z-index: 0; pointer-events: none;
+      .msg.ok { color: var(--show); border-color: rgba(74,222,128,0.35); background: rgba(74,222,128,0.08); }
+      .msg.warn { color: var(--review); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.08); }
+      .msg.error { color: var(--block); border-color: rgba(248,113,113,0.4); background: rgba(248,113,113,0.08); }
+      .field-label {
+        display: block; margin-bottom: 0.4rem;
+        font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em;
+        text-transform: uppercase; color: var(--faint);
       }
-      .vignette {
-        position: fixed; inset: 0; z-index: 0; pointer-events: none;
-        background:
-          radial-gradient(ellipse 90% 60% at 50% -10%, rgba(34, 211, 238, 0.07), transparent 50%),
-          linear-gradient(180deg, rgba(3, 3, 6, 0.15) 0%, rgba(3, 3, 6, 0.55) 55%, rgba(3, 3, 6, 0.92) 100%);
+      input.key-in {
+        width: 100%; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px;
+        background: rgba(3,3,6,0.65); padding: 0.75rem 0.9rem; color: var(--ink);
+        font-family: var(--mono); font-size: 0.85rem; outline: none;
       }
-      .content { position: relative; z-index: 1; }
-      .panel {
-        background: rgba(12, 12, 18, 0.78);
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.02) inset, 0 20px 60px rgba(0, 0, 0, 0.5);
-        backdrop-filter: blur(14px);
+      input.key-in:focus {
+        border-color: rgba(34,211,238,0.45);
+        box-shadow: 0 0 0 3px rgba(34,211,238,0.12);
       }
-      .btn-primary {
-        display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-        background: linear-gradient(180deg, #67e8f9, #22d3ee 55%, #06b6d4);
-        color: #030306; font-weight: 700; border-radius: 999px;
-        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15) inset, 0 12px 40px rgba(34, 211, 238, 0.35);
-        transition: filter 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      .metric-lite {
+        border: 1px solid var(--line); border-radius: 1rem;
+        background: rgba(255,255,255,0.025); padding: 1rem 1.1rem;
       }
-      .btn-primary:hover {
-        filter: brightness(1.08);
-        transform: translateY(-1px);
-        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2) inset, 0 16px 48px rgba(34, 211, 238, 0.45);
+      .metric-lite span {
+        display: block; font-size: 0.68rem; font-weight: 700;
+        letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); margin-bottom: 0.35rem;
       }
-      .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-      .btn-ghost {
-        display: inline-flex; align-items: center; justify-content: center;
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        color: #f4f4f5; font-weight: 600; border-radius: 999px;
-        background: rgba(255, 255, 255, 0.04);
-        transition: border-color 0.2s ease, background 0.2s ease;
+      .metric-lite strong {
+        display: block; font-size: 1.25rem; font-weight: 800; color: #fff; letter-spacing: -0.02em;
       }
-      .btn-ghost:hover { border-color: rgba(34, 211, 238, 0.5); background: rgba(34, 211, 238, 0.08); }
-      .btn-ghost:disabled { opacity: 0.5; cursor: not-allowed; }
-      .pill {
-        display: inline-flex; align-items: center; gap: 0.4rem;
-        border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 0.35rem 0.8rem; font-size: 0.75rem; font-weight: 600; color: #a1a1aa;
-        background: rgba(255, 255, 255, 0.04);
+      .scenario {
+        text-align: left; width: 100%; cursor: pointer;
+        border: 1px solid var(--line); border-radius: 1rem;
+        background: rgba(255,255,255,0.025); padding: 1rem 1.1rem;
+        transition: border-color 0.2s, transform 0.2s, background 0.2s;
       }
-      .pill.ok { color: #4ade80; border-color: rgba(74, 222, 128, 0.35); background: rgba(74, 222, 128, 0.1); }
-      .pill.warn { color: #fbbf24; border-color: rgba(251, 191, 36, 0.35); background: rgba(251, 191, 36, 0.1); }
-      .pill.bad { color: #f87171; border-color: rgba(248, 113, 113, 0.4); background: rgba(248, 113, 113, 0.1); }
-      .pill.info { color: #67e8f9; border-color: rgba(34, 211, 238, 0.35); background: rgba(34, 211, 238, 0.1); }
-      .nav-link { color: #a1a1aa; transition: color 0.2s; }
-      .nav-link:hover, .nav-link.active { color: #fff; }
-      .glow-text {
-        background: linear-gradient(90deg, #fff 0%, #a5f3fc 50%, #67e8f9 100%);
-        -webkit-background-clip: text; background-clip: text; color: transparent;
+      .scenario:hover {
+        border-color: rgba(34,211,238,0.4); transform: translateY(-2px);
+        background: rgba(34,211,238,0.06);
       }
-      .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
-      input, select, textarea {
-        width: 100%;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        background: rgba(3, 3, 6, 0.65);
-        padding: 0.7rem 0.85rem;
-        color: #f4f4f5;
-        outline: none;
-        transition: border-color 0.2s, box-shadow 0.2s;
+      .scenario:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+      .scenario b { display: block; color: #fff; font-size: 0.95rem; margin-bottom: 0.25rem; }
+      .scenario small { color: var(--mute); font-size: 0.8rem; line-height: 1.4; }
+      .result-card {
+        border-radius: 1rem; border: 1px solid var(--line);
+        padding: 1.15rem 1.25rem; background: rgba(3,3,6,0.55);
       }
-      input:focus, select:focus, textarea:focus {
-        border-color: rgba(34, 211, 238, 0.45);
-        box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.12);
+      .result-card.SHOW { border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.08); }
+      .result-card.REVIEW { border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); }
+      .result-card.BLOCK { border-color: rgba(248,113,113,0.45); background: rgba(248,113,113,0.08); }
+      .result-card .act {
+        font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; color: #fff; margin: 0;
       }
-      select option { background: #0c0c12; color: #f4f4f5; }
-      textarea { min-height: 96px; resize: vertical; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.8rem; }
-      label.field-label {
-        display: block;
-        margin-bottom: 0.4rem;
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: #71717a;
+      .receipt-row {
+        display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; align-items: center;
+        padding: 0.75rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+        font-size: 0.85rem; color: var(--mute);
       }
-      .step-card {
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.02);
-        padding: 0.9rem 1rem;
-        transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
-      }
-      .step-card.active {
-        border-color: rgba(34, 211, 238, 0.45);
-        background: rgba(34, 211, 238, 0.08);
-        box-shadow: 0 0 28px rgba(34, 211, 238, 0.1);
-      }
-      .step-card.done {
-        border-color: rgba(74, 222, 128, 0.3);
-        background: rgba(74, 222, 128, 0.06);
-      }
-      .step-card .num {
-        display: inline-flex; width: 1.5rem; height: 1.5rem;
-        align-items: center; justify-content: center;
-        border-radius: 999px; font-size: 0.7rem; font-weight: 800;
-        background: rgba(255, 255, 255, 0.08); color: #a1a1aa;
-      }
-      .step-card.active .num {
-        background: linear-gradient(180deg, #67e8f9, #22d3ee);
-        color: #030306;
-      }
-      .step-card.done .num {
-        background: rgba(74, 222, 128, 0.25); color: #4ade80;
-      }
-      .message {
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        background: rgba(255, 255, 255, 0.03);
-        padding: 0.85rem 1rem;
-        font-size: 0.9rem;
-        color: #a1a1aa;
-        line-height: 1.5;
-      }
-      .message.ok { color: #4ade80; border-color: rgba(74, 222, 128, 0.35); background: rgba(74, 222, 128, 0.08); }
-      .message.warn { color: #fbbf24; border-color: rgba(251, 191, 36, 0.35); background: rgba(251, 191, 36, 0.08); }
-      .message.error { color: #f87171; border-color: rgba(248, 113, 113, 0.4); background: rgba(248, 113, 113, 0.08); }
-      pre {
-        margin: 0; padding: 0.85rem;
-        border-radius: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        background: rgba(3, 3, 6, 0.7);
-        color: #d4d4d8;
-        font-family: "JetBrains Mono", ui-monospace, monospace;
-        font-size: 0.75rem;
-        white-space: pre-wrap;
-        max-height: 280px;
-        overflow: auto;
-      }
-      .metric {
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 14px;
-        background: rgba(255, 255, 255, 0.025);
-        padding: 1rem;
-        transition: border-color 0.2s, transform 0.2s;
-      }
-      .metric:hover {
-        border-color: rgba(34, 211, 238, 0.3);
-        transform: translateY(-2px);
-      }
-      .metric span {
-        display: block;
-        font-size: 0.7rem;
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: #71717a;
-        margin-bottom: 0.4rem;
-      }
-      .metric strong {
-        display: block;
-        font-size: 1.15rem;
-        font-weight: 800;
-        color: #fff;
-        letter-spacing: -0.02em;
-        word-break: break-word;
-      }
-      .side-btn {
-        display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
-        width: 100%; text-align: left;
-        border: 1px solid transparent; border-radius: 12px;
-        background: transparent; color: #a1a1aa;
-        padding: 0.7rem 0.85rem; margin-bottom: 4px;
-        font-weight: 650; font-size: 0.875rem;
-        transition: 0.18s ease; cursor: pointer;
-      }
-      .side-btn:hover { color: #f4f4f5; background: rgba(255,255,255,0.03); }
-      .side-btn.active {
-        color: #fff;
-        border-color: rgba(34, 211, 238, 0.35);
-        background: linear-gradient(90deg, rgba(34, 211, 238, 0.12), rgba(34, 211, 238, 0.03));
-        box-shadow: inset 3px 0 0 #22d3ee;
-      }
-      .side-btn .hint {
-        font-size: 0.7rem; font-weight: 500; color: #71717a;
-      }
-      .side-btn.active .hint { color: #a1a1aa; }
-      table.data {
-        width: 100%; border-collapse: collapse; font-size: 0.8rem;
-      }
-      table.data th {
-        text-align: left; padding: 0.65rem 0.75rem;
-        font-size: 0.65rem; font-weight: 800; letter-spacing: 0.08em;
-        text-transform: uppercase; color: #71717a;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
-      }
-      table.data td {
-        padding: 0.7rem 0.75rem;
-        border-bottom: 1px solid rgba(255,255,255,0.05);
-        color: #a1a1aa; vertical-align: middle;
-      }
-      table.data tr:hover td { background: rgba(255,255,255,0.02); color: #f4f4f5; }
-      .key-mask { letter-spacing: 0.04em; }
+      .receipt-row:last-child { border-bottom: 0; }
       .hidden { display: none !important; }
-      .tab-panel { animation: fadeIn 0.3s ease; }
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(6px); }
-        to { opacity: 1; transform: none; }
+      .path-card {
+        border: 1px solid var(--line); border-radius: 1.1rem;
+        background: var(--panel); padding: 1.35rem 1.4rem;
       }
-      @keyframes pulse-ok {
-        0%, 100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
-        50% { box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.25); }
-      }
-      .pulse-ok { animation: pulse-ok 0.9s ease 2; }
-      .dash-layout {
-        display: grid;
-        grid-template-columns: 220px minmax(0, 1fr);
-        gap: 1rem;
-      }
-      @media (max-width: 900px) {
-        .dash-layout { grid-template-columns: 1fr; }
-      }
-      .split-check {
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
-        gap: 1rem;
-      }
-      @media (max-width: 960px) {
-        .split-check { grid-template-columns: 1fr; }
-      }
+      .path-card h3 { margin: 0 0 0.4rem; font-size: 1.05rem; color: #fff; }
+      .path-card p { margin: 0 0 1rem; color: var(--mute); font-size: 0.9rem; line-height: 1.55; }
     </style>
   </head>
   <body data-semeai-custom-bg>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <div class="vignette" aria-hidden="true"></div>
-
     <div class="content">
       <div data-semeai-nav></div>
 
-      <main class="mx-auto max-w-site px-5 pb-20 pt-10 sm:px-6 sm:pt-14">
-        <section class="mb-8 max-w-3xl">
-          <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-mute" data-i18n="dash.badge">
-            Personal cabinet
-          </div>
-          <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl" data-i18n="dash.title">
-            Workspace console.
-          </h1>
-          <p class="mt-3 text-base leading-relaxed text-mute sm:text-lg" data-i18n="dash.lead">
-            Connect with your API key, then run gate checks, review receipts, and manage pilot billing.
+      <main class="site-main">
+        <!-- GATE: not connected -->
+        <section id="view-gate" class="cab-wrap">
+          <span class="eyebrow" data-i18n="dash.badge">Personal cabinet</span>
+          <h1 class="page-title" data-i18n="dash.title">Your SemeAI cabinet</h1>
+          <p class="lead" data-i18n="dash.lead">
+            Try free tests on the site → create a workspace with email confirmation → open this light cabinet with your access key.
           </p>
-          <div class="mt-4 flex flex-wrap gap-2">
-            <span class="pill" id="api-health-pill">API …</span>
-            <span class="pill" id="email-pill">Email …</span>
-            <span class="pill" id="billing-pill">Billing …</span>
-            <span class="pill" id="usage-pill">usage …</span>
-            <span class="pill" id="session-pill">session empty</span>
-            <a class="pill info" href="https://api.semeai.tech/v0/status" target="_blank" rel="noopener">/v0/status</a>
+
+          <div class="msg mt-6" id="gate-msg" data-i18n="dash.gate.hint">
+            No classic password yet. After email verification you get a one-time access key — that is your login.
+          </div>
+
+          <div class="grid-2 mt-8">
+            <div class="path-card">
+              <h3 data-i18n="dash.path.new.title">1 · New here?</h3>
+              <p data-i18n="dash.path.new.body">
+                Register with work email. Confirm the link from the letter. Copy the access key once. Then return here.
+              </p>
+              <a class="btn-primary" href="register.html?v=20260717c&from=cabinet" data-i18n="dash.path.new.cta">Create cabinet</a>
+            </div>
+            <div class="path-card">
+              <h3 data-i18n="dash.path.key.title">2 · Already verified?</h3>
+              <p data-i18n="dash.path.key.body">
+                Paste the access key from verification. It stays only in this browser session.
+              </p>
+              <label class="field-label" for="api-key" data-i18n="dash.auth.key">Access key</label>
+              <input id="api-key" class="key-in" type="password" autocomplete="off" spellcheck="false" data-i18n-placeholder="dash.auth.key.ph" placeholder="sem_live_…" />
+              <div class="btn-row mt-4">
+                <button type="button" class="btn-primary" id="btn-enter" data-i18n="dash.auth.load">Open cabinet</button>
+                <a class="btn-ghost" href="index.html?v=20260717c#demo" data-i18n="dash.path.tests">Try free tests first</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel mt-8" id="verify-box">
+            <h3 style="margin:0 0 0.35rem;color:#fff;font-size:1rem" data-i18n="dash.verify.title">Have a verification link?</h3>
+            <p style="margin:0 0 0.85rem;color:var(--mute);font-size:0.88rem" data-i18n="dash.verify.hint">
+              Paste the token from email (#verify=…) to issue your access key once.
+            </p>
+            <label class="field-label" for="verify-token" data-i18n="dash.verify.token">Verification token</label>
+            <input id="verify-token" class="key-in" spellcheck="false" data-i18n-placeholder="dash.verify.token.ph" placeholder="#verify=…" />
+            <div class="btn-row mt-4">
+              <button type="button" class="btn-primary" id="btn-verify" data-i18n="dash.verify.btn">Confirm &amp; issue key</button>
+            </div>
+            <div class="mt-4 hidden" id="issued-wrap">
+              <label class="field-label" for="issued-key" data-i18n="dash.verify.issued">Your access key (copy now)</label>
+              <input id="issued-key" class="key-in" readonly />
+              <div class="btn-row mt-3">
+                <button type="button" class="btn-ghost" id="btn-copy-key" data-i18n="dash.verify.copy">Copy key</button>
+                <button type="button" class="btn-primary" id="btn-use-key" data-i18n="dash.verify.use">Enter cabinet</button>
+              </div>
+            </div>
           </div>
         </section>
 
-        <div class="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" id="flow-steps" aria-label="Operator flow">
-          <div class="step-card active" data-step="1">
-            <span class="num">1</span>
-            <strong class="mt-1.5 block text-sm text-white" data-i18n="dash.step1">Connect</strong>
-            <small class="mt-0.5 block text-xs text-faint" data-i18n="dash.step1.sub">Paste API key</small>
-          </div>
-          <div class="step-card" data-step="2">
-            <span class="num">2</span>
-            <strong class="mt-1.5 block text-sm text-white" data-i18n="dash.step2">Check</strong>
-            <small class="mt-0.5 block text-xs text-faint" data-i18n="dash.step2.sub">Run /v0/check</small>
-          </div>
-          <div class="step-card" data-step="3">
-            <span class="num">3</span>
-            <strong class="mt-1.5 block text-sm text-white" data-i18n="dash.step3">Audit</strong>
-            <small class="mt-0.5 block text-xs text-faint" data-i18n="dash.step3.sub">Receipts + REVIEW</small>
-          </div>
-          <div class="step-card" data-step="4">
-            <span class="num">4</span>
-            <strong class="mt-1.5 block text-sm text-white" data-i18n="dash.step4">Pilot pay</strong>
-            <small class="mt-0.5 block text-xs text-faint" data-i18n="dash.step4.sub">USDT / TRC20</small>
-          </div>
-        </div>
+        <!-- HOME: connected light cabinet -->
+        <section id="view-home" class="cab-wide hidden">
+          <div class="cab-wrap" style="max-width:56rem">
+            <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:1rem">
+              <div>
+                <span class="eyebrow" data-i18n="dash.badge">Personal cabinet</span>
+                <h1 class="page-title" style="font-size:clamp(1.5rem,3vw,2rem)">
+                  <span data-i18n="dash.home.hello">Hello,</span>
+                  <span class="glow-text" id="ws-name">workspace</span>
+                </h1>
+                <p class="lead" style="margin-top:0.5rem" data-i18n="dash.home.sub">
+                  Run a test, see SHOW / REVIEW / BLOCK, check your daily limit.
+                </p>
+              </div>
+              <div class="btn-row">
+                <button type="button" class="btn-ghost" id="btn-refresh" data-i18n="dash.home.refresh">Refresh</button>
+                <button type="button" class="btn-ghost" id="btn-logout" data-i18n="dash.home.logout">Sign out</button>
+              </div>
+            </div>
 
-        <div class="dash-layout">
-          <aside class="panel h-fit rounded-2xl p-3 sm:p-4" aria-label="Dashboard sections">
-            <p class="mb-2 px-2 text-[10px] font-extrabold uppercase tracking-[0.12em] text-faint" data-i18n="dash.sections">Sections</p>
-            <button type="button" class="side-btn active" data-tab="overview"><span data-i18n="dash.tab.overview">Overview</span><span class="hint" data-i18n="dash.tab.overview.hint">Status snapshot</span></button>
-            <button type="button" class="side-btn" data-tab="auth"><span data-i18n="dash.tab.auth">API key</span><span class="hint" data-i18n="dash.tab.auth.hint">Connect workspace</span></button>
-            <button type="button" class="side-btn" data-tab="keys"><span data-i18n="dash.tab.keys">Key manage</span><span class="hint" data-i18n="dash.tab.keys.hint">Rotate / list</span></button>
-            <button type="button" class="side-btn" data-tab="check"><span data-i18n="dash.tab.check">Gate check</span><span class="hint" data-i18n="dash.tab.check.hint">SHOW / REVIEW / BLOCK</span></button>
-            <button type="button" class="side-btn" data-tab="receipts"><span data-i18n="dash.tab.receipts">Receipts</span><span class="hint" data-i18n="dash.tab.receipts.hint">Audit trail</span></button>
-            <button type="button" class="side-btn" data-tab="review"><span data-i18n="dash.tab.review">Review queue</span><span class="hint" data-i18n="dash.tab.review.hint">Needs human eye</span></button>
-            <button type="button" class="side-btn" data-tab="billing"><span data-i18n="dash.tab.billing">Billing</span><span class="hint" data-i18n="dash.tab.billing.hint">USDT pilot</span></button>
-            <button type="button" class="side-btn" data-tab="verify"><span data-i18n="dash.tab.verify">Verify signup</span><span class="hint" data-i18n="dash.tab.verify.hint">Issue key once</span></button>
-          </aside>
+            <div class="msg mt-5" id="home-msg"></div>
 
-          <div class="panel min-w-0 rounded-2xl p-5 sm:p-7">
-            <div id="global-message" class="message mb-5" data-i18n="dash.msg.load">Load your API key to unlock workspace data.</div>
+            <div class="grid-3 mt-6">
+              <div class="metric-lite">
+                <span data-i18n="dash.ov.checks">Checks today</span>
+                <strong id="m-checks">—</strong>
+              </div>
+              <div class="metric-lite">
+                <span data-i18n="dash.ov.remaining">Remaining</span>
+                <strong id="m-remaining">—</strong>
+              </div>
+              <div class="metric-lite">
+                <span data-i18n="dash.ov.subscription">Plan</span>
+                <strong id="m-plan">—</strong>
+              </div>
+            </div>
 
-            <section class="tab-panel" id="panel-overview">
-              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.ov.title">Overview</h2>
-              <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                <div class="metric"><span data-i18n="dash.ov.workspace">Workspace</span><strong id="m-workspace">—</strong></div>
-                <div class="metric"><span data-i18n="dash.ov.subscription">Subscription</span><strong id="m-sub">—</strong></div>
-                <div class="metric"><span data-i18n="dash.ov.billing">Billing</span><strong id="m-billing">—</strong></div>
-                <div class="metric"><span data-i18n="dash.ov.receipts">Receipts</span><strong id="m-receipts">—</strong></div>
-              </div>
-              <div class="mt-3 grid gap-3 sm:grid-cols-3">
-                <div class="metric"><span data-i18n="dash.ov.checks">Checks today</span><strong id="m-checks">—</strong></div>
-                <div class="metric"><span data-i18n="dash.ov.limit">Daily limit</span><strong id="m-limit">—</strong></div>
-                <div class="metric"><span data-i18n="dash.ov.remaining">Remaining</span><strong id="m-remaining">—</strong></div>
-              </div>
-              <pre id="status-json" class="mt-4">{}</pre>
-              <div class="mt-4 grid gap-3 sm:grid-cols-2">
-                <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
-                  <h3 class="text-sm font-bold text-white" data-i18n="dash.ov.invariant">Gate invariant</h3>
-                  <p class="mt-2 text-[13px] leading-relaxed text-mute" data-i18n="dash.ov.invariantBody">Payment is never release authority. Machine values stay SHOW / REVIEW / BLOCK.</p>
-                </div>
-                <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
-                  <h3 class="text-sm font-bold text-white" data-i18n="dash.ov.operator">Operator</h3>
-                  <p class="mt-2 text-[13px] leading-relaxed text-mute">
-                    <span data-i18n="dash.ov.review">Review:</span>
-                    <a href="mailto:support@semeai.tech" class="text-accent hover:underline">support@semeai.tech</a><br />
-                    TRC20: <code class="mono text-accent/90" id="ov-trc20">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
-                  </p>
-                </div>
-              </div>
-              <pre id="overview-json" class="mt-4">{}</pre>
-            </section>
-
-            <section class="tab-panel hidden" id="panel-auth">
-              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.auth.title">Connect API key</h2>
-              <p class="mt-2 text-sm text-mute" data-i18n="dash.auth.hint">Stored only in this browser session (sessionStorage). Never embedded in page source.</p>
-              <div class="mt-5 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label class="field-label" for="api-key" data-i18n="dash.auth.key">Workspace API key</label>
-                  <input id="api-key" class="key-mask mono text-sm" type="password" autocomplete="off" spellcheck="false" placeholder="paste key…" data-i18n-placeholder="dash.auth.key.ph" />
-                </div>
-                <div>
-                  <label class="field-label" for="receipt-limit" data-i18n="dash.auth.limit">Receipt limit</label>
-                  <select id="receipt-limit">
-                    <option value="10">10</option>
-                    <option value="25" selected>25</option>
-                    <option value="50">50</option>
-                  </select>
-                </div>
-              </div>
-              <div class="mt-5 flex flex-wrap gap-2">
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-load" type="button" data-i18n="dash.auth.load">Load workspace</button>
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-clear" type="button" data-i18n="dash.auth.clear">Clear session</button>
-                <a class="btn-ghost px-5 py-2.5 text-sm" href="register.html?v=20260717b" data-i18n="dash.auth.register">Register</a>
-              </div>
-            </section>
-
-            <section class="tab-panel hidden" id="panel-keys">
-              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.keys.title">Key management</h2>
-              <p class="mt-2 text-sm text-mute" data-i18n="dash.keys.hint">List fingerprints, rotate the current key (shown once), never store raw keys server-side.</p>
-              <div class="mt-4 flex flex-wrap gap-2">
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-refresh-keys" type="button" data-i18n="dash.keys.refresh">Refresh keys</button>
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-rotate-key" type="button" data-i18n="dash.keys.rotate">Rotate current key</button>
-              </div>
-              <div class="mt-5">
-                <label class="field-label" for="rotated-key" data-i18n="dash.keys.new">New key after rotate (copy once)</label>
-                <input id="rotated-key" readonly class="mono text-sm" />
-              </div>
-              <pre id="keys-json" class="mt-4">{}</pre>
-            </section>
-
-            <section class="tab-panel hidden" id="panel-check">
-              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.check.title">Protected gate check</h2>
-              <p class="mt-2 text-sm text-mute" data-i18n="dash.check.hint">Authenticated POST /v0/check with editable payload, or public demo check.</p>
-              <div class="split-check mt-5">
-                <div>
-                  <label class="field-label" for="check-json" data-i18n="dash.check.json">Request JSON</label>
-                  <textarea id="check-json" style="min-height: 280px"></textarea>
-                </div>
-                <div>
-                  <div class="flex flex-wrap gap-2">
-                    <button class="btn-primary px-5 py-2.5 text-sm" id="btn-check" type="button" data-i18n="dash.check.run">Run /v0/check</button>
-                    <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-demo-check" type="button" data-i18n="dash.check.demo">Public demo</button>
-                  </div>
-                  <div class="mt-4 grid grid-cols-3 gap-2">
-                    <div class="metric"><span data-i18n="dash.check.action">Action</span><strong id="check-action">—</strong></div>
-                    <div class="metric"><span data-i18n="dash.check.internal">Internal</span><strong id="check-internal">—</strong></div>
-                    <div class="metric"><span data-i18n="dash.check.audit">Audit</span><strong id="check-audit">—</strong></div>
-                  </div>
-                  <pre id="check-result" class="mt-4">{}</pre>
-                </div>
-              </div>
-            </section>
-
-            <section class="tab-panel hidden" id="panel-receipts">
-              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.receipts.title">Receipts</h2>
-              <div class="mt-4 mb-4">
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-refresh-receipts" type="button" data-i18n="dash.receipts.refresh">Refresh</button>
-              </div>
-              <div class="overflow-auto rounded-xl border border-white/[0.08]">
-                <table class="data" id="receipts-table">
-                  <thead>
-                    <tr><th data-i18n="dash.receipts.when">When</th><th data-i18n="dash.receipts.action">Action</th><th data-i18n="dash.receipts.internal">Internal</th><th data-i18n="dash.receipts.risk">Risk</th><th data-i18n="dash.receipts.id">Id</th></tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
-              </div>
-              <pre id="receipts-json" class="mt-4">{}</pre>
-            </section>
-
-            <section class="tab-panel hidden" id="panel-review">
-              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.review.title">Review queue</h2>
-              <p class="mt-2 text-sm text-mute" data-i18n="dash.review.hint">REVIEW and BLOCK events. SILENCE withholds release while preserving audit.</p>
-              <div id="review-list" class="mt-4 grid gap-3"></div>
-            </section>
-
-            <section class="tab-panel hidden" id="panel-billing">
-              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.billing.title">Pilot billing · USDT/TRC20</h2>
-              <p class="mt-2 text-sm leading-relaxed text-mute" data-i18n="dash.billing.hint">
-                Default 25 USDT. After TXID, email support@semeai.tech with workspace_id + invoice_id + txid. Payment ≠ gate authority.
+            <section class="mt-10">
+              <h2 class="section-title" data-i18n="dash.tests.title">Quick test variants</h2>
+              <p style="margin:0 0 1rem;color:var(--mute);font-size:0.92rem" data-i18n="dash.tests.lead">
+                One click — real gate decision on your workspace key.
               </p>
-              <div class="mt-5 grid gap-3 sm:grid-cols-2">
-                <div class="metric">
-                  <span data-i18n="dash.billing.address">TRC20 address</span>
-                  <strong class="mono text-sm" id="bill-address">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</strong>
-                  <div class="mt-3">
-                    <button class="btn-ghost px-4 py-2 text-sm" id="btn-copy-trc20" type="button" data-i18n="dash.billing.copy">Copy address</button>
-                  </div>
-                </div>
-                <div class="metric">
-                  <span data-i18n="dash.billing.status">Status</span>
-                  <strong id="bill-status">—</strong>
-                  <div id="bill-note" class="mt-2 text-[13px] text-mute"></div>
-                </div>
+              <div class="grid-3">
+                <button type="button" class="scenario" data-scenario="block_promo">
+                  <span class="pill tag-block">BLOCK</span>
+                  <b data-i18n="dash.tests.block.title">Fake promo</b>
+                  <small data-i18n="dash.tests.block.desc">AI invents SAVE30 when no promo exists</small>
+                </button>
+                <button type="button" class="scenario" data-scenario="review_refund">
+                  <span class="pill tag-review">REVIEW</span>
+                  <b data-i18n="dash.tests.review.title">Unclear refund</b>
+                  <small data-i18n="dash.tests.review.desc">Policy is incomplete — needs a human</small>
+                </button>
+                <button type="button" class="scenario" data-scenario="show_ok">
+                  <span class="pill tag-show">SHOW</span>
+                  <b data-i18n="dash.tests.show.title">Supported answer</b>
+                  <small data-i18n="dash.tests.show.desc">Promo exists in business data — safe to release</small>
+                </button>
               </div>
-              <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label class="field-label" for="bill-plan" data-i18n="dash.billing.plan">Plan</label>
-                  <select id="bill-plan">
-                    <option value="pilot">Pilot</option>
-                    <option value="developer">Developer</option>
-                    <option value="enterprise_review">Enterprise review</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="field-label" for="bill-amount" data-i18n="dash.billing.amount">Amount USDT</label>
-                  <input id="bill-amount" value="25.00" />
-                </div>
-              </div>
-              <div class="mt-4">
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-intent" type="button" data-i18n="dash.billing.intent">Create payment intent</button>
-              </div>
-              <div class="mt-4 grid gap-4 sm:grid-cols-2">
-                <div>
-                  <label class="field-label" for="bill-invoice" data-i18n="dash.billing.invoice">Invoice id</label>
-                  <input id="bill-invoice" placeholder="Create intent first" data-i18n-placeholder="dash.billing.invoice.ph" class="mono text-sm" />
-                </div>
-                <div>
-                  <label class="field-label" for="bill-txid" data-i18n="dash.billing.txid">TRC20 transaction id</label>
-                  <input id="bill-txid" placeholder="64-char hex" data-i18n-placeholder="dash.billing.txid.ph" spellcheck="false" class="mono text-sm" />
-                </div>
-              </div>
-              <div class="mt-4">
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-txid" type="button" data-i18n="dash.billing.submit">Submit TXID</button>
-              </div>
-              <pre id="billing-json" class="mt-4">{}</pre>
             </section>
 
-            <section class="tab-panel hidden" id="panel-verify">
-              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.verify.title">Verify registration</h2>
-              <p class="mt-2 text-sm text-mute" data-i18n="dash.verify.hint">Paste verification token. API key is shown once.</p>
-              <div class="mt-5">
-                <label class="field-label" for="verify-token" data-i18n="dash.verify.token">Verification token</label>
-                <input id="verify-token" spellcheck="false" placeholder="#verify= token" data-i18n-placeholder="dash.verify.token.ph" class="mono text-sm" />
+            <section class="mt-8">
+              <div class="result-card" id="result-card">
+                <p class="act" id="result-action">—</p>
+                <p style="margin:0.35rem 0 0;color:var(--mute);font-size:0.9rem" id="result-meta" data-i18n="dash.tests.empty">
+                  Pick a test variant above.
+                </p>
+                <p style="margin:0.65rem 0 0;color:var(--faint);font-size:0.8rem;font-family:var(--mono)" id="result-reason"></p>
               </div>
-              <div class="mt-4">
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-verify" type="button" data-i18n="dash.verify.btn">Verify &amp; issue key</button>
-              </div>
-              <div class="mt-5">
-                <label class="field-label" for="issued-key" data-i18n="dash.verify.issued">Issued API key</label>
-                <input id="issued-key" readonly class="mono text-sm" />
-              </div>
-              <div class="mt-3 flex flex-wrap gap-2">
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-copy-key" type="button" data-i18n="dash.verify.copy">Copy key</button>
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-use-key" type="button" data-i18n="dash.verify.use">Use in this cabinet</button>
-              </div>
-              <pre id="verify-json" class="mt-4">{}</pre>
             </section>
+
+            <section class="mt-10 panel">
+              <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.75rem;align-items:center">
+                <h2 class="section-title" style="margin:0" data-i18n="dash.receipts.title">Recent decisions</h2>
+                <a class="btn-ghost" style="padding:0.4rem 0.9rem;font-size:12px" href="mailto:support@semeai.tech" data-i18n="dash.home.support">Support</a>
+              </div>
+              <div id="receipt-list" class="mt-4">
+                <p style="color:var(--faint);font-size:0.88rem" data-i18n="dash.receipts.empty">No receipts yet — run a test.</p>
+              </div>
+            </section>
+
+            <details class="panel mt-8">
+              <summary style="cursor:pointer;font-weight:700;color:#fff" data-i18n="dash.advanced">Advanced (billing · raw key tools)</summary>
+              <div class="stack-sm mt-4">
+                <p style="margin:0;color:var(--mute);font-size:0.88rem" data-i18n="dash.advanced.body">
+                  Pilot billing is USDT/TRC20 with operator review. Payment is never gate authority.
+                </p>
+                <p style="margin:0;color:var(--mute);font-size:0.88rem">
+                  TRC20: <code class="mono" id="bill-address">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
+                </p>
+                <div class="btn-row">
+                  <button type="button" class="btn-ghost" id="btn-copy-trc20" data-i18n="dash.billing.copy">Copy address</button>
+                  <a class="btn-ghost" href="mailto:support@semeai.tech?subject=SemeAI%20pilot%20billing" data-i18n="dash.billing.email">Email TXID to support</a>
+                </div>
+                <p style="margin:0;color:var(--faint);font-size:0.8rem" id="bill-status"></p>
+              </div>
+            </details>
           </div>
-        </div>
+        </section>
       </main>
 
       <div data-semeai-footer></div>
     </div>
 
-    <script src="assets/js/i18n.js?v=20260717b"></script>
-    <script src="assets/js/api.js?v=20260717b"></script>
-    <script src="assets/js/site-shell.js?v=20260717b"></script>
+    <script src="assets/js/i18n.js?v=20260717c"></script>
+    <script src="assets/js/api.js?v=20260717c"></script>
+    <script src="assets/js/site-shell.js?v=20260717c"></script>
     <script>
-      /* Canvas particle field */
-      (function () {
-        const canvas = document.getElementById("bg-canvas");
-        if (!canvas) return;
-        const ctx = canvas.getContext("2d");
-        let w = 0, h = 0, particles = [], raf = 0;
-        let mx = 0.5, my = 0.3, tmx = 0.5, tmy = 0.3;
-        const COUNT = 50, LINK = 115;
+      (() => {
+        const KEY_STORAGE = "semeai_dashboard_api_key";
+        const V = "20260717c";
 
-        function resize() {
-          w = canvas.width = window.innerWidth;
-          h = canvas.height = window.innerHeight;
+        const scenarios = {
+          block_promo: {
+            user_message: "Give me a 30% discount promo code.",
+            ai_answer: "Use promo code SAVE30 to get 30% off.",
+            business_data: { active_promo_codes: [] },
+            business_rules: { only_show_confirmed_promos: true },
+            business_risk: "fake_promo_code",
+          },
+          review_refund: {
+            user_message: "Can I get a full refund right now?",
+            ai_answer: "Yes, you are fully eligible for an immediate full refund.",
+            business_data: { refund_policy: "incomplete", signals: ["mixed"] },
+            business_rules: { uncertain_claims_need_review: true },
+            business_risk: "refund_ambiguity",
+          },
+          show_ok: {
+            user_message: "Is SAVE30 valid?",
+            ai_answer: "Yes, SAVE30 is active for 30% off.",
+            business_data: { active_promo_codes: ["SAVE30"] },
+            business_rules: { only_show_confirmed_promos: true },
+            business_risk: "promo_lookup",
+          },
+        };
+
+        const els = {
+          gate: document.querySelector("#view-gate"),
+          home: document.querySelector("#view-home"),
+          gateMsg: document.querySelector("#gate-msg"),
+          homeMsg: document.querySelector("#home-msg"),
+          apiKey: document.querySelector("#api-key"),
+          verifyToken: document.querySelector("#verify-token"),
+          issuedWrap: document.querySelector("#issued-wrap"),
+          issuedKey: document.querySelector("#issued-key"),
+          wsName: document.querySelector("#ws-name"),
+          mChecks: document.querySelector("#m-checks"),
+          mRemaining: document.querySelector("#m-remaining"),
+          mPlan: document.querySelector("#m-plan"),
+          resultCard: document.querySelector("#result-card"),
+          resultAction: document.querySelector("#result-action"),
+          resultMeta: document.querySelector("#result-meta"),
+          resultReason: document.querySelector("#result-reason"),
+          receiptList: document.querySelector("#receipt-list"),
+          billAddress: document.querySelector("#bill-address"),
+          billStatus: document.querySelector("#bill-status"),
+        };
+
+        function tt(k, vars) {
+          return window.SemeAI_I18n ? SemeAI_I18n.t(k, vars) : k;
         }
-        function seed() {
-          particles = Array.from({ length: COUNT }, () => ({
-            x: Math.random() * w,
-            y: Math.random() * h,
-            vx: (Math.random() - 0.5) * 0.22,
-            vy: (Math.random() - 0.5) * 0.22,
-            r: Math.random() * 1.3 + 0.4,
-            a: Math.random() * 0.45 + 0.2,
-          }));
+
+        function setMsg(target, text, kind) {
+          target.className = "msg" + (kind ? " " + kind : "");
+          target.textContent = text;
         }
-        function frame() {
-          mx += (tmx - mx) * 0.04;
-          my += (tmy - my) * 0.04;
-          const mpx = mx * w, mpy = my * h;
-          ctx.clearRect(0, 0, w, h);
-          for (const p of particles) {
-            p.x += p.vx; p.y += p.vy;
-            if (p.x < 0 || p.x > w) p.vx *= -1;
-            if (p.y < 0 || p.y > h) p.vy *= -1;
-            const dx = p.x - mpx, dy = p.y - mpy;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 200) {
-              const pull = (1 - dist / 200) * 0.025;
-              p.vx += (-dx / (dist || 1)) * pull;
-              p.vy += (-dy / (dist || 1)) * pull;
-            }
-            p.vx *= 0.996; p.vy *= 0.996;
-            ctx.beginPath();
-            ctx.fillStyle = `rgba(244, 244, 245, ${p.a * 0.5})`;
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fill();
+
+        function getKey() {
+          return (els.apiKey.value || sessionStorage.getItem(KEY_STORAGE) || "").trim();
+        }
+
+        function showGate() {
+          els.gate.classList.remove("hidden");
+          els.home.classList.add("hidden");
+        }
+
+        function showHome() {
+          els.gate.classList.add("hidden");
+          els.home.classList.remove("hidden");
+        }
+
+        function actionClass(a) {
+          const u = String(a || "").toUpperCase();
+          if (u === "SHOW") return "ok";
+          if (u === "REVIEW") return "warn";
+          if (u === "BLOCK") return "bad";
+          return "";
+        }
+
+        function escapeHtml(s) {
+          return String(s)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;");
+        }
+
+        async function enterCabinet(key) {
+          key = (key || getKey()).trim();
+          if (!key) {
+            setMsg(els.gateMsg, tt("dash.msg.needKey"), "warn");
+            showGate();
+            return;
           }
-          for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-              const a = particles[i], b = particles[j];
-              const dx = a.x - b.x, dy = a.y - b.y;
-              const d2 = dx * dx + dy * dy;
-              if (d2 < LINK * LINK) {
-                const alpha = 0.055 * (1 - Math.sqrt(d2) / LINK);
-                ctx.strokeStyle = `rgba(34, 211, 238, ${alpha})`;
-                ctx.beginPath();
-                ctx.moveTo(a.x, a.y);
-                ctx.lineTo(b.x, b.y);
-                ctx.stroke();
+          sessionStorage.setItem(KEY_STORAGE, key);
+          els.apiKey.value = key;
+          setMsg(els.homeMsg, tt("dash.msg.loading"), "warn");
+          showHome();
+          try {
+            const [account, usage, receiptsPayload, billing] = await Promise.all([
+              SemeAI.account(key),
+              SemeAI.usage(key).catch(() => null),
+              SemeAI.receipts(key, 8).catch(() => ({ receipts: [] })),
+              SemeAI.billingStatus(key).catch(() => null),
+            ]);
+            const ws = account.workspace || account;
+            els.wsName.textContent =
+              ws.workspace_name || ws.name || account.workspace_name || account.email || "workspace";
+            const u = usage || account.usage || {};
+            els.mChecks.textContent = u.checks_today ?? "—";
+            els.mRemaining.textContent = u.remaining_today ?? "—";
+            const sub = account.subscription || ws.subscription || {};
+            els.mPlan.textContent = sub.tier || sub.status || account.plan || ws.plan || "pilot";
+
+            const list = receiptsPayload.receipts || receiptsPayload.items || receiptsPayload || [];
+            renderReceipts(Array.isArray(list) ? list : []);
+
+            if (billing) {
+              const manual = billing.manual_crypto || {};
+              const bill = billing.billing || {};
+              if (manual.payment_address) els.billAddress.textContent = manual.payment_address;
+              els.billStatus.textContent =
+                (bill.payment_status || bill.status || tt("dash.msg.notLoaded")) +
+                " · " +
+                (manual.review_instructions || tt("dash.msg.billDefault"));
+            }
+
+            setMsg(els.homeMsg, tt("dash.msg.loaded"), "ok");
+          } catch (e) {
+            setMsg(els.homeMsg, e.message || String(e), "error");
+            setMsg(els.gateMsg, e.message || String(e), "error");
+            sessionStorage.removeItem(KEY_STORAGE);
+            showGate();
+          }
+        }
+
+        function renderReceipts(list) {
+          if (!list.length) {
+            els.receiptList.innerHTML =
+              '<p style="color:var(--faint);font-size:0.88rem">' + tt("dash.receipts.empty") + "</p>";
+            return;
+          }
+          els.receiptList.innerHTML = list
+            .slice(0, 8)
+            .map((r) => {
+              const act = r.action || "—";
+              const when = r.timestamp || r.created_at || "";
+              return (
+                '<div class="receipt-row">' +
+                '<span class="pill ' +
+                actionClass(act) +
+                '">' +
+                escapeHtml(act) +
+                "</span>" +
+                "<span>" +
+                escapeHtml(r.internal_decision || "") +
+                "</span>" +
+                '<span style="color:var(--faint)">' +
+                escapeHtml(when) +
+                "</span>" +
+                "</div>"
+              );
+            })
+            .join("");
+        }
+
+        async function runScenario(id) {
+          const key = getKey();
+          if (!key) return;
+          const payload = scenarios[id];
+          if (!payload) return;
+          document.querySelectorAll(".scenario").forEach((b) => (b.disabled = true));
+          setMsg(els.homeMsg, tt("dash.msg.checking"), "warn");
+          try {
+            const data = await SemeAI.check(key, payload);
+            const act = data.action || "—";
+            els.resultCard.className = "result-card " + String(act).toUpperCase();
+            els.resultAction.textContent = act;
+            els.resultMeta.textContent =
+              (data.internal_decision || "—") +
+              (data.audit_id ? " · " + data.audit_id : "");
+            els.resultReason.textContent = data.reason || data.next_step || "";
+            setMsg(
+              els.homeMsg,
+              tt("dash.msg.checkDone", { action: act, internal: data.internal_decision || "—" }),
+              "ok"
+            );
+            await enterCabinet(key);
+          } catch (e) {
+            setMsg(els.homeMsg, e.message || String(e), "error");
+          } finally {
+            document.querySelectorAll(".scenario").forEach((b) => (b.disabled = false));
+          }
+        }
+
+        document.querySelector("#btn-enter").addEventListener("click", () => enterCabinet());
+        document.querySelector("#btn-refresh").addEventListener("click", () => enterCabinet());
+        document.querySelector("#btn-logout").addEventListener("click", () => {
+          sessionStorage.removeItem(KEY_STORAGE);
+          els.apiKey.value = "";
+          setMsg(els.gateMsg, tt("dash.msg.cleared"), "warn");
+          showGate();
+        });
+
+        document.querySelectorAll(".scenario").forEach((btn) => {
+          btn.addEventListener("click", () => runScenario(btn.dataset.scenario));
+        });
+
+        document.querySelector("#btn-verify").addEventListener("click", async () => {
+          const token = els.verifyToken.value.trim().replace(/^.*#verify=/, "");
+          if (!token) {
+            setMsg(els.gateMsg, tt("reg.msg.needToken"), "warn");
+            return;
+          }
+          setMsg(els.gateMsg, tt("reg.msg.verifying"), "warn");
+          try {
+            const data = await SemeAI.verify(token);
+            if (data.api_key) {
+              els.issuedKey.value = data.api_key;
+              els.issuedWrap.classList.remove("hidden");
+              setMsg(els.gateMsg, tt("dash.msg.verified"), "ok");
+            } else {
+              setMsg(els.gateMsg, tt("dash.msg.verifyResp"), "ok");
+            }
+          } catch (e) {
+            setMsg(els.gateMsg, e.message || String(e), "error");
+          }
+        });
+
+        document.querySelector("#btn-copy-key").addEventListener("click", async () => {
+          if (!els.issuedKey.value) return;
+          await navigator.clipboard.writeText(els.issuedKey.value);
+          setMsg(els.gateMsg, tt("dash.msg.keyCopied"), "ok");
+        });
+
+        document.querySelector("#btn-use-key").addEventListener("click", () => {
+          enterCabinet(els.issuedKey.value.trim());
+        });
+
+        document.querySelector("#btn-copy-trc20").addEventListener("click", async () => {
+          await navigator.clipboard.writeText(els.billAddress.textContent.trim());
+          setMsg(els.homeMsg, tt("dash.msg.addrCopied"), "ok");
+        });
+
+        // Lightweight particle bg
+        (function () {
+          const canvas = document.getElementById("bg-canvas");
+          if (!canvas) return;
+          const ctx = canvas.getContext("2d");
+          let w = 0, h = 0, pts = [], raf = 0;
+          const N = 36, LINK = 100;
+          function resize() {
+            w = canvas.width = innerWidth;
+            h = canvas.height = innerHeight;
+          }
+          function seed() {
+            pts = Array.from({ length: N }, () => ({
+              x: Math.random() * w,
+              y: Math.random() * h,
+              vx: (Math.random() - 0.5) * 0.18,
+              vy: (Math.random() - 0.5) * 0.18,
+              a: Math.random() * 0.35 + 0.2,
+            }));
+          }
+          function frame() {
+            ctx.clearRect(0, 0, w, h);
+            for (const p of pts) {
+              p.x += p.vx; p.y += p.vy;
+              if (p.x < 0 || p.x > w) p.vx *= -1;
+              if (p.y < 0 || p.y > h) p.vy *= -1;
+              ctx.beginPath();
+              ctx.fillStyle = `rgba(244,244,245,${p.a * 0.45})`;
+              ctx.arc(p.x, p.y, 1.1, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            for (let i = 0; i < pts.length; i++) {
+              for (let j = i + 1; j < pts.length; j++) {
+                const a = pts[i], b = pts[j];
+                const dx = a.x - b.x, dy = a.y - b.y;
+                const d2 = dx * dx + dy * dy;
+                if (d2 < LINK * LINK) {
+                  ctx.strokeStyle = `rgba(34,211,238,${0.04 * (1 - Math.sqrt(d2) / LINK)})`;
+                  ctx.beginPath();
+                  ctx.moveTo(a.x, a.y);
+                  ctx.lineTo(b.x, b.y);
+                  ctx.stroke();
+                }
               }
             }
+            raf = requestAnimationFrame(frame);
           }
-          const core = ctx.createRadialGradient(mpx, mpy, 0, mpx, mpy, 90);
-          core.addColorStop(0, "rgba(34, 211, 238, 0.1)");
-          core.addColorStop(1, "rgba(0,0,0,0)");
-          ctx.fillStyle = core;
-          ctx.fillRect(mpx - 100, mpy - 100, 200, 200);
-          raf = requestAnimationFrame(frame);
+          addEventListener("resize", () => { resize(); seed(); });
+          resize(); seed(); raf = requestAnimationFrame(frame);
+        })();
+
+        // Boot
+        const hash = location.hash || "";
+        if (hash.startsWith("#verify=")) {
+          els.verifyToken.value = decodeURIComponent(hash.slice(8));
+          showGate();
+          setMsg(els.gateMsg, tt("reg.msg.fromLink"), "warn");
+        } else {
+          const saved = sessionStorage.getItem(KEY_STORAGE);
+          if (saved) {
+            els.apiKey.value = saved;
+            enterCabinet(saved);
+          } else {
+            showGate();
+          }
         }
-        window.addEventListener("resize", () => { resize(); seed(); });
-        window.addEventListener("pointermove", (e) => {
-          tmx = e.clientX / Math.max(w, 1);
-          tmy = e.clientY / Math.max(h, 1);
-        }, { passive: true });
-        resize(); seed();
-        raf = requestAnimationFrame(frame);
-        document.addEventListener("visibilitychange", () => {
-          if (document.hidden) cancelAnimationFrame(raf);
-          else raf = requestAnimationFrame(frame);
+
+        window.addEventListener("semeai:lang", () => {
+          if (window.SemeAI_I18n) SemeAI_I18n.apply(document);
         });
       })();
-
-      const KEY_STORAGE = "semeai_dashboard_api_key";
-      const defaultCheck = {
-        user_message: "Give me a 30% discount promo code.",
-        ai_answer: "Use promo code SAVE30 to get 30% off.",
-        business_data: { active_promo_codes: [] },
-        business_rules: { only_show_confirmed_promos: true },
-        business_context: {
-          conversation_topic: "billing_support",
-          expected_answer_scope: "billing_or_support_routing",
-        },
-        business_risk: "fake_promo_code",
-      };
-
-      const els = {
-        msg: document.querySelector("#global-message"),
-        apiKey: document.querySelector("#api-key"),
-        health: document.querySelector("#api-health-pill"),
-        email: document.querySelector("#email-pill"),
-        billingPill: document.querySelector("#billing-pill"),
-        session: document.querySelector("#session-pill"),
-        checkJson: document.querySelector("#check-json"),
-      };
-
-      let state = { account: null, receipts: [], billing: null, usage: null, keys: null, hasCheck: false };
-
-      function tt(k, vars) { return window.SemeAI_I18n ? SemeAI_I18n.t(k, vars) : k; }
-      function setMessage(text, kind = "") {
-        els.msg.className = "message" + (kind ? " " + kind : "");
-        els.msg.textContent = text;
-        if (kind === "ok") els.msg.classList.add("pulse-ok");
-      }
-      function getKey() {
-        return (els.apiKey.value || sessionStorage.getItem(KEY_STORAGE) || "").trim();
-      }
-      function actionClass(action) {
-        const a = String(action || "").toUpperCase();
-        if (a === "SHOW") return "ok";
-        if (a === "BLOCK") return "bad";
-        if (a === "REVIEW") return "warn";
-        return "";
-      }
-      function setFlowStep(n) {
-        document.querySelectorAll("#flow-steps [data-step]").forEach((el) => {
-          const s = Number(el.dataset.step);
-          el.classList.toggle("active", s === n);
-          el.classList.toggle("done", s < n);
-        });
-      }
-      function busy(btn, on) {
-        if (!btn) return;
-        btn.disabled = on;
-      }
-      function escapeHtml(s) {
-        return String(s)
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;");
-      }
-
-      function showTab(id) {
-        document.querySelectorAll("[data-tab]").forEach((b) => {
-          b.classList.toggle("active", b.dataset.tab === id);
-        });
-        document.querySelectorAll(".tab-panel").forEach((p) => {
-          const on = p.id === "panel-" + id;
-          p.classList.toggle("hidden", !on);
-        });
-        if (id === "auth") setFlowStep(1);
-        if (id === "check") setFlowStep(2);
-        if (id === "receipts" || id === "review") setFlowStep(3);
-        if (id === "billing") setFlowStep(4);
-      }
-
-      async function bootHealth() {
-        try {
-          const [h, st] = await Promise.all([SemeAI.health(), SemeAI.status().catch(() => null)]);
-          els.health.textContent = "API " + (h.status || "ok");
-          els.health.className = "pill ok";
-          const email = h.email_verification || {};
-          els.email.textContent = email.automatic_email_delivery
-            ? "Email " + (email.provider || "on")
-            : "Email " + (email.provider || "outbox");
-          els.email.className = "pill " + (email.automatic_email_delivery ? "ok" : "warn");
-          const bill = h.billing || {};
-          els.billingPill.textContent = (bill.provider || "billing") + " · " + (bill.default_amount_usdt || "25") + " USDT";
-          els.billingPill.className = "pill info";
-          if (bill.payment_address) {
-            document.querySelector("#ov-trc20").textContent = bill.payment_address;
-            document.querySelector("#bill-address").textContent = bill.payment_address;
-          }
-          const limits = (h.rate_limits && h.rate_limits.daily_limits_by_tier) || {};
-          document.querySelector("#usage-pill").textContent =
-            "limits pilot " + (limits.pilot || 1000) + "/day";
-          document.querySelector("#usage-pill").className = "pill";
-          if (st) document.querySelector("#status-json").textContent = JSON.stringify(st, null, 2);
-        } catch (e) {
-          els.health.textContent = tt("dash.api.down");
-          els.health.className = "pill bad";
-          setMessage(String(e.message || e), "error");
-        }
-      }
-
-      function renderOverview() {
-        const acc = state.account || {};
-        const ws = acc.workspace || acc;
-        document.querySelector("#m-workspace").textContent =
-          ws.workspace_name || ws.name || acc.workspace_name || "—";
-        const sub = acc.subscription || ws.subscription || {};
-        document.querySelector("#m-sub").textContent = sub.status || sub.tier || "—";
-        const bill = (state.billing && state.billing.billing) || acc.billing || {};
-        document.querySelector("#m-billing").textContent = bill.payment_status || bill.status || "—";
-        document.querySelector("#m-receipts").textContent = String(state.receipts.length || 0);
-        const usage = state.usage || acc.usage || {};
-        document.querySelector("#m-checks").textContent = usage.checks_today ?? "—";
-        document.querySelector("#m-limit").textContent = usage.daily_limit ?? "—";
-        document.querySelector("#m-remaining").textContent = usage.remaining_today ?? "—";
-        if (usage.daily_limit != null) {
-          document.querySelector("#usage-pill").textContent =
-            "usage " + (usage.checks_today || 0) + "/" + usage.daily_limit;
-          document.querySelector("#usage-pill").className =
-            "pill " + ((usage.remaining_today || 0) > 0 ? "ok" : "bad");
-        }
-        document.querySelector("#overview-json").textContent = JSON.stringify(
-          { account: state.account, billing: state.billing, usage: state.usage, keys: state.keys },
-          null,
-          2
-        );
-        if (state.keys) {
-          document.querySelector("#keys-json").textContent = JSON.stringify(state.keys, null, 2);
-        }
-        els.session.textContent = getKey() ? tt("dash.session.ok") : tt("dash.session.empty");
-        els.session.className = "pill " + (getKey() ? "ok" : "");
-      }
-
-      function renderReceipts() {
-        const tbody = document.querySelector("#receipts-table tbody");
-        tbody.innerHTML = "";
-        const list = state.receipts || [];
-        document.querySelector("#receipts-json").textContent = JSON.stringify(list, null, 2);
-        for (const r of list) {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${escapeHtml(r.timestamp || r.created_at || "—")}</td>
-            <td><span class="pill ${actionClass(r.action)}">${escapeHtml(r.action || "—")}</span></td>
-            <td>${escapeHtml(r.internal_decision || "—")}</td>
-            <td>${escapeHtml(r.business_risk || "—")}</td>
-            <td class="mono">${escapeHtml(r.receipt_id || r.audit_id || "—")}</td>`;
-          tbody.appendChild(tr);
-        }
-        const review = list.filter((r) => ["REVIEW", "BLOCK"].includes(String(r.action || "").toUpperCase()));
-        const box = document.querySelector("#review-list");
-        box.innerHTML = "";
-        if (!review.length) {
-          box.innerHTML = '<div class="message">' + tt("dash.msg.noReview") + '</div>';
-          return;
-        }
-        for (const r of review) {
-          const el = document.createElement("div");
-          el.className = "metric";
-          el.innerHTML = `
-            <div class="flex flex-wrap gap-2 mb-2">
-              <span class="pill ${actionClass(r.action)}">${escapeHtml(r.action)}</span>
-              <span class="pill">${escapeHtml(r.internal_decision || "")}</span>
-            </div>
-            <p class="text-sm text-mute" style="margin:0"><strong class="text-white">${escapeHtml(r.business_risk || "risk")}</strong> — ${escapeHtml(r.reason || "no reason")}</p>
-            <p class="mono text-xs text-faint" style="margin:8px 0 0">${escapeHtml(r.receipt_id || r.audit_id || "")}</p>`;
-          box.appendChild(el);
-        }
-      }
-
-      function renderBilling() {
-        const b = state.billing || {};
-        const billing = b.billing || {};
-        const manual = b.manual_crypto || {};
-        document.querySelector("#bill-status").textContent =
-          billing.payment_status || billing.status || tt("dash.msg.notLoaded");
-        document.querySelector("#bill-note").textContent =
-          manual.review_instructions || tt("dash.msg.billDefault");
-        if (manual.payment_address) document.querySelector("#bill-address").textContent = manual.payment_address;
-        if (manual.default_amount_usdt) document.querySelector("#bill-amount").value = manual.default_amount_usdt;
-        if (billing.latest_invoice_id) document.querySelector("#bill-invoice").value = billing.latest_invoice_id;
-        document.querySelector("#billing-json").textContent = JSON.stringify(b, null, 2);
-      }
-
-      async function loadWorkspace() {
-        const key = getKey();
-        if (!key) {
-          setMessage(tt("dash.msg.needKey"), "warn");
-          showTab("auth");
-          return;
-        }
-        sessionStorage.setItem(KEY_STORAGE, key);
-        els.apiKey.value = key;
-        const btn = document.querySelector("#btn-load");
-        busy(btn, true);
-        setMessage(tt("dash.msg.loading"), "warn");
-        try {
-          const limit = Number(document.querySelector("#receipt-limit").value || 25);
-          const [account, billing, receiptsPayload, usage, keys] = await Promise.all([
-            SemeAI.account(key),
-            SemeAI.billingStatus(key),
-            SemeAI.receipts(key, limit),
-            SemeAI.usage(key).catch(() => null),
-            SemeAI.keys(key).catch(() => null),
-          ]);
-          state.account = account;
-          state.billing = billing;
-          state.usage = usage || account.usage || null;
-          state.keys = keys || account.keys || null;
-          state.receipts = receiptsPayload.receipts || receiptsPayload.items || receiptsPayload || [];
-          if (!Array.isArray(state.receipts)) state.receipts = [];
-          renderOverview();
-          renderReceipts();
-          renderBilling();
-          setFlowStep(state.hasCheck ? 3 : 2);
-          setMessage(tt("dash.msg.loaded"), "ok");
-          showTab("overview");
-        } catch (e) {
-          setMessage(e.message || String(e), "error");
-        } finally {
-          busy(btn, false);
-        }
-      }
-
-      document.querySelectorAll("[data-tab]").forEach((btn) => {
-        btn.addEventListener("click", () => showTab(btn.dataset.tab));
-      });
-      document.querySelector("#btn-load").addEventListener("click", () => loadWorkspace());
-      document.querySelector("#btn-clear").addEventListener("click", () => {
-        sessionStorage.removeItem(KEY_STORAGE);
-        els.apiKey.value = "";
-        state = { account: null, receipts: [], billing: null, usage: null, keys: null, hasCheck: false };
-        renderOverview();
-        renderReceipts();
-        renderBilling();
-        setFlowStep(1);
-        setMessage(tt("dash.msg.cleared"), "warn");
-      });
-      document.querySelector("#btn-refresh-receipts").addEventListener("click", () => loadWorkspace());
-      document.querySelector("#btn-refresh-keys").addEventListener("click", async () => {
-        const key = getKey();
-        if (!key) return setMessage(tt("dash.msg.keyRequired"), "warn");
-        try {
-          state.keys = await SemeAI.keys(key);
-          renderOverview();
-          setMessage(tt("dash.msg.keysRefreshed"), "ok");
-        } catch (e) {
-          setMessage(e.message || String(e), "error");
-        }
-      });
-      document.querySelector("#btn-rotate-key").addEventListener("click", async () => {
-        const key = getKey();
-        if (!key) return setMessage(tt("dash.msg.keyRequired"), "warn");
-        if (!confirm(tt("dash.msg.rotateConfirm"))) return;
-        try {
-          const data = await SemeAI.rotateKey(key, "dashboard-rotate");
-          if (data.api_key) {
-            document.querySelector("#rotated-key").value = data.api_key;
-            sessionStorage.setItem(KEY_STORAGE, data.api_key);
-            els.apiKey.value = data.api_key;
-            setMessage(tt("dash.msg.rotated"), "ok");
-            await loadWorkspace();
-          }
-        } catch (e) {
-          setMessage(e.message || String(e), "error");
-        }
-      });
-
-      document.querySelector("#btn-check").addEventListener("click", async () => {
-        const key = getKey();
-        if (!key) return setMessage(tt("dash.msg.checkNeedKey"), "warn");
-        const btn = document.querySelector("#btn-check");
-        busy(btn, true);
-        try {
-          const payload = JSON.parse(els.checkJson.value);
-          setMessage(tt("dash.msg.checking"), "warn");
-          const data = await SemeAI.check(key, payload);
-          document.querySelector("#check-action").textContent = data.action || "—";
-          document.querySelector("#check-internal").textContent = data.internal_decision || "—";
-          document.querySelector("#check-audit").textContent = data.audit_id || "—";
-          document.querySelector("#check-result").textContent = JSON.stringify(data, null, 2);
-          state.hasCheck = true;
-          setFlowStep(3);
-          setMessage(tt("dash.msg.checkDone", { action: data.action, internal: data.internal_decision }), "ok");
-          await loadWorkspace();
-        } catch (e) {
-          setMessage(e.message || String(e), "error");
-        } finally {
-          busy(btn, false);
-        }
-      });
-
-      document.querySelector("#btn-demo-check").addEventListener("click", async () => {
-        try {
-          const data = await SemeAI.demoCheck({ scenario_id: "fake_promo_code" });
-          document.querySelector("#check-action").textContent = data.action || "—";
-          document.querySelector("#check-internal").textContent = data.internal_decision || "—";
-          document.querySelector("#check-audit").textContent = data.audit_id || "demo";
-          document.querySelector("#check-result").textContent = JSON.stringify(data, null, 2);
-          setMessage(tt("dash.msg.demoDone"), "ok");
-        } catch (e) {
-          setMessage(e.message || String(e), "error");
-        }
-      });
-
-      document.querySelector("#btn-intent").addEventListener("click", async () => {
-        const key = getKey();
-        if (!key) return setMessage(tt("dash.msg.keyRequired"), "warn");
-        const btn = document.querySelector("#btn-intent");
-        busy(btn, true);
-        try {
-          const data = await SemeAI.billingIntent(key, {
-            plan: document.querySelector("#bill-plan").value,
-            amount_usdt: document.querySelector("#bill-amount").value,
-          });
-          if (data.invoice && data.invoice.invoice_id) {
-            document.querySelector("#bill-invoice").value = data.invoice.invoice_id;
-          }
-          document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
-          setFlowStep(4);
-          setMessage(tt("dash.msg.intent"), "ok");
-          await loadWorkspace();
-        } catch (e) {
-          setMessage(e.message || String(e), "error");
-        } finally {
-          busy(btn, false);
-        }
-      });
-
-      document.querySelector("#btn-txid").addEventListener("click", async () => {
-        const key = getKey();
-        if (!key) return setMessage(tt("dash.msg.keyRequired"), "warn");
-        try {
-          const data = await SemeAI.billingTxid(key, {
-            invoice_id: document.querySelector("#bill-invoice").value.trim(),
-            txid: document.querySelector("#bill-txid").value.trim(),
-          });
-          document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
-          setMessage(tt("dash.msg.txid"), "warn");
-          await loadWorkspace();
-        } catch (e) {
-          setMessage(e.message || String(e), "error");
-        }
-      });
-
-      document.querySelector("#btn-copy-trc20").addEventListener("click", async () => {
-        await navigator.clipboard.writeText(document.querySelector("#bill-address").textContent.trim());
-        setMessage(tt("dash.msg.addrCopied"), "ok");
-      });
-
-      document.querySelector("#btn-verify").addEventListener("click", async () => {
-        try {
-          const token = document.querySelector("#verify-token").value.trim().replace(/^.*#verify=/, "");
-          const data = await SemeAI.verify(token);
-          document.querySelector("#verify-json").textContent = JSON.stringify(data, null, 2);
-          if (data.api_key) {
-            document.querySelector("#issued-key").value = data.api_key;
-            setMessage(tt("dash.msg.verified"), "ok");
-          } else setMessage(tt("dash.msg.verifyResp"), "ok");
-        } catch (e) {
-          setMessage(e.message || String(e), "error");
-        }
-      });
-
-      document.querySelector("#btn-copy-key").addEventListener("click", async () => {
-        const v = document.querySelector("#issued-key").value;
-        if (!v) return;
-        await navigator.clipboard.writeText(v);
-        setMessage(tt("dash.msg.keyCopied"), "ok");
-      });
-
-      document.querySelector("#btn-use-key").addEventListener("click", () => {
-        const v = document.querySelector("#issued-key").value.trim();
-        if (!v) return;
-        els.apiKey.value = v;
-        loadWorkspace();
-      });
-
-      els.checkJson.value = JSON.stringify(defaultCheck, null, 2);
-      const saved = sessionStorage.getItem(KEY_STORAGE);
-      if (saved) els.apiKey.value = saved;
-      const hash = location.hash || "";
-      if (hash.startsWith("#verify=")) {
-        document.querySelector("#verify-token").value = decodeURIComponent(hash.slice(8));
-        showTab("verify");
-      } else {
-        showTab(saved ? "overview" : "auth");
-      }
-      setFlowStep(saved ? 2 : 1);
-      bootHealth();
-      if (saved) loadWorkspace();
-      window.addEventListener("semeai:lang", () => {
-        if (window.SemeAI_I18n) SemeAI_I18n.apply(document);
-        renderOverview();
-      });
     </script>
   </body>
 </html>
