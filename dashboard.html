@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SemeAI Dashboard | Workspace console</title>
+    <title data-i18n-page="dash.title.page">SemeAI Cabinet | Workspace console</title>
     <meta
       name="description"
-      content="SemeAI Gate dashboard: API key, gate checks, receipts, REVIEW queue, USDT/TRC20 billing."
+      data-i18n-page="dash.meta" content="SemeAI Gate cabinet: API key, gate checks, receipts, REVIEW queue, USDT/TRC20 billing."
     />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <link rel="canonical" href="https://semeai.tech/dashboard.html" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260717a" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260717b" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -287,14 +287,14 @@
 
       <main class="mx-auto max-w-site px-5 pb-20 pt-10 sm:px-6 sm:pt-14">
         <section class="mb-8 max-w-3xl">
-          <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-mute">
-            Product dashboard
+          <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-semibold text-mute" data-i18n="dash.badge">
+            Personal cabinet
           </div>
-          <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-            Workspace <span class="glow-text">console</span>.
+          <h1 class="text-3xl font-extrabold tracking-tight text-white sm:text-4xl" data-i18n="dash.title">
+            Workspace console.
           </h1>
-          <p class="mt-3 text-base leading-relaxed text-mute sm:text-lg">
-            Authenticate once, then move through gate checks, receipts, review, and pilot billing.
+          <p class="mt-3 text-base leading-relaxed text-mute sm:text-lg" data-i18n="dash.lead">
+            Connect with your API key, then run gate checks, review receipts, and manage pilot billing.
           </p>
           <div class="mt-4 flex flex-wrap gap-2">
             <span class="pill" id="api-health-pill">API …</span>
@@ -309,65 +309,65 @@
         <div class="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4" id="flow-steps" aria-label="Operator flow">
           <div class="step-card active" data-step="1">
             <span class="num">1</span>
-            <strong class="mt-1.5 block text-sm text-white">Connect</strong>
-            <small class="mt-0.5 block text-xs text-faint">Paste API key</small>
+            <strong class="mt-1.5 block text-sm text-white" data-i18n="dash.step1">Connect</strong>
+            <small class="mt-0.5 block text-xs text-faint" data-i18n="dash.step1.sub">Paste API key</small>
           </div>
           <div class="step-card" data-step="2">
             <span class="num">2</span>
-            <strong class="mt-1.5 block text-sm text-white">Check</strong>
-            <small class="mt-0.5 block text-xs text-faint">Run /v0/check</small>
+            <strong class="mt-1.5 block text-sm text-white" data-i18n="dash.step2">Check</strong>
+            <small class="mt-0.5 block text-xs text-faint" data-i18n="dash.step2.sub">Run /v0/check</small>
           </div>
           <div class="step-card" data-step="3">
             <span class="num">3</span>
-            <strong class="mt-1.5 block text-sm text-white">Audit</strong>
-            <small class="mt-0.5 block text-xs text-faint">Receipts + REVIEW</small>
+            <strong class="mt-1.5 block text-sm text-white" data-i18n="dash.step3">Audit</strong>
+            <small class="mt-0.5 block text-xs text-faint" data-i18n="dash.step3.sub">Receipts + REVIEW</small>
           </div>
           <div class="step-card" data-step="4">
             <span class="num">4</span>
-            <strong class="mt-1.5 block text-sm text-white">Pilot pay</strong>
-            <small class="mt-0.5 block text-xs text-faint">USDT / TRC20</small>
+            <strong class="mt-1.5 block text-sm text-white" data-i18n="dash.step4">Pilot pay</strong>
+            <small class="mt-0.5 block text-xs text-faint" data-i18n="dash.step4.sub">USDT / TRC20</small>
           </div>
         </div>
 
         <div class="dash-layout">
           <aside class="panel h-fit rounded-2xl p-3 sm:p-4" aria-label="Dashboard sections">
-            <p class="mb-2 px-2 text-[10px] font-extrabold uppercase tracking-[0.12em] text-faint">Sections</p>
-            <button type="button" class="side-btn active" data-tab="overview">Overview<span class="hint">Status snapshot</span></button>
-            <button type="button" class="side-btn" data-tab="auth">API key<span class="hint">Connect workspace</span></button>
-            <button type="button" class="side-btn" data-tab="keys">Key manage<span class="hint">Rotate / list</span></button>
-            <button type="button" class="side-btn" data-tab="check">Gate check<span class="hint">SHOW / REVIEW / BLOCK</span></button>
-            <button type="button" class="side-btn" data-tab="receipts">Receipts<span class="hint">Audit trail</span></button>
-            <button type="button" class="side-btn" data-tab="review">Review queue<span class="hint">Needs human eye</span></button>
-            <button type="button" class="side-btn" data-tab="billing">Billing<span class="hint">USDT pilot</span></button>
-            <button type="button" class="side-btn" data-tab="verify">Verify signup<span class="hint">Issue key once</span></button>
+            <p class="mb-2 px-2 text-[10px] font-extrabold uppercase tracking-[0.12em] text-faint" data-i18n="dash.sections">Sections</p>
+            <button type="button" class="side-btn active" data-tab="overview"><span data-i18n="dash.tab.overview">Overview</span><span class="hint" data-i18n="dash.tab.overview.hint">Status snapshot</span></button>
+            <button type="button" class="side-btn" data-tab="auth"><span data-i18n="dash.tab.auth">API key</span><span class="hint" data-i18n="dash.tab.auth.hint">Connect workspace</span></button>
+            <button type="button" class="side-btn" data-tab="keys"><span data-i18n="dash.tab.keys">Key manage</span><span class="hint" data-i18n="dash.tab.keys.hint">Rotate / list</span></button>
+            <button type="button" class="side-btn" data-tab="check"><span data-i18n="dash.tab.check">Gate check</span><span class="hint" data-i18n="dash.tab.check.hint">SHOW / REVIEW / BLOCK</span></button>
+            <button type="button" class="side-btn" data-tab="receipts"><span data-i18n="dash.tab.receipts">Receipts</span><span class="hint" data-i18n="dash.tab.receipts.hint">Audit trail</span></button>
+            <button type="button" class="side-btn" data-tab="review"><span data-i18n="dash.tab.review">Review queue</span><span class="hint" data-i18n="dash.tab.review.hint">Needs human eye</span></button>
+            <button type="button" class="side-btn" data-tab="billing"><span data-i18n="dash.tab.billing">Billing</span><span class="hint" data-i18n="dash.tab.billing.hint">USDT pilot</span></button>
+            <button type="button" class="side-btn" data-tab="verify"><span data-i18n="dash.tab.verify">Verify signup</span><span class="hint" data-i18n="dash.tab.verify.hint">Issue key once</span></button>
           </aside>
 
           <div class="panel min-w-0 rounded-2xl p-5 sm:p-7">
-            <div id="global-message" class="message mb-5">Load your API key to unlock workspace data.</div>
+            <div id="global-message" class="message mb-5" data-i18n="dash.msg.load">Load your API key to unlock workspace data.</div>
 
             <section class="tab-panel" id="panel-overview">
-              <h2 class="text-xl font-bold tracking-tight text-white">Overview</h2>
+              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.ov.title">Overview</h2>
               <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                <div class="metric"><span>Workspace</span><strong id="m-workspace">—</strong></div>
-                <div class="metric"><span>Subscription</span><strong id="m-sub">—</strong></div>
-                <div class="metric"><span>Billing</span><strong id="m-billing">—</strong></div>
-                <div class="metric"><span>Receipts</span><strong id="m-receipts">—</strong></div>
+                <div class="metric"><span data-i18n="dash.ov.workspace">Workspace</span><strong id="m-workspace">—</strong></div>
+                <div class="metric"><span data-i18n="dash.ov.subscription">Subscription</span><strong id="m-sub">—</strong></div>
+                <div class="metric"><span data-i18n="dash.ov.billing">Billing</span><strong id="m-billing">—</strong></div>
+                <div class="metric"><span data-i18n="dash.ov.receipts">Receipts</span><strong id="m-receipts">—</strong></div>
               </div>
               <div class="mt-3 grid gap-3 sm:grid-cols-3">
-                <div class="metric"><span>Checks today</span><strong id="m-checks">—</strong></div>
-                <div class="metric"><span>Daily limit</span><strong id="m-limit">—</strong></div>
-                <div class="metric"><span>Remaining</span><strong id="m-remaining">—</strong></div>
+                <div class="metric"><span data-i18n="dash.ov.checks">Checks today</span><strong id="m-checks">—</strong></div>
+                <div class="metric"><span data-i18n="dash.ov.limit">Daily limit</span><strong id="m-limit">—</strong></div>
+                <div class="metric"><span data-i18n="dash.ov.remaining">Remaining</span><strong id="m-remaining">—</strong></div>
               </div>
               <pre id="status-json" class="mt-4">{}</pre>
               <div class="mt-4 grid gap-3 sm:grid-cols-2">
                 <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
-                  <h3 class="text-sm font-bold text-white">Gate invariant</h3>
-                  <p class="mt-2 text-[13px] leading-relaxed text-mute">Payment is never release authority. Machine values stay SHOW / REVIEW / BLOCK.</p>
+                  <h3 class="text-sm font-bold text-white" data-i18n="dash.ov.invariant">Gate invariant</h3>
+                  <p class="mt-2 text-[13px] leading-relaxed text-mute" data-i18n="dash.ov.invariantBody">Payment is never release authority. Machine values stay SHOW / REVIEW / BLOCK.</p>
                 </div>
                 <div class="rounded-xl border border-white/[0.08] bg-white/[0.02] p-4">
-                  <h3 class="text-sm font-bold text-white">Operator</h3>
+                  <h3 class="text-sm font-bold text-white" data-i18n="dash.ov.operator">Operator</h3>
                   <p class="mt-2 text-[13px] leading-relaxed text-mute">
-                    Review:
+                    <span data-i18n="dash.ov.review">Review:</span>
                     <a href="mailto:support@semeai.tech" class="text-accent hover:underline">support@semeai.tech</a><br />
                     TRC20: <code class="mono text-accent/90" id="ov-trc20">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
                   </p>
@@ -377,15 +377,15 @@
             </section>
 
             <section class="tab-panel hidden" id="panel-auth">
-              <h2 class="text-xl font-bold tracking-tight text-white">Connect API key</h2>
-              <p class="mt-2 text-sm text-mute">Stored only in this browser session (<code class="mono text-accent/80">sessionStorage</code>). Never embedded in page source.</p>
+              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.auth.title">Connect API key</h2>
+              <p class="mt-2 text-sm text-mute" data-i18n="dash.auth.hint">Stored only in this browser session (sessionStorage). Never embedded in page source.</p>
               <div class="mt-5 grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label class="field-label" for="api-key">Workspace API key</label>
-                  <input id="api-key" class="key-mask mono text-sm" type="password" autocomplete="off" spellcheck="false" placeholder="paste key…" />
+                  <label class="field-label" for="api-key" data-i18n="dash.auth.key">Workspace API key</label>
+                  <input id="api-key" class="key-mask mono text-sm" type="password" autocomplete="off" spellcheck="false" placeholder="paste key…" data-i18n-placeholder="dash.auth.key.ph" />
                 </div>
                 <div>
-                  <label class="field-label" for="receipt-limit">Receipt limit</label>
+                  <label class="field-label" for="receipt-limit" data-i18n="dash.auth.limit">Receipt limit</label>
                   <select id="receipt-limit">
                     <option value="10">10</option>
                     <option value="25" selected>25</option>
@@ -394,43 +394,43 @@
                 </div>
               </div>
               <div class="mt-5 flex flex-wrap gap-2">
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-load" type="button">Load workspace</button>
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-clear" type="button">Clear session</button>
-                <a class="btn-ghost px-5 py-2.5 text-sm" href="register.html?v=20260716r">Register</a>
+                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-load" type="button" data-i18n="dash.auth.load">Load workspace</button>
+                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-clear" type="button" data-i18n="dash.auth.clear">Clear session</button>
+                <a class="btn-ghost px-5 py-2.5 text-sm" href="register.html?v=20260717b" data-i18n="dash.auth.register">Register</a>
               </div>
             </section>
 
             <section class="tab-panel hidden" id="panel-keys">
-              <h2 class="text-xl font-bold tracking-tight text-white">Key management</h2>
-              <p class="mt-2 text-sm text-mute">List fingerprints, rotate the current key (shown once), never store raw keys server-side.</p>
+              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.keys.title">Key management</h2>
+              <p class="mt-2 text-sm text-mute" data-i18n="dash.keys.hint">List fingerprints, rotate the current key (shown once), never store raw keys server-side.</p>
               <div class="mt-4 flex flex-wrap gap-2">
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-refresh-keys" type="button">Refresh keys</button>
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-rotate-key" type="button">Rotate current key</button>
+                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-refresh-keys" type="button" data-i18n="dash.keys.refresh">Refresh keys</button>
+                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-rotate-key" type="button" data-i18n="dash.keys.rotate">Rotate current key</button>
               </div>
               <div class="mt-5">
-                <label class="field-label" for="rotated-key">New key after rotate (copy once)</label>
+                <label class="field-label" for="rotated-key" data-i18n="dash.keys.new">New key after rotate (copy once)</label>
                 <input id="rotated-key" readonly class="mono text-sm" />
               </div>
               <pre id="keys-json" class="mt-4">{}</pre>
             </section>
 
             <section class="tab-panel hidden" id="panel-check">
-              <h2 class="text-xl font-bold tracking-tight text-white">Protected gate check</h2>
-              <p class="mt-2 text-sm text-mute">Authenticated <code class="mono text-accent/80">POST /v0/check</code> with editable payload, or public demo check.</p>
+              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.check.title">Protected gate check</h2>
+              <p class="mt-2 text-sm text-mute" data-i18n="dash.check.hint">Authenticated POST /v0/check with editable payload, or public demo check.</p>
               <div class="split-check mt-5">
                 <div>
-                  <label class="field-label" for="check-json">Request JSON</label>
+                  <label class="field-label" for="check-json" data-i18n="dash.check.json">Request JSON</label>
                   <textarea id="check-json" style="min-height: 280px"></textarea>
                 </div>
                 <div>
                   <div class="flex flex-wrap gap-2">
-                    <button class="btn-primary px-5 py-2.5 text-sm" id="btn-check" type="button">Run /v0/check</button>
-                    <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-demo-check" type="button">Public demo</button>
+                    <button class="btn-primary px-5 py-2.5 text-sm" id="btn-check" type="button" data-i18n="dash.check.run">Run /v0/check</button>
+                    <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-demo-check" type="button" data-i18n="dash.check.demo">Public demo</button>
                   </div>
                   <div class="mt-4 grid grid-cols-3 gap-2">
-                    <div class="metric"><span>Action</span><strong id="check-action">—</strong></div>
-                    <div class="metric"><span>Internal</span><strong id="check-internal">—</strong></div>
-                    <div class="metric"><span>Audit</span><strong id="check-audit">—</strong></div>
+                    <div class="metric"><span data-i18n="dash.check.action">Action</span><strong id="check-action">—</strong></div>
+                    <div class="metric"><span data-i18n="dash.check.internal">Internal</span><strong id="check-internal">—</strong></div>
+                    <div class="metric"><span data-i18n="dash.check.audit">Audit</span><strong id="check-audit">—</strong></div>
                   </div>
                   <pre id="check-result" class="mt-4">{}</pre>
                 </div>
@@ -438,14 +438,14 @@
             </section>
 
             <section class="tab-panel hidden" id="panel-receipts">
-              <h2 class="text-xl font-bold tracking-tight text-white">Receipts</h2>
+              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.receipts.title">Receipts</h2>
               <div class="mt-4 mb-4">
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-refresh-receipts" type="button">Refresh</button>
+                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-refresh-receipts" type="button" data-i18n="dash.receipts.refresh">Refresh</button>
               </div>
               <div class="overflow-auto rounded-xl border border-white/[0.08]">
                 <table class="data" id="receipts-table">
                   <thead>
-                    <tr><th>When</th><th>Action</th><th>Internal</th><th>Risk</th><th>Id</th></tr>
+                    <tr><th data-i18n="dash.receipts.when">When</th><th data-i18n="dash.receipts.action">Action</th><th data-i18n="dash.receipts.internal">Internal</th><th data-i18n="dash.receipts.risk">Risk</th><th data-i18n="dash.receipts.id">Id</th></tr>
                   </thead>
                   <tbody></tbody>
                 </table>
@@ -454,35 +454,33 @@
             </section>
 
             <section class="tab-panel hidden" id="panel-review">
-              <h2 class="text-xl font-bold tracking-tight text-white">Review queue</h2>
-              <p class="mt-2 text-sm text-mute">REVIEW and BLOCK events. SILENCE withholds release while preserving audit.</p>
+              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.review.title">Review queue</h2>
+              <p class="mt-2 text-sm text-mute" data-i18n="dash.review.hint">REVIEW and BLOCK events. SILENCE withholds release while preserving audit.</p>
               <div id="review-list" class="mt-4 grid gap-3"></div>
             </section>
 
             <section class="tab-panel hidden" id="panel-billing">
-              <h2 class="text-xl font-bold tracking-tight text-white">Pilot billing · USDT/TRC20</h2>
-              <p class="mt-2 text-sm leading-relaxed text-mute">
-                Default <strong class="text-white">25 USDT</strong>. After TXID, email
-                <a href="mailto:support@semeai.tech" class="text-accent hover:underline">support@semeai.tech</a>
-                with workspace_id + invoice_id + txid. Payment ≠ gate authority.
+              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.billing.title">Pilot billing · USDT/TRC20</h2>
+              <p class="mt-2 text-sm leading-relaxed text-mute" data-i18n="dash.billing.hint">
+                Default 25 USDT. After TXID, email support@semeai.tech with workspace_id + invoice_id + txid. Payment ≠ gate authority.
               </p>
               <div class="mt-5 grid gap-3 sm:grid-cols-2">
                 <div class="metric">
-                  <span>TRC20 address</span>
+                  <span data-i18n="dash.billing.address">TRC20 address</span>
                   <strong class="mono text-sm" id="bill-address">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</strong>
                   <div class="mt-3">
-                    <button class="btn-ghost px-4 py-2 text-sm" id="btn-copy-trc20" type="button">Copy address</button>
+                    <button class="btn-ghost px-4 py-2 text-sm" id="btn-copy-trc20" type="button" data-i18n="dash.billing.copy">Copy address</button>
                   </div>
                 </div>
                 <div class="metric">
-                  <span>Status</span>
+                  <span data-i18n="dash.billing.status">Status</span>
                   <strong id="bill-status">—</strong>
                   <div id="bill-note" class="mt-2 text-[13px] text-mute"></div>
                 </div>
               </div>
               <div class="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label class="field-label" for="bill-plan">Plan</label>
+                  <label class="field-label" for="bill-plan" data-i18n="dash.billing.plan">Plan</label>
                   <select id="bill-plan">
                     <option value="pilot">Pilot</option>
                     <option value="developer">Developer</option>
@@ -490,46 +488,46 @@
                   </select>
                 </div>
                 <div>
-                  <label class="field-label" for="bill-amount">Amount USDT</label>
+                  <label class="field-label" for="bill-amount" data-i18n="dash.billing.amount">Amount USDT</label>
                   <input id="bill-amount" value="25.00" />
                 </div>
               </div>
               <div class="mt-4">
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-intent" type="button">Create payment intent</button>
+                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-intent" type="button" data-i18n="dash.billing.intent">Create payment intent</button>
               </div>
               <div class="mt-4 grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label class="field-label" for="bill-invoice">Invoice id</label>
-                  <input id="bill-invoice" placeholder="Create intent first" class="mono text-sm" />
+                  <label class="field-label" for="bill-invoice" data-i18n="dash.billing.invoice">Invoice id</label>
+                  <input id="bill-invoice" placeholder="Create intent first" data-i18n-placeholder="dash.billing.invoice.ph" class="mono text-sm" />
                 </div>
                 <div>
-                  <label class="field-label" for="bill-txid">TRC20 transaction id</label>
-                  <input id="bill-txid" placeholder="64-char hex" spellcheck="false" class="mono text-sm" />
+                  <label class="field-label" for="bill-txid" data-i18n="dash.billing.txid">TRC20 transaction id</label>
+                  <input id="bill-txid" placeholder="64-char hex" data-i18n-placeholder="dash.billing.txid.ph" spellcheck="false" class="mono text-sm" />
                 </div>
               </div>
               <div class="mt-4">
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-txid" type="button">Submit TXID</button>
+                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-txid" type="button" data-i18n="dash.billing.submit">Submit TXID</button>
               </div>
               <pre id="billing-json" class="mt-4">{}</pre>
             </section>
 
             <section class="tab-panel hidden" id="panel-verify">
-              <h2 class="text-xl font-bold tracking-tight text-white">Verify registration</h2>
-              <p class="mt-2 text-sm text-mute">Paste verification token. API key is shown once.</p>
+              <h2 class="text-xl font-bold tracking-tight text-white" data-i18n="dash.verify.title">Verify registration</h2>
+              <p class="mt-2 text-sm text-mute" data-i18n="dash.verify.hint">Paste verification token. API key is shown once.</p>
               <div class="mt-5">
-                <label class="field-label" for="verify-token">Verification token</label>
-                <input id="verify-token" spellcheck="false" placeholder="#verify= token" class="mono text-sm" />
+                <label class="field-label" for="verify-token" data-i18n="dash.verify.token">Verification token</label>
+                <input id="verify-token" spellcheck="false" placeholder="#verify= token" data-i18n-placeholder="dash.verify.token.ph" class="mono text-sm" />
               </div>
               <div class="mt-4">
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-verify" type="button">Verify &amp; issue key</button>
+                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-verify" type="button" data-i18n="dash.verify.btn">Verify &amp; issue key</button>
               </div>
               <div class="mt-5">
-                <label class="field-label" for="issued-key">Issued API key</label>
+                <label class="field-label" for="issued-key" data-i18n="dash.verify.issued">Issued API key</label>
                 <input id="issued-key" readonly class="mono text-sm" />
               </div>
               <div class="mt-3 flex flex-wrap gap-2">
-                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-copy-key" type="button">Copy key</button>
-                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-use-key" type="button">Use in this dashboard</button>
+                <button class="btn-ghost px-5 py-2.5 text-sm" id="btn-copy-key" type="button" data-i18n="dash.verify.copy">Copy key</button>
+                <button class="btn-primary px-5 py-2.5 text-sm" id="btn-use-key" type="button" data-i18n="dash.verify.use">Use in this cabinet</button>
               </div>
               <pre id="verify-json" class="mt-4">{}</pre>
             </section>
@@ -540,8 +538,9 @@
       <div data-semeai-footer></div>
     </div>
 
-    <script src="assets/js/api.js?v=20260717a"></script>
-    <script src="assets/js/site-shell.js?v=20260717a"></script>
+    <script src="assets/js/i18n.js?v=20260717b"></script>
+    <script src="assets/js/api.js?v=20260717b"></script>
+    <script src="assets/js/site-shell.js?v=20260717b"></script>
     <script>
       /* Canvas particle field */
       (function () {
@@ -648,6 +647,7 @@
 
       let state = { account: null, receipts: [], billing: null, usage: null, keys: null, hasCheck: false };
 
+      function tt(k, vars) { return window.SemeAI_I18n ? SemeAI_I18n.t(k, vars) : k; }
       function setMessage(text, kind = "") {
         els.msg.className = "message" + (kind ? " " + kind : "");
         els.msg.textContent = text;
@@ -719,7 +719,7 @@
           document.querySelector("#usage-pill").className = "pill";
           if (st) document.querySelector("#status-json").textContent = JSON.stringify(st, null, 2);
         } catch (e) {
-          els.health.textContent = "API down";
+          els.health.textContent = tt("dash.api.down");
           els.health.className = "pill bad";
           setMessage(String(e.message || e), "error");
         }
@@ -753,7 +753,7 @@
         if (state.keys) {
           document.querySelector("#keys-json").textContent = JSON.stringify(state.keys, null, 2);
         }
-        els.session.textContent = getKey() ? "session connected" : "session empty";
+        els.session.textContent = getKey() ? tt("dash.session.ok") : tt("dash.session.empty");
         els.session.className = "pill " + (getKey() ? "ok" : "");
       }
 
@@ -776,7 +776,7 @@
         const box = document.querySelector("#review-list");
         box.innerHTML = "";
         if (!review.length) {
-          box.innerHTML = '<div class="message">No REVIEW/BLOCK receipts loaded yet.</div>';
+          box.innerHTML = '<div class="message">' + tt("dash.msg.noReview") + '</div>';
           return;
         }
         for (const r of review) {
@@ -798,9 +798,9 @@
         const billing = b.billing || {};
         const manual = b.manual_crypto || {};
         document.querySelector("#bill-status").textContent =
-          billing.payment_status || billing.status || "not loaded";
+          billing.payment_status || billing.status || tt("dash.msg.notLoaded");
         document.querySelector("#bill-note").textContent =
-          manual.review_instructions || "Submit TXID after payment for operator review.";
+          manual.review_instructions || tt("dash.msg.billDefault");
         if (manual.payment_address) document.querySelector("#bill-address").textContent = manual.payment_address;
         if (manual.default_amount_usdt) document.querySelector("#bill-amount").value = manual.default_amount_usdt;
         if (billing.latest_invoice_id) document.querySelector("#bill-invoice").value = billing.latest_invoice_id;
@@ -810,7 +810,7 @@
       async function loadWorkspace() {
         const key = getKey();
         if (!key) {
-          setMessage("Paste a workspace API key first.", "warn");
+          setMessage(tt("dash.msg.needKey"), "warn");
           showTab("auth");
           return;
         }
@@ -818,7 +818,7 @@
         els.apiKey.value = key;
         const btn = document.querySelector("#btn-load");
         busy(btn, true);
-        setMessage("Loading workspace…", "warn");
+        setMessage(tt("dash.msg.loading"), "warn");
         try {
           const limit = Number(document.querySelector("#receipt-limit").value || 25);
           const [account, billing, receiptsPayload, usage, keys] = await Promise.all([
@@ -838,7 +838,7 @@
           renderReceipts();
           renderBilling();
           setFlowStep(state.hasCheck ? 3 : 2);
-          setMessage("Workspace loaded.", "ok");
+          setMessage(tt("dash.msg.loaded"), "ok");
           showTab("overview");
         } catch (e) {
           setMessage(e.message || String(e), "error");
@@ -859,31 +859,31 @@
         renderReceipts();
         renderBilling();
         setFlowStep(1);
-        setMessage("Session cleared.", "warn");
+        setMessage(tt("dash.msg.cleared"), "warn");
       });
       document.querySelector("#btn-refresh-receipts").addEventListener("click", () => loadWorkspace());
       document.querySelector("#btn-refresh-keys").addEventListener("click", async () => {
         const key = getKey();
-        if (!key) return setMessage("API key required.", "warn");
+        if (!key) return setMessage(tt("dash.msg.keyRequired"), "warn");
         try {
           state.keys = await SemeAI.keys(key);
           renderOverview();
-          setMessage("Keys refreshed.", "ok");
+          setMessage(tt("dash.msg.keysRefreshed"), "ok");
         } catch (e) {
           setMessage(e.message || String(e), "error");
         }
       });
       document.querySelector("#btn-rotate-key").addEventListener("click", async () => {
         const key = getKey();
-        if (!key) return setMessage("API key required.", "warn");
-        if (!confirm("Rotate key? Current key will stop working immediately.")) return;
+        if (!key) return setMessage(tt("dash.msg.keyRequired"), "warn");
+        if (!confirm(tt("dash.msg.rotateConfirm"))) return;
         try {
           const data = await SemeAI.rotateKey(key, "dashboard-rotate");
           if (data.api_key) {
             document.querySelector("#rotated-key").value = data.api_key;
             sessionStorage.setItem(KEY_STORAGE, data.api_key);
             els.apiKey.value = data.api_key;
-            setMessage("Key rotated. Copy the new key now.", "ok");
+            setMessage(tt("dash.msg.rotated"), "ok");
             await loadWorkspace();
           }
         } catch (e) {
@@ -893,12 +893,12 @@
 
       document.querySelector("#btn-check").addEventListener("click", async () => {
         const key = getKey();
-        if (!key) return setMessage("API key required for protected check.", "warn");
+        if (!key) return setMessage(tt("dash.msg.checkNeedKey"), "warn");
         const btn = document.querySelector("#btn-check");
         busy(btn, true);
         try {
           const payload = JSON.parse(els.checkJson.value);
-          setMessage("Running protected gate check…", "warn");
+          setMessage(tt("dash.msg.checking"), "warn");
           const data = await SemeAI.check(key, payload);
           document.querySelector("#check-action").textContent = data.action || "—";
           document.querySelector("#check-internal").textContent = data.internal_decision || "—";
@@ -906,7 +906,7 @@
           document.querySelector("#check-result").textContent = JSON.stringify(data, null, 2);
           state.hasCheck = true;
           setFlowStep(3);
-          setMessage(`Gate returned ${data.action} / ${data.internal_decision}`, "ok");
+          setMessage(tt("dash.msg.checkDone", { action: data.action, internal: data.internal_decision }), "ok");
           await loadWorkspace();
         } catch (e) {
           setMessage(e.message || String(e), "error");
@@ -922,7 +922,7 @@
           document.querySelector("#check-internal").textContent = data.internal_decision || "—";
           document.querySelector("#check-audit").textContent = data.audit_id || "demo";
           document.querySelector("#check-result").textContent = JSON.stringify(data, null, 2);
-          setMessage("Public demo check completed (no API key).", "ok");
+          setMessage(tt("dash.msg.demoDone"), "ok");
         } catch (e) {
           setMessage(e.message || String(e), "error");
         }
@@ -930,7 +930,7 @@
 
       document.querySelector("#btn-intent").addEventListener("click", async () => {
         const key = getKey();
-        if (!key) return setMessage("API key required.", "warn");
+        if (!key) return setMessage(tt("dash.msg.keyRequired"), "warn");
         const btn = document.querySelector("#btn-intent");
         busy(btn, true);
         try {
@@ -943,7 +943,7 @@
           }
           document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
           setFlowStep(4);
-          setMessage("Payment intent created. Send USDT, then submit TXID.", "ok");
+          setMessage(tt("dash.msg.intent"), "ok");
           await loadWorkspace();
         } catch (e) {
           setMessage(e.message || String(e), "error");
@@ -954,14 +954,14 @@
 
       document.querySelector("#btn-txid").addEventListener("click", async () => {
         const key = getKey();
-        if (!key) return setMessage("API key required.", "warn");
+        if (!key) return setMessage(tt("dash.msg.keyRequired"), "warn");
         try {
           const data = await SemeAI.billingTxid(key, {
             invoice_id: document.querySelector("#bill-invoice").value.trim(),
             txid: document.querySelector("#bill-txid").value.trim(),
           });
           document.querySelector("#billing-json").textContent = JSON.stringify(data, null, 2);
-          setMessage("TXID submitted. Email billing@semeai.tech for faster review.", "warn");
+          setMessage(tt("dash.msg.txid"), "warn");
           await loadWorkspace();
         } catch (e) {
           setMessage(e.message || String(e), "error");
@@ -970,7 +970,7 @@
 
       document.querySelector("#btn-copy-trc20").addEventListener("click", async () => {
         await navigator.clipboard.writeText(document.querySelector("#bill-address").textContent.trim());
-        setMessage("TRC20 address copied.", "ok");
+        setMessage(tt("dash.msg.addrCopied"), "ok");
       });
 
       document.querySelector("#btn-verify").addEventListener("click", async () => {
@@ -980,8 +980,8 @@
           document.querySelector("#verify-json").textContent = JSON.stringify(data, null, 2);
           if (data.api_key) {
             document.querySelector("#issued-key").value = data.api_key;
-            setMessage("Workspace verified. Copy the API key now.", "ok");
-          } else setMessage("Verification response received.", "ok");
+            setMessage(tt("dash.msg.verified"), "ok");
+          } else setMessage(tt("dash.msg.verifyResp"), "ok");
         } catch (e) {
           setMessage(e.message || String(e), "error");
         }
@@ -991,7 +991,7 @@
         const v = document.querySelector("#issued-key").value;
         if (!v) return;
         await navigator.clipboard.writeText(v);
-        setMessage("API key copied.", "ok");
+        setMessage(tt("dash.msg.keyCopied"), "ok");
       });
 
       document.querySelector("#btn-use-key").addEventListener("click", () => {
@@ -1014,6 +1014,10 @@
       setFlowStep(saved ? 2 : 1);
       bootHealth();
       if (saved) loadWorkspace();
+      window.addEventListener("semeai:lang", () => {
+        if (window.SemeAI_I18n) SemeAI_I18n.apply(document);
+        renderOverview();
+      });
     </script>
   </body>
 </html>

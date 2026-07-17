@@ -1,86 +1,105 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Support pilot kit · SemeAI Gate</title>
-    <meta name="description" content="Vertical pilot kit for support chatbots: promo codes, refunds, and entitlement claims gated by SemeAI." />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n-page="pilot.title.page">Support pilot kit · SemeAI Gate</title>
+    <meta
+      name="description"
+      data-i18n-page="pilot.meta"
+      content="Vertical pilot kit for support chatbots: promo codes, refunds, and entitlement claims gated by SemeAI."
+    />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <link rel="stylesheet" href="../assets/css/semeai.css?v=20260713d" />
-    <link rel="stylesheet" href="../assets/css/landing.css?v=20260713d" />
-    <link rel="stylesheet" href="../assets/css/product.css?v=20260713d" />
+    <link rel="canonical" href="https://semeai.tech/pilots/support.html" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../assets/css/site.css?v=20260717b" />
   </head>
-  <body class="product-body">
-    <header class="nav" data-semeai-nav></header>
-    <main class="page product-main">
-      <section class="hero-compact fade-up">
-        <span class="eyebrow">Vertical pilot kit</span>
-        <h1>Support chatbot release control.</h1>
-        <p class="lead">
+  <body>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="content">
+      <div data-semeai-nav></div>
+      <main class="site-main">
+        <span class="eyebrow" data-i18n="pilot.badge">Vertical pilot kit</span>
+        <h1 class="page-title" data-i18n="pilot.title">Support chatbot release control.</h1>
+        <p class="lead" data-i18n="pilot.lead">
           One vertical. Three concrete cases. Same contract: SHOW / REVIEW / BLOCK before customers see AI answers.
         </p>
-        <div class="button-row" style="margin-top: 12px">
-          <a class="button primary" href="../register.html?v=20260713d">Start pilot workspace</a>
-          <a class="button" href="https://gate.semeai.tech/demo/saas_visible.html">Run ecosystem demo</a>
-          <a class="button" href="../dashboard.html?v=20260713d">Open dashboard</a>
+        <div class="btn-row mt-6">
+          <a class="btn-primary" href="../register.html?v=20260717b" data-i18n="pilot.cta.register">Start pilot workspace</a>
+          <a class="btn-ghost" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener" data-i18n="pilot.cta.console">Run ecosystem demo</a>
+          <a class="btn-ghost" href="../dashboard.html?v=20260717b" data-i18n="pilot.cta.dash">Open cabinet</a>
         </div>
-      </section>
 
-      <div class="steps fade-up d1">
-        <div class="step done"><span class="num">1</span><strong>Wire gate</strong><small>After LLM generation</small></div>
-        <div class="step done"><span class="num">2</span><strong>Pass business data</strong><small>Promos, refunds, entitlements</small></div>
-        <div class="step active"><span class="num">3</span><strong>Map actions</strong><small>SHOW · REVIEW · BLOCK</small></div>
-        <div class="step"><span class="num">4</span><strong>Audit</strong><small>Receipts for operators</small></div>
-      </div>
-
-      <section class="section fade-up d2">
-        <h2>Three pilot cases</h2>
-        <div class="grid-3" style="margin-top: 14px">
-          <article class="card card-hover">
-            <span class="pill bad">CASE A · BLOCK</span>
-            <h3 style="margin-top:10px">Fake promo code</h3>
-            <p><strong>User:</strong> “Give me 30% off.”</p>
-            <p><strong>AI:</strong> “Use SAVE30.”</p>
-            <p><strong>Data:</strong> <code>active_promo_codes: []</code></p>
-            <p><strong>Expect:</strong> BLOCK / SILENCE — withhold invented code, keep receipt.</p>
+        <div class="grid-3 mt-10">
+          <article class="card">
+            <h3 data-i18n="pilot.s1">Wire gate</h3>
+            <p data-i18n="pilot.s1.sub">After LLM generation</p>
           </article>
-          <article class="card card-hover">
-            <span class="pill warn">CASE B · REVIEW</span>
-            <h3 style="margin-top:10px">Refund eligibility ambiguity</h3>
-            <p><strong>User:</strong> “Can I get a full refund?”</p>
-            <p><strong>AI:</strong> “Yes, you’re fully eligible for an immediate refund.”</p>
-            <p><strong>Data:</strong> policy incomplete / mixed signals</p>
-            <p><strong>Expect:</strong> REVIEW / NEEDS_REVIEW — operator before customer-visible promise.</p>
+          <article class="card">
+            <h3 data-i18n="pilot.s2">Pass business data</h3>
+            <p data-i18n="pilot.s2.sub">Promos, refunds, entitlements</p>
           </article>
-          <article class="card card-hover">
-            <span class="pill ok">CASE C · SHOW</span>
-            <h3 style="margin-top:10px">Supported entitlement</h3>
-            <p><strong>User:</strong> “Is SAVE30 valid?”</p>
-            <p><strong>AI:</strong> “Yes, SAVE30 is active for 30% off.”</p>
-            <p><strong>Data:</strong> <code>active_promo_codes: ["SAVE30"]</code></p>
-            <p><strong>Expect:</strong> SHOW / PROCEED — release supported answer.</p>
+          <article class="card">
+            <h3 data-i18n="pilot.s3">Map actions</h3>
+            <p data-i18n="pilot.s3.sub">SHOW · REVIEW · BLOCK</p>
           </article>
         </div>
-      </section>
+        <p class="mt-4" style="color:var(--faint);font-size:0.85rem">
+          <span data-i18n="pilot.s4">Audit</span> · <span data-i18n="pilot.s4.sub">Receipts for operators</span>
+        </p>
 
-      <section class="section fade-up d3">
-        <h2>Host product branch</h2>
-        <pre>if (gate.action === "SHOW") {
+        <section class="mt-10">
+          <h2 class="section-title" data-i18n="pilot.cases">Three pilot cases</h2>
+          <div class="grid-3 mt-6">
+            <article class="card">
+              <span class="pill tag-block" data-i18n="pilot.caseA">CASE A · BLOCK</span>
+              <h3 style="margin-top:0.75rem" data-i18n="pilot.caseA.title">Fake promo code</h3>
+              <p data-i18n="pilot.caseA.user">User: “Give me 30% off.”</p>
+              <p data-i18n="pilot.caseA.ai">AI: “Use SAVE30.”</p>
+              <p data-i18n="pilot.caseA.data">Data: active_promo_codes: []</p>
+              <p data-i18n="pilot.caseA.expect">Expect: BLOCK / SILENCE — withhold invented code, keep receipt.</p>
+            </article>
+            <article class="card">
+              <span class="pill tag-review" data-i18n="pilot.caseB">CASE B · REVIEW</span>
+              <h3 style="margin-top:0.75rem" data-i18n="pilot.caseB.title">Refund eligibility ambiguity</h3>
+              <p data-i18n="pilot.caseB.user">User: “Can I get a full refund?”</p>
+              <p data-i18n="pilot.caseB.ai">AI: “Yes, you’re fully eligible for an immediate refund.”</p>
+              <p data-i18n="pilot.caseB.data">Data: policy incomplete / mixed signals</p>
+              <p data-i18n="pilot.caseB.expect">Expect: REVIEW — operator before customer-visible promise.</p>
+            </article>
+            <article class="card">
+              <span class="pill tag-show" data-i18n="pilot.caseC">CASE C · SHOW</span>
+              <h3 style="margin-top:0.75rem" data-i18n="pilot.caseC.title">Supported entitlement</h3>
+              <p data-i18n="pilot.caseC.user">User: “Is SAVE30 valid?”</p>
+              <p data-i18n="pilot.caseC.ai">AI: “Yes, SAVE30 is active for 30% off.”</p>
+              <p data-i18n="pilot.caseC.data">Data: active_promo_codes: ["SAVE30"]</p>
+              <p data-i18n="pilot.caseC.expect">Expect: SHOW / PROCEED — release supported answer.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="mt-10">
+          <h2 class="section-title" data-i18n="pilot.host">Host product branch</h2>
+          <pre class="code-block mt-6">if (gate.action === "SHOW") {
   return aiAnswer;
 } else if (gate.action === "REVIEW") {
   return "A support operator should review this before release.";
 } else {
   return gate.safe_fallback || "I can't confirm that from current business data.";
 }</pre>
-        <div class="button-row" style="margin-top: 14px">
-          <a class="button primary" href="https://api.semeai.tech/v0/demo/check">Demo API</a>
-          <a class="button" href="../gate.html">Contract</a>
-          <a class="button" href="https://github.com/SemeAIPletinnya/semeai-gate-basic">SDK / repo</a>
-        </div>
-      </section>
-    </main>
-    <footer class="site-footer" data-semeai-footer></footer>
-    <script src="../assets/js/shell.js?v=20260713d"></script>
-    <script src="../assets/js/cache-bust.js?v=20260713d"></script>
+          <div class="btn-row mt-6">
+            <a class="btn-primary" href="https://api.semeai.tech/v0/demo/check" target="_blank" rel="noopener" data-i18n="pilot.cta.api">Demo API</a>
+            <a class="btn-ghost" href="../gate.html?v=20260717b" data-i18n="pilot.cta.contract">Contract</a>
+            <a class="btn-ghost" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" data-i18n="pilot.cta.repo">SDK / repo</a>
+          </div>
+        </section>
+      </main>
+      <div data-semeai-footer></div>
+    </div>
+    <script src="../assets/js/i18n.js?v=20260717b"></script>
+    <script src="../assets/js/site-shell.js?v=20260717b"></script>
   </body>
 </html>
