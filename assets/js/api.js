@@ -107,5 +107,39 @@
         body: payload,
       }),
     demoCheck: (payload) => request("/v0/demo/check", { method: "POST", body: payload }),
+    plans: () => request("/v0/plans"),
+    authProviders: () => request("/v0/auth/providers"),
+    forgotPassword: (email) =>
+      request("/v0/password/forgot", { method: "POST", body: { email } }),
+    resetPassword: (payload) =>
+      request("/v0/password/reset", { method: "POST", body: payload }),
+    team: (apiKey) => request("/v0/team", { token: apiKey || getStoredToken() }),
+    inviteMember: (payload, apiKey) =>
+      request("/v0/team/invite", {
+        method: "POST",
+        token: apiKey || getStoredToken(),
+        body: payload,
+      }),
+    acceptInvite: (payload) =>
+      request("/v0/team/accept", { method: "POST", body: payload }),
+    removeMember: (payload, apiKey) =>
+      request("/v0/team/remove", {
+        method: "POST",
+        token: apiKey || getStoredToken(),
+        body: payload,
+      }),
+    stripeCheckout: (payload, apiKey) =>
+      request("/v0/billing/stripe/checkout", {
+        method: "POST",
+        token: apiKey || getStoredToken(),
+        body: payload,
+      }),
+    stripePortal: (apiKey) =>
+      request("/v0/billing/stripe/portal", {
+        method: "POST",
+        token: apiKey || getStoredToken(),
+        body: {},
+      }),
+    googleOAuthStart: () => `${API_BASE}/v0/oauth/google/start`,
   };
 })();

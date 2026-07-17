@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forgot password · SemeAI</title>
+    <link rel="stylesheet" href="assets/css/site.css?v=20260717e" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      .fld { width:100%; border:1px solid rgba(255,255,255,.1); border-radius:12px; background:rgba(3,3,6,.65); padding:.75rem .9rem; color:#fff; }
+      .msg { border-radius:12px; border:1px solid rgba(255,255,255,.1); padding:.85rem 1rem; color:var(--mute); margin-top:1rem; }
+      .msg.ok { color:var(--show); border-color:rgba(74,222,128,.35); background:rgba(74,222,128,.08); }
+      .msg.error { color:var(--block); border-color:rgba(248,113,113,.4); background:rgba(248,113,113,.08); }
+      .field-label { display:block; margin:0 0 .4rem; font-size:.7rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); }
+    </style>
+  </head>
+  <body>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="content">
+      <div data-semeai-nav></div>
+      <main class="site-main" style="max-width:28rem">
+        <span class="eyebrow">Account recovery</span>
+        <h1 class="page-title">Forgot password</h1>
+        <p class="lead">Enter your work email. If an account exists, we send a reset link.</p>
+        <form id="form" class="panel mt-8" style="display:grid;gap:1rem">
+          <div>
+            <label class="field-label" for="email">Email</label>
+            <input class="fld" id="email" type="email" required autocomplete="username" />
+          </div>
+          <button class="btn-primary" type="submit">Send reset link</button>
+        </form>
+        <div class="msg" id="msg">We’ll never show whether the email is registered.</div>
+        <p class="mt-6"><a href="dashboard.html?v=20260717e">Back to login</a></p>
+      </main>
+      <div data-semeai-footer></div>
+    </div>
+    <script src="assets/js/i18n.js?v=20260717e"></script>
+    <script src="assets/js/api.js?v=20260717e"></script>
+    <script src="assets/js/site-shell.js?v=20260717e"></script>
+    <script>
+      document.querySelector("#form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const msg = document.querySelector("#msg");
+        try {
+          const data = await SemeAI.forgotPassword(document.querySelector("#email").value.trim());
+          msg.className = "msg ok";
+          msg.textContent = data.message || "If an account exists, a reset link was sent.";
+        } catch (err) {
+          msg.className = "msg error";
+          msg.textContent = err.message || String(err);
+        }
+      });
+    </script>
+  </body>
+</html>

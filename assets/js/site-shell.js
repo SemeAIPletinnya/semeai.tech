@@ -1,5 +1,5 @@
 (() => {
-  const V = "20260717d";
+  const V = "20260717e";
   const path = (location.pathname || "").toLowerCase();
   const current = (path.split("/").pop() || "index.html").split("?")[0];
   const isHome = current === "index.html" || current === "" || current === "/";
@@ -18,7 +18,7 @@
       how: `${base}index.html?v=${V}#how`,
       impact: `${base}index.html?v=${V}#impact`,
       demo: isHome ? "#demo" : `${base}index.html?v=${V}#demo`,
-      pricing: isHome ? "#pricing" : `${base}index.html?v=${V}#pricing`,
+      pricing: `${base}pricing.html?v=${V}`,
       howLocal: isHome ? "#how" : `${base}index.html?v=${V}#how`,
       problemLocal: isHome ? "#problem" : `${base}index.html?v=${V}#problem`,
       impactLocal: isHome ? "#impact" : `${base}index.html?v=${V}#impact`,
@@ -92,10 +92,10 @@
         type: "dropdown",
         label: t("nav.product"),
         id: "nav-product",
-        matchAny: ["gate.html", "self-hosted.html", "pilot"],
+        matchAny: ["gate.html", "self-hosted.html", "pilot", "pricing.html"],
         items: [
           { label: t("nav.how"), desc: t("nav.how.desc"), href: p.howLocal },
-          { label: t("nav.pricing"), desc: t("nav.pricing.desc"), href: p.pricing },
+          { label: t("nav.pricing"), desc: t("nav.pricing.desc"), href: p.pricing, match: "pricing.html" },
           { label: t("nav.contract"), desc: t("nav.contract.desc"), href: p.gate, match: "gate.html" },
           { label: t("nav.selfhosted"), desc: t("nav.selfhosted.desc"), href: p.selfHosted, match: "self-hosted.html" },
           { label: t("nav.pilot"), desc: t("nav.pilot.desc"), href: p.pilot, match: "pilot" },
