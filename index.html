@@ -40,6 +40,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260717a" />
     <style>
       :root { color-scheme: dark; }
       body {
@@ -133,31 +134,12 @@
       }
     </style>
   </head>
-  <body>
+  <body data-semeai-custom-bg>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <div class="vignette" aria-hidden="true"></div>
 
     <div class="content">
-      <!-- Nav -->
-      <header class="sticky top-0 z-50 border-b border-white/[0.07] bg-void/75 backdrop-blur-xl">
-        <div class="mx-auto flex max-w-site items-center justify-between gap-4 px-5 py-4 sm:px-6">
-          <a href="#top" class="flex items-center gap-2.5 text-sm font-bold tracking-tight">
-            <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyan-300 to-cyan-500 text-xs font-extrabold text-void shadow-[0_0_24px_rgba(34,211,238,0.4)]">SG</span>
-            SemeAI Gate
-          </a>
-          <nav class="hidden items-center gap-7 text-[13px] font-medium md:flex">
-            <a href="#problem" class="nav-link">Problem</a>
-            <a href="#how" class="nav-link">How it works</a>
-            <a href="#impact" class="nav-link">Impact</a>
-            <a href="#demo" class="nav-link">Demo</a>
-            <a href="#pricing" class="nav-link">Pricing</a>
-          </nav>
-          <div class="flex items-center gap-2">
-            <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" class="hidden text-[13px] font-medium text-mute hover:text-white sm:inline">GitHub</a>
-            <a href="#demo" class="btn-primary px-4 py-2 text-[13px]">Try free checks</a>
-          </div>
-        </div>
-      </header>
+      <div data-semeai-nav></div>
 
       <main id="top">
         <!-- HERO — FutureAGI-style problem first + product UI -->
@@ -599,16 +581,12 @@
         </section>
       </main>
 
-      <footer class="border-t border-white/[0.06]">
-        <div class="mx-auto flex max-w-site flex-col gap-2 px-5 py-8 text-sm text-faint sm:flex-row sm:justify-between sm:px-6">
-          <p class="text-mute">SemeAI Gate · Generation is not release authority</p>
-          <p>Payment is never gate authority</p>
-        </div>
-      </footer>
+      <div data-semeai-footer></div>
     </div>
 
-    <script src="assets/js/api.js?v=20260716q"></script>
-    <script src="assets/js/cache-bust.js?v=20260716q"></script>
+    <script src="assets/js/api.js?v=20260717a"></script>
+    <script src="assets/js/cache-bust.js?v=20260717a"></script>
+    <script src="assets/js/site-shell.js?v=20260717a"></script>
     <script>
       /* Stronger interactive background — denser particles, stronger mouse glow */
       (function initBg() {

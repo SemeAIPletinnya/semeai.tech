@@ -11,6 +11,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <link rel="canonical" href="https://semeai.tech/dashboard.html" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260717a" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -277,29 +278,12 @@
       }
     </style>
   </head>
-  <body>
+  <body data-semeai-custom-bg>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <div class="vignette" aria-hidden="true"></div>
 
     <div class="content">
-      <header class="sticky top-0 z-50 border-b border-white/[0.07] bg-void/75 backdrop-blur-xl">
-        <div class="mx-auto flex max-w-site items-center justify-between gap-4 px-5 py-4 sm:px-6">
-          <a href="index.html?v=20260716r" class="flex items-center gap-2.5 text-sm font-bold tracking-tight">
-            <span class="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-cyan-300 to-cyan-500 text-xs font-extrabold text-void shadow-[0_0_24px_rgba(34,211,238,0.4)]">SG</span>
-            SemeAI Gate
-          </a>
-          <nav class="hidden items-center gap-7 text-[13px] font-medium md:flex">
-            <a href="index.html?v=20260716r#demo" class="nav-link">Demo</a>
-            <a href="register.html?v=20260716r" class="nav-link">Register</a>
-            <a href="dashboard.html?v=20260716s" class="nav-link active">Dashboard</a>
-            <a href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener" class="nav-link">Console</a>
-          </nav>
-          <div class="flex items-center gap-2">
-            <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" class="hidden text-[13px] font-medium text-mute hover:text-white sm:inline">GitHub</a>
-            <a href="register.html?v=20260716r" class="btn-primary px-4 py-2 text-[13px]">Start pilot</a>
-          </div>
-        </div>
-      </header>
+      <div data-semeai-nav></div>
 
       <main class="mx-auto max-w-site px-5 pb-20 pt-10 sm:px-6 sm:pt-14">
         <section class="mb-8 max-w-3xl">
@@ -553,24 +537,11 @@
         </div>
       </main>
 
-      <footer class="border-t border-white/[0.07] py-10">
-        <div class="mx-auto flex max-w-site flex-col gap-4 px-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-          <div class="flex items-center gap-2.5 text-sm font-bold">
-            <span class="grid h-7 w-7 place-items-center rounded-md bg-gradient-to-br from-cyan-300 to-cyan-500 text-[10px] font-extrabold text-void">SG</span>
-            SemeAI Gate
-          </div>
-          <div class="flex flex-wrap gap-5 text-[13px] text-mute">
-            <a href="index.html?v=20260716r" class="hover:text-white">Home</a>
-            <a href="register.html?v=20260716r" class="hover:text-white">Register</a>
-            <a href="https://gate.semeai.tech/demo/saas_visible.html" class="hover:text-white" target="_blank" rel="noopener">Console</a>
-            <a href="mailto:support@semeai.tech" class="hover:text-white">Support</a>
-          </div>
-          <p class="text-xs text-faint">© SemeAI · Generation is not release authority</p>
-        </div>
-      </footer>
+      <div data-semeai-footer></div>
     </div>
 
-    <script src="assets/js/api.js?v=20260716s"></script>
+    <script src="assets/js/api.js?v=20260717a"></script>
+    <script src="assets/js/site-shell.js?v=20260717a"></script>
     <script>
       /* Canvas particle field */
       (function () {
