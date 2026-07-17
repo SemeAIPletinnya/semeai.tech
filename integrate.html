@@ -62,15 +62,18 @@
         </section>
 
         <section class="step">
-          <h2>3 · Pay pilot · 25 USDT TRC20 · one click</h2>
+          <h2>3 · Invoice by email · 25 USDT TRC20</h2>
           <p>
-            After free checks, unlock pilot (1,000/day). Wallet:
+            On this step we email your pilot invoice and show the same payment details here.
+            Wallet:
             <code class="mono" style="color:var(--accent-soft)">TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27</code>
           </p>
           <div class="btn-row">
-            <button type="button" class="btn-primary" id="btn-pay">Pay 25 USDT · one click</button>
+            <button type="button" class="btn-primary" id="btn-pay">Email invoice &amp; show pay details</button>
+            <button type="button" class="btn-ghost" id="btn-resend-invoice">Resend invoice email</button>
             <button type="button" class="btn-ghost" id="btn-copy-addr">Copy wallet</button>
           </div>
+          <div class="msg" id="invoice-mail-msg" style="margin-top:0.85rem">Invoice email status will appear here.</div>
           <div id="pay-box" class="mt-4 hidden">
             <label class="field-label">Amount</label>
             <input id="pay-amount" class="fld" readonly />
@@ -88,9 +91,9 @@
       </main>
       <div data-semeai-footer></div>
     </div>
-    <script src="assets/js/i18n.js?v=20260717f"></script>
-    <script src="assets/js/api.js?v=20260717f"></script>
-    <script src="assets/js/site-shell.js?v=20260717f"></script>
+    <script src="assets/js/i18n.js?v=20260717g"></script>
+    <script src="assets/js/api.js?v=20260717g"></script>
+    <script src="assets/js/site-shell.js?v=20260717g"></script>
     <script>
       const WALLET = "TJmrrUrpsRpG3u9H4FE9oVyCRPYQYEpG27";
       const msg = document.querySelector("#msg");
@@ -190,28 +193,64 @@
         setMsg("Wallet copied: " + WALLET, "ok");
       };
 
-      document.querySelector("#btn-pay").onclick = async () => {
+      const invoiceMail = document.querySelector("#invoice-mail-msg");
+      function setInvoiceMail(text, kind) {
+        invoiceMail.className = "msg" + (kind ? " " + kind : "");
+        invoiceMail.textContent = text;
+      }
+
+      async function issueInvoice({ forceEmail = false, silent = false } = {}) {
         const t = tok();
-        if (!t) return setMsg("Log in / paste key first.", "warn");
+        if (!t) {
+          if (!silent) setMsg("Log in / paste key first.", "warn");
+          return null;
+        }
         try {
-          const pack = await SemeAI.oneClickPay({ plan: "pilot" }, t);
+          const pack = await SemeAI.oneClickPay(
+            { plan: "pilot", email_invoice: true, force_email: forceEmail },
+            t
+          );
           document.querySelector("#pay-box").classList.remove("hidden");
           document.querySelector("#pay-amount").value = pack.amount_usdt + " USDT (TRC20)";
           document.querySelector("#pay-addr").value = pack.payment_address || WALLET;
           document.querySelector("#pay-invoice").value = pack.invoice_id || "";
-          await navigator.clipboard.writeText(pack.payment_address || WALLET);
-          setMsg(
-            `Invoice ${pack.invoice_id}: send ${pack.amount_usdt} USDT TRC20. Address copied. Paste TXID after payment.`,
-            "ok"
-          );
-          if (pack.wallet_deeplink) {
-            // optional open wallet app
-            try { window.open(pack.wallet_deeplink, "_blank"); } catch {}
+          try {
+            await navigator.clipboard.writeText(pack.payment_address || WALLET);
+          } catch {}
+
+          const to = pack.email_to || "your registration email";
+          if (pack.invoice_emailed) {
+            setInvoiceMail(
+              pack.invoice_email && pack.invoice_email.reason === "invoice_already_emailed"
+                ? `Invoice ${pack.invoice_id} already emailed to ${to}. Check inbox / spam.`
+                : `Invoice ${pack.invoice_id} sent to ${to}. Send ${pack.amount_usdt} USDT TRC20, then paste TXID.`,
+              "ok"
+            );
+          } else {
+            const err =
+              (pack.invoice_email && (pack.invoice_email.error || pack.invoice_email.user?.error)) ||
+              "email delivery not confirmed";
+            setInvoiceMail(
+              `Invoice ${pack.invoice_id} created. Email status: ${err}. Details are on this page.`,
+              "warn"
+            );
           }
+          if (!silent) {
+            setMsg(
+              `Invoice ${pack.invoice_id}: ${pack.amount_usdt} USDT → wallet (copied). Check email.`,
+              "ok"
+            );
+          }
+          return pack;
         } catch (e) {
-          setMsg(e.message || String(e), "error");
+          setInvoiceMail(e.message || String(e), "error");
+          if (!silent) setMsg(e.message || String(e), "error");
+          return null;
         }
-      };
+      }
+
+      document.querySelector("#btn-pay").onclick = () => issueInvoice({ forceEmail: false });
+      document.querySelector("#btn-resend-invoice").onclick = () => issueInvoice({ forceEmail: true });
 
       document.querySelector("#btn-confirm-pay").onclick = async () => {
         const t = tok();
@@ -235,8 +274,23 @@
       const saved = SemeAI.getStoredToken();
       if (saved) keyEl.value = saved;
       refreshCurl();
-      if (saved) refreshUsage();
-      else setMsg("After registration + email verify, paste your key here — or open cabinet session.", "warn");
+      if (saved) {
+        refreshUsage().then(() => {
+          // Auto-create invoice + email on integrate stage (once per open session)
+          const flag = "semeai_invoice_automailed";
+          if (!sessionStorage.getItem(flag)) {
+            issueInvoice({ silent: true }).then((pack) => {
+              if (pack) sessionStorage.setItem(flag, pack.invoice_id || "1");
+            });
+          } else {
+            // still show pay box / reuse invoice without re-mail spam
+            issueInvoice({ silent: true });
+          }
+        });
+      } else {
+        setMsg("After registration + email verify, paste your key here — or open cabinet session.", "warn");
+        setInvoiceMail("Log in first — then we email the pilot invoice automatically.", "warn");
+      }
     </script>
   </body>
 </html>
