@@ -161,6 +161,23 @@
           linear-gradient(180deg, rgba(9, 15, 23, 0.92), rgba(3, 3, 6, 0.96));
         background-size: 42px 42px, 42px 42px, auto, auto;
       }
+      .tree-nebula {
+        position: absolute;
+        left: 50%;
+        top: 42%;
+        width: min(34rem, 110%);
+        height: 25rem;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background:
+          radial-gradient(ellipse at 50% 44%, rgba(52, 211, 153, 0.22), transparent 36%),
+          radial-gradient(ellipse at 50% 18%, rgba(34, 211, 238, 0.22), transparent 44%),
+          radial-gradient(ellipse at 36% 28%, rgba(129, 140, 248, 0.15), transparent 48%),
+          radial-gradient(ellipse at 62% 70%, rgba(20, 184, 166, 0.15), transparent 50%);
+        filter: blur(20px);
+        opacity: 0.72;
+        pointer-events: none;
+      }
       .release-tree::before,
       .release-tree::after {
         content: "";
@@ -180,18 +197,20 @@
         inset: 0;
         width: 100%;
         height: 100%;
-        filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.34));
+        filter:
+          drop-shadow(0 0 10px rgba(34, 211, 238, 0.42))
+          drop-shadow(0 0 20px rgba(74, 222, 128, 0.12));
       }
       .tree-flow {
         fill: none;
         stroke: url(#treeLine);
-        stroke-width: 1.6;
+        stroke-width: 2;
         stroke-linecap: round;
-        stroke-dasharray: 5 13;
+        stroke-dasharray: 4 12;
         animation: treePulse 7s linear infinite;
       }
       .tree-flow-strong {
-        stroke-width: 2.2;
+        stroke-width: 3.1;
         stroke-dasharray: 2 10;
         animation-duration: 5.4s;
       }
@@ -206,7 +225,9 @@
         width: 12.5rem;
         border: 1px solid rgba(103, 232, 249, 0.52);
         border-radius: 1rem;
-        background: rgba(3, 10, 14, 0.84);
+        background:
+          radial-gradient(ellipse at 50% 0%, rgba(34, 211, 238, 0.13), transparent 62%),
+          rgba(3, 10, 14, 0.86);
         box-shadow:
           0 0 0 1px rgba(255, 255, 255, 0.06) inset,
           0 0 60px rgba(34, 211, 238, 0.22),
@@ -356,6 +377,7 @@
               </div>
 
               <div class="release-tree overflow-hidden">
+                <div class="tree-nebula"></div>
                 <svg class="tree-lines" viewBox="0 0 640 520" aria-hidden="true">
                   <defs>
                     <linearGradient id="treeLine" x1="0" x2="1" y1="0" y2="1">
@@ -367,11 +389,17 @@
                   </defs>
                   <path class="tree-flow" d="M118 96 C218 104 242 192 320 248" />
                   <path class="tree-flow" d="M522 100 C416 112 398 190 320 248" />
+                  <path class="tree-flow" d="M184 154 C242 144 282 170 320 216" />
+                  <path class="tree-flow" d="M456 154 C398 144 358 170 320 216" />
+                  <path class="tree-flow" d="M246 82 C282 112 306 150 320 206" />
+                  <path class="tree-flow" d="M394 82 C358 112 334 150 320 206" />
                   <path class="tree-flow" d="M118 392 C232 366 256 304 320 248" />
                   <path class="tree-flow" d="M528 392 C422 362 386 302 320 248" />
                   <path class="tree-flow tree-flow-strong" d="M320 72 C318 148 318 202 320 248 C322 318 322 374 320 456" />
                   <path class="tree-flow" d="M320 456 C280 424 246 420 204 430" />
                   <path class="tree-flow" d="M320 456 C360 424 394 420 436 430" />
+                  <path class="tree-flow" d="M320 456 C248 462 218 486 168 500" />
+                  <path class="tree-flow" d="M320 456 C392 462 422 486 472 500" />
                 </svg>
 
                 <div class="tree-spark spark-a"></div>
