@@ -51,7 +51,7 @@
         },
       };
     </script>
-    <link rel="stylesheet" href="assets/css/site.css?v=20260720e" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260720f" />
     <style>
       :root {
         color-scheme: dark;
@@ -891,6 +891,106 @@
         font-size: 0.82rem;
       }
 
+      .risk-matrix {
+        position: relative;
+        display: grid;
+        gap: 0.65rem;
+        border-radius: 1.45rem;
+        border: 1px solid rgba(226, 244, 255, 0.105);
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px),
+          radial-gradient(ellipse at 70% 12%, rgba(134, 237, 245, 0.13), transparent 38%),
+          rgba(5, 8, 10, 0.45);
+        background-size: 36px 36px, 36px 36px, auto, auto;
+        overflow: hidden;
+        padding: 0.75rem;
+      }
+
+      .risk-matrix::before {
+        content: "";
+        position: absolute;
+        left: 1.2rem;
+        right: 1.2rem;
+        top: 50%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(134, 237, 245, 0.42), rgba(255, 208, 138, 0.2), transparent);
+        opacity: 0.65;
+      }
+
+      .risk-lane {
+        position: relative;
+        display: grid;
+        grid-template-columns: 7.5rem minmax(9rem, 1fr) 1.25fr;
+        gap: 0.9rem;
+        align-items: center;
+        border: 1px solid rgba(226, 244, 255, 0.09);
+        border-radius: 1rem;
+        background: rgba(7, 10, 13, 0.68);
+        padding: 0.9rem 1rem;
+        box-shadow: 0 20px 70px rgba(0, 0, 0, 0.18);
+      }
+
+      .risk-lane::before {
+        content: "";
+        position: absolute;
+        left: 0.9rem;
+        top: 50%;
+        width: 0.48rem;
+        height: 0.48rem;
+        border-radius: 999px;
+        background: var(--lane, #86edf5);
+        box-shadow: 0 0 22px var(--lane, #86edf5);
+        transform: translateY(-50%);
+      }
+
+      .risk-domain {
+        padding-left: 1.1rem;
+        color: #f7fafc;
+        font-size: 0.72rem;
+        font-weight: 950;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .risk-signal {
+        color: #dbe7ee;
+        font-size: 0.9rem;
+        font-weight: 850;
+        letter-spacing: -0.01em;
+      }
+
+      .risk-rule {
+        color: #8f9da8;
+        font-size: 0.78rem;
+        line-height: 1.5;
+      }
+
+      .release-formula {
+        margin-top: 1rem;
+        border: 1px solid rgba(134, 237, 245, 0.16);
+        border-radius: 1.2rem;
+        background: rgba(0, 0, 0, 0.28);
+        padding: 1rem;
+      }
+
+      .release-formula p {
+        margin: 0;
+        color: #dffbff;
+        font-size: 0.82rem;
+        font-weight: 900;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+
+      .release-formula span {
+        display: block;
+        margin-top: 0.45rem;
+        color: #8795a1;
+        font-size: 0.78rem;
+        line-height: 1.55;
+      }
+
       .decision-card {
         min-height: 15rem;
         overflow: hidden;
@@ -1540,6 +1640,22 @@
         .chapter-pill span {
           max-width: 100%;
         }
+        .risk-matrix {
+          border-radius: 1.1rem;
+          padding: 0.6rem;
+        }
+        .risk-lane {
+          grid-template-columns: 1fr;
+          gap: 0.3rem;
+          padding: 0.85rem;
+        }
+        .risk-domain {
+          padding-left: 1rem;
+        }
+        .risk-lane::before {
+          top: 1.25rem;
+          transform: none;
+        }
         .system-spine {
           border-radius: 1.2rem;
           padding: 1.15rem;
@@ -1843,12 +1959,38 @@
                 mutate customer-visible facts, workflows, medical guidance, finance claims, game worlds, or internal operations.
               </p>
             </div>
-            <div class="chapter-list">
-              <div class="chapter-pill"><b>Support</b><span>Do not show invented discounts, refunds, or account promises.</span></div>
-              <div class="chapter-pill"><b>Finance</b><span>Claims about fees, returns, eligibility, and status require business evidence.</span></div>
-              <div class="chapter-pill"><b>Medicine</b><span>Generated advice should pass a checkpoint before becoming patient-visible recommendation.</span></div>
-              <div class="chapter-pill"><b>Games / worlds</b><span>AI content should be gated before it mutates canon, quests, economy, or lore.</span></div>
-              <div class="chapter-pill"><b>Ops</b><span>Deploy, delete, config, and approval-bypass suggestions need release control before action.</span></div>
+            <div>
+              <div class="risk-matrix" aria-label="Release-control risk matrix">
+                <div class="risk-lane" style="--lane: #7af0b1">
+                  <div class="risk-domain">Support</div>
+                  <div class="risk-signal">Invented entitlement</div>
+                  <div class="risk-rule">Discounts, refunds, and account promises must match business data before release.</div>
+                </div>
+                <div class="risk-lane" style="--lane: #ffd08a">
+                  <div class="risk-domain">Finance</div>
+                  <div class="risk-signal">Unsupported claim</div>
+                  <div class="risk-rule">Fees, returns, eligibility, and account status need a source of support.</div>
+                </div>
+                <div class="risk-lane" style="--lane: #8fb8ff">
+                  <div class="risk-domain">Medicine</div>
+                  <div class="risk-signal">Patient-visible advice</div>
+                  <div class="risk-rule">Generated guidance should be reviewed before becoming a visible recommendation.</div>
+                </div>
+                <div class="risk-lane" style="--lane: #b69cff">
+                  <div class="risk-domain">Worlds</div>
+                  <div class="risk-signal">Canon mutation</div>
+                  <div class="risk-rule">AI-generated lore, quests, economy, and game state should pass a release boundary.</div>
+                </div>
+                <div class="risk-lane" style="--lane: #86edf5">
+                  <div class="risk-domain">Ops</div>
+                  <div class="risk-signal">Action escalation</div>
+                  <div class="risk-rule">Deploy, delete, config, and approval-bypass suggestions need a gate before action.</div>
+                </div>
+              </div>
+              <div class="release-formula">
+                <p>generated != verified != allowed != released</p>
+                <span>The output is a candidate until evidence, context, business rules, and release control allow it to reach the user.</span>
+              </div>
             </div>
           </div>
         </section>
@@ -2156,7 +2298,7 @@
     <script src="assets/js/api.js?v=20260720a"></script>
     <script src="assets/js/cache-bust.js?v=20260720a"></script>
     <script src="assets/js/i18n.js?v=20260720a"></script>
-    <script src="assets/js/site-shell.js?v=20260720e"></script>
+    <script src="assets/js/site-shell.js?v=20260720f"></script>
     <script>
       (function initCanvas() {
         const canvas = document.getElementById("bg-canvas");
