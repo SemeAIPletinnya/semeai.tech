@@ -51,7 +51,7 @@
         },
       };
     </script>
-    <link rel="stylesheet" href="assets/css/site.css?v=20260720f" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260720g" />
     <style>
       :root {
         color-scheme: dark;
@@ -256,12 +256,12 @@
       }
 
       .hero-title {
-        max-width: 35rem;
+        max-width: 36.5rem;
         margin-top: 1.55rem;
-        font-size: clamp(3.25rem, 5.8vw, 5.7rem);
-        line-height: 0.93;
-        letter-spacing: -0.038em;
-        word-spacing: 0.025em;
+        font-size: clamp(3.1rem, 5.45vw, 5.45rem);
+        line-height: 0.96;
+        letter-spacing: -0.034em;
+        word-spacing: 0.015em;
         font-weight: 900;
         text-wrap: balance;
       }
@@ -277,10 +277,19 @@
 
       .hero-copy {
         margin-top: 1.45rem;
-        max-width: 33.5rem;
+        max-width: 34.75rem;
         color: #aebbc5;
-        font-size: 1.02rem;
-        line-height: 1.7;
+        font-size: 1rem;
+        line-height: 1.66;
+      }
+
+      .hero-positioning {
+        margin-top: 1rem;
+        color: #dffbff;
+        font-size: 0.78rem;
+        font-weight: 850;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
       }
 
       .hero-proofline {
@@ -312,6 +321,71 @@
         height: 1px;
         background: linear-gradient(90deg, rgba(134, 237, 245, 0.18), rgba(134, 237, 245, 0.82), rgba(255, 208, 138, 0.24));
         box-shadow: 0 0 18px rgba(134, 237, 245, 0.22);
+      }
+
+      .hero-control-strip {
+        margin-top: 1.45rem;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        max-width: 35rem;
+        border: 1px solid rgba(226, 244, 255, 0.11);
+        border-radius: 1.35rem;
+        background:
+          linear-gradient(90deg, rgba(134, 237, 245, 0.08), transparent 34%, rgba(255, 208, 138, 0.055)),
+          rgba(4, 7, 9, 0.46);
+        overflow: hidden;
+        box-shadow: 0 24px 90px rgba(0, 0, 0, 0.24);
+      }
+
+      .hero-control-step {
+        position: relative;
+        min-height: 5.4rem;
+        padding: 0.92rem 0.88rem;
+        border-right: 1px solid rgba(226, 244, 255, 0.085);
+      }
+
+      .hero-control-step:last-child { border-right: 0; }
+
+      .hero-control-step::after {
+        content: "";
+        position: absolute;
+        right: -0.25rem;
+        top: 50%;
+        width: 0.48rem;
+        height: 0.48rem;
+        border-radius: 999px;
+        background: var(--step, #86edf5);
+        box-shadow: 0 0 18px var(--step, #86edf5);
+        transform: translateY(-50%);
+        z-index: 2;
+      }
+
+      .hero-control-step:last-child::after { display: none; }
+
+      .hero-control-step small {
+        display: block;
+        color: var(--step, #86edf5);
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 0.62rem;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .hero-control-step b {
+        display: block;
+        margin-top: 0.55rem;
+        color: #f7fafc;
+        font-size: 0.88rem;
+        letter-spacing: -0.015em;
+      }
+
+      .hero-control-step span {
+        display: block;
+        margin-top: 0.25rem;
+        color: #7f8d98;
+        font-size: 0.68rem;
+        line-height: 1.35;
       }
 
       .hero-metrics {
@@ -1512,6 +1586,10 @@
           font-size: 0.98rem;
           line-height: 1.65;
         }
+        .hero-positioning {
+          font-size: 0.72rem;
+          line-height: 1.5;
+        }
         .hero-proofline {
           display: grid;
           grid-template-columns: 1fr;
@@ -1525,6 +1603,22 @@
           text-align: center;
         }
         .hero-proofline i { display: none; }
+        .hero-control-strip {
+          grid-template-columns: 1fr;
+          max-width: 20rem;
+          border-radius: 1.1rem;
+        }
+        .hero-control-step {
+          min-height: auto;
+          border-right: 0;
+          border-bottom: 1px solid rgba(226, 244, 255, 0.085);
+        }
+        .hero-control-step:last-child {
+          border-bottom: 0;
+        }
+        .hero-control-step::after {
+          display: none;
+        }
         .hero-actions {
           display: grid !important;
           grid-template-columns: 1fr;
@@ -1803,14 +1897,33 @@
                 <span>before users see them.</span>
               </h1>
               <p class="hero-copy">
-                SemeAI is a release-control layer for production AI. Your model generates a candidate.
-                The gate checks business data, current context, rules, and risk, then returns
+                SemeAI is a release-control layer for production AI. The model writes a candidate.
+                The gate checks business data, current context, rules, and risk before returning
                 <strong class="text-ink">SHOW</strong>, <strong class="text-ink">REVIEW</strong>, or
-                <strong class="text-ink">BLOCK</strong> before the answer reaches the real user.
+                <strong class="text-ink">BLOCK</strong>.
               </p>
-              <p class="mt-3 text-sm font-semibold text-cyan">Generation is not release authority.</p>
-              <div class="hero-proofline" aria-label="SemeAI release path">
-                <span>LLM candidate</span><i></i><span>Gate decision</span><i></i><span>Receipt proof</span>
+              <p class="hero-positioning">Generation is not release authority.</p>
+              <div class="hero-control-strip" aria-label="SemeAI release-control chain">
+                <div class="hero-control-step" style="--step: #8fb8ff">
+                  <small>01</small>
+                  <b>Candidate</b>
+                  <span>LLM output</span>
+                </div>
+                <div class="hero-control-step" style="--step: #7af0b1">
+                  <small>02</small>
+                  <b>Evidence</b>
+                  <span>data and context</span>
+                </div>
+                <div class="hero-control-step" style="--step: #ffd08a">
+                  <small>03</small>
+                  <b>Decision</b>
+                  <span>SHOW / REVIEW / BLOCK</span>
+                </div>
+                <div class="hero-control-step" style="--step: #86edf5">
+                  <small>04</small>
+                  <b>Receipt</b>
+                  <span>audit preserved</span>
+                </div>
               </div>
               <div class="hero-actions mt-8">
                 <a class="btn-primary" href="#demo">Try live gate</a>
@@ -2298,7 +2411,7 @@
     <script src="assets/js/api.js?v=20260720a"></script>
     <script src="assets/js/cache-bust.js?v=20260720a"></script>
     <script src="assets/js/i18n.js?v=20260720a"></script>
-    <script src="assets/js/site-shell.js?v=20260720f"></script>
+    <script src="assets/js/site-shell.js?v=20260720g"></script>
     <script>
       (function initCanvas() {
         const canvas = document.getElementById("bg-canvas");
