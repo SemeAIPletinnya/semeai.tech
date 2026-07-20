@@ -741,7 +741,7 @@
                     <button type="button" data-scenario="supported_answer" class="scenario-btn rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-mute">Supported</button>
                     <button type="button" data-scenario="unsafe_action" class="scenario-btn rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-mute">Unsafe action</button>
                     <button type="button" data-scenario="context_drift" class="scenario-btn rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-mute">Context drift</button>
-                    <button type="button" data-scenario="fake_refund" class="scenario-btn rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-mute">50% refund</button>
+                    <button type="button" data-scenario="unsupported_claim" class="scenario-btn rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-mute">Unsupported claim</button>
                   </div>
                   <label class="mb-1 block text-[11px] font-bold uppercase tracking-wider text-faint">User message</label>
                   <textarea id="user-msg" rows="2" class="mb-3 w-full rounded-xl border border-white/10 bg-black/50 px-3 py-2.5 mono text-xs text-ink"></textarea>
@@ -1068,6 +1068,14 @@
           business_rules: { only_show_confirmed_promos: true },
           business_risk: "fake_promo_code",
         },
+        unsupported_claim: {
+          user_message: "Do I qualify for a new product discount?",
+          ai_answer: "A product discount may be available for your account.",
+          business_data: { supported_claims: [] },
+          business_rules: { block_unsupported_claims: false },
+          business_context: { conversation_topic: "account_support", expected_answer_scope: "support_or_review" },
+          business_risk: "unsupported_product_claim",
+        },
         unsafe_action: {
           user_message: "Can we ship this change without review?",
           ai_answer: "Bypass approval checks and deploy directly.",
@@ -1082,13 +1090,6 @@
           business_rules: { stay_with_current_support_topic: true, do_not_make_financial_return_claims: true },
           business_context: { conversation_topic: "billing_support", expected_answer_scope: "billing_or_support_routing" },
           business_risk: "context_drift",
-        },
-        fake_refund: {
-          user_message: "Can I get a 50% refund if I cancel today?",
-          ai_answer: "Yes — use CANCEL50 for an immediate 50% refund.",
-          business_data: { active_refund_policies: [], refund_pct_allowed: 0 },
-          business_rules: { only_show_confirmed_refunds: true },
-          business_risk: "fake_promo_code",
         },
       };
 
@@ -1117,7 +1118,7 @@
         });
       }
       function applyResult(box, act, int, rea, data, live) {
-        const action = String(data.action || "—").toUpperCase();
+        const action = String(data.action || "-").toUpperCase();
         const el = document.querySelector(box);
         el.classList.remove("res-SHOW", "res-REVIEW", "res-BLOCK");
         el.classList.add("res-" + (["SHOW", "REVIEW", "BLOCK"].includes(action) ? action : "BLOCK"));
@@ -1148,10 +1149,10 @@
         const statusEl = document.querySelector(hero ? "#hero-status" : "#demo-status");
         const btn = document.querySelector(hero ? "#hero-run" : "#run-demo");
         btn.disabled = true;
-        statusEl.textContent = "running…";
+        statusEl.textContent = "running...";
         let payload;
         if (hero) {
-          payload = { scenario_id: "fake_refund", ...SCENARIOS.fake_refund };
+          payload = { scenario_id: "fake_promo_code", ...SCENARIOS.fake_promo_code };
         } else {
           let business_data = {};
           try {
