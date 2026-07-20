@@ -28,6 +28,17 @@ Site talks to [semeai-gate-basic](https://github.com/SemeAIPletinnya/semeai-gate
 
 Governance source: [silence-as-control](https://github.com/SemeAIPletinnya/silence-as-control).
 
+## Ecosystem role
+
+SemeAI is organized as dependent layers:
+
+- `silence-as-control` — governance source context and benchmark evidence;
+- `semeai-gate-basic` — open-source adapter, API contract, examples, receipts, and pilot runtime;
+- `semeai.tech` — landing, registration, account shell, live demo, and research links.
+
+The canonical dependency contract lives in
+[docs/ecosystem_contract.md](https://github.com/SemeAIPletinnya/semeai-gate-basic/blob/master/docs/ecosystem_contract.md).
+
 ## Partner docs (in gate-basic)
 
 - [Pilot packet (1-pager)](https://github.com/SemeAIPletinnya/semeai-gate-basic/blob/master/docs/pilot_packet.md)

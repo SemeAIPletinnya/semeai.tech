@@ -219,20 +219,27 @@
           } catch {}
 
           const to = pack.email_to || "your registration email";
-          if (pack.invoice_emailed) {
+          const em = pack.invoice_email || {};
+          const user = em.user || {};
+          const delivery = user.delivery || em.invoice_email_delivery || pack.invoice?.invoice_email_delivery || "";
+          const provider = user.provider || pack.invoice?.invoice_email_provider || "";
+          const msgId = user.message_id || pack.invoice?.invoice_email_message_id || "";
+          const err =
+            user.error || em.error || pack.invoice?.invoice_email_error || "";
+
+          if (pack.invoice_email_ok || (pack.invoice_emailed && delivery === "sent")) {
             setInvoiceMail(
-              pack.invoice_email && pack.invoice_email.reason === "invoice_already_emailed"
-                ? `Invoice ${pack.invoice_id} already emailed to ${to}. Check inbox / spam.`
-                : `Invoice ${pack.invoice_id} sent to ${to}. Send ${pack.amount_usdt} USDT TRC20, then paste TXID.`,
+              em.reason === "invoice_already_emailed"
+                ? `Invoice ${pack.invoice_id} already sent via ${provider || "email"} to ${to}${msgId ? " · id " + msgId : ""}. Check inbox/spam. Use Resend if missing.`
+                : `Invoice ${pack.invoice_id} emailed to ${to} via ${provider || "resend"} (${delivery || "sent"}${msgId ? ", id " + msgId : ""}). Send ${pack.amount_usdt} USDT TRC20, then paste TXID.`,
               "ok"
             );
           } else {
-            const err =
-              (pack.invoice_email && (pack.invoice_email.error || pack.invoice_email.user?.error)) ||
-              "email delivery not confirmed";
             setInvoiceMail(
-              `Invoice ${pack.invoice_id} created. Email status: ${err}. Details are on this page.`,
-              "warn"
+              `Invoice ${pack.invoice_id} created, but email NOT confirmed to ${to}. ` +
+                `delivery=${delivery || "n/a"} provider=${provider || "n/a"} error=${err || "unknown"}. ` +
+                `Click “Resend invoice email”. Payment details are still on this page.`,
+              "error"
             );
           }
           if (!silent) {

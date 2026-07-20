@@ -132,6 +132,161 @@
         background: linear-gradient(90deg, #fff 0%, #a5f3fc 50%, #67e8f9 100%);
         -webkit-background-clip: text; background-clip: text; color: transparent;
       }
+      .hero-tree-shell {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .hero-tree-shell::before {
+        content: "";
+        position: absolute;
+        inset: -25% -18%;
+        z-index: -1;
+        background:
+          radial-gradient(ellipse 45% 34% at 50% 43%, rgba(45, 212, 191, 0.26), transparent 63%),
+          radial-gradient(ellipse 50% 38% at 56% 22%, rgba(59, 130, 246, 0.18), transparent 66%),
+          radial-gradient(ellipse 55% 44% at 38% 78%, rgba(74, 222, 128, 0.13), transparent 72%);
+        filter: blur(24px);
+        opacity: 0.85;
+      }
+      .release-tree {
+        position: relative;
+        min-height: 30rem;
+        border-radius: 1.25rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          radial-gradient(ellipse at 50% 46%, rgba(34, 211, 238, 0.12), transparent 38%),
+          linear-gradient(180deg, rgba(9, 15, 23, 0.92), rgba(3, 3, 6, 0.96));
+        background-size: 42px 42px, 42px 42px, auto, auto;
+      }
+      .release-tree::before,
+      .release-tree::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 18rem;
+        height: 18rem;
+        border-radius: 50%;
+        border: 1px solid rgba(103, 232, 249, 0.12);
+        opacity: 0.65;
+      }
+      .release-tree::before { top: 12%; }
+      .release-tree::after { bottom: 7%; width: 22rem; height: 22rem; opacity: 0.35; }
+      .tree-lines {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        filter: drop-shadow(0 0 10px rgba(34, 211, 238, 0.34));
+      }
+      .tree-flow {
+        fill: none;
+        stroke: url(#treeLine);
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-dasharray: 5 13;
+        animation: treePulse 7s linear infinite;
+      }
+      .tree-flow-strong {
+        stroke-width: 2.2;
+        stroke-dasharray: 2 10;
+        animation-duration: 5.4s;
+      }
+      @keyframes treePulse {
+        to { stroke-dashoffset: -120; }
+      }
+      .tree-core {
+        position: absolute;
+        left: 50%;
+        top: 48%;
+        transform: translate(-50%, -50%);
+        width: 12.5rem;
+        border: 1px solid rgba(103, 232, 249, 0.52);
+        border-radius: 1rem;
+        background: rgba(3, 10, 14, 0.84);
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.06) inset,
+          0 0 60px rgba(34, 211, 238, 0.22),
+          0 18px 55px rgba(0, 0, 0, 0.55);
+        padding: 1.05rem 1rem;
+        text-align: center;
+      }
+      .tree-core::before {
+        content: "";
+        position: absolute;
+        inset: -0.8rem;
+        border-radius: 1.4rem;
+        background: radial-gradient(ellipse at 50% 50%, rgba(34, 211, 238, 0.2), transparent 64%);
+        z-index: -1;
+        animation: coreBreath 3.6s ease-in-out infinite;
+      }
+      @keyframes coreBreath {
+        0%, 100% { opacity: 0.42; transform: scale(0.96); }
+        50% { opacity: 0.9; transform: scale(1.05); }
+      }
+      .tree-node {
+        position: absolute;
+        min-width: 8.4rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 0.85rem;
+        background: rgba(8, 10, 16, 0.82);
+        box-shadow: 0 14px 38px rgba(0, 0, 0, 0.35);
+        padding: 0.72rem 0.8rem;
+      }
+      .tree-node strong {
+        display: block;
+        font-size: 0.78rem;
+        color: #f4f4f5;
+      }
+      .tree-node span {
+        display: block;
+        margin-top: 0.2rem;
+        font-size: 0.68rem;
+        color: #a1a1aa;
+      }
+      .node-candidate { left: 5%; top: 17%; }
+      .node-context { right: 5%; top: 17%; }
+      .node-data { left: 6%; bottom: 20%; }
+      .node-audit { right: 6%; bottom: 20%; }
+      .node-release {
+        left: 50%;
+        bottom: 6%;
+        transform: translateX(-50%);
+        min-width: 13rem;
+        border-color: rgba(74, 222, 128, 0.28);
+        background: rgba(14, 28, 20, 0.78);
+      }
+      .tree-spark {
+        position: absolute;
+        width: 0.5rem;
+        height: 0.5rem;
+        border-radius: 999px;
+        background: #a5f3fc;
+        box-shadow: 0 0 16px rgba(103, 232, 249, 0.9);
+      }
+      .spark-a { left: 49%; top: 27%; animation: floatA 4.8s ease-in-out infinite; }
+      .spark-b { left: 67%; top: 52%; animation: floatB 5.6s ease-in-out infinite; }
+      .spark-c { left: 31%; top: 61%; animation: floatC 6.2s ease-in-out infinite; }
+      @keyframes floatA { 50% { transform: translateY(-14px); opacity: 0.48; } }
+      @keyframes floatB { 50% { transform: translate(12px, 8px); opacity: 0.54; } }
+      @keyframes floatC { 50% { transform: translate(-10px, 10px); opacity: 0.5; } }
+      @media (max-width: 640px) {
+        .release-tree { min-height: 34rem; }
+        .tree-node {
+          min-width: 7.5rem;
+          max-width: 9.5rem;
+          padding: 0.62rem 0.65rem;
+        }
+        .tree-core { width: 11rem; }
+        .node-candidate { left: 4%; top: 12%; }
+        .node-context { right: 4%; top: 12%; }
+        .node-data { left: 4%; bottom: 24%; }
+        .node-audit { right: 4%; bottom: 24%; }
+        .node-release { bottom: 6%; }
+      }
     </style>
   </head>
   <body data-semeai-custom-bg>
@@ -188,56 +343,77 @@
               <p class="mt-3 text-[11px] text-faint">*Same model &amp; dataset · open evaluation set · methodology linked below</p>
             </div>
 
-            <!-- Product mock surface (FutureAGI-like console) -->
-            <div class="panel relative overflow-hidden rounded-2xl p-1 shadow-[0_0_80px_rgba(34,211,238,0.12)]">
-              <div class="rounded-[0.9rem] border border-white/[0.06] bg-zinc-950/90 p-4 sm:p-5">
-                <div class="mb-4 flex items-center justify-between gap-2 border-b border-white/[0.06] pb-3">
-                  <div class="flex items-center gap-2 text-xs text-mute">
-                    <span class="text-show">●</span>
-                    <span class="mono">api.semeai.tech</span>
-                    <span class="text-zinc-600">/</span>
-                    <span class="text-ink">v0/demo/check</span>
-                  </div>
-                  <span id="hero-status" class="pill">idle</span>
+            <!-- Release-control tree: original SemeAI visual system -->
+            <div class="hero-tree-shell panel rounded-3xl p-4 shadow-[0_0_100px_rgba(34,211,238,0.14)] sm:p-5">
+              <div class="mb-4 flex items-center justify-between gap-2 px-1">
+                <div class="flex items-center gap-2 text-xs text-mute">
+                  <span class="text-show">●</span>
+                  <span class="mono">api.semeai.tech</span>
+                  <span class="text-zinc-600">/</span>
+                  <span class="text-ink">v0/demo/check</span>
                 </div>
-                <div class="mb-3 grid grid-cols-3 gap-2 text-center text-[11px]">
-                  <div class="rounded-lg border border-white/10 bg-white/[0.03] p-2">
-                    <p class="font-semibold text-faint">LLM</p>
-                    <p class="mt-0.5 text-ink">Candidate</p>
-                  </div>
-                  <div class="rounded-lg border border-accent/40 bg-accent/10 p-2 shadow-[0_0_20px_rgba(34,211,238,0.15)]">
-                    <p class="font-semibold text-accent">Gate</p>
-                    <p class="mt-0.5 text-ink">Decide</p>
-                  </div>
-                  <div class="rounded-lg border border-white/10 bg-white/[0.03] p-2">
-                    <p class="font-semibold text-faint">User</p>
-                    <p class="mt-0.5 text-ink">If SHOW</p>
-                  </div>
-                </div>
-                <div class="space-y-2 text-sm">
-                  <div class="rounded-lg border border-white/[0.06] bg-black/40 px-3 py-2">
-                    <p class="text-[10px] font-semibold uppercase tracking-wider text-faint">User</p>
-                    <p class="mt-0.5 text-soft">Can I get a 50% refund if I cancel today?</p>
-                  </div>
-                  <div class="rounded-lg border border-white/[0.06] bg-black/40 px-3 py-2">
-                    <p class="text-[10px] font-semibold uppercase tracking-wider text-faint">AI candidate</p>
-                    <p class="mt-0.5 text-soft">Yes — use CANCEL50 for an immediate 50% refund.</p>
-                  </div>
-                  <div class="rounded-lg border border-white/[0.06] bg-black/40 px-3 py-2">
-                    <p class="text-[10px] font-semibold uppercase tracking-wider text-faint">Business data</p>
-                    <p class="mt-0.5 mono text-xs text-mute">refund_pct_allowed: 0 · policies: []</p>
-                  </div>
-                </div>
-                <div id="hero-result" class="res-BLOCK mt-3 flex items-center gap-3 rounded-lg border p-3">
-                  <div id="hero-action" class="text-2xl font-bold tracking-wide text-white">BLOCK</div>
-                  <div class="min-w-0 text-xs text-mute">
-                    <div id="hero-internal" class="mono">internal: SILENCE</div>
-                    <div id="hero-reason" class="mt-0.5">User sees nothing. Audit preserved.</div>
-                  </div>
-                </div>
-                <button type="button" id="hero-run" class="btn-primary mt-3 w-full py-2.5 text-sm">Run this check live →</button>
-                <p class="mt-2 text-center text-[11px] text-faint">Real API · counts toward free checks</p>
+                <span id="hero-status" class="pill">idle</span>
               </div>
+
+              <div class="release-tree overflow-hidden">
+                <svg class="tree-lines" viewBox="0 0 640 520" aria-hidden="true">
+                  <defs>
+                    <linearGradient id="treeLine" x1="0" x2="1" y1="0" y2="1">
+                      <stop offset="0%" stop-color="#67e8f9" stop-opacity="0.1" />
+                      <stop offset="44%" stop-color="#22d3ee" stop-opacity="0.95" />
+                      <stop offset="78%" stop-color="#4ade80" stop-opacity="0.58" />
+                      <stop offset="100%" stop-color="#a78bfa" stop-opacity="0.18" />
+                    </linearGradient>
+                  </defs>
+                  <path class="tree-flow" d="M118 96 C218 104 242 192 320 248" />
+                  <path class="tree-flow" d="M522 100 C416 112 398 190 320 248" />
+                  <path class="tree-flow" d="M118 392 C232 366 256 304 320 248" />
+                  <path class="tree-flow" d="M528 392 C422 362 386 302 320 248" />
+                  <path class="tree-flow tree-flow-strong" d="M320 72 C318 148 318 202 320 248 C322 318 322 374 320 456" />
+                  <path class="tree-flow" d="M320 456 C280 424 246 420 204 430" />
+                  <path class="tree-flow" d="M320 456 C360 424 394 420 436 430" />
+                </svg>
+
+                <div class="tree-spark spark-a"></div>
+                <div class="tree-spark spark-b"></div>
+                <div class="tree-spark spark-c"></div>
+
+                <div class="tree-node node-candidate">
+                  <strong>LLM candidate</strong>
+                  <span>Generated, not released</span>
+                </div>
+                <div class="tree-node node-context">
+                  <strong>Context</strong>
+                  <span>Scope, rules, risk</span>
+                </div>
+                <div class="tree-core">
+                  <p class="text-[10px] font-bold uppercase tracking-[0.18em] text-accent">release authority</p>
+                  <p class="mt-2 text-2xl font-extrabold tracking-tight text-white">SemeAI Gate</p>
+                  <p class="mt-2 text-xs leading-relaxed text-mute">SHOW / REVIEW / BLOCK before output reaches the user.</p>
+                </div>
+                <div class="tree-node node-data">
+                  <strong>Business data</strong>
+                  <span>Promos, account state</span>
+                </div>
+                <div class="tree-node node-audit">
+                  <strong>Audit receipt</strong>
+                  <span>Preserved on BLOCK</span>
+                </div>
+                <div class="tree-node node-release text-center">
+                  <strong>User-visible boundary</strong>
+                  <span>Only SHOW is released automatically</span>
+                </div>
+              </div>
+
+              <div id="hero-result" class="res-BLOCK mt-4 flex items-center gap-3 rounded-xl border p-3">
+                <div id="hero-action" class="text-2xl font-bold tracking-wide text-white">BLOCK</div>
+                <div class="min-w-0 text-xs text-mute">
+                  <div id="hero-internal" class="mono">internal: SILENCE</div>
+                  <div id="hero-reason" class="mt-0.5">User sees nothing. Audit preserved.</div>
+                </div>
+              </div>
+              <button type="button" id="hero-run" class="btn-primary mt-3 w-full py-2.5 text-sm">Run this check live</button>
+              <p class="mt-2 text-center text-[11px] text-faint">Real API · counts toward free checks</p>
             </div>
           </div>
         </section>
@@ -355,6 +531,99 @@
                 <h3 class="mt-1 font-semibold text-white">Keep the receipt</h3>
                 <p class="mt-2 text-sm text-mute">Audit even when blocked.</p>
               </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ECOSYSTEM -->
+        <section class="border-b border-white/[0.06] bg-black/20">
+          <div class="mx-auto max-w-site px-5 py-20 sm:px-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Ecosystem</p>
+            <div class="mt-3 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+              <div>
+                <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  One system. Three public layers.
+                </h2>
+                <p class="mt-4 text-mute">
+                  SemeAI is not one overloaded repo. The research core, API adapter, and product surface have separate
+                  jobs so the gate can stay small, auditable, and deployable.
+                </p>
+                <p class="mt-4 text-sm text-faint">
+                  Future SemeAI Local workspace imports large archives as raw source evidence first. Raw archives do
+                  not become admitted memory until a governed SaC-in path allows it.
+                </p>
+              </div>
+              <div class="grid gap-3">
+                <a href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener" class="panel panel-hover rounded-2xl p-5">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <p class="text-xs font-bold uppercase tracking-wider text-faint">01 · Governance core</p>
+                      <h3 class="mt-1 text-lg font-semibold text-white">silence-as-control</h3>
+                      <p class="mt-2 text-sm text-mute">Research source, benchmarks, and canonical PROCEED / NEEDS_REVIEW / SILENCE vocabulary.</p>
+                    </div>
+                    <span class="pill">source</span>
+                  </div>
+                </a>
+                <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" class="panel panel-hover rounded-2xl border-accent/25 p-5">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <p class="text-xs font-bold uppercase tracking-wider text-accent">02 · Adapter/API</p>
+                      <h3 class="mt-1 text-lg font-semibold text-white">semeai-gate-basic</h3>
+                      <p class="mt-2 text-sm text-mute">Open-source Python package, examples, browser-safe demo endpoint, authenticated API, receipts, and pilot accounts.</p>
+                    </div>
+                    <span class="pill tag-show">live</span>
+                  </div>
+                </a>
+                <a href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener" class="panel panel-hover rounded-2xl p-5">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <p class="text-xs font-bold uppercase tracking-wider text-faint">03 · Product surface</p>
+                      <h3 class="mt-1 text-lg font-semibold text-white">semeai.tech</h3>
+                      <p class="mt-2 text-sm text-mute">Landing, registration, account shell, research proof links, and the public path into the live Gate demo.</p>
+                    </div>
+                    <span class="pill">site</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- DEPLOYMENT MODES -->
+        <section id="deployment" class="border-b border-white/[0.06]">
+          <div class="mx-auto max-w-site px-5 py-20 sm:px-6">
+            <div class="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-accent">Deployment modes</p>
+                <h2 class="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                  Use the gate without handing us your documents.
+                </h2>
+                <p class="mt-4 text-mute">
+                  SaaS is the fastest way to test the workflow. Teams with stricter data boundaries can run the same
+                  release-control contract in their own infrastructure.
+                </p>
+                <p class="mt-4 text-sm text-faint">
+                  The gate needs the user message, AI answer, business context, and rules. It does not require model
+                  weights, training data, or a copy of your full knowledge base by default.
+                </p>
+              </div>
+              <div class="grid gap-4 md:grid-cols-3 lg:grid-cols-1">
+                <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" class="panel panel-hover rounded-2xl p-5">
+                  <p class="text-xs font-bold uppercase tracking-wider text-faint">01 · Open Source</p>
+                  <h3 class="mt-2 text-lg font-semibold text-white">Run it yourself</h3>
+                  <p class="mt-2 text-sm text-mute">Local package, examples, schemas, tests, and deterministic demo cases for technical review.</p>
+                </a>
+                <a href="self-hosted.html" class="panel panel-hover rounded-2xl border-accent/25 p-5">
+                  <p class="text-xs font-bold uppercase tracking-wider text-accent">02 · Self-hosted Enterprise</p>
+                  <h3 class="mt-2 text-lg font-semibold text-white">Keep data in your perimeter</h3>
+                  <p class="mt-2 text-sm text-mute">Deploy behind your firewall or inside a private VPC when documents cannot leave your control.</p>
+                </a>
+                <a href="register.html" class="panel panel-hover rounded-2xl p-5">
+                  <p class="text-xs font-bold uppercase tracking-wider text-faint">03 · SaaS API</p>
+                  <h3 class="mt-2 text-lg font-semibold text-white">Start quickly</h3>
+                  <p class="mt-2 text-sm text-mute">Use the hosted endpoint for pilot checks, receipt metadata, and integration experiments.</p>
+                </a>
+              </div>
             </div>
           </div>
         </section>
