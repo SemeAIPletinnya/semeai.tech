@@ -717,43 +717,142 @@
         .hero-metrics { grid-template-columns: 1fr; }
         .ecosystem-stage {
           width: 100%;
-          max-width: 20rem;
-          min-height: 34rem;
+          max-width: min(100%, 22rem);
+          min-height: auto;
           border-radius: 1.3rem;
           transform: none;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.72rem;
+          padding: 1rem;
+          overflow: hidden;
+        }
+        .ecosystem-stage::before {
+          background:
+            linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+            radial-gradient(ellipse at 50% 12%, rgba(134, 237, 245, 0.18), transparent 34%),
+            linear-gradient(180deg, rgba(13, 18, 23, 0.9), rgba(4, 6, 8, 0.98));
+          background-size: 38px 38px, 38px 38px, auto, auto;
+        }
+        .ecosystem-stage::after {
+          inset: 16%;
+          filter: blur(24px);
+          opacity: 0.52;
+        }
+        .eco-lines,
+        .signal {
+          display: none;
         }
         .eco-node {
-          min-width: 6.8rem;
-          max-width: 8.4rem;
+          position: relative;
+          left: auto !important;
+          right: auto !important;
+          top: auto !important;
+          bottom: auto !important;
+          z-index: 6;
+          width: 100%;
+          min-width: 0;
+          max-width: none;
           padding: 0.62rem 0.62rem;
           font-size: 0.86rem;
+          transform: none !important;
+        }
+        .eco-node:hover,
+        .eco-node.active {
+          transform: none !important;
         }
         .eco-node span {
           font-size: 0.66rem;
         }
         .core-node {
-          top: 47%;
-          width: 11.2rem;
-          padding: 1rem 0.85rem;
+          position: relative;
+          left: auto;
+          top: auto;
+          z-index: 6;
+          grid-column: 1 / -1;
+          width: 100%;
+          transform: none;
+          padding: 1.05rem 0.9rem;
         }
-        .core-node b { font-size: 1.16rem; }
+        .core-node b { font-size: 1.18rem; }
         .core-node span { font-size: 0.72rem; }
-        .n-memory { left: 4%; top: 12%; }
-        .n-evidence { right: 4%; top: 12%; }
-        .n-timeline { left: 4%; top: 34%; }
-        .n-receipts { right: 4%; top: 34%; }
-        .n-runtime { left: 4%; bottom: 25%; }
-        .n-api { right: 4%; bottom: 25%; }
-        .n-release { bottom: 7%; }
+        .n-release { grid-column: 1 / -1; }
         .node-panel {
+          position: relative;
+          z-index: 6;
           grid-template-columns: 1fr;
-          left: 0.7rem;
-          right: 0.7rem;
-          bottom: 0.7rem;
+          grid-column: 1 / -1;
+          left: auto;
+          right: auto;
+          bottom: auto;
+          padding: 0.88rem;
         }
         .node-panel strong { font-size: 1rem; }
-        .chapter-card { min-height: auto; border-radius: 1.2rem; }
+        .chapter-card {
+          min-height: auto;
+          border-radius: 1.2rem;
+          padding: 1.2rem;
+          gap: 1.6rem;
+          overflow: hidden;
+        }
+        .chapter-card h2 {
+          max-width: 100%;
+          font-size: clamp(2.15rem, 10vw, 2.85rem) !important;
+          line-height: 1.02 !important;
+          letter-spacing: -0.025em !important;
+          overflow-wrap: break-word;
+          text-wrap: balance;
+        }
+        .chapter-card p {
+          max-width: 100%;
+        }
         .chapter-visual { min-height: 18rem; }
+        .chapter-pill {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 0.35rem;
+        }
+        .chapter-pill span {
+          max-width: 100%;
+        }
+        .pipeline-visual {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 0.8rem;
+          min-height: auto;
+          padding: 1rem;
+        }
+        .pipeline-label,
+        .pipeline-core {
+          position: relative !important;
+          left: auto !important;
+          right: auto !important;
+          top: auto !important;
+          width: 100% !important;
+          transform: none !important;
+          text-align: left;
+        }
+        .pipeline-label {
+          border: 1px solid rgba(226, 244, 255, 0.12);
+          border-radius: 1rem;
+          background: rgba(6, 9, 12, 0.72);
+          padding: 0.85rem;
+          color: #aebbc5;
+        }
+        .pipeline-core {
+          padding: 1rem !important;
+          text-align: center;
+        }
+        .pipeline-label-left::after,
+        .pipeline-core::after {
+          content: "";
+          display: block;
+          width: 1px;
+          height: 1.1rem;
+          margin: 0.7rem auto -0.2rem;
+          background: linear-gradient(180deg, rgba(134, 237, 245, 0.9), transparent);
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -911,15 +1010,15 @@
                 decision, receipt.
               </p>
             </div>
-            <div class="chapter-visual">
-              <div class="absolute left-[7%] top-1/2 -translate-y-1/2 text-xs font-black uppercase tracking-wide text-mute">
+            <div class="chapter-visual pipeline-visual">
+              <div class="pipeline-label pipeline-label-left absolute left-[7%] top-1/2 -translate-y-1/2 text-xs font-black uppercase tracking-wide text-mute">
                 LLM / candidate answer
               </div>
-              <div class="absolute left-1/2 top-1/2 z-10 w-56 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-cyan/40 bg-black/55 p-6 text-center shadow-[0_0_70px_rgba(134,237,245,0.18)]">
+              <div class="pipeline-core absolute left-1/2 top-1/2 z-10 w-56 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-cyan/40 bg-black/55 p-6 text-center shadow-[0_0_70px_rgba(134,237,245,0.18)]">
                 <p class="text-[10px] font-black uppercase tracking-[0.18em] text-cyan">SemeAI Gate</p>
                 <p class="mt-2 text-xl font-black text-white">release authority</p>
               </div>
-              <div class="absolute right-[7%] top-1/2 -translate-y-1/2 text-xs font-black uppercase tracking-wide text-mute">
+              <div class="pipeline-label pipeline-label-right absolute right-[7%] top-1/2 -translate-y-1/2 text-xs font-black uppercase tracking-wide text-mute">
                 SHOW / REVIEW / BLOCK
               </div>
             </div>
