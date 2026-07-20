@@ -51,7 +51,7 @@
         },
       };
     </script>
-    <link rel="stylesheet" href="assets/css/site.css?v=20260720g" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260720h" />
     <style>
       :root {
         color-scheme: dark;
@@ -559,8 +559,8 @@
 
       .ecosystem-stage {
         position: relative;
-        min-height: min(64svh, 43rem);
-        border-radius: 2.2rem;
+        min-height: min(66svh, 44.5rem);
+        border-radius: 2.4rem;
         overflow: hidden;
         isolation: isolate;
         transform: perspective(1200px) rotateX(calc(var(--scroll) * -1.8deg)) rotateY(calc((var(--mx-num, 0.5) - 0.5) * 4deg));
@@ -574,8 +574,9 @@
         background:
           linear-gradient(rgba(255, 255, 255, 0.026) 1px, transparent 1px),
           linear-gradient(90deg, rgba(255, 255, 255, 0.026) 1px, transparent 1px),
-          radial-gradient(ellipse at 50% 42%, rgba(134, 237, 245, 0.13), transparent 31%),
-          radial-gradient(ellipse at 50% 67%, rgba(122, 240, 177, 0.065), transparent 38%),
+          radial-gradient(ellipse at 50% 36%, rgba(134, 237, 245, 0.16), transparent 33%),
+          radial-gradient(ellipse at 50% 70%, rgba(122, 240, 177, 0.085), transparent 40%),
+          radial-gradient(ellipse at 52% 46%, rgba(255, 208, 138, 0.048), transparent 48%),
           linear-gradient(180deg, rgba(13, 18, 23, 0.82), rgba(3, 5, 7, 0.98));
         background-size: 50px 50px, 50px 50px, auto, auto, auto;
       }
@@ -591,6 +592,81 @@
         filter: blur(22px);
         opacity: 0.66;
         animation: nebulaBreath 8s ease-in-out infinite;
+      }
+
+      .stage-crown,
+      .stage-root,
+      .stage-horizon {
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+      }
+
+      .stage-crown {
+        left: 50%;
+        top: 14%;
+        width: 34rem;
+        height: 18rem;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        background:
+          radial-gradient(ellipse at 48% 58%, rgba(134, 237, 245, 0.2), transparent 34%),
+          radial-gradient(ellipse at 32% 42%, rgba(122, 240, 177, 0.12), transparent 28%),
+          radial-gradient(ellipse at 70% 34%, rgba(182, 156, 255, 0.1), transparent 32%);
+        filter: blur(14px);
+        opacity: 0.72;
+        animation: crownBreath 10s ease-in-out infinite;
+      }
+
+      .stage-root {
+        left: 50%;
+        top: 48%;
+        width: 1.35rem;
+        height: 24rem;
+        border-radius: 999px;
+        transform: translateX(-50%);
+        background:
+          linear-gradient(180deg, rgba(233, 251, 255, 0.08), rgba(134, 237, 245, 0.48), rgba(122, 240, 177, 0.3), transparent);
+        box-shadow:
+          0 0 26px rgba(134, 237, 245, 0.22),
+          0 0 90px rgba(122, 240, 177, 0.1);
+        filter: blur(0.1px);
+        opacity: 0.58;
+      }
+
+      .stage-root::before,
+      .stage-root::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 26%;
+        width: 18rem;
+        height: 12rem;
+        border: 1px solid rgba(134, 237, 245, 0.14);
+        border-top: 0;
+        border-right: 0;
+        border-radius: 0 0 0 100%;
+        transform-origin: 0 0;
+      }
+
+      .stage-root::before { transform: rotate(34deg); }
+      .stage-root::after {
+        transform: scaleX(-1) rotate(34deg);
+        border-color: rgba(122, 240, 177, 0.12);
+      }
+
+      .stage-horizon {
+        left: 9%;
+        right: 9%;
+        top: 46%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(134, 237, 245, 0.28), rgba(255, 208, 138, 0.16), transparent);
+        box-shadow: 0 0 28px rgba(134, 237, 245, 0.16);
+        opacity: 0.64;
+      }
+
+      @keyframes crownBreath {
+        50% { opacity: 0.96; transform: translateX(-50%) scale(1.04); }
       }
 
       @keyframes nebulaBreath {
@@ -711,21 +787,32 @@
         position: absolute;
         left: 50%;
         top: 46%;
-        z-index: 5;
-        width: 15.5rem;
+        z-index: 7;
+        width: 16.4rem;
         transform: translate(-50%, -50%);
         text-align: center;
-        border-radius: 1.5rem;
-        padding: 1.35rem 1.18rem;
-        border: 1px solid rgba(134, 237, 245, 0.38);
+        border-radius: 1.65rem;
+        padding: 1.42rem 1.25rem;
+        border: 1px solid rgba(134, 237, 245, 0.44);
         background:
-          radial-gradient(ellipse at 50% 0%, rgba(134, 237, 245, 0.15), transparent 64%),
-          rgba(4, 8, 10, 0.86);
+          radial-gradient(ellipse at 50% 0%, rgba(134, 237, 245, 0.2), transparent 64%),
+          linear-gradient(180deg, rgba(13, 20, 24, 0.9), rgba(3, 7, 9, 0.88));
         box-shadow:
           0 0 0 1px rgba(255, 255, 255, 0.06) inset,
-          0 0 90px rgba(134, 237, 245, 0.16),
+          0 0 120px rgba(134, 237, 245, 0.2),
           0 28px 80px rgba(0, 0, 0, 0.52);
         animation: corePulse 4.8s ease-in-out infinite;
+      }
+
+      .core-node::before {
+        content: "";
+        position: absolute;
+        inset: -0.72rem;
+        border: 1px solid rgba(134, 237, 245, 0.12);
+        border-radius: 2.1rem;
+        background: linear-gradient(120deg, rgba(134, 237, 245, 0.075), transparent 42%, rgba(255, 208, 138, 0.055));
+        opacity: 0.78;
+        z-index: -1;
       }
 
       @keyframes corePulse {
@@ -760,13 +847,16 @@
         position: absolute;
         z-index: 6;
         min-width: 8rem;
-        border-radius: 0.92rem;
-        border: 1px solid rgba(226, 244, 255, 0.1);
-        background: rgba(6, 9, 12, 0.68);
+        border-radius: 1rem;
+        border: 1px solid rgba(226, 244, 255, 0.092);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.012)),
+          rgba(6, 9, 12, 0.58);
         color: #f7fafc;
-        padding: 0.72rem 0.78rem;
+        padding: 0.72rem 0.82rem;
         text-align: left;
         box-shadow: 0 18px 50px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
         cursor: pointer;
         transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
       }
@@ -809,9 +899,9 @@
       .n-evidence { right: 7%; top: 18%; --node-color: #7af0b1; }
       .n-timeline { left: 4%; top: 46%; --node-color: #b69cff; }
       .n-receipts { right: 5%; top: 47%; --node-color: #ffe6bd; }
-      .n-runtime { left: 13%; bottom: 14%; --node-color: #dfe8ef; }
-      .n-api { right: 14%; bottom: 14%; --node-color: #5eead4; }
-      .n-release { left: 50%; bottom: 6%; transform: translateX(-50%); --node-color: #ffd08a; }
+      .n-runtime { left: 11%; bottom: 24%; --node-color: #dfe8ef; }
+      .n-api { right: 12%; bottom: 24%; --node-color: #5eead4; }
+      .n-release { left: 50%; bottom: 29%; transform: translateX(-50%); --node-color: #ffd08a; }
       .n-release:hover,
       .n-release.active { transform: translateX(-50%) translateY(-3px) scale(1.02); }
 
@@ -850,8 +940,11 @@
         grid-template-columns: 1fr auto;
         gap: 1rem;
         align-items: end;
-        border-radius: 1.05rem;
-        padding: 0.95rem;
+        border-radius: 1.2rem;
+        padding: 1.05rem;
+        background:
+          linear-gradient(90deg, rgba(134, 237, 245, 0.07), transparent 38%, rgba(255, 208, 138, 0.045)),
+          rgba(3, 6, 8, 0.78);
       }
 
       .node-panel h3 {
@@ -1655,6 +1748,11 @@
           filter: blur(24px);
           opacity: 0.52;
         }
+        .stage-crown,
+        .stage-root,
+        .stage-horizon {
+          display: none;
+        }
         .eco-lines,
         .signal,
         .orbit-ring,
@@ -1972,6 +2070,9 @@
               <span class="orbit-ring orbit-r2"></span>
               <span class="orbit-ring orbit-r3"></span>
               <span class="decision-beam"></span>
+              <span class="stage-crown" aria-hidden="true"></span>
+              <span class="stage-root" aria-hidden="true"></span>
+              <span class="stage-horizon" aria-hidden="true"></span>
               <span class="field-label left">Candidate field</span>
               <span class="field-label right">Release field</span>
               <span class="field-label bottom">Audit preserved</span>
@@ -2411,7 +2512,7 @@
     <script src="assets/js/api.js?v=20260720a"></script>
     <script src="assets/js/cache-bust.js?v=20260720a"></script>
     <script src="assets/js/i18n.js?v=20260720a"></script>
-    <script src="assets/js/site-shell.js?v=20260720g"></script>
+    <script src="assets/js/site-shell.js?v=20260720h"></script>
     <script>
       (function initCanvas() {
         const canvas = document.getElementById("bg-canvas");
@@ -2419,7 +2520,7 @@
         let w = 0, h = 0, dpr = 1, raf = 0;
         let targetX = 0.5, targetY = 0.28, mouseX = 0.5, mouseY = 0.28;
         const points = [];
-        const count = 120;
+        let count = 120;
 
         function resize() {
           dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -2434,6 +2535,7 @@
 
         function seed() {
           points.length = 0;
+          count = w < 720 ? 58 : 120;
           for (let i = 0; i < count; i++) {
             const layer = Math.random();
             points.push({
@@ -2487,6 +2589,59 @@
           for (let y = ((t * 3) % gap) - gap; y < h + gap; y += gap) {
             ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
           }
+
+          const trunkX = w * 0.54;
+          const trunkTop = h * 0.16;
+          const trunkMid = h * 0.42;
+          const trunkBottom = h * 0.88;
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+          const spine = ctx.createLinearGradient(trunkX, trunkTop, trunkX, trunkBottom);
+          spine.addColorStop(0, "rgba(233,251,255,0.00)");
+          spine.addColorStop(0.24, "rgba(134,237,245,0.18)");
+          spine.addColorStop(0.58, "rgba(122,240,177,0.12)");
+          spine.addColorStop(1, "rgba(233,251,255,0.00)");
+          ctx.strokeStyle = spine;
+          ctx.lineWidth = w < 720 ? 1.2 : 1.6;
+          ctx.beginPath();
+          ctx.moveTo(trunkX, trunkTop);
+          ctx.bezierCurveTo(trunkX - 26, h * 0.28, trunkX + 22, h * 0.55, trunkX, trunkBottom);
+          ctx.stroke();
+
+          const branches = w < 720 ? 7 : 11;
+          for (let i = 0; i < branches; i++) {
+            const side = i % 2 === 0 ? -1 : 1;
+            const p = (i + 1) / (branches + 1);
+            const startY = trunkTop + (trunkBottom - trunkTop) * (0.12 + p * 0.68);
+            const reach = (w < 720 ? 96 : 190) * (0.64 + 0.42 * Math.sin(t * 0.35 + i));
+            const lift = (h < 760 ? 42 : 84) * Math.sin(p * Math.PI);
+            const endX = trunkX + side * reach;
+            const endY = startY - lift + Math.sin(t * 0.5 + i) * 9;
+            const alpha = 0.07 + 0.055 * Math.sin(t * 0.42 + i * 0.7);
+            ctx.strokeStyle = i % 3 === 0
+              ? `rgba(255,208,138,${alpha * 0.72})`
+              : `rgba(134,237,245,${alpha})`;
+            ctx.lineWidth = w < 720 ? 0.72 : 0.9;
+            ctx.beginPath();
+            ctx.moveTo(trunkX, startY);
+            ctx.bezierCurveTo(
+              trunkX + side * reach * 0.22,
+              startY - lift * 0.45,
+              trunkX + side * reach * 0.56,
+              endY + lift * 0.18,
+              endX,
+              endY
+            );
+            ctx.stroke();
+
+            if (i % 2 === 0) {
+              ctx.fillStyle = `rgba(233,251,255,${alpha * 1.9})`;
+              ctx.beginPath();
+              ctx.arc(endX, endY, w < 720 ? 1.1 : 1.45, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
+          ctx.restore();
 
           for (const p of points) {
             p.x += p.vx * p.z;
