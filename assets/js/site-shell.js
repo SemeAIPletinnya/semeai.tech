@@ -1,5 +1,5 @@
 (() => {
-  const V = "20260717f";
+  const V = "20260720c";
   const path = (location.pathname || "").toLowerCase();
   const current = (path.split("/").pop() || "index.html").split("?")[0];
   const isHome = current === "index.html" || current === "" || current === "/";
