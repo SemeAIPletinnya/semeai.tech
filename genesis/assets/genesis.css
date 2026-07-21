@@ -1,0 +1,638 @@
+:root {
+  color-scheme: dark;
+  --genesis-black: #030303;
+  --genesis-ink: #f4efe6;
+  --genesis-muted: rgba(244, 239, 230, 0.68);
+  --genesis-faint: rgba(244, 239, 230, 0.36);
+  --genesis-gold: #d9b66f;
+  --genesis-line: rgba(217, 182, 111, 0.34);
+  --edge-x: clamp(1.25rem, 4vw, 4.75rem);
+  --edge-y: clamp(1.1rem, 3vw, 2.5rem);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--genesis-black);
+  scroll-behavior: auto;
+}
+
+body {
+  min-width: 20rem;
+  margin: 0;
+  overflow-x: hidden;
+  background: var(--genesis-black);
+  color: var(--genesis-ink);
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--genesis-gold);
+  outline-offset: 5px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0 0 0 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.7rem 0.9rem;
+  transform: translateY(-180%);
+  border: 1px solid var(--genesis-line);
+  border-radius: 999px;
+  background: #0b0a08;
+  color: var(--genesis-ink);
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.genesis-header {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: calc(var(--edge-y) + env(safe-area-inset-top)) var(--edge-x) 1rem;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(3, 3, 3, 0.72), transparent);
+}
+
+.genesis-brand,
+.genesis-exit {
+  pointer-events: auto;
+  text-decoration: none;
+}
+
+.genesis-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(244, 239, 230, 0.78);
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: clamp(0.65rem, 1vw, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+}
+
+.genesis-brand span:nth-child(2) {
+  color: var(--genesis-gold);
+}
+
+.genesis-exit {
+  padding: 0.55rem 0;
+  border-bottom: 1px solid rgba(244, 239, 230, 0.22);
+  color: rgba(244, 239, 230, 0.7);
+  font-size: clamp(0.68rem, 1vw, 0.78rem);
+  letter-spacing: 0.08em;
+}
+
+.genesis-exit:hover {
+  border-color: var(--genesis-gold);
+  color: var(--genesis-ink);
+}
+
+.genesis-story,
+.act,
+.act__stage,
+.scene {
+  position: relative;
+}
+
+.act,
+.scene {
+  background: var(--genesis-black);
+}
+
+.act__stage {
+  min-height: 100vh;
+}
+
+.act__identity {
+  position: absolute;
+  z-index: 8;
+  top: calc(5.5rem + env(safe-area-inset-top));
+  left: var(--edge-x);
+  display: grid;
+  gap: 0.28rem;
+  padding-left: 0.9rem;
+  border-left: 1px solid var(--genesis-line);
+  pointer-events: none;
+}
+
+.act__identity p,
+.act__identity h2 {
+  margin: 0;
+}
+
+.act__identity p {
+  color: var(--genesis-gold);
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+}
+
+.act__identity h2 {
+  color: rgba(244, 239, 230, 0.62);
+  font-size: clamp(0.82rem, 1.25vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.scene {
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.scene__picture,
+.scene__shade {
+  position: absolute;
+  inset: 0;
+}
+
+.scene::before,
+.scene::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: -6%;
+  pointer-events: none;
+  opacity: 0;
+  background-repeat: no-repeat;
+  background-position: var(--field-position-x, 50%) var(--field-position-y, 50%);
+  transform: translate3d(var(--field-x, 0), var(--field-y, 0), 0) scale(var(--field-scale, 1));
+  transform-origin: var(--focal-position, 50% 50%);
+}
+
+.scene::before {
+  opacity: var(--semantic-primary-opacity, 0);
+}
+
+.scene::after {
+  opacity: clamp(0, calc(var(--semantic-secondary-opacity, 0) + var(--entry-opacity, 0)), 0.32);
+}
+
+.scene__picture {
+  z-index: 0;
+  display: block;
+  background: var(--genesis-black);
+  transform: translate3d(var(--ambient-x, 0), var(--ambient-y, 0), 0) scale(var(--ambient-scale, 1));
+  transform-origin: var(--focal-position, 50% 50%);
+}
+
+.scene__picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focal-position, 50% 50%);
+  transform-origin: var(--focal-position, 50% 50%);
+}
+
+.scene__shade {
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(3, 3, 3, 0.38) 0%, transparent 26%, transparent 58%, rgba(3, 3, 3, 0.76) 100%),
+    linear-gradient(90deg, rgba(3, 3, 3, 0.52) 0%, transparent 48%);
+}
+
+/* Scene-specific atmospheric light fields. They are inactive without motion enhancement. */
+.scene--first-impulse::before {
+  background:
+    radial-gradient(ellipse 7% 10% at 50% 51%, rgba(255, 242, 211, 0.72) 0%, rgba(232, 190, 111, 0.16) 34%, transparent 74%);
+}
+
+.scene--first-impulse::after {
+  background:
+    radial-gradient(ellipse 10% 7% at 51% 50%, rgba(255, 247, 225, 0.34) 0%, rgba(216, 170, 91, 0.09) 42%, transparent 78%),
+    radial-gradient(ellipse 4% 13% at 49% 53%, rgba(244, 211, 150, 0.13) 0%, transparent 76%);
+}
+
+.scene--emergence::before {
+  background:
+    radial-gradient(ellipse 24% 31% at 51% 51%, transparent 12%, rgba(235, 196, 125, 0.12) 39%, transparent 74%),
+    radial-gradient(ellipse 39% 46% at 51% 51%, transparent 34%, rgba(199, 154, 86, 0.075) 57%, transparent 81%);
+}
+
+.scene--emergence::after {
+  background:
+    radial-gradient(ellipse 16% 20% at 51% 51%, rgba(255, 238, 198, 0.23) 0%, rgba(220, 172, 94, 0.07) 52%, transparent 82%);
+}
+
+.scene--first-continuity::before {
+  background:
+    linear-gradient(180deg, transparent 12%, rgba(240, 199, 119, 0.025) 31%, rgba(255, 224, 160, 0.12) 51%, rgba(225, 174, 89, 0.035) 69%, transparent 87%);
+  background-size: 100% 185%;
+}
+
+.scene--first-continuity::after {
+  background:
+    radial-gradient(circle at 49% 59%, rgba(255, 236, 194, 0.2) 0 0.22%, transparent 0.75%),
+    radial-gradient(circle at 54% 45%, rgba(255, 220, 145, 0.16) 0 0.18%, transparent 0.66%),
+    radial-gradient(circle at 46% 35%, rgba(244, 200, 115, 0.13) 0 0.15%, transparent 0.58%);
+}
+
+.scene--living-space::before {
+  background:
+    radial-gradient(ellipse 42% 24% at 65% 55%, rgba(238, 204, 142, 0.11) 0%, rgba(207, 159, 83, 0.035) 48%, transparent 78%),
+    linear-gradient(18deg, transparent 36%, rgba(232, 190, 109, 0.045) 51%, transparent 65%);
+}
+
+.scene--living-space::after {
+  background:
+    radial-gradient(ellipse 48% 13% at 54% 68%, rgba(245, 214, 157, 0.1) 0%, rgba(214, 165, 89, 0.025) 54%, transparent 78%);
+}
+
+.scene--space-responds::before {
+  background:
+    linear-gradient(108deg, transparent 27%, rgba(245, 219, 167, 0.025) 39%, rgba(255, 231, 182, 0.13) 49%, rgba(216, 169, 92, 0.03) 59%, transparent 72%);
+  background-size: 185% 100%;
+}
+
+.scene--space-responds::after {
+  background:
+    radial-gradient(ellipse 34% 18% at 67% 51%, rgba(255, 233, 187, 0.16) 0%, rgba(216, 170, 91, 0.035) 55%, transparent 82%);
+}
+
+.scene--first-horizon::before {
+  background:
+    linear-gradient(180deg, transparent 32%, rgba(244, 213, 154, 0.025) 45%, rgba(255, 228, 177, 0.09) 54%, rgba(211, 166, 93, 0.025) 64%, transparent 76%);
+}
+
+.scene--first-horizon::after {
+  background:
+    radial-gradient(ellipse 52% 14% at 47% 56%, rgba(255, 233, 190, 0.1) 0%, transparent 72%);
+}
+
+.scene--hidden-current::before {
+  background:
+    radial-gradient(ellipse 38% 34% at 26% 51%, rgba(106, 129, 211, 0.12) 0%, transparent 72%),
+    radial-gradient(ellipse 35% 25% at 70% 50%, rgba(238, 195, 114, 0.12) 0%, transparent 75%);
+}
+
+.scene--hidden-current::after {
+  background:
+    radial-gradient(ellipse 24% 18% at 43% 40%, rgba(132, 142, 224, 0.11) 0%, transparent 73%),
+    radial-gradient(ellipse 26% 18% at 79% 65%, rgba(241, 205, 140, 0.09) 0%, transparent 75%);
+}
+
+.scene--field-awakens::before {
+  background:
+    radial-gradient(ellipse 27% 27% at 18% 30%, rgba(245, 205, 128, 0.14) 0%, transparent 72%),
+    radial-gradient(ellipse 30% 24% at 53% 47%, rgba(122, 133, 219, 0.11) 0%, transparent 75%),
+    radial-gradient(ellipse 26% 31% at 82% 32%, rgba(250, 218, 156, 0.13) 0%, transparent 73%);
+}
+
+.scene--field-awakens::after {
+  background:
+    radial-gradient(ellipse 31% 20% at 30% 70%, rgba(236, 190, 108, 0.11) 0%, transparent 75%),
+    radial-gradient(ellipse 28% 24% at 75% 68%, rgba(119, 133, 225, 0.13) 0%, transparent 73%),
+    linear-gradient(105deg, transparent 24%, rgba(248, 218, 160, 0.075) 49%, transparent 74%);
+  background-size: auto, auto, 175% 100%;
+}
+
+.scene--living-continuum::before {
+  background:
+    radial-gradient(ellipse 58% 50% at 65% 34%, rgba(255, 229, 177, 0.14) 0%, rgba(193, 156, 103, 0.035) 52%, transparent 80%);
+}
+
+.scene--living-continuum::after {
+  background:
+    linear-gradient(128deg, transparent 20%, rgba(125, 135, 218, 0.04) 37%, rgba(246, 211, 151, 0.075) 51%, transparent 71%);
+  background-size: 150% 150%;
+}
+
+.scene__copy {
+  position: absolute;
+  z-index: 3;
+  bottom: max(9vh, calc(3.5rem + env(safe-area-inset-bottom)));
+  left: var(--edge-x);
+  width: min(35rem, calc(100vw - (2 * var(--edge-x))));
+  text-shadow: 0 2px 22px rgba(0, 0, 0, 0.86);
+}
+
+.scene__copy p,
+.scene__copy h3 {
+  margin: 0;
+}
+
+.scene__id {
+  margin-bottom: 0.8rem !important;
+  color: var(--genesis-gold);
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: clamp(0.62rem, 0.9vw, 0.76rem);
+  letter-spacing: 0.24em;
+}
+
+.scene__copy h3 {
+  max-width: 13ch;
+  font-size: clamp(2rem, 5.4vw, 5.4rem);
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 0.96;
+}
+
+.scene__copy h3 + p {
+  margin-top: 1.05rem;
+  color: var(--genesis-muted);
+  font-size: clamp(0.92rem, 1.25vw, 1.12rem);
+  font-weight: 350;
+  letter-spacing: 0.025em;
+}
+
+.scene--first-impulse { --focal-position: 50% 51%; }
+.scene--emergence { --focal-position: 51% 51%; }
+.scene--first-continuity { --focal-position: 50% 66%; }
+.scene--living-space { --focal-position: 64% 54%; }
+.scene--space-responds { --focal-position: 67% 52%; }
+.scene--first-horizon { --focal-position: 47% 55%; }
+.scene--hidden-current { --focal-position: 66% 51%; }
+.scene--field-awakens { --focal-position: 66% 52%; }
+.scene--living-continuum { --focal-position: 65% 34%; }
+
+.scene--emergence .scene__copy,
+.scene--space-responds .scene__copy,
+.scene--field-awakens .scene__copy {
+  right: var(--edge-x);
+  left: auto;
+  text-align: right;
+}
+
+.scene--emergence .scene__copy h3,
+.scene--space-responds .scene__copy h3,
+.scene--field-awakens .scene__copy h3 {
+  margin-left: auto;
+}
+
+.scene--emergence .scene__shade,
+.scene--space-responds .scene__shade,
+.scene--field-awakens .scene__shade {
+  background:
+    linear-gradient(180deg, rgba(3, 3, 3, 0.38) 0%, transparent 26%, transparent 58%, rgba(3, 3, 3, 0.76) 100%),
+    linear-gradient(270deg, rgba(3, 3, 3, 0.54) 0%, transparent 48%);
+}
+
+.scene--living-continuum .scene__copy {
+  right: var(--edge-x);
+  left: var(--edge-x);
+  width: auto;
+  text-align: center;
+}
+
+.scene--living-continuum .scene__copy h3 {
+  max-width: none;
+}
+
+.scene--living-continuum .scene__shade {
+  background:
+    linear-gradient(180deg, rgba(3, 3, 3, 0.22) 0%, transparent 38%, rgba(3, 3, 3, 0.18) 60%, rgba(3, 3, 3, 0.82) 100%),
+    radial-gradient(circle at 66% 34%, transparent 0%, rgba(3, 3, 3, 0.18) 64%, rgba(3, 3, 3, 0.54) 100%);
+}
+
+/* Motion is progressive enhancement. Without this class, all nine scenes remain in normal flow. */
+.motion-enabled .act {
+  height: 320vh;
+  height: 320svh;
+}
+
+.motion-enabled .act--awakening {
+  height: 360vh;
+  height: 360svh;
+}
+
+.motion-enabled .act__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.motion-enabled .act__identity {
+  opacity: var(--act-label-opacity, 1);
+  transform: translate3d(var(--act-label-x, 0), 0, 0);
+}
+
+.motion-enabled .scene {
+  position: absolute;
+  inset: 0;
+  min-height: 0;
+  opacity: var(--scene-opacity, 0);
+  pointer-events: none;
+}
+
+.motion-enabled .scene:first-of-type {
+  --scene-opacity: 1;
+}
+
+.motion-enabled .scene__picture img {
+  transform: translate3d(var(--image-x, 0), var(--image-y, 0), 0) scale(var(--image-scale, 1));
+}
+
+.motion-enabled .scene__copy {
+  opacity: var(--copy-opacity, 0);
+  transform: translate3d(var(--copy-x, 0), var(--copy-y, 0), 0);
+}
+
+@media (max-width: 700px) {
+  :root {
+    --edge-x: clamp(1.15rem, 5vw, 1.65rem);
+    --edge-y: 1rem;
+  }
+
+  .genesis-header {
+    gap: 0.6rem;
+  }
+
+  .genesis-brand {
+    gap: 0.35rem;
+    letter-spacing: 0.12em;
+  }
+
+  .genesis-exit {
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+  }
+
+  .act__identity {
+    top: calc(4.5rem + env(safe-area-inset-top));
+  }
+
+  .scene__copy,
+  .scene--emergence .scene__copy,
+  .scene--space-responds .scene__copy,
+  .scene--field-awakens .scene__copy {
+    right: var(--edge-x);
+    bottom: max(7vh, calc(2.5rem + env(safe-area-inset-bottom)));
+    left: var(--edge-x);
+    width: auto;
+    text-align: left;
+  }
+
+  .scene--emergence .scene__copy h3,
+  .scene--space-responds .scene__copy h3,
+  .scene--field-awakens .scene__copy h3 {
+    margin-left: 0;
+  }
+
+  .scene__copy h3 {
+    max-width: 12ch;
+    font-size: clamp(2rem, 11vw, 3.5rem);
+  }
+
+  .scene--living-continuum .scene__copy {
+    text-align: center;
+  }
+
+  .scene--living-continuum .scene__copy h3 {
+    max-width: none;
+  }
+
+  .motion-enabled .act {
+    height: 300vh;
+    height: 300svh;
+  }
+
+  .motion-enabled .act--awakening {
+    height: 330vh;
+    height: 330svh;
+  }
+}
+
+/* Preserve the entire approved composition on portrait screens. */
+@media (max-aspect-ratio: 3 / 4) {
+  .scene__picture img {
+    object-fit: contain;
+    object-position: 50% 50%;
+    transform-origin: 50% 50%;
+  }
+
+  .scene__shade,
+  .scene--emergence .scene__shade,
+  .scene--space-responds .scene__shade,
+  .scene--field-awakens .scene__shade,
+  .scene--living-continuum .scene__shade {
+    background:
+      linear-gradient(180deg, rgba(3, 3, 3, 0.78) 0%, transparent 24%, transparent 64%, rgba(3, 3, 3, 0.92) 100%);
+  }
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+  .act__identity {
+    top: calc(3.9rem + env(safe-area-inset-top));
+  }
+
+  .scene__copy,
+  .scene--emergence .scene__copy,
+  .scene--space-responds .scene__copy,
+  .scene--field-awakens .scene__copy,
+  .scene--living-continuum .scene__copy {
+    right: var(--edge-x);
+    bottom: max(1.4rem, calc(1rem + env(safe-area-inset-bottom)));
+    left: var(--edge-x);
+    width: auto;
+    text-align: left;
+  }
+
+  .scene__id {
+    margin-bottom: 0.35rem !important;
+  }
+
+  .scene__copy h3 {
+    max-width: 18ch;
+    font-size: clamp(1.65rem, 6vw, 2.8rem);
+  }
+
+  .scene__copy h3 + p {
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+  }
+
+  .motion-enabled .act,
+  .motion-enabled .act--awakening {
+    height: 285vh;
+    height: 285svh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .motion-enabled .act,
+  .motion-enabled .act--awakening {
+    height: auto;
+  }
+
+  .motion-enabled .act__stage {
+    position: relative;
+    height: auto;
+    overflow: visible;
+  }
+
+  .motion-enabled .act__identity {
+    opacity: 1;
+    transform: none;
+  }
+
+  .motion-enabled .scene {
+    position: relative;
+    inset: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+    opacity: 1;
+  }
+
+  .motion-enabled .scene__picture img,
+  .motion-enabled .scene__picture,
+  .motion-enabled .scene__copy {
+    opacity: 1;
+    transform: none;
+  }
+
+  .motion-enabled .scene::before,
+  .motion-enabled .scene::after {
+    display: none;
+    opacity: 0;
+    transform: none;
+  }
+}
