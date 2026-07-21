@@ -25,6 +25,7 @@ jobs:
       - name: Validate static landing files
         run: |
           test -f index.html
+          test -f book/index.html
           test -f CNAME
           test -f .nojekyll
           ! test -f design-options.html

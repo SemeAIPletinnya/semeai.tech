@@ -1,5 +1,5 @@
 (() => {
-  const V = "20260720h";
+  const V = "20260721a";
   const path = (location.pathname || "").toLowerCase();
   const current = (path.split("/").pop() || "index.html").split("?")[0];
   const isHome = current === "index.html" || current === "" || current === "/";
@@ -26,6 +26,7 @@
       selfHosted: `${base}self-hosted.html?v=${V}`,
       research: `${base}research.html?v=${V}`,
       thesis: `${base}article.html?v=${V}`,
+      book: `${base}book/?v=${V}`,
       register: `${base}register.html?v=${V}`,
       dashboard: `${base}dashboard.html?v=${V}`,
       pilot: inPilots ? `support.html?v=${V}` : `${base}pilots/support.html?v=${V}`,
@@ -111,6 +112,7 @@
         items: [
           { label: t("nav.researchHub"), desc: t("nav.researchHub.desc"), href: p.research, match: "research.html" },
           { label: t("nav.thesis"), desc: t("nav.thesis.desc"), href: p.thesis, match: "article.html" },
+          { label: "Engineering Book", desc: "Digital technical publication", href: p.book },
           { label: t("nav.ssrn"), desc: t("nav.ssrn.desc"), href: p.ssrn, external: true },
           { label: t("nav.zenodo"), desc: t("nav.zenodo.desc"), href: p.zenodo, external: true },
         ],
@@ -175,6 +177,7 @@
         links: [
           { label: t("mobile.researchHub"), href: p.research },
           { label: t("mobile.thesis"), href: p.thesis },
+          { label: "Engineering Book", href: p.book },
           { label: t("nav.ssrn"), href: p.ssrn, external: true },
           { label: t("nav.zenodo"), href: p.zenodo, external: true },
           { label: "silence-as-control", href: p.sac, external: true },

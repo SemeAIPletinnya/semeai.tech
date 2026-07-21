@@ -14,11 +14,14 @@ Public product site for **SemeAI Gate**.
 | `research.html` | Public proof links | shared `site.css` |
 | `article.html` | Thesis (EN/UA/RU) | shared `site.css` |
 | `account.html` | Redirect -> dashboard | shared `site.css` |
+| `book/index.html` | Engineering Book | standalone `book.css` |
 
 ## Shared assets
 
 - `assets/css/site.css` - product site design system (void / cyan)
+- `assets/css/book.css` - Engineering Book publication system
 - `assets/js/site-shell.js` - sticky nav, footer, canvas
+- `assets/js/book-content.js` / `book.js` - Engineering Book content and renderer
 - `assets/js/api.js` - API client for `https://api.semeai.tech`
 - `assets/css/semeai.css` / `product.css` / `shell.js` - legacy (phasing out)
 
@@ -27,6 +30,12 @@ Public product site for **SemeAI Gate**.
 Site talks to [semeai-gate-basic](https://github.com/SemeAIPletinnya/semeai-gate-basic) on `api.semeai.tech`.
 
 Governance source: [silence-as-control](https://github.com/SemeAIPletinnya/silence-as-control).
+
+## Engineering Book
+
+The Engineering Book is a premium static publication at `/book/`.
+
+It explains Anton Semenenko and the SemeAI ecosystem without turning the site into a resume or a generic SaaS landing page. The editable content lives in `assets/js/book-content.js`, and the print/PDF workflow is documented in `docs/engineering_book_maintenance.md`.
 
 ## Ecosystem role
 
