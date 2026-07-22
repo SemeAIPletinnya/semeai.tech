@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta
+      name="description"
+      content="An isolated SemeAI landing-page prototype for post-generation release control."
+    />
+    <meta name="theme-color" content="#050504" />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./assets/landing.css" />
+    <title>SemeAI — Living Release Architecture</title>
+    <script src="../assets/js/api.js" defer></script>
+    <script src="./assets/landing.js" defer></script>
+  </head>
+  <body>
+    <canvas class="living-field" id="living-field" aria-hidden="true"></canvas>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header" data-site-header>
+      <div class="header-inner">
+        <a class="brand" href="#overview" aria-label="SemeAI, return to overview">
+          <span class="brand-signal" aria-hidden="true"></span>
+          <span>SemeAI</span>
+        </a>
+
+        <nav class="desktop-nav" aria-label="Primary navigation">
+          <a href="#overview" data-nav-target="overview">Overview</a>
+          <a href="#how-it-works" data-nav-target="how-it-works">How it works</a>
+          <a href="#live-demo" data-nav-target="live-demo">Live demo</a>
+          <a href="#use-cases" data-nav-target="use-cases">Use cases</a>
+          <a href="#deployment" data-nav-target="deployment">Deployment</a>
+          <a href="#evidence" data-nav-target="evidence">Evidence</a>
+          <a href="../pricing.html">Pricing</a>
+        </nav>
+
+        <div class="header-actions">
+          <details class="route-disclosure">
+            <summary>Explore</summary>
+            <div class="route-disclosure-body">
+              <a href="../genesis/">Genesis</a>
+              <a href="../book/">Engineering Book</a>
+              <a href="../research.html">Research</a>
+              <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">GitHub</a>
+              <a href="../dashboard.html">Account</a>
+            </div>
+          </details>
+          <a class="header-register" href="../register.html">Register</a>
+          <button class="nav-open" type="button" aria-haspopup="dialog" aria-controls="mobile-navigation">
+            <span>Menu</span>
+            <span class="nav-open-mark" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <nav class="no-js-nav" aria-label="Compact navigation">
+        <a href="#overview">Overview</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#live-demo">Live demo</a>
+        <a href="#use-cases">Use cases</a>
+        <a href="#deployment">Deployment</a>
+        <a href="#evidence">Evidence</a>
+        <a href="../pricing.html">Pricing</a>
+        <a href="../genesis/">Genesis</a>
+        <a href="../book/">Engineering Book</a>
+        <a href="../research.html">Research</a>
+        <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic">GitHub</a>
+        <a href="../dashboard.html">Account</a>
+        <a href="../register.html">Register workspace</a>
+      </nav>
+    </header>
+
+    <dialog class="mobile-navigation" id="mobile-navigation" aria-labelledby="mobile-navigation-title">
+      <div class="mobile-navigation-shell">
+        <div class="mobile-navigation-head">
+          <div>
+            <p class="section-index">SemeAI</p>
+            <p class="mobile-navigation-title" id="mobile-navigation-title">Navigate</p>
+          </div>
+          <button class="nav-close" type="button" aria-label="Close navigation">Close</button>
+        </div>
+        <div class="mobile-navigation-scroll">
+          <nav class="mobile-primary" aria-label="Mobile primary navigation">
+            <a href="#overview" data-nav-target="overview"><span>01</span>Overview</a>
+            <a href="#how-it-works" data-nav-target="how-it-works"><span>02</span>How it works</a>
+            <a href="#live-demo" data-nav-target="live-demo"><span>03</span>Live demo</a>
+            <a href="#use-cases" data-nav-target="use-cases"><span>04</span>Use cases</a>
+            <a href="#deployment" data-nav-target="deployment"><span>05</span>Deployment</a>
+            <a href="#evidence" data-nav-target="evidence"><span>06</span>Evidence</a>
+            <a href="../pricing.html"><span>07</span>Pricing</a>
+          </nav>
+          <nav class="mobile-secondary" aria-label="Mobile secondary navigation">
+            <a href="../genesis/">Genesis</a>
+            <a href="../book/">Engineering Book</a>
+            <a href="../research.html">Research</a>
+            <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">GitHub</a>
+            <a href="../dashboard.html">Account</a>
+          </nav>
+          <a class="button button-primary mobile-register" href="../register.html">Register workspace</a>
+        </div>
+      </div>
+    </dialog>
+
+    <main id="main-content" tabindex="-1">
+      <section class="hero motion-scene" id="overview" aria-labelledby="overview-title" tabindex="-1">
+        <picture class="hero-art" aria-hidden="true">
+          <source
+            media="(max-width: 960px)"
+            srcset="../genesis/assets/images/genesis-001-a-first-impulse-960w-v01.webp"
+          />
+          <img
+            src="../genesis/assets/images/genesis-001-a-first-impulse-1672w-v01.webp"
+            width="1672"
+            height="941"
+            alt=""
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+        <div class="hero-field" aria-hidden="true"></div>
+        <div class="hero-inner page-shell">
+          <div class="hero-copy">
+            <p class="section-index">SemeAI — Living Release Architecture</p>
+            <p class="product-definition">Post-generation release control for AI applications</p>
+            <h1 id="overview-title">Generation is not release authority.</h1>
+            <p class="hero-lead">
+              The model creates a candidate.<br />
+              SemeAI decides whether it may reach the world.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#live-demo">Run the live gate</a>
+              <a class="button button-secondary" href="#how-it-works">See how it works</a>
+            </div>
+            <a class="quiet-link" href="../genesis/">Explore Genesis <span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="hero-boundary" aria-hidden="true">
+            <span class="hero-candidate">candidate</span>
+            <span class="hero-boundary-line"></span>
+            <span class="hero-release">release boundary</span>
+            <span class="hero-impulse"></span>
+          </div>
+          <div
+            class="mobile-release-event"
+            role="img"
+            aria-label="A candidate approaches the Gate; a decision exists only after the release boundary."
+          >
+            <span class="mobile-event-candidate">Candidate</span>
+            <span class="mobile-event-gate">Gate</span>
+            <span class="mobile-event-decision">Decision</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="section corridor-section" id="how-it-works" aria-labelledby="how-title" tabindex="-1">
+        <div class="page-shell">
+          <header class="editorial-heading corridor-heading">
+            <p class="section-index">01 / The missing boundary</p>
+            <h2 id="how-title">A generated answer is still only a candidate.</h2>
+            <p>
+              SemeAI sits after generation and before exposure. It evaluates the candidate against evidence,
+              context, rules, and risk before a host product releases anything.
+            </p>
+          </header>
+
+          <ol class="control-corridor" aria-label="Release-control corridor">
+            <li><span>01</span><strong>User request</strong></li>
+            <li><span>02</span><strong>Model</strong></li>
+            <li class="candidate-step"><span>03</span><strong>Candidate</strong></li>
+            <li class="gate-step"><span>04</span><strong>SemeAI Gate</strong><small>release authority</small></li>
+            <li class="decision-step"><span>05</span><strong>SHOW / REVIEW / BLOCK</strong></li>
+            <li><span>06</span><strong>Receipt</strong></li>
+          </ol>
+          <p class="corridor-note">Generation proposes. The release boundary decides.</p>
+        </div>
+      </section>
+
+      <section class="section decision-section" id="release-decision" aria-labelledby="decision-title" tabindex="-1">
+        <div class="page-shell decision-layout">
+          <header class="editorial-heading decision-heading">
+            <p class="section-index">02 / Release decision</p>
+            <h2 id="decision-title">One candidate. Three materially different outcomes.</h2>
+            <p>The gate does not rewrite the answer. It decides whether release may proceed, must wait, or is denied.</p>
+          </header>
+
+          <div class="decision-stage" aria-label="A candidate reaches the release boundary and branches into three outcomes">
+            <div class="candidate-rail">
+              <span class="candidate-token">Candidate</span>
+              <span class="candidate-line" aria-hidden="true"></span>
+            </div>
+            <div class="release-wall" aria-hidden="true">
+              <span>Release boundary</span>
+              <div class="boundary-state-signals">
+                <i class="boundary-show"><b></b></i>
+                <i class="boundary-review"><b></b></i>
+                <i class="boundary-block"><b></b></i>
+              </div>
+            </div>
+            <div class="outcome-field">
+              <article class="outcome outcome-show">
+                <div class="outcome-trace" aria-hidden="true"></div>
+                <div>
+                  <p><strong>SHOW</strong><span>PROCEED</span></p>
+                  <h3>Supported output proceeds.</h3>
+                </div>
+              </article>
+              <article class="outcome outcome-review">
+                <div class="outcome-trace" aria-hidden="true"></div>
+                <div>
+                  <p><strong>REVIEW</strong><span>NEEDS_REVIEW</span></p>
+                  <h3>Output is held for operator review.</h3>
+                </div>
+              </article>
+              <article class="outcome outcome-block">
+                <div class="outcome-trace" aria-hidden="true"></div>
+                <div>
+                  <p><strong>BLOCK</strong><span>SILENCE</span></p>
+                  <h3>Release is denied. Execution is withheld. Audit evidence remains.</h3>
+                </div>
+              </article>
+            </div>
+          </div>
+
+          <dl class="canonical-map" aria-label="Canonical release-state mapping">
+            <div><dt>SHOW</dt><dd>PROCEED</dd></div>
+            <div><dt>REVIEW</dt><dd>NEEDS_REVIEW</dd></div>
+            <div><dt>BLOCK</dt><dd>SILENCE</dd></div>
+          </dl>
+          <p class="silence-note"><strong>SILENCE is not deletion.</strong> Release denied. Execution withheld. Audit preserved.</p>
+        </div>
+      </section>
+
+      <section class="section demo-section" id="live-demo" aria-labelledby="demo-title" tabindex="-1">
+        <div class="page-shell demo-layout">
+          <div class="demo-intro">
+            <p class="section-index">03 / Live gate</p>
+            <h2 id="demo-title">Check the candidate before release.</h2>
+            <p>
+              This public prototype sends the current demo payload to the existing SemeAI Gate endpoint only after
+              you choose to run it. Do not submit private or production data.
+            </p>
+
+            <form class="demo-form" id="gate-form" novalidate>
+              <label for="scenario-select">Scenario</label>
+              <select id="scenario-select" name="scenario">
+                <option value="fake_promo_code">Unsupported promo code</option>
+                <option value="supported_answer">Supported promo code</option>
+                <option value="unsafe_action">Unsafe operational action</option>
+                <option value="context_drift">Context drift</option>
+                <option value="unsupported_claim">Unsupported product claim</option>
+              </select>
+
+              <label for="user-message">User message</label>
+              <textarea id="user-message" name="user_message" rows="3" required></textarea>
+
+              <label for="ai-candidate">AI candidate</label>
+              <textarea id="ai-candidate" name="ai_answer" rows="4" required></textarea>
+
+              <label for="business-evidence">Business evidence / context</label>
+              <textarea
+                id="business-evidence"
+                name="business_data"
+                rows="6"
+                required
+                spellcheck="false"
+                aria-describedby="evidence-help"
+              ></textarea>
+              <p class="field-help" id="evidence-help">Enter a JSON object using non-sensitive demonstration data.</p>
+
+              <div class="demo-submit-row">
+                <button class="button button-primary" id="run-gate" type="submit">Run gate check</button>
+                <span class="demo-counter" id="demo-counter">Prototype checks remaining: 5</span>
+              </div>
+              <p class="request-status" id="request-status" aria-live="polite">Ready to check a candidate.</p>
+              <noscript>
+                <p class="noscript-message">JavaScript is required only for the interactive live gate. The complete product narrative and links remain available.</p>
+              </noscript>
+            </form>
+          </div>
+
+          <div class="demo-output">
+            <div class="semantic-trace" id="semantic-trace" data-phase="idle" aria-hidden="true">
+              <span class="trace-pulse"></span>
+              <span class="trace-boundary"></span>
+              <span class="trace-evidence"></span>
+            </div>
+            <div class="demo-error" id="demo-error" role="alert" hidden></div>
+
+            <article class="decision-result" id="decision-result" data-decision="READY" aria-labelledby="result-title">
+              <p class="result-kicker">Release decision</p>
+              <h3 id="result-title" tabindex="-1">Ready to check a candidate.</h3>
+              <div class="result-ready" id="result-ready">
+                <p>The candidate remains unreleased until an explicit gate check returns a valid decision.</p>
+              </div>
+              <dl class="result-fields" id="result-fields" hidden>
+                <div class="result-primary">
+                  <dt>Action</dt>
+                  <dd id="result-action">—</dd>
+                </div>
+                <div>
+                  <dt>Canonical state</dt>
+                  <dd id="result-internal">—</dd>
+                </div>
+                <div class="result-wide">
+                  <dt>Reason</dt>
+                  <dd id="result-reason">—</dd>
+                </div>
+                <div class="result-wide" id="result-next-row" hidden>
+                  <dt>Next step</dt>
+                  <dd id="result-next">—</dd>
+                </div>
+                <div id="result-audit-row" hidden>
+                  <dt>Audit preserved</dt>
+                  <dd id="result-audit">—</dd>
+                </div>
+              </dl>
+
+              <details class="receipt-metadata" id="receipt-metadata" hidden>
+                <summary>View receipt metadata</summary>
+                <dl class="receipt-metadata-fields">
+                  <div id="result-receipt-row" hidden>
+                    <dt>receipt_id</dt>
+                    <dd id="result-receipt" class="mono-value">—</dd>
+                  </div>
+                  <div id="result-audit-id-row" hidden>
+                    <dt>audit_id</dt>
+                    <dd id="result-audit-id" class="mono-value">—</dd>
+                  </div>
+                  <div id="result-extra-metadata-row" hidden>
+                    <dt>metadata</dt>
+                    <dd id="result-extra-metadata" class="mono-value">—</dd>
+                  </div>
+                </dl>
+              </details>
+
+              <details class="technical-receipt" id="technical-receipt" hidden>
+                <summary>View technical receipt</summary>
+                <pre tabindex="0"><code id="technical-json">{}</code></pre>
+              </details>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section receipt-section" id="receipt" aria-labelledby="receipt-title" tabindex="-1">
+        <div class="page-shell receipt-layout">
+          <header class="editorial-heading receipt-heading">
+            <p class="section-index">04 / Release-decision receipt</p>
+            <h2 id="receipt-title">A decision becomes durable evidence.</h2>
+            <p>
+              This record proves what the gate decided. It is not an execution/result receipt. A host outcome must be
+              recorded separately and linked when that artifact exists.
+            </p>
+          </header>
+          <div class="receipt-ledger" aria-label="Example release-decision receipt">
+            <div><span>decision</span><strong>BLOCK</strong></div>
+            <div><span>internal_state</span><strong>SILENCE</strong></div>
+            <div><span>reason</span><strong>unsupported business claim</strong></div>
+            <div><span>release</span><strong>denied</strong></div>
+            <div><span>execution_directive</span><strong>withhold</strong></div>
+            <div><span>audit</span><strong>preserved</strong></div>
+          </div>
+          <p class="receipt-thesis">
+            <span>The model generates.</span>
+            <span>The gate decides.</span>
+            <span>The receipt proves.</span>
+          </p>
+        </div>
+      </section>
+
+      <section class="section use-section" id="use-cases" aria-labelledby="use-title" tabindex="-1">
+        <div class="page-shell">
+          <header class="editorial-heading use-heading">
+            <p class="section-index">05 / Why it matters</p>
+            <h2 id="use-title">Fluent does not mean allowed.</h2>
+          </header>
+
+          <div class="use-index" role="list" aria-label="Release-control examples">
+            <article role="listitem">
+              <p class="use-domain">Support</p>
+              <p><span>Generated</span>“SAVE30 will work for your account.”</p>
+              <p><span>Missing</span>No active entitlement in business evidence.</p>
+              <p class="likely likely-block"><span>Likely</span>BLOCK / SILENCE</p>
+            </article>
+            <article role="listitem">
+              <p class="use-domain">Finance</p>
+              <p><span>Generated</span>“Your return is guaranteed.”</p>
+              <p><span>Missing</span>No supported source for the financial claim.</p>
+              <p class="likely likely-block"><span>Likely</span>BLOCK / SILENCE</p>
+            </article>
+            <article role="listitem">
+              <p class="use-domain">Medicine</p>
+              <p><span>Generated</span>Patient-specific treatment guidance.</p>
+              <p><span>Risk</span>Clinical review is required before visibility.</p>
+              <p class="likely likely-review"><span>Likely</span>REVIEW / NEEDS_REVIEW</p>
+            </article>
+            <article role="listitem">
+              <p class="use-domain">Operations</p>
+              <p><span>Generated</span>“Bypass approval and deploy directly.”</p>
+              <p><span>Risk</span>Unsafe action escalation.</p>
+              <p class="likely likely-block"><span>Likely</span>BLOCK / SILENCE</p>
+            </article>
+            <article role="listitem">
+              <p class="use-domain">Persistent worlds</p>
+              <p><span>Generated</span>A permanent canon or economy mutation.</p>
+              <p><span>Missing</span>No admitted authority for the world-state change.</p>
+              <p class="likely likely-review"><span>Likely</span>REVIEW / NEEDS_REVIEW</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section deployment-section" id="deployment" aria-labelledby="deployment-title" tabindex="-1">
+        <div class="page-shell deployment-layout">
+          <header class="editorial-heading deployment-heading">
+            <p class="section-index">06 / Deployment</p>
+            <h2 id="deployment-title">One release contract. Three deployment shapes.</h2>
+            <p>
+              The same business and canonical decision mapping applies whether teams use the hosted service or operate
+              the open adapter within their own boundary.
+            </p>
+          </header>
+          <ol class="deployment-list">
+            <li>
+              <span>01</span>
+              <div><h3>Hosted API</h3><p>A fast path for scoped checks when policy permits hosted processing.</p></div>
+              <a href="../gate.html">Product contract</a>
+            </li>
+            <li>
+              <span>02</span>
+              <div><h3>Self-hosted</h3><p>Run the contract inside customer-controlled infrastructure.</p></div>
+              <a href="../self-hosted.html">Deployment detail</a>
+            </li>
+            <li>
+              <span>03</span>
+              <div><h3>Open source</h3><p>Inspect and operate the basic adapter locally without calling the hosted demo.</p></div>
+              <a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">Open repository</a>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section architecture-section" id="living-architecture" aria-labelledby="architecture-title" tabindex="-1">
+        <div class="page-shell">
+          <header class="editorial-heading architecture-heading">
+            <p class="section-index">07 / Living architecture</p>
+            <h2 id="architecture-title">Authority first. Continuity downstream.</h2>
+            <p>
+              The gate remains the release authority. Memory, continuity, and replay preserve context and evidence;
+              they are advisory layers and cannot override a release decision.
+            </p>
+          </header>
+
+          <div class="architecture-flow" aria-label="Living release architecture dependency flow">
+            <ol class="authority-flow">
+              <li><span>Candidate</span></li>
+              <li class="authority-node"><span>Gate</span><small>release authority</small></li>
+              <li><span>Decision</span></li>
+            </ol>
+            <div class="host-branch">
+              <div class="host-path host-execute"><span>Execution</span><small>only after permitted release</small></div>
+              <div class="host-path host-withhold"><span>Withhold</span><small>release denied / audit preserved</small></div>
+            </div>
+            <ol class="evidence-flow">
+              <li><span>Release-decision receipt</span></li>
+              <li><span>Host outcome</span></li>
+              <li><span>Optional execution/result receipt</span></li>
+              <li class="advisory-start"><span>Admitted memory</span><small>not raw archive</small></li>
+              <li><span>Continuity</span><small>advisory</small></li>
+              <li><span>Replay</span><small>evidence, not truth</small></li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section evidence-section" id="evidence" aria-labelledby="evidence-title" tabindex="-1">
+        <div class="page-shell evidence-layout">
+          <header class="editorial-heading evidence-heading">
+            <p class="section-index">08 / Evidence</p>
+            <h2 id="evidence-title">Inspect the working surface before the thesis around it.</h2>
+            <p>Research records support the direction. They are not production certification.</p>
+          </header>
+          <ol class="evidence-index">
+            <li><span>01</span><a href="https://api.semeai.tech/health" target="_blank" rel="noopener">Live API</a><small>working product</small></li>
+            <li><span>02</span><a href="../gate.html">Schema v0.1</a><small>versioned contract</small></li>
+            <li><span>03</span><a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">Deterministic examples</a><small>implementation evidence</small></li>
+            <li><span>04</span><a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">Receipts</a><small>decision evidence</small></li>
+            <li><span>05</span><a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">Replay evidence</a><small>reproducible paths</small></li>
+            <li><span>06</span><a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">GitHub repositories</a><small>open implementation</small></li>
+            <li class="evidence-divider"><span>07</span><a href="../book/">Engineering Book</a><small>technical publication</small></li>
+            <li><span>08</span><a href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">SSRN</a><small>research record</small></li>
+            <li><span>09</span><a href="https://zenodo.org/records/20525820" target="_blank" rel="noopener">Zenodo</a><small>archived record</small></li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="final-section motion-scene" id="final-continuum" aria-labelledby="final-title" tabindex="-1">
+        <picture class="final-art" aria-hidden="true">
+          <source
+            media="(max-width: 960px)"
+            srcset="../genesis/assets/images/genesis-002-f-living-continuum-960w-v01.webp"
+          />
+          <img
+            src="../genesis/assets/images/genesis-002-f-living-continuum-1672w-v01.webp"
+            width="1672"
+            height="941"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <div class="final-shade" aria-hidden="true"></div>
+        <div class="continuum-thread" aria-hidden="true"><span></span></div>
+        <div class="page-shell final-inner">
+          <p class="section-index">09 / Final continuum</p>
+          <h2 id="final-title">Build AI systems that can decide not to release.</h2>
+          <p class="final-thesis">The model generates.<br />The gate decides.<br />The receipt proves.</p>
+          <div class="final-actions">
+            <a class="button button-primary" href="#live-demo">Try live gate</a>
+            <a class="button button-secondary" href="../register.html">Register workspace</a>
+            <a class="button button-secondary" href="../book/">Read the Engineering Book</a>
+          </div>
+          <a class="quiet-link" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-shell footer-inner">
+        <p>SemeAI — Living Release Architecture</p>
+        <p>Generation is not release authority.</p>
+      </div>
+    </footer>
+  </body>
+</html>
