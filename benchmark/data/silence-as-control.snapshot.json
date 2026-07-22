@@ -1,0 +1,94 @@
+{
+  "schema_version": "semeai.repository-evidence.snapshot.v1",
+  "source_mode": "BUILT-IN FALLBACK SNAPSHOT",
+  "captured_at": "2026-07-22T12:52:11.812Z",
+  "repository": "SemeAIPletinnya/silence-as-control",
+  "owner": "SemeAIPletinnya",
+  "default_branch": "main",
+  "commit_sha": "a0f8103935cd557b88e00a3f4965a8604d50c040",
+  "commit_date": "2026-06-06T21:11:24Z",
+  "public_metadata": {
+    "description": "Silence-as-Control is a control-layer primitive for AI systems: when coherence cannot be guaranteed, intentional silence is preferred over misleading output.",
+    "html_url": "https://github.com/SemeAIPletinnya/silence-as-control",
+    "visibility": "public",
+    "fork": false,
+    "archived": false,
+    "disabled": false,
+    "stars": 5,
+    "forks": 2,
+    "open_issues": 13,
+    "size_kb": 7743,
+    "created_at": "2025-12-26T10:00:09Z",
+    "updated_at": "2026-07-15T19:00:10Z",
+    "pushed_at": "2026-06-07T09:26:42Z",
+    "license_spdx": "NOASSERTION",
+    "topics": [],
+    "languages": {
+      "Python": 537460,
+      "TeX": 35570,
+      "Dockerfile": 291
+    },
+    "latest_release": {
+      "tag": "v0.8.0",
+      "published_at": "2026-05-31T10:09:36Z",
+      "draft": false,
+      "prerelease": false
+    }
+  },
+  "tree": {
+    "entry_count": 421,
+    "blob_count": 365,
+    "truncated": false
+  },
+  "documentation_signals": {
+    "selected_paths": [
+      "README.md",
+      "docs/runtime_decision_contract.md",
+      "docs/review_release_receipt_layer.md"
+    ],
+    "documents_with_tristate_terms": [
+      "README.md",
+      "docs/runtime_decision_contract.md",
+      "docs/review_release_receipt_layer.md"
+    ]
+  },
+  "normalized_evidence": {
+    "source_structure": ["src/silence_as_control/control.py", "api/main.py"],
+    "package_manifest": ["pyproject.toml"],
+    "executable_surface": ["api/main.py", "scripts/por_gate_cli.py"],
+    "examples": ["examples/agent_release_control/run_demo.py", "demo/canonical_runtime_demo.py"],
+    "packaging_runtime": ["Dockerfile", "docker-compose.yml"],
+    "configuration": [".env.example", "src/silence_as_control/config.py"],
+    "tests": ["tests/test_control.py", "tests/test_release_policy.py"],
+    "ci_workflows": [".github/workflows/ci.yml"],
+    "fixtures": ["tests/fixtures/action_risk_small.jsonl"],
+    "dependency_manifests": ["pyproject.toml", "requirements.txt"],
+    "reproduction_guides": ["docs/direct_reproduction_guide.md"],
+    "release_checks": ["tests/test_release_policy.py", "tests/test_por_gate_cli.py"],
+    "benchmark_artifacts": ["benchmarks/release_risk_v3/run_release_risk_v3.py"],
+    "evidence_maps": ["docs/evidence_map.md", "paper/evidence_manifest.md"],
+    "receipt_artifacts": ["docs/review_release_receipt_layer.md"],
+    "machine_results": ["benchmarks/release_risk_v3/results/release_risk_v3_summary.json"],
+    "replay_results": ["benchmarks/release_risk_v3/results/release_risk_v3_replay.jsonl"],
+    "validation_outputs": ["reports/langchain_openai_summary_06_1000case.md"],
+    "changelog": ["CHANGELOG.md"],
+    "public_release": ["v0.8.0"],
+    "roadmap_milestones": ["docs/roadmap_2026.md", "wiki/Milestones.md"],
+    "replay_tooling": ["benchmarks/release_risk_v4_fixture_replay.py"],
+    "continuity_docs": ["docs/chronology.md"],
+    "recent_default_commit": ["2026-06-06T21:11:24Z"],
+    "gate_policy_paths": ["api/release_policy.py", "scripts/por_gate_cli.py"],
+    "documented_tristate": ["README.md", "docs/runtime_decision_contract.md"],
+    "release_mediation": ["docs/release_control_services.md", "examples/agent_release_control/release_gate.py"],
+    "policy_tests": ["tests/test_release_policy.py", "tests/test_langchain_release_gate.py"],
+    "decision_evidence": ["docs/runtime_evidence_linkage.md", "docs/review_release_receipt_layer.md"],
+    "architecture_docs": ["docs/architecture.md", "docs/decision_provenance_architecture.md"],
+    "research_paper": ["paper/main.tex", "paper/references.bib"],
+    "external_review_docs": ["docs/external_reviewer_packet.md"],
+    "public_visibility": ["public"],
+    "stars_present": ["5 stars at capture"],
+    "stars_100": [],
+    "forks_present": ["2 forks at capture"]
+  },
+  "snapshot_hash": "225af694445ac26d9f757b1f2964f40a3f60ca2aef7e1f16067b3e5f5eacece3"
+}
