@@ -149,6 +149,13 @@ button:disabled {
 .page-shell {
   width: 100%;
   min-height: 100vh;
+  overflow-x: clip;
+}
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .benchmark-header {
@@ -958,6 +965,93 @@ form label small {
   letter-spacing: 0.08em;
 }
 
+.evidence-rank-block {
+  margin-top: 1.75rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid var(--line-strong);
+}
+
+.evidence-rank-block[hidden] {
+  display: none !important;
+}
+
+.evidence-rank-kicker {
+  margin: 0 0 0.55rem;
+  color: var(--gold);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+}
+
+.evidence-rank-code {
+  margin: 0;
+  color: var(--paper);
+  font-family: var(--serif);
+  font-size: clamp(2.1rem, 4.2vw, 3.6rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+}
+
+.evidence-rank-family {
+  margin: 0.55rem 0 0;
+  color: var(--gold-bright, #efd79a);
+  font-family: var(--serif);
+  font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+  letter-spacing: -0.02em;
+}
+
+.evidence-rank-stage {
+  margin: 0.35rem 0 0;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.evidence-rank-status {
+  margin: 0.75rem 0 0;
+  color: var(--gold);
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.evidence-rank-status.is-review {
+  color: #b7a4cc;
+}
+
+.evidence-rank-status.is-withheld,
+.evidence-rank-status.is-none {
+  color: var(--faint);
+}
+
+.evidence-rank-note {
+  margin: 0.85rem 0 0;
+  max-width: 28rem;
+  color: var(--muted);
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.blocked-rank-status {
+  margin: 0.85rem 0 0;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.blocked-rank-status.is-none {
+  color: #b7a4cc;
+}
+
 .score-note {
   margin: 1.2rem 0 0;
   color: var(--muted);
@@ -992,69 +1086,28 @@ form label small {
 .score-sigil-frame {
   position: relative;
   display: grid;
-  width: min(100%, 27rem);
+  width: min(100%, 34rem);
+  max-width: 100%;
+  min-height: min(26rem, 72vw);
   margin: 0 auto;
   justify-items: center;
+  align-content: center;
   gap: 0.55rem;
+  overflow: hidden;
 }
 
-.evidence-rank {
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.65rem;
-  margin: 0;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid rgba(215, 182, 111, 0.28);
-  border-radius: 999px;
-  background: rgba(12, 10, 8, 0.72);
-  color: var(--gold-bright, #efd79a);
-  font-family: var(--mono);
-  font-size: 0.58rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.score-sigil-frame .evidence-sigil {
+  width: 100%;
+  max-width: min(32rem, 100%);
+  min-height: min(26rem, 70vw);
 }
 
-.evidence-rank[hidden] {
-  display: none !important;
+.evidence-sigil[data-family="F"] {
+  filter: saturate(0.72);
 }
 
-.evidence-rank__code {
-  color: var(--gold, #d7b66f);
-}
-
-.evidence-rank__title {
-  color: var(--muted, #a5afb6);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-}
-
-.evidence-rank[data-evolution="F-1"] {
-  border-color: rgba(120, 101, 142, 0.35);
-}
-
-.evidence-rank[data-evolution="F-1"] .evidence-rank__code {
-  color: #8b78a0;
-}
-
-.evidence-rank[data-evolution="SS-4"],
-.evidence-rank[data-evolution="SS-5"] {
-  border-color: rgba(239, 215, 154, 0.42);
-  box-shadow: 0 0 1.25rem rgba(215, 182, 111, 0.12);
-}
-
-.evidence-rank[data-evolution="SS-5"] .evidence-rank__code {
-  color: #f5e6b8;
-}
-
-.evidence-sigil[data-evolution="F-1"] {
-  filter: saturate(0.55);
-}
-
-.evidence-sigil[data-evolution="SS-5"] .evidence-artifact__halo {
-  stroke: rgba(239, 215, 154, 0.28);
+.evidence-sigil[data-family="SS"] .evidence-artifact__edge {
+  stroke-width: 1.05;
 }
 
 .score-sigil-frame::before {
@@ -1095,8 +1148,21 @@ form label small {
   position: relative;
   z-index: 1;
   width: 100%;
+  max-width: 100%;
   aspect-ratio: 1;
   isolation: isolate;
+}
+
+.evidence-artifact__edge {
+  opacity: var(--trace-opacity, 0.82);
+}
+
+.evidence-artifact__facet {
+  opacity: var(--trace-opacity, 0.14);
+}
+
+.evidence-artifact__node {
+  opacity: var(--trace-opacity, 0.88);
 }
 
 .evidence-sigil svg,

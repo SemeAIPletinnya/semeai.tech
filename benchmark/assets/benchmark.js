@@ -760,7 +760,89 @@
     sigil: document.getElementById("sigil"),
     resultSigil: document.getElementById("result-sigil"),
     visualPhasePreview: document.getElementById("visual-phase-preview"),
+    rankBlock: document.getElementById("evidence-rank-block"),
+    rankCode: document.getElementById("evidence-rank-code"),
+    rankFamily: document.getElementById("evidence-rank-family"),
+    rankStage: document.getElementById("evidence-rank-stage"),
+    rankStatus: document.getElementById("evidence-rank-status"),
+    blockedRankStatus: document.getElementById("blocked-rank-status"),
+    blockedVisualCaption: document.getElementById("blocked-visual-caption"),
   };
+
+  const RANK_I18N = Object.freeze({
+    en: {
+      "bench.rank.heading": "REPOSITORY EVIDENCE RANK",
+      "bench.rank.note": "Derived from visible repository evidence under the current benchmark policy.",
+      "bench.rank.admitted": "EVIDENCE RANK ADMITTED",
+      "bench.rank.review": "RANK UNDER REVIEW",
+      "bench.rank.withheld": "RANK WITHHELD",
+      "bench.rank.none": "NO EVIDENCE RANK PRODUCED",
+      "bench.rank.stage": "Stage {n} of 5",
+      "bench.rank.family.F": "FRAGMENT",
+      "bench.rank.family.E": "SHARD",
+      "bench.rank.family.D": "STONE",
+      "bench.rank.family.C": "PRISM",
+      "bench.rank.family.B": "RELIC",
+      "bench.rank.family.A": "CRYSTAL",
+      "bench.rank.family.S": "MONOLITH",
+      "bench.rank.family.SS": "ARCHIVE CROWN",
+    },
+    uk: {
+      "bench.rank.heading": "РЕЙТИНГ ДОКАЗІВ РЕПОЗИТОРІЮ",
+      "bench.rank.note": "Виведено з видимих доказів репозиторію за поточною політикою бенчмарку.",
+      "bench.rank.admitted": "РЕЙТИНГ ДОКАЗІВ ДОПУЩЕНО",
+      "bench.rank.review": "РЕЙТИНГ НА ПЕРЕГЛЯДІ",
+      "bench.rank.withheld": "РЕЙТИНГ ЗАТРИМАНО",
+      "bench.rank.none": "РЕЙТИНГ ДОКАЗІВ НЕ СТВОРЕНО",
+      "bench.rank.stage": "Етап {n} з 5",
+      "bench.rank.family.F": "ФРАГМЕНТ",
+      "bench.rank.family.E": "УЛАМОК",
+      "bench.rank.family.D": "КАМІНЬ",
+      "bench.rank.family.C": "ПРИЗМА",
+      "bench.rank.family.B": "РЕЛІКТ",
+      "bench.rank.family.A": "КРИСТАЛ",
+      "bench.rank.family.S": "МОНОЛІТ",
+      "bench.rank.family.SS": "АРХІВНА КОРОНА",
+    },
+    ru: {
+      "bench.rank.heading": "РЕЙТИНГ ДОКАЗАТЕЛЬСТВ РЕПОЗИТОРИЯ",
+      "bench.rank.note": "Выведено из видимых доказательств репозитория по текущей политике бенчмарка.",
+      "bench.rank.admitted": "РЕЙТИНГ ДОКАЗАТЕЛЬСТВ ДОПУЩЕН",
+      "bench.rank.review": "РЕЙТИНГ НА ПРОВЕРКЕ",
+      "bench.rank.withheld": "РЕЙТИНГ УДЕРЖАН",
+      "bench.rank.none": "РЕЙТИНГ ДОКАЗАТЕЛЬСТВ НЕ СОЗДАН",
+      "bench.rank.stage": "Этап {n} из 5",
+      "bench.rank.family.F": "ФРАГМЕНТ",
+      "bench.rank.family.E": "ОСКОЛОК",
+      "bench.rank.family.D": "КАМЕНЬ",
+      "bench.rank.family.C": "ПРИЗМА",
+      "bench.rank.family.B": "РЕЛИКВИЯ",
+      "bench.rank.family.A": "КРИСТАЛЛ",
+      "bench.rank.family.S": "МОНОЛИТ",
+      "bench.rank.family.SS": "АРХИВНАЯ КОРОНА",
+    },
+  });
+
+  function currentLang() {
+    const lang = (globalScope.SemeAI_I18n && globalScope.SemeAI_I18n.lang) || document.documentElement.lang || "en";
+    if (lang === "ua" || lang === "uk") return "uk";
+    if (lang === "ru") return "ru";
+    return "en";
+  }
+
+  function tRank(key, vars) {
+    const pack = RANK_I18N[currentLang()] || RANK_I18N.en;
+    let value = pack[key] || RANK_I18N.en[key] || key;
+    if (vars && vars.n != null) value = value.replace("{n}", String(vars.n));
+    return value;
+  }
+
+  function applyRankI18nDom() {
+    document.querySelectorAll("[data-i18n^='bench.rank.']").forEach((node) => {
+      const key = node.getAttribute("data-i18n");
+      if (key) node.textContent = tRank(key);
+    });
+  }
   let currentReceipt = null;
   let currentReceiptText = null;
   let activeIdentity = null;
@@ -931,33 +1013,78 @@
     ].forEach((element) => element.replaceChildren());
   }
 
-  function renderBlocked(message, reasons) {
+  function renderBlocked(message, reasons, options) {
+    const opts = options || {};
+    const mode = opts.mode || "withheld"; // withheld | none
     currentReceipt = null;
     currentReceiptText = null;
     elements.downloadReceipt.disabled = true;
     elements.result.hidden = true;
+    if (elements.rankBlock) elements.rankBlock.hidden = true;
     elements.blocked.hidden = false;
     elements.blocked.dataset.gate = "BLOCK";
+    elements.blocked.dataset.rankMode = mode;
     elements.blockedRepository.hidden = !activeIdentity;
     elements.blockedRepository.textContent = activeIdentity ? activeIdentity.fullName : "";
     elements.blockedGateExplanation.textContent = "BLOCK — Score withheld.";
     elements.blockedMessage.textContent = message;
     elements.blockedReasons.replaceChildren();
     (reasons || []).forEach((reason) => elements.blockedReasons.appendChild(makeElement("li", "", reason)));
-    if (globalScope.SemeAISigil && globalScope.SemeAISigil.renderEvidenceSigil) {
-      globalScope.SemeAISigil.renderEvidenceSigil(elements.blockedSigil, {
-        repository: activeIdentity ? activeIdentity.fullName : "repository/withheld",
-        commitSha: "withheld",
-        policyVersion: SCORING_POLICY_VERSION,
-        visualSeed: 3,
-        visualPhase: "LATENT",
-        gateDecision: "BLOCK",
-        categoryScores: [],
-      });
+    if (elements.blockedRankStatus) {
+      elements.blockedRankStatus.textContent = mode === "none" ? tRank("bench.rank.none") : tRank("bench.rank.withheld");
+      elements.blockedRankStatus.classList.toggle("is-none", mode === "none");
+      elements.blockedRankStatus.classList.toggle("is-withheld", mode !== "none");
     }
-    setStatus("PRESENTATION GATE / BLOCK — SCORE WITHHELD", "complete");
+    if (elements.blockedVisualCaption) {
+      elements.blockedVisualCaption.textContent =
+        mode === "none" ? tRank("bench.rank.none") : "INCOMPLETE MUTED TRACE / NO SCORE RELEASE";
+    }
+    if (globalScope.SemeAISigil && globalScope.SemeAISigil.renderEvidenceSigil) {
+      if (mode === "none") {
+        globalScope.SemeAISigil.renderEvidenceSigil(elements.blockedSigil, { suppressArtifact: true });
+      } else {
+        // Gate withheld a candidate — no family rank revealed.
+        globalScope.SemeAISigil.renderEvidenceSigil(elements.blockedSigil, { suppressArtifact: true });
+      }
+    }
+    setStatus(
+      mode === "none" ? "COLLECTION FAILURE — NO EVIDENCE RANK PRODUCED" : "PRESENTATION GATE / BLOCK — SCORE WITHHELD",
+      "complete",
+    );
     elements.blocked.scrollIntoView({ behavior: "auto", block: "start" });
     startGateAwakening(elements.blocked, "BLOCK", activeIdentity ? elements.blockedRepository : null);
+  }
+
+  function renderEvidenceRank(candidate, gate, indicators) {
+    if (!elements.rankBlock || !globalScope.SemeAISigil || !globalScope.SemeAISigil.deriveEvidenceRank) {
+      if (elements.rankBlock) elements.rankBlock.hidden = true;
+      return null;
+    }
+    const rank = globalScope.SemeAISigil.deriveEvidenceRank({
+      categoryScores: candidate.categoryScores,
+      indicators,
+    });
+    elements.rankBlock.hidden = false;
+    elements.rankBlock.dataset.family = rank.family;
+    elements.rankBlock.dataset.code = rank.code;
+    elements.rankBlock.dataset.gate = gate.decision;
+    if (elements.rankCode) elements.rankCode.textContent = rank.code;
+    if (elements.rankFamily) elements.rankFamily.textContent = tRank(`bench.rank.family.${rank.family}`);
+    if (elements.rankStage) elements.rankStage.textContent = tRank("bench.rank.stage", { n: rank.level });
+    if (elements.rankStatus) {
+      const admitted = gate.decision === "SHOW";
+      elements.rankStatus.textContent = admitted ? tRank("bench.rank.admitted") : tRank("bench.rank.review");
+      elements.rankStatus.classList.toggle("is-review", !admitted);
+      elements.rankStatus.classList.toggle("is-admitted", admitted);
+    }
+    applyRankI18nDom();
+    if (elements.rankFamily) elements.rankFamily.textContent = tRank(`bench.rank.family.${rank.family}`);
+    if (elements.rankStage) elements.rankStage.textContent = tRank("bench.rank.stage", { n: rank.level });
+    if (elements.rankStatus) {
+      elements.rankStatus.textContent =
+        gate.decision === "SHOW" ? tRank("bench.rank.admitted") : tRank("bench.rank.review");
+    }
+    return rank;
   }
 
   function renderCategoryBreakdown(candidate) {
@@ -1081,6 +1208,7 @@
     elements.visualSeed.textContent = visual.visualSeed > 0 ? `+${visual.visualSeed}` : String(visual.visualSeed);
     elements.receiptHash.textContent = receipt.receipt_hash;
     elements.visualPhasePreview.textContent = `${visual.visualSeed > 0 ? "+" : ""}${visual.visualSeed} / ${visual.visualPhase}`;
+    renderEvidenceRank(candidate, gate, indicators);
     renderCategoryBreakdown(candidate);
     renderLedger(candidate, gate);
     currentReceipt = receipt;
@@ -1102,6 +1230,7 @@
           visualPhase: visual.visualPhase,
           gateDecision: gate.decision,
           categoryScores: candidate.categoryScores,
+          indicators,
         });
       }
     }
@@ -1139,7 +1268,11 @@
       elements.runButton.disabled = false;
       elements.input.setAttribute("aria-invalid", "true");
       elements.error.textContent = error.message;
-      renderBlocked(error.message, ["Malformed input is denied before any network request or score generation."]);
+      renderBlocked(
+        error.message,
+        ["Malformed input is denied before any network request or score generation."],
+        { mode: "none" },
+      );
       elements.input.focus();
       return;
     }
@@ -1160,7 +1293,11 @@
           snapshot = await loadFallbackSnapshot();
         } catch (fallbackError) {
           elements.runButton.disabled = false;
-          renderBlocked(fallbackError.message, ["The fallback candidate was withheld because its schema or integrity could not be verified."]);
+          renderBlocked(
+            fallbackError.message,
+            ["The fallback candidate was withheld because its schema or integrity could not be verified."],
+            { mode: "none" },
+          );
           return;
         }
       } else {
@@ -1171,7 +1308,8 @@
         } else {
           reasons.push("No fallback is permitted for this repository or failure mode.");
         }
-        renderBlocked("No meaningful score can be released for this repository.", reasons);
+        // Collection / rate-limit / network failure is not repository weakness — no F-rank artifact.
+        renderBlocked("No meaningful score can be released for this repository.", reasons, { mode: "none" });
         return;
       }
     }
@@ -1183,7 +1321,7 @@
     const gate = runPresentationGate(candidate);
     if (gate.decision === "BLOCK") {
       elements.runButton.disabled = false;
-      renderBlocked("The presentation Gate withheld the score.", gate.reasons);
+      renderBlocked("The presentation Gate withheld the score.", gate.reasons, { mode: "withheld" });
       return;
     }
     const visual = computeVisualPhase(snapshot.public_metadata.stars);
@@ -1191,7 +1329,7 @@
       const receipt = await buildReceipt(candidate, gate, visual);
       renderResult(candidate, gate, visual, receipt);
     } catch (error) {
-      renderBlocked("The presentation receipt could not be finalized.", [error.message]);
+      renderBlocked("The presentation receipt could not be finalized.", [error.message], { mode: "withheld" });
     } finally {
       elements.runButton.disabled = false;
     }
@@ -1208,6 +1346,7 @@
     elements.error.textContent = "";
     elements.result.hidden = true;
     elements.blocked.hidden = true;
+    if (elements.rankBlock) elements.rankBlock.hidden = true;
     elements.calculationDetail.hidden = true;
     elements.calculationToggle.setAttribute("aria-expanded", "false");
     elements.downloadReceipt.disabled = true;
@@ -1269,4 +1408,23 @@
       visualSeed: 3,
     });
   }
+
+  applyRankI18nDom();
+  globalScope.addEventListener("semeai:lang", () => {
+    applyRankI18nDom();
+    if (!elements.result.hidden && elements.rankBlock && !elements.rankBlock.hidden && elements.rankBlock.dataset.family) {
+      const family = elements.rankBlock.dataset.family;
+      const level = Number(String(elements.rankBlock.dataset.code || "").split("-")[1] || 1);
+      if (elements.rankFamily) elements.rankFamily.textContent = tRank(`bench.rank.family.${family}`);
+      if (elements.rankStage) elements.rankStage.textContent = tRank("bench.rank.stage", { n: level });
+      if (elements.rankStatus) {
+        const review = elements.result.dataset.gate === "REVIEW";
+        elements.rankStatus.textContent = review ? tRank("bench.rank.review") : tRank("bench.rank.admitted");
+      }
+    }
+    if (!elements.blocked.hidden && elements.blockedRankStatus) {
+      const none = elements.blocked.dataset.rankMode === "none";
+      elements.blockedRankStatus.textContent = none ? tRank("bench.rank.none") : tRank("bench.rank.withheld");
+    }
+  });
 })(typeof window !== "undefined" ? window : globalThis);

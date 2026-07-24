@@ -17,9 +17,9 @@
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260723b" />
-    <link rel="stylesheet" href="./assets/benchmark.css?v=20260724d" />
-    <script src="./assets/sigil.js?v=20260724d" defer></script>
-    <script src="./assets/benchmark.js?v=20260723a" defer></script>
+    <link rel="stylesheet" href="./assets/benchmark.css?v=20260724e" />
+    <script src="./assets/sigil.js?v=20260724e" defer></script>
+    <script src="./assets/benchmark.js?v=20260724e" defer></script>
   </head>
   <body class="mode-evidence" data-semeai-custom-bg>
     <a class="skip-link" href="#benchmark-input" data-i18n="bench.skip">Skip to benchmark input</a>
@@ -140,12 +140,13 @@
             <p id="blocked-repository" class="blocked-repository" hidden></p>
             <h2 id="blocked-title" data-i18n="bench.blocked.title">Score withheld.</h2>
             <p id="blocked-gate-explanation" class="blocked-gate-explanation">BLOCK — Score withheld.</p>
+            <p class="blocked-rank-status" id="blocked-rank-status" data-i18n="bench.rank.withheld">RANK WITHHELD</p>
             <p id="blocked-message"></p>
             <ul id="blocked-reasons"></ul>
           </div>
           <div class="blocked-visual">
             <div id="blocked-sigil" class="evidence-sigil blocked-sigil"></div>
-            <p data-i18n="bench.blocked.visual">INCOMPLETE MUTED TRACE / NO SCORE RELEASE</p>
+            <p id="blocked-visual-caption" data-i18n="bench.blocked.visual">INCOMPLETE MUTED TRACE / NO SCORE RELEASE</p>
           </div>
         </section>
 
@@ -183,6 +184,16 @@
             <div class="score-primary">
               <p id="score-title" data-i18n="bench.score.title">REPOSITORY PROGRESSION INDEX</p>
               <p class="score-number"><span id="total-score"></span><small>/ 100</small></p>
+
+              <div class="evidence-rank-block" id="evidence-rank-block" hidden>
+                <p class="evidence-rank-kicker" data-i18n="bench.rank.heading">REPOSITORY EVIDENCE RANK</p>
+                <p class="evidence-rank-code" id="evidence-rank-code"></p>
+                <p class="evidence-rank-family" id="evidence-rank-family"></p>
+                <p class="evidence-rank-stage" id="evidence-rank-stage"></p>
+                <p class="evidence-rank-status" id="evidence-rank-status"></p>
+                <p class="evidence-rank-note" data-i18n="bench.rank.note">Derived from visible repository evidence under the current benchmark policy.</p>
+              </div>
+
               <p class="score-note" data-i18n="bench.score.note">Visible evidence, transparently weighted.</p>
               <div class="repository-profile">
                 <span data-i18n="bench.score.profile">REPOSITORY PROFILE</span>
@@ -190,14 +201,10 @@
               </div>
             </div>
             <figure class="score-sigil-frame">
-              <p class="evidence-rank" data-evidence-rank hidden>
-                <span class="evidence-rank__code" data-evidence-rank-code></span>
-                <span class="evidence-rank__title" data-evidence-rank-title></span>
-              </p>
               <div id="result-sigil" class="evidence-sigil" aria-live="polite"></div>
               <figcaption>
-                <span data-i18n="bench.score.shapes">EVIDENCE CRYSTALLIZES THIS FORM</span>
-                <span data-i18n="bench.score.focus">FOCUS A CATEGORY TO ISOLATE ITS FACET</span>
+                <span data-i18n="bench.score.shapes">EVIDENCE FORMS THIS ARTIFACT</span>
+                <span data-i18n="bench.score.focus">FOCUS A CATEGORY TO ISOLATE ITS STRUCTURE</span>
               </figcaption>
             </figure>
             <div class="indicator-grid" aria-label="Derived editorial indicators">

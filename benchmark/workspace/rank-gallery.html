@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title>Evidence Rank Gallery — test only</title>
+    <link rel="stylesheet" href="../assets/benchmark.css?v=20260724e" />
+    <style>
+      body {
+        margin: 0;
+        padding: 2rem 1.25rem 3rem;
+        background: #070708;
+        color: #e8e4da;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      h1 {
+        margin: 0 0 0.35rem;
+        font-weight: 600;
+        letter-spacing: -0.03em;
+      }
+      .lead {
+        margin: 0 0 1.75rem;
+        color: #9a958c;
+        max-width: 48rem;
+        line-height: 1.5;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+        gap: 1.25rem;
+      }
+      .card {
+        border: 1px solid rgba(215, 182, 111, 0.18);
+        border-radius: 1rem;
+        background: rgba(12, 12, 14, 0.92);
+        padding: 0.85rem 0.85rem 1rem;
+      }
+      .card header {
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-bottom: 0.35rem;
+        font-family: ui-monospace, monospace;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+      }
+      .card strong {
+        color: #efd79a;
+        font-size: 1rem;
+        letter-spacing: 0;
+      }
+      .card span {
+        color: #9a958c;
+      }
+      .mount {
+        width: 100%;
+        aspect-ratio: 1;
+      }
+      .warn {
+        margin-top: 1.5rem;
+        color: #8b78a0;
+        font-size: 0.8rem;
+      }
+    </style>
+    <script src="../assets/sigil.js?v=20260724e" defer></script>
+  </head>
+  <body>
+    <h1>Evidence Rank silhouette gallery</h1>
+    <p class="lead">
+      Test-only surface. Nine representative ranks must remain independently recognizable
+      without labels. Not linked from production navigation.
+    </p>
+    <div class="grid" id="gallery"></div>
+    <p class="warn">noindex · local/visual acceptance only</p>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const samples = [
+          { code: "F-3", family: "F", level: 3, score: 10 },
+          { code: "E-3", family: "E", level: 3, score: 27 },
+          { code: "D-3", family: "D", level: 3, score: 42 },
+          { code: "C-3", family: "C", level: 3, score: 57 },
+          { code: "B-3", family: "B", level: 3, score: 71 },
+          { code: "A-3", family: "A", level: 3, score: 83 },
+          { code: "S-3", family: "S", level: 3, score: 93 },
+          { code: "SS-4", family: "SS", level: 4, score: 99 },
+          { code: "SS-5", family: "SS", level: 5, score: 100 },
+        ];
+
+        function scoresFor(sample) {
+          // Exact fixtures so derived rank matches the intended gallery label.
+          // Totals chosen to land in sublevel 3 of each main band (except SS specials).
+          // F 0–19, E 20–34, D 35–49, C 50–64, B 65–76, A 77–88, S 89–96, SS special.
+          const table = {
+            "F-3": [4, 3, 3, 0, 0, 0, 0], // 10
+            "E-3": [8, 6, 6, 4, 3, 0, 0], // 27
+            "D-3": [10, 8, 8, 6, 6, 2, 2], // 42
+            "C-3": [12, 11, 10, 8, 8, 4, 4], // 57
+            "B-3": [15, 14, 14, 10, 10, 4, 4], // 71
+            "A-3": [18, 16, 15, 12, 12, 5, 5], // 83
+            "S-3": [19, 18, 18, 14, 14, 5, 5], // 93
+            "SS-4": [20, 20, 20, 15, 15, 5, 4], // 99
+            "SS-5": [20, 20, 20, 15, 15, 5, 5], // 100
+          };
+          const keys = [
+            "implementation",
+            "tests",
+            "evidence",
+            "continuity",
+            "release_control",
+            "research",
+            "external",
+          ];
+          const maxes = [20, 20, 20, 15, 15, 5, 5];
+          const scores = table[sample.code] || table["C-3"];
+          return keys.map((key, index) => ({ key, score: scores[index], max: maxes[index] }));
+        }
+
+        const grid = document.getElementById("gallery");
+        samples.forEach((sample) => {
+          const card = document.createElement("article");
+          card.className = "card";
+          card.innerHTML = `<header><strong>${sample.code}</strong><span></span></header><div class="mount" id="m-${sample.code}"></div>`;
+          grid.appendChild(card);
+          const family = window.SemeAISigil.FAMILY_META[sample.family].name;
+          card.querySelector("span").textContent = family;
+          const indicators =
+            sample.code === "SS-4"
+              ? { repositorySignal: 98, evidenceDepth: 100, gateDiscipline: 100 }
+              : sample.code === "SS-5"
+                ? { repositorySignal: 100, evidenceDepth: 100, gateDiscipline: 100 }
+                : { repositorySignal: 50, evidenceDepth: 50, gateDiscipline: 50 };
+          const model = window.SemeAISigil.renderEvidenceSigil(document.getElementById(`m-${sample.code}`), {
+            repository: `gallery/${sample.code}`,
+            commitSha: "gallery",
+            policyVersion: "gallery",
+            visualSeed: 3,
+            visualPhase: "EXPANSION",
+            gateDecision: "SHOW",
+            categoryScores: scoresFor(sample),
+            indicators,
+          });
+          // Ensure derived code matches intended sample for label honesty.
+          if (model && model.rank && model.rank.code !== sample.code) {
+            card.querySelector("strong").textContent = `${sample.code}→${model.rank.code}`;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
