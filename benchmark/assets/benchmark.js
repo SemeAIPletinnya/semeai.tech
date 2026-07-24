@@ -722,6 +722,9 @@
     statusText: document.getElementById("run-status-text"),
     result: document.getElementById("benchmark-result"),
     blocked: document.getElementById("blocked-result"),
+    blockedRepository: document.getElementById("blocked-repository"),
+    blockedGateExplanation: document.getElementById("blocked-gate-explanation"),
+    blockedSigil: document.getElementById("blocked-sigil"),
     blockedMessage: document.getElementById("blocked-message"),
     blockedReasons: document.getElementById("blocked-reasons"),
     sourceMode: document.getElementById("source-mode"),
@@ -731,7 +734,9 @@
     snapshotTime: document.getElementById("snapshot-time"),
     gateBadge: document.getElementById("gate-badge"),
     gateDecision: document.getElementById("gate-decision"),
+    gateExplanation: document.getElementById("gate-explanation"),
     totalScore: document.getElementById("total-score"),
+    repositoryProfile: document.getElementById("repository-profile"),
     repositorySignal: document.getElementById("repository-signal"),
     evidenceDepth: document.getElementById("evidence-depth"),
     gateDiscipline: document.getElementById("gate-discipline"),
@@ -742,6 +747,8 @@
     criteriaList: document.getElementById("criteria-list"),
     admittedSignals: document.getElementById("admitted-signals"),
     missingSignals: document.getElementById("missing-signals"),
+    admittedCount: document.getElementById("admitted-count"),
+    missingCount: document.getElementById("missing-count"),
     heuristicWarnings: document.getElementById("heuristic-warnings"),
     heuristicCount: document.getElementById("heuristic-count"),
     calculationToggle: document.getElementById("calculation-toggle"),
@@ -751,10 +758,13 @@
     receiptHash: document.getElementById("receipt-hash"),
     downloadReceipt: document.getElementById("download-receipt"),
     sigil: document.getElementById("sigil"),
+    resultSigil: document.getElementById("result-sigil"),
     visualPhasePreview: document.getElementById("visual-phase-preview"),
   };
   let currentReceipt = null;
   let currentReceiptText = null;
+  let activeIdentity = null;
+  let repositoryNameTransfer = null;
 
   function makeElement(name, className, text) {
     const element = document.createElement(name);
@@ -767,6 +777,147 @@
     elements.status.classList.remove("running", "complete");
     if (state) elements.status.classList.add(state);
     elements.statusText.textContent = message;
+  }
+
+  function prefersReducedMotion() {
+    return globalScope.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function cancelRepositoryNameTransfer() {
+    if (repositoryNameTransfer) repositoryNameTransfer.remove();
+    repositoryNameTransfer = null;
+    elements.resultTitle.classList.remove("awaiting-name");
+    elements.blockedRepository.classList.remove("awaiting-name");
+  }
+
+  function beginRepositoryNameTransfer(identity) {
+    cancelRepositoryNameTransfer();
+    if (prefersReducedMotion()) return;
+    const inputRect = elements.input.getBoundingClientRect();
+    const transfer = makeElement("div", "repository-name-transfer", identity.fullName);
+    transfer.setAttribute("aria-hidden", "true");
+    transfer.style.left = `${inputRect.left}px`;
+    transfer.style.top = `${inputRect.top}px`;
+    transfer.style.width = `${inputRect.width}px`;
+    document.body.appendChild(transfer);
+    repositoryNameTransfer = transfer;
+    globalScope.requestAnimationFrame(() => transfer.classList.add("is-latent"));
+  }
+
+  function completeRepositoryNameTransfer(target) {
+    if (!target || !repositoryNameTransfer || prefersReducedMotion()) {
+      if (target) target.classList.remove("awaiting-name");
+      cancelRepositoryNameTransfer();
+      return;
+    }
+    const transfer = repositoryNameTransfer;
+    const targetRect = target.getBoundingClientRect();
+    const targetStyle = globalScope.getComputedStyle(target);
+    target.classList.add("awaiting-name");
+    transfer.style.left = `${targetRect.left}px`;
+    transfer.style.top = `${targetRect.top}px`;
+    transfer.style.width = `${targetRect.width}px`;
+    transfer.style.fontFamily = targetStyle.fontFamily;
+    transfer.style.fontSize = targetStyle.fontSize;
+    transfer.style.fontWeight = targetStyle.fontWeight;
+    transfer.style.letterSpacing = targetStyle.letterSpacing;
+    transfer.style.lineHeight = targetStyle.lineHeight;
+    transfer.classList.add("is-arriving");
+    const finishTransfer = (event) => {
+      if (event.propertyName !== "top") return;
+      transfer.removeEventListener("transitionend", finishTransfer);
+      target.classList.remove("awaiting-name");
+      if (repositoryNameTransfer === transfer) repositoryNameTransfer = null;
+      transfer.remove();
+    };
+    transfer.addEventListener("transitionend", finishTransfer);
+  }
+
+  function startGateAwakening(container, gateDecision, nameTarget) {
+    container.dataset.gate = gateDecision;
+    container.classList.remove("is-awakening");
+    if (!prefersReducedMotion()) {
+      void container.offsetWidth;
+      container.classList.add("is-awakening");
+      const gateMoment = container.querySelector(".gate-badge") || container.querySelector(".blocked-sigil");
+      if (gateMoment) {
+        const finishAwakening = (event) => {
+          if (event.target !== gateMoment) return;
+          gateMoment.removeEventListener("animationend", finishAwakening);
+          container.classList.remove("is-awakening");
+        };
+        gateMoment.addEventListener("animationend", finishAwakening);
+      }
+    }
+    globalScope.requestAnimationFrame(() => completeRepositoryNameTransfer(nameTarget));
+  }
+
+  function emphasizeSigilCategory(categoryKey) {
+    if (!elements.resultSigil) return;
+    elements.resultSigil.dataset.highlightCategory = categoryKey;
+    elements.resultSigil.querySelectorAll(".evidence-sigil__group").forEach((group) => {
+      group.classList.toggle("is-highlighted", group.dataset.category === categoryKey);
+    });
+  }
+
+  function restoreFullSigil() {
+    if (!elements.resultSigil) return;
+    delete elements.resultSigil.dataset.highlightCategory;
+    elements.resultSigil.querySelectorAll(".evidence-sigil__group").forEach((group) => group.classList.remove("is-highlighted"));
+  }
+
+  function categoryPercentage(categoryScores, key) {
+    const category = categoryScores.find((entry) => entry.key === key);
+    return category ? Math.round((category.score / category.max) * 100) : 0;
+  }
+
+  function evidenceState(percentage) {
+    if (percentage === 0) return "ABSENT";
+    if (percentage < 40) return "LIMITED";
+    if (percentage < 70) return "PARTIAL";
+    if (percentage < 90) return "ESTABLISHED";
+    return "STRONG";
+  }
+
+  function buildRepositoryProfile(categoryScores) {
+    const coverage = {
+      implementation: categoryPercentage(categoryScores, "implementation"),
+      tests: categoryPercentage(categoryScores, "tests"),
+      evidence: categoryPercentage(categoryScores, "evidence"),
+      continuity: categoryPercentage(categoryScores, "continuity"),
+      releaseControl: categoryPercentage(categoryScores, "release_control"),
+      research: categoryPercentage(categoryScores, "research"),
+      external: categoryPercentage(categoryScores, "external"),
+    };
+
+    if (coverage.evidence >= 90 && coverage.releaseControl >= 90 && coverage.continuity >= 70) {
+      return "Governance-rich repository with deep visible evidence, continuity, and release-control signals.";
+    }
+    if (coverage.implementation >= 70 && coverage.releaseControl < 40) {
+      return "Strong implementation surface with limited visible release-control evidence.";
+    }
+    if (coverage.continuity >= 40 && coverage.tests >= 40 && (coverage.evidence < 70 || coverage.releaseControl < 70)) {
+      return "Visible continuity and testing signals are present, while evidence and governance surfaces remain limited.";
+    }
+    if (Math.max(...Object.values(coverage)) < 40) {
+      return "Only limited bounded repository evidence was admitted.";
+    }
+
+    const signals = [];
+    if (coverage.implementation >= 70) signals.push("a strong visible implementation surface");
+    if (coverage.tests >= 70) signals.push("visible reproducibility signals");
+    if (coverage.evidence >= 70) signals.push("a deep evidence and receipt surface");
+    if (coverage.continuity >= 70) signals.push("continuity and replay signals");
+    if (coverage.releaseControl >= 70) signals.push("visible release-control discipline");
+    if (coverage.external >= 70) signals.push("a strong public signal");
+    if (coverage.research >= 70) signals.push("a visible research and documentation surface");
+    if (!signals.length) {
+      return "Visible repository evidence is partial across the admitted category surfaces.";
+    }
+    const summary = signals.length === 1
+      ? signals[0]
+      : `${signals.slice(0, -1).join(", ")}, and ${signals[signals.length - 1]}`;
+    return `Repository with ${summary}.`;
   }
 
   function clearLists() {
@@ -786,26 +937,75 @@
     elements.downloadReceipt.disabled = true;
     elements.result.hidden = true;
     elements.blocked.hidden = false;
+    elements.blocked.dataset.gate = "BLOCK";
+    elements.blockedRepository.hidden = !activeIdentity;
+    elements.blockedRepository.textContent = activeIdentity ? activeIdentity.fullName : "";
+    elements.blockedGateExplanation.textContent = "BLOCK — Score withheld.";
     elements.blockedMessage.textContent = message;
     elements.blockedReasons.replaceChildren();
     (reasons || []).forEach((reason) => elements.blockedReasons.appendChild(makeElement("li", "", reason)));
+    if (globalScope.SemeAISigil && globalScope.SemeAISigil.renderEvidenceSigil) {
+      globalScope.SemeAISigil.renderEvidenceSigil(elements.blockedSigil, {
+        repository: activeIdentity ? activeIdentity.fullName : "repository/withheld",
+        commitSha: "withheld",
+        policyVersion: SCORING_POLICY_VERSION,
+        visualSeed: 3,
+        visualPhase: "LATENT",
+        gateDecision: "BLOCK",
+        categoryScores: [],
+      });
+    }
     setStatus("PRESENTATION GATE / BLOCK — SCORE WITHHELD", "complete");
-    elements.blocked.scrollIntoView({ behavior: globalScope.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    elements.blocked.scrollIntoView({ behavior: "auto", block: "start" });
+    startGateAwakening(elements.blocked, "BLOCK", activeIdentity ? elements.blockedRepository : null);
   }
 
   function renderCategoryBreakdown(candidate) {
     candidate.categoryScores.forEach((category, index) => {
+      const percentage = Math.round((category.score / category.max) * 100);
+      const state = evidenceState(percentage);
       const card = makeElement("section", "category-card");
-      card.appendChild(makeElement("span", "", String(index + 1).padStart(2, "0")));
+      card.tabIndex = 0;
+      card.dataset.category = category.key;
+      card.setAttribute("aria-label", `${category.name}: ${category.score} of ${category.max}, ${state.toLowerCase()} evidence coverage. Focus emphasizes its trace in the repository sigil.`);
+      const meta = makeElement("div", "category-meta");
+      meta.appendChild(makeElement("span", "", String(index + 1).padStart(2, "0")));
+      const stateLabel = makeElement("span", "category-state", state);
+      stateLabel.dataset.state = state;
+      meta.appendChild(stateLabel);
+      card.appendChild(meta);
       card.appendChild(makeElement("h4", "", category.name));
       const score = makeElement("p", "category-score");
       score.appendChild(makeElement("span", "", category.score));
       score.appendChild(makeElement("small", "", `/ ${category.max}`));
       card.appendChild(score);
+      const meter = makeElement("div", "category-meter");
+      meter.setAttribute("role", "img");
+      meter.setAttribute("aria-label", `${category.name}: ${percentage} percent evidence coverage, ${state.toLowerCase()}`);
+      const meterFill = makeElement("span");
+      meterFill.dataset.percentage = String(percentage);
+      meter.appendChild(meterFill);
+      card.appendChild(meter);
+      card.appendChild(makeElement("p", "category-coverage", `${percentage}% EVIDENCE COVERAGE`));
       elements.categoryGrid.appendChild(card);
 
       const group = makeElement("section", "criteria-group");
-      group.appendChild(makeElement("h4", "", `${category.name} — ${category.score}/${category.max}`));
+      const toggle = makeElement("button", "criteria-toggle");
+      toggle.type = "button";
+      const toggleId = `criteria-toggle-${category.key}`;
+      const panelId = `criteria-panel-${category.key}`;
+      toggle.id = toggleId;
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-controls", panelId);
+      toggle.appendChild(makeElement("span", "criteria-toggle-title", `${String(index + 1).padStart(2, "0")} / ${category.name}`));
+      toggle.appendChild(makeElement("span", "criteria-toggle-score", `${category.score} / ${category.max} · ${state}`));
+      toggle.appendChild(makeElement("span", "criteria-toggle-mark", "+"));
+      group.appendChild(toggle);
+      const panel = makeElement("div", "criteria-panel");
+      panel.id = panelId;
+      panel.setAttribute("aria-labelledby", toggleId);
+      panel.hidden = true;
+      panel.appendChild(makeElement("p", "", `${category.criteria.filter((criterion) => criterion.awarded).length} of ${category.criteria.length} fixed criteria admitted.`));
       const list = makeElement("ul");
       category.criteria.forEach((criterion) => {
         const row = makeElement("li", `criterion${criterion.awarded ? "" : " missing"}`);
@@ -817,7 +1017,14 @@
         row.appendChild(makeElement("span", "criterion-points", criterion.awarded ? `+${criterion.points_awarded}` : `0 / ${criterion.points_available}`));
         list.appendChild(row);
       });
-      group.appendChild(list);
+      panel.appendChild(list);
+      group.appendChild(panel);
+      toggle.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        toggle.querySelector(".criteria-toggle-mark").textContent = expanded ? "+" : "−";
+        panel.hidden = expanded;
+      });
       elements.criteriaList.appendChild(group);
     });
   }
@@ -841,6 +1048,8 @@
     ];
     warnings.forEach((warning) => elements.heuristicWarnings.appendChild(makeElement("li", "", warning)));
     elements.heuristicCount.textContent = `${candidate.admittedSignals.length} ADMITTED / ${candidate.missingSignals.length} MISSING`;
+    elements.admittedCount.textContent = `${candidate.admittedSignals.length} SIGNALS`;
+    elements.missingCount.textContent = `${candidate.missingSignals.length} SIGNAL${candidate.missingSignals.length === 1 ? "" : "S"}`;
   }
 
   function renderResult(candidate, gate, visual, receipt) {
@@ -849,6 +1058,7 @@
     const indicators = computeIndicators(candidate);
     elements.blocked.hidden = true;
     elements.result.hidden = false;
+    elements.result.dataset.gate = gate.decision;
     elements.sourceMode.textContent = snapshot.source_mode;
     elements.sourceMode.classList.toggle("fallback", snapshot.source_mode === "BUILT-IN FALLBACK SNAPSHOT");
     elements.resultTitle.textContent = snapshot.repository;
@@ -856,8 +1066,14 @@
     elements.sourceCommit.textContent = snapshot.commit_sha;
     elements.snapshotTime.textContent = snapshot.captured_at;
     elements.gateDecision.textContent = gate.decision;
+    elements.gateExplanation.textContent = {
+      SHOW: "Evidence sufficient to display",
+      REVIEW: "Result requires evidence review",
+      BLOCK: "Score withheld",
+    }[gate.decision] || "Presentation decision recorded";
     elements.gateBadge.className = `gate-badge ${gate.decision.toLowerCase()}`;
     elements.totalScore.textContent = candidate.totalScore;
+    elements.repositoryProfile.textContent = buildRepositoryProfile(candidate.categoryScores);
     elements.repositorySignal.textContent = `${indicators.repositorySignal} / 100`;
     elements.evidenceDepth.textContent = `${indicators.evidenceDepth} / 100`;
     elements.gateDiscipline.textContent = `${indicators.gateDiscipline} / 100`;
@@ -877,14 +1093,29 @@
         policyVersion: SCORING_POLICY_VERSION,
         visualSeed: visual.visualSeed,
       });
+      if (globalScope.SemeAISigil.renderEvidenceSigil) {
+        globalScope.SemeAISigil.renderEvidenceSigil(elements.resultSigil, {
+          repository: snapshot.repository,
+          commitSha: snapshot.commit_sha,
+          policyVersion: SCORING_POLICY_VERSION,
+          visualSeed: visual.visualSeed,
+          visualPhase: visual.visualPhase,
+          gateDecision: gate.decision,
+          categoryScores: candidate.categoryScores,
+        });
+      }
     }
     globalScope.requestAnimationFrame(() => {
       elements.repositorySignalBar.style.width = `${indicators.repositorySignal}%`;
       elements.evidenceDepthBar.style.width = `${indicators.evidenceDepth}%`;
       elements.gateDisciplineBar.style.width = `${indicators.gateDiscipline}%`;
+      elements.categoryGrid.querySelectorAll(".category-meter span").forEach((meter) => {
+        meter.style.width = `${meter.dataset.percentage}%`;
+      });
     });
-    setStatus(`${gate.decision} — BENCHMARK CANDIDATE GATED`, "complete");
-    elements.result.scrollIntoView({ behavior: globalScope.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    setStatus(`${gate.decision} — RESULT ADMITTED`, "complete");
+    elements.result.scrollIntoView({ behavior: "auto", block: "start" });
+    startGateAwakening(elements.result, gate.decision, elements.resultTitle);
   }
 
   async function runBenchmark(event) {
@@ -897,6 +1128,8 @@
     elements.downloadReceipt.disabled = true;
     currentReceipt = null;
     currentReceiptText = null;
+    activeIdentity = null;
+    cancelRepositoryNameTransfer();
     setStatus("VALIDATING REPOSITORY IDENTITY", "running");
 
     let identity;
@@ -911,9 +1144,12 @@
       return;
     }
 
+    activeIdentity = identity;
+    beginRepositoryNameTransfer(identity);
+
     let snapshot;
     try {
-      setStatus("READING BOUNDED PUBLIC GITHUB EVIDENCE", "running");
+      setStatus("CONNECTING TO PUBLIC GITHUB · CAPTURING BOUNDED TREE", "running");
       snapshot = await collectLiveSnapshot(identity);
     } catch (error) {
       const fallbackEligible = ["rate_limited", "timeout", "network_error", "server_error"].includes(error.code);
@@ -940,8 +1176,10 @@
       }
     }
 
-    setStatus("SCORING ADMITTED EVIDENCE", "running");
+    setStatus("VISIBLE EVIDENCE NORMALIZED", "running");
+    setStatus("CALCULATING FIXED CRITERIA", "running");
     const candidate = scoreSnapshot(snapshot);
+    setStatus("RUNNING PRESENTATION GATE", "running");
     const gate = runPresentationGate(candidate);
     if (gate.decision === "BLOCK") {
       elements.runButton.disabled = false;
@@ -975,6 +1213,11 @@
     elements.downloadReceipt.disabled = true;
     currentReceipt = null;
     currentReceiptText = null;
+    activeIdentity = null;
+    cancelRepositoryNameTransfer();
+    restoreFullSigil();
+    elements.resultSigil.replaceChildren();
+    elements.blockedSigil.replaceChildren();
     setStatus("READY FOR PUBLIC EVIDENCE", "");
     if (globalScope.SemeAISigil) {
       globalScope.SemeAISigil.renderSigil(elements.sigil, {
@@ -990,6 +1233,22 @@
     const expanded = elements.calculationToggle.getAttribute("aria-expanded") === "true";
     elements.calculationToggle.setAttribute("aria-expanded", String(!expanded));
     elements.calculationDetail.hidden = expanded;
+  });
+  elements.categoryGrid.addEventListener("focusin", (event) => {
+    const card = event.target.closest(".category-card");
+    if (card) emphasizeSigilCategory(card.dataset.category);
+  });
+  elements.categoryGrid.addEventListener("focusout", (event) => {
+    const card = event.target.closest(".category-card");
+    if (card && !card.matches(":hover")) restoreFullSigil();
+  });
+  elements.categoryGrid.addEventListener("pointerover", (event) => {
+    const card = event.target.closest(".category-card");
+    if (card && !card.contains(event.relatedTarget)) emphasizeSigilCategory(card.dataset.category);
+  });
+  elements.categoryGrid.addEventListener("pointerout", (event) => {
+    const card = event.target.closest(".category-card");
+    if (card && !card.contains(event.relatedTarget) && document.activeElement !== card) restoreFullSigil();
   });
   elements.downloadReceipt.addEventListener("click", () => {
     if (!currentReceipt || !currentReceiptText) return;

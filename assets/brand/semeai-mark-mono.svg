@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title">
+  <title id="title">SemeAI monochrome mark</title>
+  <g fill="none" stroke="#f5f7f7" stroke-linecap="round">
+    <path d="M24 4v14M24 30v14" stroke-width="2.4"/>
+    <path d="M20 9C10 12 8 20 13 25c2.1 2.1 5.4 3 11 3M28 20c5.6 0 8.9.9 11 3 5 5 3 13-7 16" stroke-width="3"/>
+  </g>
+  <path d="m24 19 5 5-5 5-5-5 5-5Z" fill="#f5f7f7"/>
+</svg>

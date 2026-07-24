@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-labelledby="title">
+  <title id="title">SemeAI controlled release mark</title>
+  <path d="M24 4v14" fill="none" stroke="#72e7ef" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M24 30v14" fill="none" stroke="#d9bd78" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M20 9C10 12 8 20 13 25c2.1 2.1 5.4 3 11 3" fill="none" stroke="#72e7ef" stroke-width="3" stroke-linecap="round"/>
+  <path d="M28 20c5.6 0 8.9.9 11 3 5 5 3 13-7 16" fill="none" stroke="#d9bd78" stroke-width="3" stroke-linecap="round"/>
+  <path d="m24 19 5 5-5 5-5-5 5-5Z" fill="#f5f7f7"/>
+</svg>

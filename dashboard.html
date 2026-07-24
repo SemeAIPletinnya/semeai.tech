@@ -3,26 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title data-i18n-page="dash.title.page">SemeAI · SaaS cabinet</title>
+    <title data-i18n-page="dash.title.page">SemeAI · Workspace access</title>
     <meta
       name="description"
       data-i18n-page="dash.meta"
-      content="SemeAI Gate SaaS cabinet: email + password login, gate checks, receipts, pilot billing."
+      content="Access the governed SemeAI operator workspace for gate checks, decisions, and retained receipts."
     />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <link rel="canonical" href="https://semeai.tech/dashboard.html" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260717e" />
+    <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="assets/css/brand.css?v=20260723b" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260723b" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
-      .cab-wrap { max-width: 44rem; margin: 0 auto; }
+      .cab-wrap { max-width: 66rem; margin: 0 auto; }
       .cab-wide { max-width: 56rem; margin: 0 auto; }
       .msg {
         border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
         background: rgba(255,255,255,0.03); padding: 0.85rem 1rem;
         font-size: 0.92rem; color: var(--mute); line-height: 1.5;
       }
+      .msg:empty { display: none; }
       .msg.ok { color: var(--show); border-color: rgba(74,222,128,0.35); background: rgba(74,222,128,0.08); }
       .msg.warn { color: var(--review); border-color: rgba(251,191,36,0.35); background: rgba(251,191,36,0.08); }
       .msg.error { color: var(--block); border-color: rgba(248,113,113,0.4); background: rgba(248,113,113,0.08); }
@@ -83,17 +86,17 @@
       .receipt-row:last-child { border-bottom: 0; }
       .hidden { display: none !important; }
       .auth-card {
-        border: 1px solid var(--line); border-radius: 1.15rem;
+        border: 1px solid var(--line); border-radius: var(--semeai-radius-panel);
         background: var(--panel); padding: 1.5rem 1.45rem;
       }
       .tabs {
-        display: flex; gap: 0.35rem; margin-bottom: 1.1rem;
+        display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 1.1rem;
         border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.55rem;
       }
       .tab-btn {
         border: 0; background: transparent; color: var(--mute);
         font-weight: 700; font-size: 0.88rem; padding: 0.45rem 0.75rem;
-        border-radius: 999px; cursor: pointer;
+        border-radius: var(--semeai-radius-control); cursor: pointer;
       }
       .tab-btn.active {
         color: var(--void);
@@ -105,35 +108,59 @@
       }
     </style>
   </head>
-  <body data-semeai-custom-bg>
+  <body class="mode-workspace" data-semeai-custom-bg>
+    <a class="skip-link" href="#dashboard-main">Skip to dashboard</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <div class="vignette" aria-hidden="true"></div>
     <div class="content">
-      <div data-semeai-nav></div>
+      <div data-semeai-nav>
+        <header class="site-header" data-semeai-header>
+          <div class="site-header-inner">
+            <a class="brand" href="/" aria-label="SemeAI home"><img class="brand-mark semeai-mark" src="/assets/brand/semeai-mark.svg" width="32" height="32" alt="" aria-hidden="true" /><span class="semeai-wordmark">SemeAI</span></a>
+            <nav class="site-nav" aria-label="Primary">
+              <a class="nav-link" href="/gate.html">Gate</a>
+              <a class="nav-link" href="/benchmark/">Benchmark</a>
+              <a class="nav-link" href="/genesis/">Genesis</a>
+              <a class="nav-link" href="/book/">Book</a>
+              <a class="nav-link" href="/research.html">Research</a>
+            </nav>
+            <a class="btn-ghost header-dashboard active" href="/dashboard.html" aria-current="page">Open dashboard</a>
+          </div>
+        </header>
+        <noscript>
+          <nav class="noscript-nav" aria-label="Primary navigation without JavaScript">
+            <a href="/gate.html">Gate</a><a href="/benchmark/">Benchmark</a><a href="/genesis/">Genesis</a><a href="/book/">Book</a><a href="/research.html">Research</a><a aria-current="page" href="/dashboard.html">Open dashboard</a>
+          </nav>
+        </noscript>
+      </div>
 
-      <main class="site-main">
+      <main class="site-main" id="dashboard-main">
         <!-- AUTH GATE -->
-        <section id="view-gate" class="cab-wrap">
-          <span class="eyebrow" data-i18n="dash.badge">SaaS cabinet</span>
-          <h1 class="page-title" data-i18n="dash.title">Sign in to your workspace</h1>
-          <p class="lead" data-i18n="dash.lead">
-            Full SaaS path: register with password → confirm email → log in → run gate checks, receipts, pilot billing.
-          </p>
-
-          <div class="msg mt-6" id="gate-msg" data-i18n="dash.gate.hint">
-            Use email + password after verification. Integration API key is optional for servers.
+        <section id="view-gate" class="cab-wrap workspace-access">
+          <div class="workspace-intro">
+            <span class="eyebrow" data-i18n="dash.badge">Workspace access</span>
+            <h1 class="page-title" data-i18n="dash.title">Sign in to your workspace</h1>
+            <p class="lead" data-i18n="dash.lead">
+              Enter the governed operator workspace for gate checks, release decisions, and retained receipts.
+            </p>
+            <ul class="workspace-principles" aria-label="Workspace control principles">
+              <li><span>01</span>Generated output remains a candidate until the Gate decides.</li>
+              <li><span>02</span>SHOW, REVIEW, and BLOCK preserve the canonical release mapping.</li>
+              <li><span>03</span>Decision receipts remain distinct from execution and result receipts.</li>
+            </ul>
           </div>
 
-          <div class="auth-card mt-8">
+          <div class="workspace-login">
+          <div class="auth-card">
             <div class="tabs" role="tablist">
-              <button type="button" class="tab-btn active" data-auth-tab="login" data-i18n="dash.tab.login">Log in</button>
-              <button type="button" class="tab-btn" data-auth-tab="register" data-i18n="dash.tab.register">Register</button>
-              <button type="button" class="tab-btn" data-auth-tab="verify" data-i18n="dash.tab.verify">Verify email</button>
-              <button type="button" class="tab-btn" data-auth-tab="key" data-i18n="dash.tab.key">API key</button>
+              <button type="button" class="tab-btn active" role="tab" aria-selected="true" aria-controls="auth-login" data-auth-tab="login" data-i18n="dash.tab.login">Log in</button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="auth-register" data-auth-tab="register" data-i18n="dash.tab.register">Register</button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="auth-verify" data-auth-tab="verify" data-i18n="dash.tab.verify">Verify email</button>
+              <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="auth-key" data-auth-tab="key" data-i18n="dash.tab.key">API key</button>
             </div>
 
             <!-- LOGIN -->
-            <div id="auth-login">
+            <div id="auth-login" role="tabpanel">
               <form id="login-form" class="stack-sm">
                 <div>
                   <label class="field-label" for="login-email" data-i18n="dash.login.email">Email</label>
@@ -159,7 +186,7 @@
             </div>
 
             <!-- REGISTER shortcut -->
-            <div id="auth-register" class="hidden">
+            <div id="auth-register" class="hidden" role="tabpanel">
               <p style="margin:0 0 1rem;color:var(--mute);font-size:0.92rem" data-i18n="dash.register.hint">
                 Full registration form with password and email confirmation.
               </p>
@@ -170,14 +197,14 @@
             </div>
 
             <!-- VERIFY -->
-            <div id="auth-verify" class="hidden">
+            <div id="auth-verify" class="hidden" role="tabpanel">
               <p style="margin:0 0 0.85rem;color:var(--mute);font-size:0.9rem" data-i18n="dash.verify.hint">
                 Paste the token from your email link (#verify=…) to activate the workspace.
               </p>
               <label class="field-label" for="verify-token" data-i18n="dash.verify.token">Verification token</label>
               <input id="verify-token" class="fld mono" spellcheck="false" data-i18n-placeholder="dash.verify.token.ph" placeholder="#verify=…" />
               <div class="btn-row mt-4">
-                <button type="button" class="btn-primary" id="btn-verify" data-i18n="dash.verify.btn">Confirm &amp; open cabinet</button>
+                <button type="button" class="btn-primary" id="btn-verify" data-i18n="dash.verify.btn">Confirm &amp; issue key</button>
               </div>
               <div class="mt-4 hidden" id="issued-wrap">
                 <label class="field-label" for="issued-key" data-i18n="dash.verify.issued">Integration API key (copy once)</label>
@@ -189,23 +216,29 @@
             </div>
 
             <!-- API KEY fallback -->
-            <div id="auth-key" class="hidden">
+            <div id="auth-key" class="hidden" role="tabpanel">
               <p style="margin:0 0 0.85rem;color:var(--mute);font-size:0.9rem" data-i18n="dash.key.hint">
                 For server integrations or legacy access — paste a workspace API key.
               </p>
               <label class="field-label" for="api-key" data-i18n="dash.auth.key">API key</label>
               <input id="api-key" class="fld mono" type="password" autocomplete="off" spellcheck="false" data-i18n-placeholder="dash.auth.key.ph" placeholder="sem_live_…" />
               <div class="btn-row mt-4">
-                <button type="button" class="btn-primary" id="btn-enter-key" data-i18n="dash.auth.load">Open cabinet</button>
+                <button type="button" class="btn-primary" id="btn-enter-key" data-i18n="dash.auth.load">Open workspace</button>
               </div>
             </div>
           </div>
 
+          <div class="msg mt-4" id="gate-msg" role="status" aria-live="polite"></div>
+          <details class="access-details">
+            <summary data-i18n="dash.access.details">Registration, verification, and server access</summary>
+            <p data-i18n="dash.gate.hint">Use email + password after verification. Integration API key is optional for servers.</p>
+          </details>
           <p class="mt-6" style="color:var(--faint);font-size:0.85rem">
             <a href="index.html?v=20260717d#demo" data-i18n="dash.path.tests">Try free tests first</a>
             ·
             <a href="mailto:support@semeai.tech" data-i18n="dash.home.support">Support</a>
           </p>
+          </div>
         </section>
 
         <!-- HOME -->
@@ -213,7 +246,7 @@
           <div class="cab-wrap" style="max-width:56rem">
             <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:1rem">
               <div>
-                <span class="eyebrow" data-i18n="dash.badge">SaaS cabinet</span>
+                <span class="eyebrow" data-i18n="dash.badge">Workspace access</span>
                 <h1 class="page-title" style="font-size:clamp(1.5rem,3vw,2rem)">
                   <span data-i18n="dash.home.hello">Hello,</span>
                   <span class="glow-text" id="ws-name">workspace</span>
@@ -376,7 +409,7 @@
 
     <script src="assets/js/i18n.js?v=20260717e"></script>
     <script src="assets/js/api.js?v=20260717e"></script>
-    <script src="assets/js/site-shell.js?v=20260717e"></script>
+    <script src="assets/js/site-shell.js?v=20260723b"></script>
     <script>
       (() => {
         const scenarios = {
@@ -469,7 +502,9 @@
 
         function showAuthTab(id) {
           document.querySelectorAll("[data-auth-tab]").forEach((b) => {
-            b.classList.toggle("active", b.dataset.authTab === id);
+            const active = b.dataset.authTab === id;
+            b.classList.toggle("active", active);
+            b.setAttribute("aria-selected", String(active));
           });
           ["login", "register", "verify", "key"].forEach((name) => {
             document.querySelector("#auth-" + name).classList.toggle("hidden", name !== id);

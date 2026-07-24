@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta name="referrer" content="no-referrer" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src https://api.semeai.tech http://127.0.0.1:8787 http://localhost:8787; img-src 'self' data: https://avatars.githubusercontent.com; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'"
+    />
+    <meta
+      name="description"
+      content="An authenticated workspace for preserving SemeAI repository evidence traces."
+    />
+    <title>Repository Workspace — SemeAI</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./assets/workspace.css?v=20260722a" />
+    <script src="../assets/sigil.js?v=20260722c" defer></script>
+    <script src="./assets/workspace.js?v=20260722a" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace-main">Skip to repository workspace</a>
+
+    <header class="workspace-header">
+      <a class="workspace-wordmark" href="../" aria-label="SemeAI Repository Evidence Benchmark">
+        <span class="wordmark-mark" aria-hidden="true"></span>
+        <span>SEMEAI</span>
+      </a>
+      <p>REPOSITORY WORKSPACE</p>
+      <div id="header-identity" class="header-identity" aria-live="polite">
+        <span class="identity-state" aria-hidden="true"></span>
+        <span id="header-login">GITHUB NOT CONNECTED</span>
+      </div>
+    </header>
+
+    <div id="workspace-notice" class="workspace-notice" role="status" aria-live="polite" hidden></div>
+    <div id="workspace-error" class="workspace-error" role="alert" hidden></div>
+
+    <main id="workspace-main">
+      <section id="signed-out" class="signed-out" aria-labelledby="signed-out-title">
+        <div class="signed-out-copy">
+          <p class="section-index">AUTHENTICATED REPOSITORY TRACE</p>
+          <h1 id="signed-out-title">The instrument is public.<br /><span>The trace is yours.</span></h1>
+          <p class="signed-out-lede">
+            Sign in with GitHub to select repositories, run the same evidence benchmark, preserve
+            presentation receipts, and inspect progression over time.
+          </p>
+          <a id="sign-in-button" class="primary-action" href="https://api.semeai.tech/v0/oauth/github/start?return_path=%2Fbenchmark%2Fworkspace%2F">
+            <span>SIGN IN WITH GITHUB</span><span aria-hidden="true">↗</span>
+          </a>
+          <p class="auth-boundary">
+            Identity authorization is separate from repository installation. Private repositories
+            require explicit GitHub App selection.
+          </p>
+        </div>
+        <div class="signed-out-trace" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <p>INPUT IS THE NAME<br />EVIDENCE CREATES THE FORM<br />RECEIPT PRESERVES THE TRACE</p>
+        </div>
+      </section>
+
+      <div id="authenticated-workspace" class="workspace-layout" hidden>
+        <aside class="workspace-sidebar" aria-label="Workspace navigation">
+          <div id="sidebar-identity" class="sidebar-identity"></div>
+          <nav>
+            <button class="nav-item is-active" type="button" data-view="overview" aria-current="page">Overview</button>
+            <button class="nav-item" type="button" data-view="repositories">Repositories</button>
+            <button class="nav-item" type="button" data-view="progression">Progression</button>
+            <button class="nav-item" type="button" data-view="receipts">Receipts</button>
+            <button class="nav-item" type="button" data-view="account">Account</button>
+          </nav>
+          <a class="public-instrument-link" href="../">RUN PUBLIC INSTRUMENT <span aria-hidden="true">↗</span></a>
+        </aside>
+
+        <div class="workspace-content">
+          <section id="view-overview" class="workspace-view" data-view-panel="overview" aria-labelledby="overview-title">
+            <div class="view-heading">
+              <div>
+                <p class="section-index">01 / OVERVIEW</p>
+                <h1 id="overview-title">The repository trace,<br /><span>retained.</span></h1>
+              </div>
+              <button class="secondary-action" type="button" data-view-target="repositories">VIEW REPOSITORIES</button>
+            </div>
+            <dl id="overview-facts" class="overview-facts"></dl>
+            <div id="overview-latest" class="overview-latest"></div>
+          </section>
+
+          <section id="view-repositories" class="workspace-view" data-view-panel="repositories" aria-labelledby="repositories-title" hidden>
+            <div class="view-heading compact">
+              <div>
+                <p class="section-index">02 / REPOSITORIES</p>
+                <h1 id="repositories-title">Connected evidence surfaces.</h1>
+              </div>
+              <a id="connect-repositories" class="primary-action compact-action" href="https://api.semeai.tech/v0/github/install/start">
+                CONNECT REPOSITORIES <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <p class="view-boundary">Only repositories explicitly selected during GitHub App installation appear here.</p>
+            <div id="repository-list" class="repository-list"></div>
+          </section>
+
+          <section id="view-progression" class="workspace-view" data-view-panel="progression" aria-labelledby="progression-title" hidden>
+            <div class="view-heading compact">
+              <div>
+                <p class="section-index">03 / PROGRESSION</p>
+                <h1 id="progression-title">Evidence across captured commits.</h1>
+              </div>
+            </div>
+            <p class="view-boundary">Progression records admitted evidence changes. It is not a quality or safety judgment.</p>
+            <div id="progression-filter" class="progression-filter" hidden></div>
+            <div id="progression-list" class="progression-list"></div>
+          </section>
+
+          <section id="view-receipts" class="workspace-view" data-view-panel="receipts" aria-labelledby="receipts-title" hidden>
+            <div class="view-heading compact">
+              <div>
+                <p class="section-index">04 / PRESENTATION RECEIPTS</p>
+                <h1 id="receipts-title">Decision traces, preserved.</h1>
+              </div>
+            </div>
+            <p class="receipt-boundary">Integrity hash, not a signature.<br />Presentation receipt, not SaC/PoR release authority.</p>
+            <div id="receipt-list" class="receipt-list"></div>
+            <section id="receipt-detail" class="receipt-detail" aria-live="polite" hidden></section>
+          </section>
+
+          <section id="view-account" class="workspace-view" data-view-panel="account" aria-labelledby="account-title" hidden>
+            <div class="view-heading compact">
+              <div>
+                <p class="section-index">05 / ACCOUNT</p>
+                <h1 id="account-title">Identity and access.</h1>
+              </div>
+            </div>
+            <div id="account-identity" class="account-section"></div>
+            <div class="account-section">
+              <div class="account-section-heading">
+                <h2>CONNECTED INSTALLATIONS</h2>
+                <a id="account-connect" class="text-action" href="https://api.semeai.tech/v0/github/install/start">ADD OR SELECT REPOSITORIES</a>
+              </div>
+              <div id="installation-list"></div>
+              <p>Disconnecting an installation preserves retained benchmark history.</p>
+            </div>
+            <div class="account-section account-actions">
+              <h2>SESSION</h2>
+              <button id="sign-out-button" class="secondary-action" type="button">SIGN OUT</button>
+            </div>
+            <div class="account-section destructive-zone">
+              <h2>DELETE BENCHMARK ACCOUNT</h2>
+              <p>Deletes the SemeAI GitHub identity, local sessions, connected-repository records, and all retained benchmark history.</p>
+              <button id="delete-account-button" class="destructive-action" type="button">DELETE ACCOUNT AND HISTORY</button>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <span>SEMEAI / REPOSITORY WORKSPACE</span>
+      <span>PRIVATE TRACE SURFACE · NOINDEX</span>
+    </footer>
+
+    <noscript>
+      <div class="noscript-message">JavaScript is required to authenticate and inspect retained repository traces.</div>
+    </noscript>
+  </body>
+</html>

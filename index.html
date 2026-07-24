@@ -17,6 +17,7 @@
     <meta name="theme-color" content="#050708" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <link rel="canonical" href="https://semeai.tech/" />
+    <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -51,7 +52,8 @@
         },
       };
     </script>
-    <link rel="stylesheet" href="assets/css/site.css?v=20260720h" />
+    <link rel="stylesheet" href="assets/css/brand.css?v=20260723b" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260723b" />
     <style>
       :root {
         color-scheme: dark;
@@ -179,7 +181,7 @@
         align-items: center;
         justify-content: center;
         min-height: 2.85rem;
-        border-radius: 999px;
+        border-radius: var(--semeai-radius-control);
         padding: 0.78rem 1.12rem;
         font-weight: 800;
         letter-spacing: -0.01em;
@@ -1978,29 +1980,53 @@
       }
     </style>
   </head>
-  <body data-semeai-custom-bg>
+  <body class="mode-runtime" data-semeai-custom-bg>
+    <a class="skip-link" href="#top">Skip to main content</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <div class="vignette" aria-hidden="true"></div>
 
     <div class="content">
-      <div data-semeai-nav></div>
+      <div data-semeai-nav>
+        <header class="site-header" data-semeai-header>
+          <div class="site-header-inner">
+            <a class="brand" href="/" aria-label="SemeAI home" aria-current="page"><img class="brand-mark semeai-mark" src="/assets/brand/semeai-mark.svg" width="32" height="32" alt="" aria-hidden="true" /><span class="semeai-wordmark">SemeAI</span></a>
+            <nav class="site-nav" aria-label="Primary">
+              <a class="nav-link" href="/gate.html">Gate</a>
+              <a class="nav-link" href="/benchmark/">Benchmark</a>
+              <a class="nav-link" href="/genesis/">Genesis</a>
+              <a class="nav-link" href="/book/">Book</a>
+              <a class="nav-link" href="/research.html">Research</a>
+            </nav>
+            <a class="btn-ghost header-dashboard" href="/dashboard.html">Open dashboard</a>
+          </div>
+        </header>
+        <noscript>
+          <nav class="noscript-nav" aria-label="Primary navigation without JavaScript">
+            <a href="/gate.html">Gate</a><a href="/benchmark/">Benchmark</a><a href="/genesis/">Genesis</a><a href="/book/">Book</a><a href="/research.html">Research</a><a href="/dashboard.html">Open dashboard</a>
+          </nav>
+        </noscript>
+      </div>
 
       <main id="top">
         <section class="hero">
           <div class="hero-layout">
             <div>
-              <div class="kicker"><span class="signal-dot"></span>Production checkpoint after generation</div>
+              <div class="kicker"><span class="signal-dot"></span>SemeAI · governed release control</div>
               <h1 class="hero-title">
-                Stop unsupported AI answers
-                <span>before users see them.</span>
+                Generation creates a candidate.
+                <span>Release is a separate decision.</span>
               </h1>
               <p class="hero-copy">
-                SemeAI is a release-control layer for production AI. The model writes a candidate.
-                The gate checks business data, current context, rules, and risk before returning
-                <strong class="text-ink">SHOW</strong>, <strong class="text-ink">REVIEW</strong>, or
-                <strong class="text-ink">BLOCK</strong>.
+                SemeAI is a governed release-control layer for AI-generated outputs. The model produces a candidate;
+                the Gate evaluates evidence, policy, and context before the host receives
+                <strong class="text-ink">SHOW</strong>, <strong class="text-ink">REVIEW</strong>, or <strong class="text-ink">BLOCK</strong>.
               </p>
               <p class="hero-positioning">Generation is not release authority.</p>
+              <div class="hero-actions mt-8">
+                <a class="btn-primary" href="/benchmark/">Run the Benchmark</a>
+                <a class="btn-ghost" href="/gate.html">Explore the Gate</a>
+                <a class="btn-ghost" href="/genesis/">Enter Genesis</a>
+              </div>
               <div class="hero-control-strip" aria-label="SemeAI release-control chain">
                 <div class="hero-control-step" style="--step: #8fb8ff">
                   <small>01</small>
@@ -2023,15 +2049,10 @@
                   <span>audit preserved</span>
                 </div>
               </div>
-              <div class="hero-actions mt-8">
-                <a class="btn-primary" href="#demo">Try live gate</a>
-                <a class="btn-ghost" href="register.html?v=20260720a&amp;from=landing">Register workspace</a>
-                <a class="btn-ghost" href="article.html?v=20260720a">Read article</a>
-              </div>
               <div class="hero-metrics">
-                <div class="metric rounded-2xl"><b>Live</b><span>API health and demo endpoint online</span></div>
-                <div class="metric rounded-2xl"><b>v0.1</b><span>Versioned gate schema and contract</span></div>
-                <div class="metric rounded-2xl"><b>Audit</b><span>Blocked answers preserve receipt metadata</span></div>
+                <div class="metric rounded-2xl"><b>Bounded</b><span>Evidence and policy remain scoped</span></div>
+                <div class="metric rounded-2xl"><b>Inspect</b><span>Decision criteria stay visible</span></div>
+                <div class="metric rounded-2xl"><b>Retain</b><span>Receipts preserve the decision trace</span></div>
               </div>
             </div>
 
@@ -2119,6 +2140,28 @@
           </div>
         </section>
 
+        <section id="orientation" class="mx-auto max-w-site px-5 pb-24 sm:px-6" aria-labelledby="orientation-title">
+          <div class="chapter-card glass">
+            <div>
+              <span class="pill">Navigate the system</span>
+              <h2 id="orientation-title" class="mt-5 max-w-2xl text-4xl font-black leading-[0.98] tracking-[-0.04em] text-white sm:text-6xl">
+                One principle. Distinct places to understand it.
+              </h2>
+              <p class="mt-5 max-w-2xl text-lg leading-relaxed text-mute">
+                Start with the question you have now. Each route has one job; none of them replaces the release decision.
+              </p>
+            </div>
+            <div class="route-index" aria-label="SemeAI route roles">
+              <a href="/genesis/"><small>Why</small><strong>Genesis</strong><span>The conceptual and emotional origin.</span></a>
+              <a href="/gate.html"><small>What</small><strong>SemeAI Gate</strong><span>The post-generation release authority.</span></a>
+              <a href="/benchmark/"><small>Proof</small><strong>Repository Evidence Benchmark</strong><span>The principle operating on bounded public evidence.</span></a>
+              <a href="/book/"><small>How</small><strong>Engineering Book</strong><span>Architecture, decisions, receipts, replay, and continuity.</span></a>
+              <a href="/research.html"><small>Boundary</small><strong>Research</strong><span>Evidence, experiments, limitations, and claim boundaries.</span></a>
+              <a href="/dashboard.html"><small>Use</small><strong>Dashboard</strong><span>Operational Gate actions, receipts, history, team, and account.</span></a>
+            </div>
+          </div>
+        </section>
+
         <section id="platform" class="mx-auto max-w-site px-5 pb-24 sm:px-6">
           <div class="system-spine glass">
             <div class="grid gap-8 lg:grid-cols-[0.84fr_1.16fr] lg:items-end">
@@ -2157,6 +2200,10 @@
               <div><span class="text-green">SHOW</span> = PROCEED</div>
               <div><span class="text-amber">REVIEW</span> = NEEDS_REVIEW</div>
               <div><span class="text-blue">BLOCK</span> = SILENCE</div>
+            </div>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a class="btn-primary" href="/gate.html">Explore the Gate</a>
+              <a class="btn-ghost" href="/book/#release-flow">Inspect the architecture</a>
             </div>
           </div>
         </section>
@@ -2208,6 +2255,13 @@
             </div>
           </div>
         </section>
+
+        <details class="home-deep-dive" id="product-depth">
+          <summary>
+            <span>Product depth</span>
+            <strong>Open the live Gate demo and deployment paths</strong>
+            <small>Release outcomes · public demo · hosted and self-hosted boundaries</small>
+          </summary>
 
         <section id="how" class="mx-auto max-w-site px-5 pb-24 sm:px-6">
           <div class="chapter-card glass">
@@ -2421,40 +2475,65 @@
           </div>
         </section>
 
+        </details>
+
         <section id="proof-surface" class="mx-auto max-w-site px-5 pb-24 sm:px-6">
           <div class="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
             <div>
-              <span class="pill">Proof surface</span>
+              <span class="pill">Public instrument</span>
               <h2 class="mt-5 text-4xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-5xl">
-                Built for due diligence, not just a screenshot.
+                See the release principle operate on a real repository.
               </h2>
               <p class="mt-5 text-lg leading-relaxed text-mute">
-                A pilot needs more than a nice demo. It needs a versioned contract, reproducible examples, a live endpoint,
-                and a way to explain why an answer was shown, reviewed, or blocked.
+                The Repository Evidence Benchmark reads bounded public GitHub evidence and produces inspectable criteria,
+                a candidate score, a display-only Benchmark Presentation Gate decision, and a local receipt.
               </p>
+              <p class="mt-4 text-sm leading-relaxed text-faint">SHOW means evidence is sufficient to display. It is not a quality approval, security verdict, or production endorsement.</p>
+              <div class="mt-7 flex flex-wrap gap-3"><a class="btn-primary" href="/benchmark/">Run the Benchmark</a><a class="btn-ghost" href="/research.html">View evidence boundaries</a></div>
             </div>
             <div class="proof-grid">
               <article class="proof-card">
                 <div class="proof-index">01</div>
-                <h3>Schema v0.1</h3>
-                <p>Business-facing fields stay separate from canonical machine states.</p>
+                <h3>Input</h3>
+                <p>A public owner/repository name selects the evidence surface.</p>
               </article>
               <article class="proof-card">
                 <div class="proof-index">02</div>
-                <h3>Live API</h3>
-                <p>Public demo bridge calls the running gate endpoint instead of static mock data.</p>
+                <h3>Bounded evidence</h3>
+                <p>Visible repository signals are normalized against fixed, inspectable criteria.</p>
               </article>
               <article class="proof-card">
                 <div class="proof-index">03</div>
-                <h3>Receipts</h3>
-                <p>BLOCK maps to SILENCE: release denied, execution withheld, audit preserved.</p>
+                <h3>Presentation Gate</h3>
+                <p>SHOW, REVIEW, or BLOCK controls benchmark result display only.</p>
               </article>
               <article class="proof-card">
                 <div class="proof-index">04</div>
-                <h3>Open repos</h3>
-                <p>Gate, research context, and product surface are split into inspectable repositories.</p>
+                <h3>Local receipt</h3>
+                <p>The decision trace is downloadable with an integrity hash, not a signature.</p>
               </article>
             </div>
+          </div>
+        </section>
+
+        <section id="origins-and-method" class="mx-auto max-w-site px-5 pb-24 sm:px-6" aria-labelledby="origins-title">
+          <div class="grid gap-5 lg:grid-cols-2">
+            <article class="chapter-card glass">
+              <div>
+                <span class="pill">Why · Genesis</span>
+                <h2 id="origins-title" class="mt-5 text-4xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-5xl">Possibility forms before authority arrives.</h2>
+                <p class="mt-5 text-lg leading-relaxed text-mute">Genesis is the conceptual origin and visual language of SemeAI: candidate formation, divergence, and the moment generation becomes insufficient.</p>
+              </div>
+              <div class="mt-7"><a class="btn-ghost" href="/genesis/">Enter Genesis</a></div>
+            </article>
+            <article class="chapter-card glass">
+              <div>
+                <span class="pill">How · Engineering Book</span>
+                <h2 class="mt-5 text-4xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-5xl">The architecture remains inspectable.</h2>
+                <p class="mt-5 text-lg leading-relaxed text-mute">Read the implementation boundaries behind candidates, Gate decisions, evidence, receipts, replay, continuity, and product surfaces.</p>
+              </div>
+              <div class="mt-7"><a class="btn-ghost" href="/book/">Read the Engineering Book</a></div>
+            </article>
           </div>
         </section>
 
@@ -2469,6 +2548,7 @@
                 SemeAI is developed as working software and as a narrow research direction around release authority after
                 generation. The links below are public proof records, not production-certification claims.
               </p>
+              <div class="mt-7"><a class="btn-primary" href="/research.html">View Research</a></div>
             </div>
             <div class="grid gap-3">
               <a class="hairline rounded-2xl p-5" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">
@@ -2491,16 +2571,16 @@
           <div class="glass rounded-[2rem] px-6 py-16 sm:px-12">
             <span class="pill">Enter the ecosystem</span>
             <h2 class="mx-auto mt-5 max-w-3xl text-4xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-6xl">
-              The model generates. The gate decides. The receipt proves it.
+              The model generates. The Gate decides. The receipt preserves the trace.
             </h2>
             <p class="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-mute">
               Build AI products where generated output has to pass a release boundary before it becomes user-visible,
               action-visible, or memory-visible.
             </p>
             <div class="mt-8 flex flex-wrap justify-center gap-3">
-              <a class="btn-primary" href="register.html?v=20260720a&amp;from=landing">Register workspace</a>
-              <a class="btn-ghost" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener">Open live demo</a>
-              <a class="btn-ghost" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">GitHub</a>
+              <a class="btn-primary" href="/dashboard.html">Open Dashboard</a>
+              <a class="btn-ghost" href="/benchmark/">Run the Benchmark</a>
+              <a class="btn-ghost" href="/gate.html">Explore the Gate</a>
             </div>
           </div>
         </section>
@@ -2512,11 +2592,12 @@
     <script src="assets/js/api.js?v=20260720a"></script>
     <script src="assets/js/cache-bust.js?v=20260720a"></script>
     <script src="assets/js/i18n.js?v=20260720a"></script>
-    <script src="assets/js/site-shell.js?v=20260720h"></script>
+    <script src="assets/js/site-shell.js?v=20260723b"></script>
     <script>
       (function initCanvas() {
         const canvas = document.getElementById("bg-canvas");
         const ctx = canvas.getContext("2d", { alpha: true });
+        const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
         let w = 0, h = 0, dpr = 1, raf = 0;
         let targetX = 0.5, targetY = 0.28, mouseX = 0.5, mouseY = 0.28;
         const points = [];
@@ -2670,10 +2751,14 @@
               }
             }
           }
-          raf = requestAnimationFrame(draw);
+          raf = motionPreference.matches ? 0 : requestAnimationFrame(draw);
         }
 
-        window.addEventListener("resize", () => { resize(); seed(); });
+        window.addEventListener("resize", () => {
+          resize();
+          seed();
+          if (motionPreference.matches) draw(0);
+        });
         window.addEventListener("pointermove", (event) => {
           targetX = event.clientX / Math.max(window.innerWidth, 1);
           targetY = event.clientY / Math.max(window.innerHeight, 1);
@@ -2684,11 +2769,23 @@
         }, { passive: true });
         document.addEventListener("visibilitychange", () => {
           if (document.hidden) cancelAnimationFrame(raf);
-          else raf = requestAnimationFrame(draw);
+          else if (!motionPreference.matches) raf = requestAnimationFrame(draw);
         });
+        const applyMotionPreference = () => {
+          cancelAnimationFrame(raf);
+          raf = 0;
+          if (motionPreference.matches) draw(0);
+          else raf = requestAnimationFrame(draw);
+        };
+        if (typeof motionPreference.addEventListener === "function") {
+          motionPreference.addEventListener("change", applyMotionPreference);
+        } else {
+          motionPreference.addListener(applyMotionPreference);
+        }
         resize();
         seed();
-        raf = requestAnimationFrame(draw);
+        if (motionPreference.matches) draw(0);
+        else raf = requestAnimationFrame(draw);
       })();
 
       const NODE_COPY = {

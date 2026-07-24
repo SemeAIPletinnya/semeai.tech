@@ -7,86 +7,100 @@
     <meta name="description" content="SemeAI Gate product contract: SHOW, REVIEW, BLOCK release decisions for AI answers." />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <link rel="canonical" href="https://semeai.tech/gate.html" />
+    <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260717c" />
+    <link rel="stylesheet" href="assets/css/brand.css?v=20260723b" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260723b" />
   </head>
-  <body>
+  <body class="mode-gate">
+    <a class="skip-link" href="#gate-main">Skip to Gate explanation</a>
     <canvas id="bg-canvas" aria-hidden="true"></canvas>
     <div class="vignette" aria-hidden="true"></div>
     <div class="content">
-      <div data-semeai-nav></div>
-      <main class="site-main">
-        <span class="eyebrow">Product contract</span>
-        <h1 class="page-title">A checkpoint between your LLM and your user.</h1>
+      <div data-semeai-nav>
+        <header class="site-header" data-semeai-header>
+          <div class="site-header-inner">
+            <a class="brand" href="/" aria-label="SemeAI home"><img class="brand-mark semeai-mark" src="/assets/brand/semeai-mark.svg" width="32" height="32" alt="" aria-hidden="true" /><span class="semeai-wordmark">SemeAI</span></a>
+            <nav class="site-nav" aria-label="Primary">
+              <a class="nav-link active" href="/gate.html" aria-current="page">Gate</a>
+              <a class="nav-link" href="/benchmark/">Benchmark</a>
+              <a class="nav-link" href="/genesis/">Genesis</a>
+              <a class="nav-link" href="/book/">Book</a>
+              <a class="nav-link" href="/research.html">Research</a>
+            </nav>
+            <a class="btn-ghost header-dashboard" href="/dashboard.html">Open dashboard</a>
+          </div>
+        </header>
+        <noscript>
+          <nav class="noscript-nav" aria-label="Primary navigation without JavaScript">
+            <a aria-current="page" href="/gate.html">Gate</a><a href="/benchmark/">Benchmark</a><a href="/genesis/">Genesis</a><a href="/book/">Book</a><a href="/research.html">Research</a><a href="/dashboard.html">Open dashboard</a>
+          </nav>
+        </noscript>
+      </div>
+      <main class="site-main" id="gate-main">
+        <span class="eyebrow">SemeAI Gate · release authority</span>
+        <h1 class="page-title">Generation creates a candidate.<br /><span class="glow-text">The Gate decides release.</span></h1>
         <p class="lead">
-          Your product sends a user message, AI answer, business data, rules, and context.
-          SemeAI Gate returns a business action:
-          <span class="pill tag-show">SHOW</span>
-          <span class="pill tag-review">REVIEW</span>
-          or
-          <span class="pill tag-block">BLOCK</span>.
+          SemeAI Gate is a post-generation release-control layer. It evaluates a candidate against policy,
+          visible evidence, and current context before the host product releases, reviews, or withholds it.
         </p>
         <div class="btn-row mt-6">
-          <a class="btn-primary" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener">Open live console</a>
-          <a class="btn-ghost" href="dashboard.html?v=20260717c">Open dashboard</a>
-          <a class="btn-ghost" href="register.html?v=20260717c">Register workspace</a>
+          <a class="btn-primary" href="/benchmark/">Try the benchmark</a>
+          <a class="btn-ghost" href="/dashboard.html">Open dashboard</a>
+          <a class="btn-ghost" href="/book/">Inspect the Engineering Book</a>
+          <a class="btn-ghost" href="/genesis/">View Genesis</a>
         </div>
 
-        <div class="grid-3 mt-10">
-          <article class="card">
-            <h3>SHOW</h3>
-            <p>Maps to <strong style="color:#fff">PROCEED</strong>. Supported enough for release.</p>
-          </article>
-          <article class="card">
-            <h3>REVIEW</h3>
-            <p>Maps to <strong style="color:#fff">NEEDS_REVIEW</strong>. Do not auto-release. Route to an operator.</p>
-          </article>
-          <article class="card">
-            <h3>BLOCK</h3>
-            <p>Maps to <strong style="color:#fff">SILENCE</strong>. Withhold the answer and preserve audit metadata.</p>
-          </article>
-        </div>
-
-        <section class="mt-10 stack-md">
-          <h2 class="section-title">Contract shape</h2>
-          <div class="stack-sm">
-            <div class="panel">
-              <strong style="color:#fff">Input</strong>
-              <p style="margin:0.5rem 0 0;color:var(--mute);font-size:0.9rem;line-height:1.55">
-                user_message, ai_answer, business_data, business_rules, business_context, business_risk, metadata
-              </p>
-            </div>
-            <div class="panel">
-              <strong style="color:#fff">Output</strong>
-              <p style="margin:0.5rem 0 0;color:var(--mute);font-size:0.9rem;line-height:1.55">
-                action, internal_decision, show_to_user, reason, context_integrity, next_step, audit_id, audit_preserved
-              </p>
-            </div>
-            <div class="panel">
-              <strong style="color:#fff">Invariant</strong>
-              <p style="margin:0.5rem 0 0;color:var(--mute);font-size:0.9rem;line-height:1.55">
-                Business labels may be localized. Machine values remain canonical for audit and replay.
-                <strong style="color:#fff">Payment is not gate authority.</strong>
-              </p>
-            </div>
+        <section class="mt-10 stack-md" aria-labelledby="gate-flow-title">
+          <h2 class="section-title" id="gate-flow-title">The release-control boundary</h2>
+          <div class="architecture-flow" aria-label="Candidate to receipt flow">
+            <div><small>01 · Input</small><strong>Candidate</strong><p>The model output enters as a proposal, not an authorized answer.</p></div>
+            <div><small>02 · Context</small><strong>Policy + evidence</strong><p>Rules, business data, source support, risk, and context are evaluated.</p></div>
+            <div><small>03 · Authority</small><strong>SemeAI Gate</strong><p>The Gate—not generation or metadata—makes the release decision.</p></div>
+            <div><small>04 · Outcome</small><strong>SHOW / REVIEW / BLOCK</strong><p>The host receives a restrained business-facing action.</p></div>
+            <div><small>05 · Trace</small><strong>Receipt</strong><p>The decision and its audit evidence remain available for inspection and replay.</p></div>
           </div>
-          <pre class="code-block">POST /v0/check
-Authorization: Bearer &lt;workspace_api_key&gt;
+        </section>
 
-{
-  "user_message": "Give me a 30% discount promo code.",
-  "ai_answer": "Use promo code SAVE30 to get 30% off.",
-  "business_data": { "active_promo_codes": [] },
-  "business_rules": { "only_show_confirmed_promos": true },
-  "business_risk": "fake_promo_code"
-}</pre>
+        <section class="mt-10 stack-md" aria-labelledby="semantics-title">
+          <h2 class="section-title" id="semantics-title">One decision, two semantic layers</h2>
+          <div class="semantic-map">
+            <article class="panel">
+              <span class="eyebrow">Canonical internal states</span>
+              <p><strong style="color:#fff">PROCEED</strong> — release permitted.</p>
+              <p><strong style="color:#fff">NEEDS_REVIEW</strong> — do not auto-release; route to an operator.</p>
+              <p><strong style="color:#fff">SILENCE</strong> — release denied, execution withheld, audit preserved.</p>
+            </article>
+            <article class="panel">
+              <span class="eyebrow">Business-facing presentation</span>
+              <p><span class="pill tag-show">SHOW</span> maps to PROCEED.</p>
+              <p><span class="pill tag-review">REVIEW</span> maps to NEEDS_REVIEW.</p>
+              <p><span class="pill tag-block">BLOCK</span> maps to SILENCE.</p>
+            </article>
+          </div>
+          <p class="boundary-note"><strong style="color:#fff">SILENCE is controlled non-release, not deletion.</strong> The candidate, decision, and audit trail remain distinct. Payment, metadata, and generation are not Gate authority.</p>
+        </section>
+
+        <section class="mt-10 stack-md" aria-labelledby="gate-boundary-title">
+          <h2 class="section-title" id="gate-boundary-title">What the Gate is—and is not</h2>
+          <div class="grid-3">
+            <article class="card"><h3>Post-generation control</h3><p>A release checkpoint used after a model creates a candidate.</p></article>
+            <article class="card"><h3>Not a model or chatbot</h3><p>It does not replace the foundation model, generation runtime, or operator.</p></article>
+            <article class="card"><h3>Not universal certification</h3><p>It is not an alignment replacement, universal safety proof, correctness guarantee, or production certification.</p></article>
+          </div>
+        </section>
+
+        <section class="mt-10 route-transition" aria-labelledby="gate-next-title">
+          <h2 class="section-title" id="gate-next-title">See the principle operating on bounded public evidence.</h2>
+          <p>The Repository Evidence Benchmark has its own display-only Presentation Gate. It demonstrates inspectable decision flow; it is not SaC/PoR runtime release authority.</p>
+          <div class="btn-row"><a class="btn-primary" href="/benchmark/">Run the Repository Evidence Benchmark</a><a class="btn-ghost" href="/research.html">View research boundaries</a></div>
         </section>
       </main>
       <div data-semeai-footer></div>
     </div>
     <script src="assets/js/i18n.js?v=20260717c"></script>
-    <script src="assets/js/site-shell.js?v=20260717c"></script>
+    <script src="assets/js/site-shell.js?v=20260723b"></script>
   </body>
 </html>

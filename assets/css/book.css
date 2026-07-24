@@ -1,22 +1,23 @@
 :root {
   color-scheme: dark;
-  --book-bg: #070809;
-  --book-bg-2: #0c0e10;
-  --book-surface: #111417;
+  --book-bg: var(--semeai-graphite-950, #05080a);
+  --book-bg-2: var(--semeai-graphite-900, #090d10);
+  --book-surface: var(--semeai-graphite-850, #0d1216);
   --book-surface-2: #171b1f;
-  --book-text: #f4f5f6;
-  --book-muted: #a2a8b0;
-  --book-faint: #626a74;
-  --book-line: rgba(244, 245, 246, 0.11);
-  --book-line-strong: rgba(244, 245, 246, 0.2);
-  --book-cyan: #66d9e8;
+  --book-text: var(--semeai-white, #f5f7f7);
+  --book-muted: var(--semeai-muted, #a5afb6);
+  --book-faint: var(--semeai-faint, #68747c);
+  --book-line: var(--semeai-line, rgba(244, 245, 246, 0.11));
+  --book-line-strong: var(--semeai-line-strong, rgba(244, 245, 246, 0.2));
+  --book-cyan: var(--semeai-cyan, #72e7ef);
   --book-green: #73e2a7;
-  --book-warm: #d8c48f;
+  --book-warm: var(--semeai-gold, #d9bd78);
   --book-blue: #7da8ff;
   --book-violet: #a78bfa;
   --book-shadow: 0 32px 90px rgba(0, 0, 0, 0.42);
-  --book-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --book-mono: "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
+  --book-sans: var(--semeai-font-sans, Inter, ui-sans-serif, system-ui, sans-serif);
+  --book-serif: var(--semeai-font-editorial, Georgia, serif);
+  --book-mono: var(--semeai-font-mono, "SFMono-Regular", Consolas, ui-monospace, monospace);
   --nav-width: 18.5rem;
 }
 
@@ -83,9 +84,9 @@ button {
 .book-skip {
   position: fixed;
   left: 1rem;
-  top: 1rem;
+  top: calc(var(--semeai-nav-height, 4rem) + 1rem);
   z-index: 100;
-  transform: translateY(-160%);
+  transform: translateY(calc(-100% - var(--semeai-nav-height, 4rem) - 2rem));
   padding: 0.75rem 1rem;
   border-radius: 999px;
   background: var(--book-text);
@@ -99,7 +100,7 @@ button {
 
 .book-progress {
   position: fixed;
-  inset: 0 0 auto 0;
+  inset: var(--semeai-nav-height, 4rem) 0 auto 0;
   height: 2px;
   z-index: 80;
   background: rgba(255, 255, 255, 0.04);
@@ -124,8 +125,8 @@ button {
 
 .book-nav {
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: var(--semeai-nav-height, 4rem);
+  height: calc(100vh - var(--semeai-nav-height, 4rem));
   padding: 1.25rem;
   border-right: 1px solid var(--book-line);
   background: rgba(7, 8, 9, 0.72);
@@ -145,13 +146,8 @@ button {
 .book-brand-mark {
   width: 2.35rem;
   height: 2.35rem;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--book-cyan), var(--book-green));
-  color: #041010;
-  font-weight: 900;
-  letter-spacing: -0.04em;
+  display: block;
+  object-fit: contain;
 }
 
 .book-brand strong,
@@ -222,7 +218,7 @@ button {
   min-height: 2.45rem;
   padding: 0.7rem 0.9rem;
   border: 1px solid var(--book-line-strong);
-  border-radius: 999px;
+  border-radius: var(--semeai-radius-control, 0.48rem);
   background: rgba(255, 255, 255, 0.035);
   color: var(--book-text);
   cursor: pointer;
@@ -236,9 +232,78 @@ button {
   outline: none;
 }
 
+.book-action--current {
+  border-color: rgba(216, 196, 143, 0.42);
+  color: var(--book-warm);
+  cursor: default;
+}
+
 .book-main {
   min-width: 0;
 }
+
+.book-start {
+  display: grid;
+  gap: 1.25rem;
+  padding: clamp(3rem, 7vw, 6.5rem);
+  border-bottom: 1px solid var(--book-line);
+  background: linear-gradient(135deg, rgba(216, 196, 143, 0.06), rgba(102, 217, 232, 0.025));
+}
+.book-start h2 {
+  max-width: 15ch;
+  margin: 0;
+  font-family: var(--book-serif);
+  font-weight: 500;
+  font-size: clamp(2.3rem, 5vw, 5rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+}
+.book-start > p:not(.book-kicker) {
+  max-width: 48rem;
+  margin: 0;
+  color: var(--book-muted);
+  line-height: 1.7;
+}
+.book-start ol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+.book-start a {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.8rem;
+  min-height: 5rem;
+  padding: 0.9rem;
+  border: 1px solid var(--book-line);
+  background: rgba(255, 255, 255, 0.025);
+}
+.book-start a:hover,
+.book-start a:focus-visible { border-color: rgba(216, 196, 143, 0.5); }
+.book-start a span { grid-row: 1 / span 2; color: var(--book-warm); font-family: var(--book-mono); font-size: 0.72rem; }
+.book-start a strong { color: var(--book-text); }
+.book-start a small { color: var(--book-muted); line-height: 1.45; }
+
+.book-context-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+.book-context-links a {
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--book-line-strong);
+  color: var(--book-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.book-context-links a:hover,
+.book-context-links a:focus-visible { border-color: var(--book-warm); color: var(--book-text); }
 
 .book-page {
   position: relative;
@@ -901,6 +966,10 @@ button {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
 @media (max-width: 1120px) {
   .book-shell {
     grid-template-columns: 1fr;
@@ -908,7 +977,7 @@ button {
 
   .book-nav {
     position: sticky;
-    top: 0;
+    top: var(--semeai-nav-height, 4rem);
     height: auto;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
@@ -925,7 +994,7 @@ button {
     min-height: 2.3rem;
     padding: 0.6rem 0.9rem;
     border: 1px solid var(--book-line-strong);
-    border-radius: 999px;
+    border-radius: var(--semeai-radius-control, 0.48rem);
     background: rgba(255, 255, 255, 0.04);
     color: var(--book-text);
   }
@@ -952,6 +1021,8 @@ button {
 }
 
 @media (max-width: 820px) {
+  .book-start { padding: 5rem 1.25rem; }
+  .book-start ol { grid-template-columns: 1fr; }
   .book-page {
     min-height: auto;
     padding: 6rem 1.25rem;
@@ -1075,6 +1146,7 @@ button {
 
   body.book-body::before,
   body.book-body::after,
+  .site-header,
   .book-progress,
   .book-nav,
   .book-skip {

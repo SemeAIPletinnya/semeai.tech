@@ -6,24 +6,33 @@ Public product site for **SemeAI Gate**.
 
 | Page | Role | Visual system |
 | --- | --- | --- |
-| `index.html` | Marketing home | void/cyan (standalone) |
+| `index.html` | Orientation and routing | runtime / cyan |
 | `register.html` | Workspace registration + verify | void/cyan (standalone) |
-| `dashboard.html` | Keys, checks, receipts, billing | void/cyan (standalone) |
-| `gate.html` | Product contract | shared `site.css` |
+| `dashboard.html` | Governed operator workspace | operational / cyan |
+| `gate.html` | Product contract | authority boundary / cyan + gold |
+| `benchmark/index.html` | Public evidence instrument | editorial evidence / gold |
+| `genesis/index.html` | Origin narrative | cinematic origin / gold + cyan |
+| `book/index.html` | Engineering Book | technical manuscript / gold + cyan |
 | `self-hosted.html` | Deployment modes | shared `site.css` |
-| `research.html` | Public proof links | shared `site.css` |
+| `research.html` | Evidence and claim boundaries | product/editorial bridge |
 | `article.html` | Thesis (EN/UA/RU) | shared `site.css` |
 | `account.html` | Redirect -> dashboard | shared `site.css` |
-| `book/index.html` | Engineering Book | standalone `book.css` |
 
 ## Shared assets
 
-- `assets/css/site.css` - product site design system (void / cyan)
+- `assets/css/brand.css` - shared color, type, spacing, geometry, focus, and motion tokens
+- `assets/brand/` - primary, monochrome, and favicon-safe SemeAI marks
+- `assets/css/site.css` - shared navigation, controls, panels, and product-surface dialects
 - `assets/css/book.css` - Engineering Book publication system
 - `assets/js/site-shell.js` - sticky nav, footer, canvas
 - `assets/js/book-content.js` / `book.js` - Engineering Book content and renderer
 - `assets/js/api.js` - API client for `https://api.semeai.tech`
 - `assets/css/semeai.css` / `product.css` / `shell.js` - legacy (phasing out)
+
+Cyan identifies active runtime and interaction. Gold identifies authority, admitted
+evidence, retained trace, and editorial emphasis. White remains candidate/readable
+information; graphite and black define controlled space. SHOW, REVIEW, and BLOCK
+retain their existing semantic mapping.
 
 ## API dependency
 

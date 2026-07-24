@@ -5,6 +5,7 @@
   const progress = document.getElementById("book-progress-bar");
   const menuButton = document.getElementById("book-menu-button");
   const printButton = document.getElementById("book-print-button");
+  const startOrientation = document.getElementById("book-start");
 
   if (!data || !main || !nav) return;
 
@@ -354,6 +355,7 @@
   }
 
   main.innerHTML = data.chapters.map(renderChapter).join("");
+  if (startOrientation) main.firstElementChild?.after(startOrientation);
   nav.innerHTML = data.chapters
     .map(
       (chapter) => `
@@ -366,11 +368,43 @@
     )
     .join("");
 
+  const appendContextLinks = (chapterId, items) => {
+    const chapter = document.getElementById(chapterId);
+    if (!chapter) return;
+    const links = document.createElement("nav");
+    links.className = "book-context-links";
+    links.setAttribute("aria-label", "Related SemeAI routes");
+    items.forEach((item) => {
+      const link = document.createElement("a");
+      link.href = item.href;
+      link.textContent = item.label;
+      links.append(link);
+    });
+    chapter.append(links);
+  };
+
+  appendContextLinks("gate", [
+    { label: "See this principle in the Benchmark", href: "/benchmark/" },
+    { label: "Return to the product Gate", href: "/gate.html" },
+  ]);
+  appendContextLinks("proof", [
+    { label: "Run the Repository Evidence Benchmark", href: "/benchmark/" },
+    { label: "View the research boundary", href: "/research.html" },
+  ]);
+  appendContextLinks("not-claims", [
+    { label: "Inspect research limitations", href: "/research.html" },
+  ]);
+
   const navLinks = Array.from(document.querySelectorAll("[data-chapter-link]"));
   const pages = Array.from(document.querySelectorAll(".book-page"));
 
   const setActive = (id) => {
-    navLinks.forEach((link) => link.classList.toggle("active", link.dataset.chapterLink === id));
+    navLinks.forEach((link) => {
+      const active = link.dataset.chapterLink === id;
+      link.classList.toggle("active", active);
+      if (active) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
   };
 
   if ("IntersectionObserver" in window) {
@@ -400,6 +434,15 @@
   menuButton?.addEventListener("click", () => {
     const open = document.body.classList.toggle("book-nav-open");
     menuButton.setAttribute("aria-expanded", String(open));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.body.classList.contains("book-nav-open")) {
+      event.preventDefault();
+      document.body.classList.remove("book-nav-open");
+      menuButton?.setAttribute("aria-expanded", "false");
+      menuButton?.focus();
+    }
   });
 
   navLinks.forEach((link) => {

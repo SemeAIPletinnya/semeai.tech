@@ -14,23 +14,59 @@
       content="An isolated experimental benchmark of visible public repository evidence."
     />
     <title>Repository Evidence Benchmark — SemeAI</title>
-    <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="./assets/benchmark.css?v=20260722a" />
-    <script src="./assets/sigil.js?v=20260722a" defer></script>
-    <script src="./assets/benchmark.js?v=20260722a" defer></script>
+    <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
+    <link rel="stylesheet" href="/assets/css/site.css?v=20260723b" />
+    <link rel="stylesheet" href="./assets/benchmark.css?v=20260723b" />
+    <script src="./assets/sigil.js?v=20260723a" defer></script>
+    <script src="./assets/benchmark.js?v=20260723a" defer></script>
   </head>
-  <body>
+  <body class="mode-evidence" data-semeai-custom-bg>
     <a class="skip-link" href="#benchmark-input">Skip to benchmark input</a>
 
-    <div class="page-shell">
-      <header class="site-header" aria-label="Isolated benchmark header">
-        <div class="wordmark" aria-label="SemeAI">
-          <span class="wordmark-mark" aria-hidden="true"></span>
-          <span>SEMEAI</span>
+    <div data-semeai-nav>
+      <header class="site-header" data-semeai-header>
+        <div class="site-header-inner">
+          <a class="brand" href="/" aria-label="SemeAI home"><img class="brand-mark semeai-mark" src="/assets/brand/semeai-mark.svg" width="32" height="32" alt="" aria-hidden="true" /><span class="semeai-wordmark">SemeAI</span></a>
+          <nav class="site-nav" aria-label="Primary">
+            <a class="nav-link" href="/gate.html">Gate</a>
+            <a class="nav-link active" href="/benchmark/" aria-current="page">Benchmark</a>
+            <a class="nav-link" href="/genesis/">Genesis</a>
+            <a class="nav-link" href="/book/">Book</a>
+            <a class="nav-link" href="/research.html">Research</a>
+          </nav>
+          <a class="btn-ghost header-dashboard" href="/dashboard.html">Open dashboard</a>
         </div>
-        <div class="instrument-status">
-          <span class="status-light" aria-hidden="true"></span>
-          ISOLATED EVIDENCE INSTRUMENT
+      </header>
+      <noscript>
+        <nav class="noscript-nav" aria-label="Primary navigation without JavaScript">
+          <a href="/gate.html">Gate</a><a aria-current="page" href="/benchmark/">Benchmark</a><a href="/genesis/">Genesis</a><a href="/book/">Book</a><a href="/research.html">Research</a><a href="/dashboard.html">Open dashboard</a>
+        </nav>
+      </noscript>
+    </div>
+
+    <div class="page-shell">
+      <header class="benchmark-header" aria-label="Repository Evidence Benchmark controls">
+        <a class="wordmark" href="/" aria-label="SemeAI home">
+          <img class="wordmark-mark" src="/assets/brand/semeai-mark-mono.svg" width="24" height="24" alt="" aria-hidden="true" />
+          <span>REPOSITORY EVIDENCE BENCHMARK</span>
+        </a>
+        <div class="benchmark-header-actions">
+          <div class="instrument-status" aria-current="page">
+            <span class="status-light" aria-hidden="true"></span>
+            ISOLATED EVIDENCE INSTRUMENT
+          </div>
+          <nav class="benchmark-route-nav" aria-label="Benchmark context">
+            <a href="/gate.html">UNDERSTAND THE GATE</a>
+            <a href="/book/">METHOD</a>
+          </nav>
+          <div class="benchmark-auth-entry">
+            <a
+              href="https://api.semeai.tech/v0/oauth/github/start?return_path=%2Fbenchmark%2Fworkspace%2F"
+              >SIGN IN WITH GITHUB</a
+            >
+            <span>Save results · track progression · connect repositories</span>
+          </div>
         </div>
       </header>
 
@@ -40,7 +76,8 @@
             <p class="eyebrow">REPOSITORY 001</p>
             <h1 id="page-title">A REPOSITORY,<br /><span>NOT A PROFILE</span></h1>
             <p class="hero-description">
-              Benchmarking repository evidence on the path toward governed intelligence.
+              A transparent benchmark of visible implementation, reproducibility, evidence,
+              continuity, and release-control signals.
             </p>
             <p class="hero-secondary">The project is the identity. The benchmark is the trace.</p>
           </div>
@@ -72,7 +109,10 @@
           </div>
 
           <form id="benchmark-form" novalidate>
-            <label for="repository-input">OWNER / REPOSITORY OR FULL GITHUB URL</label>
+            <label for="repository-input">
+              <span>PUBLIC GITHUB REPOSITORY</span>
+              <small>OWNER / REPOSITORY OR FULL URL</small>
+            </label>
             <div class="input-row">
               <input
                 id="repository-input"
@@ -117,10 +157,18 @@
         </noscript>
 
         <section id="blocked-result" class="blocked-panel" aria-labelledby="blocked-title" hidden>
-          <p class="section-index">PRESENTATION GATE / BLOCK</p>
-          <h2 id="blocked-title">Score withheld.</h2>
-          <p id="blocked-message"></p>
-          <ul id="blocked-reasons"></ul>
+          <div class="blocked-copy">
+            <p class="section-index">PRESENTATION GATE / BLOCK</p>
+            <p id="blocked-repository" class="blocked-repository" hidden></p>
+            <h2 id="blocked-title">Score withheld.</h2>
+            <p id="blocked-gate-explanation" class="blocked-gate-explanation">BLOCK — Score withheld.</p>
+            <p id="blocked-message"></p>
+            <ul id="blocked-reasons"></ul>
+          </div>
+          <div class="blocked-visual">
+            <div id="blocked-sigil" class="evidence-sigil blocked-sigil"></div>
+            <p>INCOMPLETE MUTED TRACE / NO SCORE RELEASE</p>
+          </div>
         </section>
 
         <article id="benchmark-result" class="result" aria-labelledby="result-title" hidden>
@@ -147,15 +195,29 @@
             <div id="gate-badge" class="gate-badge">
               <span>PRESENTATION GATE</span>
               <strong id="gate-decision"></strong>
+              <p id="gate-explanation"></p>
             </div>
           </header>
+
+          <div class="gate-light-trace" aria-hidden="true"><span></span></div>
 
           <section class="score-stage" aria-labelledby="score-title">
             <div class="score-primary">
               <p id="score-title">REPOSITORY PROGRESSION INDEX</p>
               <p class="score-number"><span id="total-score"></span><small>/ 100</small></p>
               <p class="score-note">Visible evidence, transparently weighted.</p>
+              <div class="repository-profile">
+                <span>REPOSITORY PROFILE</span>
+                <p id="repository-profile"></p>
+              </div>
             </div>
+            <figure class="score-sigil-frame">
+              <div id="result-sigil" class="evidence-sigil"></div>
+              <figcaption>
+                <span>EVIDENCE SHAPES THIS FORM</span>
+                <span>FOCUS A CATEGORY TO ISOLATE ITS TRACE</span>
+              </figcaption>
+            </figure>
             <div class="indicator-grid" aria-label="Derived editorial indicators">
               <div class="indicator">
                 <span>REPOSITORY SIGNAL</span>
@@ -190,6 +252,7 @@
               <p>
                 The analyzer awards only the fixed criteria shown below. Path matches are
                 heuristics: they show visible structure, not executed proof or correctness.
+                Open any category to inspect every criterion, basis, evidence path, and point value.
               </p>
               <div id="criteria-list" class="criteria-list"></div>
             </div>
@@ -205,11 +268,11 @@
             </div>
             <div class="ledger-grid">
               <div>
-                <h4>ADMITTED EVIDENCE</h4>
+                <h4>ADMITTED EVIDENCE <span id="admitted-count"></span></h4>
                 <ul id="admitted-signals" class="ledger-list"></ul>
               </div>
               <div>
-                <h4>MISSING EVIDENCE</h4>
+                <h4>MISSING EVIDENCE <span id="missing-count"></span></h4>
                 <ul id="missing-signals" class="ledger-list missing"></ul>
               </div>
             </div>
@@ -225,7 +288,10 @@
               <h3 id="receipt-title">Decision trace, ready to retain.</h3>
               <p>
                 The receipt records the admitted candidate and presentation Gate decision. Its
-                SHA-256 value is an integrity hash, not a signature and not a SaC/PoR release receipt.
+                SHA-256 value preserves the local decision trace.
+              </p>
+              <p class="receipt-boundary">
+                Integrity hash, not a signature.<br />Not a SaC/PoR release receipt.
               </p>
             </div>
             <div class="receipt-card">
@@ -250,6 +316,32 @@
             </div>
           </section>
 
+          <aside class="save-trace" aria-labelledby="save-trace-title">
+            <div>
+              <p class="section-index">REPOSITORY WORKSPACE</p>
+              <h3 id="save-trace-title">SAVE THIS TRACE</h3>
+              <p>Save results · track progression · connect repositories</p>
+              <small>
+                Sign in to retain future authenticated runs. This completed anonymous result is
+                not associated with an account.
+              </small>
+            </div>
+            <a
+              class="primary-button save-trace-button"
+              href="https://api.semeai.tech/v0/oauth/github/start?return_path=%2Fbenchmark%2Fworkspace%2F"
+            >
+              <span>SIGN IN WITH GITHUB</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </aside>
+
+          <nav class="result-route-actions" aria-label="Continue after benchmark result">
+            <a href="/gate.html"><small>PRODUCT AUTHORITY</small><strong>UNDERSTAND THE GATE</strong></a>
+            <a href="/book/"><small>IMPLEMENTATION</small><strong>INSPECT THE METHOD</strong></a>
+            <a href="#benchmark-input"><small>ANOTHER TRACE</small><strong>TEST ANOTHER REPOSITORY</strong></a>
+            <a href="/research.html"><small>CLAIM BOUNDARY</small><strong>VIEW RESEARCH BOUNDARIES</strong></a>
+          </nav>
+
           <aside class="editorial-note" aria-label="Interpretation note">
             <p>Low public popularity does not erase strong repository evidence.</p>
             <p>Stars are one public signal, not verification of quality.</p>
@@ -259,11 +351,15 @@
         <section class="methodology" aria-labelledby="methodology-title">
           <p class="section-index">METHOD / BOUNDARY</p>
           <h2 id="methodology-title">What this instrument can—and cannot—say.</h2>
+          <div class="benchmark-boundary-flow" aria-label="Benchmark presentation flow">
+            <span>INPUT</span><span>BOUNDED PUBLIC EVIDENCE</span><span>CANDIDATE SCORE</span><span>BENCHMARK PRESENTATION GATE</span><span>LOCAL RECEIPT</span>
+          </div>
           <div class="method-grid">
             <p>
               This prototype reads public repository metadata, a bounded default-branch tree,
               languages, release metadata, README, and two fixed documentation paths. It never
-              clones or executes repository code.
+              clones or executes repository code. Its Presentation Gate controls benchmark display only;
+              it is not SaC/PoR runtime release authority.
             </p>
             <p class="mandatory-disclaimer">
               This score measures visible repository evidence. It does not measure AGI
@@ -275,8 +371,10 @@
 
       <footer>
         <span>SEMEAI / REPOSITORY EVIDENCE BENCHMARK</span>
-        <span>EXPERIMENTAL PROTOTYPE · UNLINKED · NOINDEX</span>
+        <span>EXPERIMENTAL PROTOTYPE · PUBLIC PREVIEW · NOINDEX</span>
       </footer>
     </div>
+    <script src="/assets/js/i18n.js?v=20260717e"></script>
+    <script src="/assets/js/site-shell.js?v=20260723b"></script>
   </body>
 </html>

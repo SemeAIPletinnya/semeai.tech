@@ -1,0 +1,107 @@
+/* SemeAI shared brand foundation.
+   Surface styles consume these tokens without losing their semantic mode. */
+:root {
+  color-scheme: dark;
+
+  --semeai-black: #030506;
+  --semeai-graphite-950: #05080a;
+  --semeai-graphite-900: #090d10;
+  --semeai-graphite-850: #0d1216;
+  --semeai-graphite-800: #12181d;
+  --semeai-white: #f5f7f7;
+  --semeai-muted: #a5afb6;
+  --semeai-faint: #68747c;
+  --semeai-line: rgba(226, 239, 242, 0.12);
+  --semeai-line-strong: rgba(226, 239, 242, 0.2);
+
+  --semeai-cyan: #72e7ef;
+  --semeai-cyan-strong: #25c9d8;
+  --semeai-cyan-soft: #b4f7fa;
+  --semeai-cyan-field: rgba(114, 231, 239, 0.09);
+  --semeai-gold: #d9bd78;
+  --semeai-gold-strong: #b9964e;
+  --semeai-gold-soft: #f1dfa9;
+  --semeai-gold-field: rgba(217, 189, 120, 0.09);
+
+  --semeai-show: #64d995;
+  --semeai-review: #e6b95b;
+  --semeai-block: #e77979;
+
+  --semeai-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --semeai-font-editorial: "Cormorant Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --semeai-font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", ui-monospace, monospace;
+
+  --semeai-container: 72rem;
+  --semeai-reading: 44rem;
+  --semeai-nav-height: 4rem;
+  --semeai-space-1: 0.25rem;
+  --semeai-space-2: 0.5rem;
+  --semeai-space-3: 0.75rem;
+  --semeai-space-4: 1rem;
+  --semeai-space-5: 1.5rem;
+  --semeai-space-6: 2rem;
+  --semeai-space-7: 3rem;
+  --semeai-space-8: 4.5rem;
+
+  --semeai-radius-control: 0.48rem;
+  --semeai-radius-card: 0.72rem;
+  --semeai-radius-panel: 0.95rem;
+  --semeai-border: 1px;
+  --semeai-shadow-panel: 0 28px 80px rgba(0, 0, 0, 0.42);
+  --semeai-shadow-cyan: 0 14px 42px rgba(37, 201, 216, 0.18);
+  --semeai-shadow-gold: 0 14px 42px rgba(185, 150, 78, 0.14);
+  --semeai-focus: 0 0 0 3px rgba(114, 231, 239, 0.24);
+
+  --semeai-motion-fast: 150ms;
+  --semeai-motion-base: 220ms;
+  --semeai-motion-slow: 520ms;
+  --semeai-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --semeai-mode-accent: var(--semeai-cyan);
+  --semeai-mode-accent-soft: var(--semeai-cyan-soft);
+  --semeai-mode-field: var(--semeai-cyan-field);
+}
+
+.mode-evidence,
+.mode-editorial {
+  --semeai-mode-accent: var(--semeai-gold);
+  --semeai-mode-accent-soft: var(--semeai-gold-soft);
+  --semeai-mode-field: var(--semeai-gold-field);
+}
+
+.mode-research {
+  --semeai-mode-accent: var(--semeai-cyan);
+  --semeai-mode-accent-soft: var(--semeai-gold-soft);
+  --semeai-mode-field: rgba(114, 231, 239, 0.055);
+}
+
+.semeai-mark {
+  display: block;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+}
+
+.semeai-mark--small {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.semeai-mark--large {
+  width: 3rem;
+  height: 3rem;
+}
+
+.semeai-wordmark {
+  font-family: var(--semeai-font-sans);
+  font-weight: 700;
+  letter-spacing: -0.018em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --semeai-motion-fast: 1ms;
+    --semeai-motion-base: 1ms;
+    --semeai-motion-slow: 1ms;
+  }
+}
