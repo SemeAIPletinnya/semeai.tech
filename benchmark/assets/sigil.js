@@ -283,6 +283,156 @@
     return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
   }
 
+  /**
+   * Evidence-form evolution ranks (visual only — does not alter scores).
+   * F-1  fragment       → barely formed
+   * C-3  prism          → stable prism
+   * A-5  crystal        → completed crystal
+   * S-3  monolith       → governed monolith
+   * SS-4 archival crown → near-complete archival form (e.g. 99/100)
+   * SS-5 complete       → full evidence artifact (100/100 + all categories present)
+   */
+  const EVOLUTION_RANKS = Object.freeze({
+    "F-1": {
+      code: "F-1",
+      name: "Fragment",
+      title: "Barely formed fragment",
+      sides: 3,
+      layerBase: 1,
+      layerSpan: 1,
+      heightScale: 0.42,
+      radiusScale: 0.55,
+      taper: 0.72,
+      faceRatio: 0.35,
+      latticeScale: 0.15,
+      spine: false,
+      orbit: false,
+      crown: false,
+      diadem: false,
+      sealed: false,
+      doubleHalo: false,
+    },
+    "C-3": {
+      code: "C-3",
+      name: "Prism",
+      title: "Stable prism",
+      sides: 4,
+      layerBase: 2,
+      layerSpan: 1,
+      heightScale: 0.58,
+      radiusScale: 0.72,
+      taper: 0.88,
+      faceRatio: 0.7,
+      latticeScale: 0.35,
+      spine: true,
+      orbit: false,
+      crown: false,
+      diadem: false,
+      sealed: false,
+      doubleHalo: false,
+    },
+    "A-5": {
+      code: "A-5",
+      name: "Crystal",
+      title: "Completed crystal",
+      sides: 5,
+      layerBase: 3,
+      layerSpan: 2,
+      heightScale: 0.74,
+      radiusScale: 0.86,
+      taper: 0.48,
+      faceRatio: 0.88,
+      latticeScale: 0.55,
+      spine: true,
+      orbit: false,
+      crown: true,
+      diadem: false,
+      sealed: false,
+      doubleHalo: false,
+    },
+    "S-3": {
+      code: "S-3",
+      name: "Monolith",
+      title: "Governed monolith",
+      sides: 6,
+      layerBase: 4,
+      layerSpan: 2,
+      heightScale: 0.9,
+      radiusScale: 0.94,
+      taper: 0.4,
+      faceRatio: 1,
+      latticeScale: 0.75,
+      spine: true,
+      orbit: true,
+      crown: true,
+      diadem: false,
+      sealed: true,
+      doubleHalo: false,
+    },
+    "SS-4": {
+      code: "SS-4",
+      name: "Archival crown",
+      title: "Archival crown",
+      sides: 6,
+      layerBase: 6,
+      layerSpan: 1,
+      heightScale: 1,
+      radiusScale: 1,
+      taper: 0.36,
+      faceRatio: 1,
+      latticeScale: 0.92,
+      spine: true,
+      orbit: true,
+      crown: true,
+      diadem: true,
+      sealed: true,
+      doubleHalo: false,
+    },
+    "SS-5": {
+      code: "SS-5",
+      name: "Complete artifact",
+      title: "Fully completed evidence artifact",
+      sides: 6,
+      layerBase: 7,
+      layerSpan: 1,
+      heightScale: 1.06,
+      radiusScale: 1.05,
+      taper: 0.32,
+      faceRatio: 1,
+      latticeScale: 1,
+      spine: true,
+      orbit: true,
+      crown: true,
+      diadem: true,
+      sealed: true,
+      doubleHalo: true,
+    },
+  });
+
+  function deriveEvolutionRank(totalScore, categories, gateDecision) {
+    const score = Number.isFinite(Number(totalScore)) ? Number(totalScore) : 0;
+    const allCategoriesPresent = (categories || []).length > 0 && (categories || []).every((category) => category.score > 0);
+    if (gateDecision === "BLOCK" && score <= 0) {
+      return EVOLUTION_RANKS["F-1"];
+    }
+    if (score >= 100 && allCategoriesPresent) {
+      return EVOLUTION_RANKS["SS-5"];
+    }
+    if (score >= 95) {
+      return EVOLUTION_RANKS["SS-4"];
+    }
+    if (score >= 75) {
+      return EVOLUTION_RANKS["S-3"];
+    }
+    if (score >= 50) {
+      return EVOLUTION_RANKS["A-5"];
+    }
+    if (score >= 25) {
+      return EVOLUTION_RANKS["C-3"];
+    }
+    return EVOLUTION_RANKS["F-1"];
+  }
+
   function buildEvidenceSigilModel(input) {
     const repository = String(input.repository || "repository/unknown");
     const commitSha = String(input.commitSha || "pending");
@@ -316,18 +466,22 @@
     const repositorySignal = clamp((implementation + continuity + external) / 3, 0, 1);
     const evidenceDepth = clamp((tests + evidence + research) / 3, 0, 1);
     const gateDiscipline = clamp(releaseControl, 0, 1);
+    const evolution = deriveEvolutionRank(totalScore, categories, gateDecision);
 
     const originX = 180;
     const originY = 198;
-    const sides = visualPhase === "EXPANSION" || visualSeed > 0 ? 6 : 5;
-    const layerCount = 3 + Math.floor(evidenceDepth * 5);
-    const baseRadius = 52 + repositorySignal * 48;
-    const height = 88 + totalCoverage * 112;
-    const taper = 0.34 + gateDiscipline * 0.4;
+    const sides = evolution.sides;
+    const layerCount = Math.max(1, evolution.layerBase + Math.floor(evidenceDepth * evolution.layerSpan));
+    const baseRadius = (38 + repositorySignal * 42) * evolution.radiusScale;
+    const height = (72 + totalCoverage * 96) * evolution.heightScale;
+    const taper = evolution.taper * (0.92 + gateDiscipline * 0.12);
     const yaw = (visualSeed > 0 ? 0.42 : -0.38) + random() * 0.22;
-    const ridgeSharpness = 0.55 + gateDiscipline * 0.45;
+    const ridgeSharpness = 0.4 + gateDiscipline * 0.45 + (evolution.sealed ? 0.15 : 0);
     const gateIntensity = gateDecision === "SHOW" ? 1 : gateDecision === "REVIEW" ? 0.72 : 0.38;
-    const completeness = gateDecision === "BLOCK" ? 0.42 : gateDecision === "REVIEW" ? 0.78 : 1;
+    const completeness = Math.min(
+      evolution.faceRatio,
+      gateDecision === "BLOCK" ? 0.38 : gateDecision === "REVIEW" ? 0.82 : 1,
+    );
 
     const layers = [];
     for (let level = 0; level <= layerCount; level += 1) {
@@ -410,30 +564,99 @@
 
       const crown = ringPoints[layerCount][side];
       const crownNext = ringPoints[layerCount][next];
-      facets.push({
-        id: `crown-${category.key}-${side + 1}`,
-        category: category.key,
-        categoryIndex: EVIDENCE_CATEGORIES.indexOf(category.key),
-        points: [crown, crownNext, apex],
-        color,
-        opacity: round((0.08 + category.coverage * 0.18) * gateIntensity),
-        coverage: category.coverage,
-      });
-      edges.push({
-        id: `apex-${category.key}-${side + 1}`,
-        category: category.key,
-        categoryIndex: EVIDENCE_CATEGORIES.indexOf(category.key),
-        d: linePath(crown, apex),
-        color,
-        width: round(0.7 + ridgeSharpness * 0.9),
-        opacity: round((0.28 + category.coverage * 0.5) * gateIntensity),
-        dash: gateDecision === "BLOCK" ? "3 9" : "",
-      });
+      if (evolution.crown) {
+        facets.push({
+          id: `crown-${category.key}-${side + 1}`,
+          category: category.key,
+          categoryIndex: EVIDENCE_CATEGORIES.indexOf(category.key),
+          points: [crown, crownNext, apex],
+          color,
+          opacity: round((0.08 + category.coverage * 0.18) * gateIntensity),
+          coverage: category.coverage,
+        });
+        edges.push({
+          id: `apex-${category.key}-${side + 1}`,
+          category: category.key,
+          categoryIndex: EVIDENCE_CATEGORIES.indexOf(category.key),
+          d: linePath(crown, apex),
+          color,
+          width: round(0.7 + ridgeSharpness * 0.9),
+          opacity: round((0.28 + category.coverage * 0.5) * gateIntensity),
+          dash: gateDecision === "BLOCK" || evolution.code === "F-1" ? "3 9" : "",
+        });
+      } else if (evolution.code === "C-3") {
+        // Flat prism cap — no pyramidal crown.
+        edges.push({
+          id: `cap-${category.key}-${side + 1}`,
+          category: category.key,
+          categoryIndex: EVIDENCE_CATEGORIES.indexOf(category.key),
+          d: linePath(crown, crownNext),
+          color,
+          width: round(0.85 + ridgeSharpness * 0.4),
+          opacity: round((0.3 + category.coverage * 0.4) * gateIntensity),
+          dash: "",
+        });
+      } else {
+        // F-1: open, incomplete edges toward a missing apex.
+        edges.push({
+          id: `shard-${category.key}-${side + 1}`,
+          category: category.key,
+          categoryIndex: EVIDENCE_CATEGORIES.indexOf(category.key),
+          d: linePath(crown, projectIso(0, height * 0.2, 0, originX, originY, yaw)),
+          color,
+          width: round(0.5 + ridgeSharpness * 0.35),
+          opacity: round(0.18 * gateIntensity),
+          dash: "2 8",
+        });
+      }
+
+      // SS-4 / SS-5 archival diadem — secondary crown ring above the apex base.
+      if (evolution.diadem) {
+        const diademScale = evolution.code === "SS-5" ? 0.52 : 0.44;
+        const diademY = height * (evolution.code === "SS-5" ? 0.48 : 0.44);
+        const diademPoint = projectIso(
+          Math.cos((side / sides) * Math.PI * 2) * baseRadius * diademScale,
+          diademY,
+          Math.sin((side / sides) * Math.PI * 2) * baseRadius * diademScale,
+          originX,
+          originY,
+          yaw,
+        );
+        const diademNext = projectIso(
+          Math.cos((next / sides) * Math.PI * 2) * baseRadius * diademScale,
+          diademY,
+          Math.sin((next / sides) * Math.PI * 2) * baseRadius * diademScale,
+          originX,
+          originY,
+          yaw,
+        );
+        edges.push({
+          id: `diadem-ring-${category.key}-${side + 1}`,
+          category: category.key,
+          categoryIndex: EVIDENCE_CATEGORIES.indexOf(category.key),
+          d: linePath(diademPoint, diademNext),
+          color: "gold",
+          width: round(0.75 + (evolution.code === "SS-5" ? 0.35 : 0.15)),
+          opacity: round((0.4 + category.coverage * 0.35) * gateIntensity),
+          dash: "",
+        });
+        edges.push({
+          id: `diadem-rise-${category.key}-${side + 1}`,
+          category: category.key,
+          categoryIndex: EVIDENCE_CATEGORIES.indexOf(category.key),
+          d: linePath(diademPoint, apex),
+          color: color === "gold" ? "violet" : "gold",
+          width: round(0.55 + ridgeSharpness * 0.35),
+          opacity: round((0.32 + category.coverage * 0.35) * gateIntensity),
+          dash: "",
+        });
+      }
     }
 
-    // Category-owned lattice filaments inside the crystal (evidence density).
+    // Category-owned lattice filaments (scaled by evolution lattice density).
     categories.forEach((category, categoryIndex) => {
-      const filaments = category.coverage === 0 ? 0 : 1 + Math.floor(category.coverage * 3 * evidenceDepth);
+      const maxFilaments = Math.floor((1 + category.coverage * 3 * evidenceDepth) * evolution.latticeScale);
+      const filaments = category.coverage === 0 ? 0 : Math.max(evolution.latticeScale > 0.2 ? 1 : 0, maxFilaments);
       for (let index = 0; index < filaments; index += 1) {
         const angle = (categoryIndex / categories.length) * Math.PI * 2 + (index - filaments / 2) * 0.18;
         const inner = 0.18 + category.coverage * 0.35;
@@ -449,12 +672,11 @@
           d: linePath(a, b),
           color: categoryIndex % 2 === 0 ? "gold" : "violet",
           width: round(0.35 + category.coverage * 0.45),
-          opacity: round((0.1 + category.coverage * 0.42) * gateIntensity),
-          dash: category.coverage < 0.35 ? "4 7" : "",
+          opacity: round((0.1 + category.coverage * 0.42) * gateIntensity * evolution.latticeScale),
+          dash: category.coverage < 0.35 || evolution.code === "F-1" ? "4 7" : "",
         });
       }
 
-      // Anchors: crystalline nodes on the outer ridge for this category sector.
       const sector = categoryIndex % sides;
       const nodeLayer = Math.min(layerCount, 1 + Math.floor(category.coverage * (layerCount - 1)));
       const node = ringPoints[nodeLayer][sector];
@@ -464,36 +686,38 @@
         categoryIndex,
         x: node.x,
         y: node.y,
-        radius: round(1.2 + category.coverage * 2.4 + evidenceDepth * 0.8),
+        radius: round((1.0 + category.coverage * 2.2 + evidenceDepth * 0.7) * (0.7 + evolution.latticeScale * 0.4)),
         opacity: round((0.16 + category.coverage * 0.7) * gateIntensity),
       });
     });
 
-    // Core spine: governed continuity axis.
+    // Core spine: governed continuity axis (from C-3 upward).
     const spineBottom = projectIso(0, -height * 0.48, 0, originX, originY, yaw);
     const spineMid = projectIso(0, 0, 0, originX, originY, yaw);
-    edges.push({
-      id: "spine-core",
-      category: "continuity",
-      categoryIndex: EVIDENCE_CATEGORIES.indexOf("continuity"),
-      d: linePath(spineBottom, apex),
-      color: "gold",
-      width: round(0.9 + continuity * 1.1),
-      opacity: round((0.2 + continuity * 0.55) * gateIntensity),
-      dash: continuity < 0.3 ? "3 8" : "",
-    });
-    anchors.push({
-      id: "core-anchor",
-      category: "evidence",
-      categoryIndex: EVIDENCE_CATEGORIES.indexOf("evidence"),
-      x: spineMid.x,
-      y: spineMid.y,
-      radius: round(2 + evidence * 2.5),
-      opacity: round((0.35 + evidence * 0.5) * gateIntensity),
-    });
+    if (evolution.spine) {
+      edges.push({
+        id: "spine-core",
+        category: "continuity",
+        categoryIndex: EVIDENCE_CATEGORIES.indexOf("continuity"),
+        d: linePath(spineBottom, evolution.crown ? apex : ringPoints[layerCount][0]),
+        color: "gold",
+        width: round(0.9 + continuity * 1.1 + (evolution.sealed ? 0.25 : 0)),
+        opacity: round((0.2 + continuity * 0.55) * gateIntensity),
+        dash: continuity < 0.3 ? "3 8" : "",
+      });
+      anchors.push({
+        id: "core-anchor",
+        category: "evidence",
+        categoryIndex: EVIDENCE_CATEGORIES.indexOf("evidence"),
+        x: spineMid.x,
+        y: spineMid.y,
+        radius: round(2 + evidence * 2.5),
+        opacity: round((0.35 + evidence * 0.5) * gateIntensity),
+      });
+    }
 
-    // External orbit ring — public signal envelope.
-    if (external > 0 || gateDecision !== "BLOCK") {
+    // External orbit — public signal envelope (S-3+).
+    if (evolution.orbit && (external > 0 || gateDecision !== "BLOCK")) {
       const orbitR = baseRadius * (1.18 + external * 0.35);
       const orbit = [];
       const orbitSteps = 24;
@@ -513,10 +737,30 @@
       });
     }
 
+    // SS-5 completion ring — sealed outer authority halo.
+    if (evolution.doubleHalo) {
+      const haloR = baseRadius * 1.42;
+      const halo = [];
+      for (let index = 0; index <= 28; index += 1) {
+        const angle = (index / 28) * Math.PI * 2;
+        halo.push(projectIso(Math.cos(angle) * haloR, height * 0.05, Math.sin(angle) * haloR * 0.55, originX, originY, yaw));
+      }
+      lattices.push({
+        id: "completion-halo",
+        category: "release_control",
+        categoryIndex: EVIDENCE_CATEGORIES.indexOf("release_control"),
+        d: `M ${halo.map((vertex) => `${vertex.x} ${vertex.y}`).join(" L ")}`,
+        color: "gold",
+        width: 0.85,
+        opacity: round(0.42 * gateIntensity),
+        dash: "",
+      });
+    }
+
     const paths = edges.concat(lattices);
 
     return {
-      schema: "semeai.repository-evidence-artifact.v1",
+      schema: "semeai.repository-evidence-artifact.v2",
       canonicalInput,
       repository,
       commitSha,
@@ -525,7 +769,14 @@
       visualPhase,
       gateDecision,
       categories,
+      evolution: {
+        code: evolution.code,
+        name: evolution.name,
+        title: evolution.title,
+        totalScore: round(totalScore),
+      },
       metrics: {
+        totalScore: round(totalScore),
         totalCoverage: round(totalCoverage),
         repositorySignal: round(repositorySignal),
         evidenceDepth: round(evidenceDepth),
@@ -537,6 +788,7 @@
         taper: round(taper),
         yaw: round(yaw),
         gateIntensity: round(gateIntensity),
+        evolution: evolution.code,
       },
       facets,
       paths,
@@ -555,9 +807,10 @@
     const svg = createSvgElement("svg", {
       viewBox: "0 0 360 360",
       role: "img",
-      "aria-label": `Evidence artifact for ${model.repository}. Crystallized from seven category traces; presentation Gate ${model.gateDecision}.`,
+      "aria-label": `Evidence artifact ${model.evolution.code} (${model.evolution.title}) for ${model.repository}. Presentation Gate ${model.gateDecision}.`,
       focusable: "false",
       class: "evidence-artifact-svg",
+      "data-evolution": model.evolution.code,
     });
     const filterPrefix = `evidence-artifact-${String(container.id || "render").replace(/[^A-Za-z0-9_-]+/g, "-")}`;
     const defs = createSvgElement("defs");
@@ -600,6 +853,7 @@
       class: "evidence-artifact__body",
       "data-gate": model.gateDecision,
       "data-phase": model.visualPhase,
+      "data-evolution": model.evolution.code,
     });
     body.style.setProperty("--artifact-period", `${round(16 + model.metrics.gateDiscipline * 6)}s`);
     body.style.setProperty("--artifact-yaw", `${model.metrics.yaw}rad`);
@@ -705,8 +959,21 @@
     svg.appendChild(stage);
 
     container.dataset.gate = model.gateDecision;
-    container.dataset.artifact = "crystalline-v1";
+    container.dataset.artifact = "crystalline-v2";
+    container.dataset.evolution = model.evolution.code;
     container.replaceChildren(svg);
+
+    const rankHost = container.closest(".score-sigil-frame")?.querySelector("[data-evidence-rank]")
+      || container.parentElement?.querySelector("[data-evidence-rank]");
+    if (rankHost) {
+      rankHost.hidden = false;
+      rankHost.dataset.evolution = model.evolution.code;
+      const codeNode = rankHost.querySelector("[data-evidence-rank-code]");
+      const titleNode = rankHost.querySelector("[data-evidence-rank-title]");
+      if (codeNode) codeNode.textContent = model.evolution.code;
+      if (titleNode) titleNode.textContent = model.evolution.title;
+    }
+
     return model;
   }
 
@@ -737,6 +1004,8 @@
     renderEvidenceSigil,
     highlightEvidenceCategory,
     clearEvidenceHighlight,
+    deriveEvolutionRank,
+    EVOLUTION_RANKS,
   });
   globalScope.SemeAISigil = api;
 
