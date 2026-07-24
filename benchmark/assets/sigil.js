@@ -849,21 +849,114 @@
       role: "img",
       "aria-label": `Evidence rank ${model.rank.code} ${model.rank.familyName} for ${model.repository}. Gate ${model.gateDecision}.`,
       focusable: "false",
-      class: "evidence-artifact-svg",
+      class: "evidence-artifact-svg is-alive",
       "data-evolution": model.rank.code,
       "data-family": model.rank.family,
+      "data-gate": model.gateDecision,
     });
     const filterPrefix = `ea-${String(container.id || "r").replace(/[^A-Za-z0-9_-]+/g, "-")}`;
     const defs = createSvgElement("defs");
     // Soft, restrained glow — not neon bloom.
-    const goldGlow = createSvgElement("filter", { id: `${filterPrefix}-g`, x: "-40%", y: "-40%", width: "180%", height: "180%" });
-    goldGlow.appendChild(createSvgElement("feGaussianBlur", { stdDeviation: "1.1", result: "blur" }));
-    const violetGlow = createSvgElement("filter", { id: `${filterPrefix}-v`, x: "-40%", y: "-40%", width: "180%", height: "180%" });
-    violetGlow.appendChild(createSvgElement("feGaussianBlur", { stdDeviation: "1.0", result: "blur" }));
-    defs.append(goldGlow, violetGlow);
+    const goldGlow = createSvgElement("filter", { id: `${filterPrefix}-g`, x: "-50%", y: "-50%", width: "200%", height: "200%" });
+    goldGlow.appendChild(createSvgElement("feGaussianBlur", { stdDeviation: "1.35", result: "blur" }));
+    const violetGlow = createSvgElement("filter", { id: `${filterPrefix}-v`, x: "-50%", y: "-50%", width: "200%", height: "200%" });
+    violetGlow.appendChild(createSvgElement("feGaussianBlur", { stdDeviation: "1.2", result: "blur" }));
+    const softBloom = createSvgElement("filter", { id: `${filterPrefix}-bloom`, x: "-60%", y: "-60%", width: "220%", height: "220%" });
+    softBloom.appendChild(createSvgElement("feGaussianBlur", { stdDeviation: "8", result: "blur" }));
+    const atmosphereGrad = createSvgElement("radialGradient", {
+      id: `${filterPrefix}-atm`,
+      cx: "50%",
+      cy: "46%",
+      r: "58%",
+    });
+    atmosphereGrad.appendChild(createSvgElement("stop", { offset: "0%", "stop-color": "#d7b66f", "stop-opacity": "0.16" }));
+    atmosphereGrad.appendChild(createSvgElement("stop", { offset: "42%", "stop-color": "#8b78a0", "stop-opacity": "0.08" }));
+    atmosphereGrad.appendChild(createSvgElement("stop", { offset: "100%", "stop-color": "#000000", "stop-opacity": "0" }));
+    defs.append(goldGlow, violetGlow, softBloom, atmosphereGrad);
     svg.appendChild(defs);
 
-    const stage = createSvgElement("g", { class: "evidence-artifact__stage" });
+    const stage = createSvgElement("g", {
+      class: "evidence-artifact__stage",
+      "data-gate": model.gateDecision,
+    });
+
+    // Ambient atmosphere (behind object) — continuous field presence.
+    const ambient = createSvgElement("g", {
+      class: "evidence-artifact__ambient",
+      "aria-hidden": "true",
+      "data-gate": model.gateDecision,
+    });
+    ambient.appendChild(
+      createSvgElement("circle", {
+        class: "evidence-artifact__field",
+        cx: model.origin.x,
+        cy: model.origin.y - 8,
+        r: 118,
+        fill: `url(#${filterPrefix}-atm)`,
+        filter: `url(#${filterPrefix}-bloom)`,
+      }),
+    );
+    ambient.appendChild(
+      createSvgElement("ellipse", {
+        class: "evidence-artifact__halo evidence-artifact__halo--outer",
+        cx: model.origin.x,
+        cy: model.origin.y - 4,
+        rx: 112,
+        ry: 118,
+        fill: "none",
+        stroke: "rgba(215,182,111,0.18)",
+        "stroke-width": 0.7,
+      }),
+    );
+    ambient.appendChild(
+      createSvgElement("ellipse", {
+        class: "evidence-artifact__halo evidence-artifact__halo--mid",
+        cx: model.origin.x,
+        cy: model.origin.y + 2,
+        rx: 86,
+        ry: 78,
+        fill: "none",
+        stroke: "rgba(139,120,160,0.16)",
+        "stroke-width": 0.55,
+      }),
+    );
+    ambient.appendChild(
+      createSvgElement("ellipse", {
+        class: "evidence-artifact__halo evidence-artifact__halo--inner",
+        cx: model.origin.x,
+        cy: model.origin.y + 6,
+        rx: 58,
+        ry: 52,
+        fill: "none",
+        stroke: "rgba(239,215,154,0.14)",
+        "stroke-width": 0.5,
+      }),
+    );
+
+    // Deterministic faint orbiting particles (visual-only; seeded from model).
+    const particleSeed = mulberry32(xmur3(`${model.canonicalInput}|ambient`)());
+    const particleGroup = createSvgElement("g", { class: "evidence-artifact__particles" });
+    const particleCount = model.gateDecision === "BLOCK" ? 4 : model.gateDecision === "REVIEW" ? 7 : 10;
+    for (let index = 0; index < particleCount; index += 1) {
+      const angle = particleSeed() * Math.PI * 2;
+      const radius = 48 + particleSeed() * 62;
+      const px = round(model.origin.x + Math.cos(angle) * radius);
+      const py = round(model.origin.y - 6 + Math.sin(angle) * radius * 0.72);
+      const particle = createSvgElement("circle", {
+        class: "evidence-artifact__particle",
+        cx: px,
+        cy: py,
+        r: round(0.7 + particleSeed() * 1.35),
+        fill: index % 2 === 0 ? "#efd79a" : "#9a88b0",
+      });
+      particle.style.setProperty("--particle-index", String(index));
+      particle.style.setProperty("--particle-delay", `${round(particleSeed() * 6)}s`);
+      particle.style.setProperty("--particle-duration", `${round(10 + particleSeed() * 10)}s`);
+      particleGroup.appendChild(particle);
+    }
+    ambient.appendChild(particleGroup);
+    stage.appendChild(ambient);
+
     stage.appendChild(
       createSvgElement("ellipse", {
         class: "evidence-artifact__plinth",
@@ -882,7 +975,13 @@
       "data-evolution": model.rank.code,
       "data-family": model.rank.family,
     });
-    body.style.setProperty("--artifact-period", `${16 + model.rank.level}s`);
+    const breathePeriod =
+      model.gateDecision === "SHOW" ? 12 + model.rank.level * 0.6 : model.gateDecision === "REVIEW" ? 16 + model.rank.level : 22;
+    body.style.setProperty("--artifact-period", `${round(breathePeriod)}s`);
+    body.style.setProperty("--glow-period", `${round(breathePeriod * 0.72)}s`);
+    body.style.setProperty("--drift-period", `${round(breathePeriod * 1.35)}s`);
+    stage.style.setProperty("--artifact-period", `${round(breathePeriod)}s`);
+    stage.style.setProperty("--drift-period", `${round(breathePeriod * 1.35)}s`);
 
     model.categories.forEach((category, categoryIndex) => {
       const group = createSvgElement("g", {
@@ -925,21 +1024,23 @@
               ...shared,
               class: "evidence-sigil__glow evidence-artifact__glow",
               stroke: glowColor,
-              "stroke-width": round(path.width * 2.2),
+              "stroke-width": round(path.width * 2.6),
               filter: path.color === "gold" ? `url(#${filterPrefix}-g)` : `url(#${filterPrefix}-v)`,
             });
-            glow.style.setProperty("--trace-opacity", String(round(path.opacity * 0.22)));
+            glow.style.setProperty("--trace-opacity", String(round(path.opacity * 0.28)));
+            glow.style.setProperty("--shimmer-delay", `${categoryIndex * 0.35 + pathIndex * 0.12}s`);
             group.appendChild(glow);
           }
           const trace = createSvgElement("path", {
             ...shared,
-            class: "evidence-sigil__trace evidence-artifact__edge",
+            class: `evidence-sigil__trace evidence-artifact__edge${path.primary !== false ? " evidence-artifact__edge--live" : ""}`,
             stroke: color,
             "stroke-width": path.width,
             "data-trace-index": pathIndex,
           });
-          trace.style.setProperty("--trace-opacity", String(path.opacity));
+          trace.style.setProperty("--trace-opacity", String(Math.min(1, path.opacity * 1.08)));
           trace.style.setProperty("--trace-delay", `${categoryIndex * 45 + pathIndex * 18}ms`);
+          trace.style.setProperty("--shimmer-delay", `${categoryIndex * 0.4 + pathIndex * 0.15}s`);
           if (path.dash) trace.style.setProperty("--final-dash", path.dash);
           group.appendChild(trace);
         });
@@ -966,11 +1067,23 @@
       const apexGroup = createSvgElement("g", { class: "evidence-artifact__apex", "aria-hidden": "true" });
       apexGroup.appendChild(
         createSvgElement("circle", {
+          class: "evidence-artifact__apex-core",
           cx: model.apex.x,
           cy: model.apex.y,
-          r: 3.4,
+          r: 3.6,
           fill: "#f0d9a0",
-          opacity: model.gateDecision === "BLOCK" ? 0.35 : 0.95,
+          opacity: model.gateDecision === "BLOCK" ? 0.35 : 0.96,
+        }),
+      );
+      apexGroup.appendChild(
+        createSvgElement("circle", {
+          class: "evidence-artifact__apex-ring",
+          cx: model.apex.x,
+          cy: model.apex.y,
+          r: 9.5,
+          fill: "none",
+          stroke: "rgba(239,215,154,0.35)",
+          "stroke-width": 0.7,
         }),
       );
       body.appendChild(apexGroup);
@@ -979,9 +1092,10 @@
     stage.appendChild(body);
     svg.appendChild(stage);
     container.dataset.gate = model.gateDecision;
-    container.dataset.artifact = "family-v3";
+    container.dataset.artifact = "family-v3-alive";
     container.dataset.evolution = model.rank.code;
     container.dataset.family = model.rank.family;
+    container.classList.add("is-alive");
     container.replaceChildren(svg);
     return model;
   }

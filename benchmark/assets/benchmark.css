@@ -371,7 +371,7 @@ body {
 .sigil .sigil-breath {
   transform-box: fill-box;
   transform-origin: center;
-  animation: sigil-breathe var(--sigil-period, 12s) ease-in-out 1 both;
+  animation: sigil-breathe var(--sigil-period, 12s) ease-in-out infinite;
 }
 
 .sigil .sigil-trace {
@@ -1153,40 +1153,193 @@ form label small {
   isolation: isolate;
 }
 
-.evidence-artifact__edge {
-  opacity: var(--trace-opacity, 0.82);
-}
-
-.evidence-artifact__facet {
-  opacity: var(--trace-opacity, 0.14);
-}
-
-.evidence-artifact__node {
-  opacity: var(--trace-opacity, 0.88);
+.evidence-sigil.is-alive::before {
+  position: absolute;
+  inset: 8% 12% 14%;
+  content: "";
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 42% 38%, rgba(215, 182, 111, 0.12), transparent 42%),
+    radial-gradient(circle at 62% 58%, rgba(139, 120, 160, 0.1), transparent 48%);
+  filter: blur(10px);
+  animation: evidence-atmosphere-drift 14s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
 }
 
 .evidence-sigil svg,
 .evidence-artifact-svg {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
 }
 
+.evidence-artifact__stage {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: evidence-artifact-drift var(--drift-period, 22s) ease-in-out infinite;
+}
+
+.evidence-artifact__ambient {
+  pointer-events: none;
+}
+
+.evidence-artifact__field {
+  opacity: 0.85;
+  animation: evidence-field-pulse var(--artifact-period, 14s) ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.evidence-artifact__halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0.75;
+}
+
+.evidence-artifact__halo--outer {
+  animation: evidence-halo-spin 48s linear infinite;
+}
+
+.evidence-artifact__halo--mid {
+  animation: evidence-halo-spin-reverse 36s linear infinite;
+}
+
+.evidence-artifact__halo--inner {
+  animation: evidence-halo-breathe 11s ease-in-out infinite;
+}
+
+.evidence-artifact__particle {
+  opacity: 0.35;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: evidence-particle-drift var(--particle-duration, 14s) ease-in-out var(--particle-delay, 0s) infinite;
+}
+
+.evidence-artifact__plinth {
+  animation: evidence-plinth-breathe 16s ease-in-out infinite;
+}
+
 .evidence-artifact__body {
   transform-box: fill-box;
   transform-origin: center;
-  animation: evidence-artifact-breathe var(--artifact-period, 18s) ease-in-out infinite;
+  animation: evidence-artifact-breathe var(--artifact-period, 14s) ease-in-out infinite;
 }
 
 .evidence-artifact__facet {
-  opacity: var(--trace-opacity, 0.12);
+  opacity: var(--trace-opacity, 0.14);
   transition: opacity 180ms ease, filter 180ms ease;
 }
 
-.evidence-artifact__edge,
-.evidence-artifact__glow {
+.evidence-artifact__edge {
+  opacity: var(--trace-opacity, 0.86);
   transition: opacity 180ms ease, stroke-width 180ms ease;
+}
+
+.evidence-artifact__edge--live {
+  stroke-dasharray: 14 120;
+  animation: evidence-edge-shimmer 9.5s linear var(--shimmer-delay, 0s) infinite;
+}
+
+.evidence-artifact__glow {
+  opacity: var(--trace-opacity, 0.2);
+  animation: evidence-glow-pulse var(--glow-period, 10s) ease-in-out var(--shimmer-delay, 0s) infinite;
+}
+
+.evidence-artifact__node {
+  opacity: var(--trace-opacity, 0.9);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: evidence-node-pulse 7.5s ease-in-out infinite;
+}
+
+.evidence-artifact__apex-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: evidence-apex-pulse 6.5s ease-in-out infinite;
+}
+
+.evidence-artifact__apex-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: evidence-apex-ring 8s ease-in-out infinite;
+}
+
+/* Gate: SHOW — fullest confidence */
+.result[data-gate="SHOW"] .evidence-artifact__field {
+  opacity: 1;
+}
+
+.result[data-gate="SHOW"] .evidence-artifact__halo--outer {
+  stroke: rgba(215, 182, 111, 0.28);
+  animation-duration: 42s;
+}
+
+.result[data-gate="SHOW"] .evidence-artifact__glow {
+  animation-duration: 8.5s;
+}
+
+.result[data-gate="SHOW"] .evidence-artifact__edge--live {
+  animation-duration: 8s;
+}
+
+/* Gate: REVIEW — restrained tension */
+.result[data-gate="REVIEW"] .evidence-artifact__body {
+  animation-duration: 18s;
+}
+
+.result[data-gate="REVIEW"] .evidence-artifact__stage {
+  animation-duration: 28s;
+}
+
+.result[data-gate="REVIEW"] .evidence-artifact__field {
+  opacity: 0.62;
+  animation-duration: 18s;
+}
+
+.result[data-gate="REVIEW"] .evidence-artifact__halo--outer,
+.result[data-gate="REVIEW"] .evidence-artifact__halo--mid {
+  animation-timing-function: ease-in-out;
+  opacity: 0.55;
+}
+
+.result[data-gate="REVIEW"] .evidence-artifact__edge--live {
+  animation-duration: 13s;
+  animation-timing-function: ease-in-out;
+}
+
+.result[data-gate="REVIEW"] .evidence-sigil__group--release_control .evidence-sigil__trace {
+  stroke-dasharray: 12 5;
+}
+
+.result[data-gate="REVIEW"] .evidence-artifact__particle {
+  opacity: 0.22;
+}
+
+/* Gate: BLOCK — suppressed */
+.result[data-gate="BLOCK"] .evidence-artifact__body,
+.blocked-sigil .evidence-artifact__body {
+  animation:
+    evidence-artifact-breathe-weak 26s ease-in-out infinite;
+}
+
+.result[data-gate="BLOCK"] .evidence-artifact__ambient,
+.blocked-sigil .evidence-artifact__ambient {
+  opacity: 0.28;
+}
+
+.result[data-gate="BLOCK"] .evidence-artifact__edge--live,
+.blocked-sigil .evidence-artifact__edge--live,
+.result[data-gate="BLOCK"] .evidence-artifact__glow,
+.blocked-sigil .evidence-artifact__glow,
+.result[data-gate="BLOCK"] .evidence-artifact__particle,
+.blocked-sigil .evidence-artifact__particle,
+.result[data-gate="BLOCK"] .evidence-artifact__halo,
+.blocked-sigil .evidence-artifact__halo {
+  animation: none;
 }
 
 .evidence-sigil__group {
@@ -1214,29 +1367,20 @@ form label small {
   opacity: 0.35;
 }
 
+.evidence-sigil[data-highlight-category] .evidence-artifact__ambient {
+  opacity: 0.35;
+}
+
 .evidence-sigil__group.is-highlighted {
   opacity: 1;
   filter: drop-shadow(0 0 0.55rem rgba(239, 215, 154, 0.38));
   transform: scale(1.02);
 }
 
-.result[data-gate="REVIEW"] .evidence-sigil__group--release_control .evidence-sigil__trace {
-  stroke-dasharray: 12 5;
-}
-
-.result[data-gate="SHOW"] .evidence-artifact__halo {
-  stroke: rgba(215, 182, 111, 0.22);
-}
-
-.result[data-gate="BLOCK"] .evidence-artifact__body,
-.blocked-sigil .evidence-artifact__body {
-  animation: none;
-}
-
 .blocked-sigil {
   width: min(28vw, 21rem);
-  opacity: 0.76;
-  filter: saturate(0.38) brightness(0.9);
+  opacity: 0.72;
+  filter: saturate(0.35) brightness(0.88);
 }
 
 .blocked-sigil .evidence-sigil__trace {
@@ -1253,6 +1397,11 @@ form label small {
 
 .blocked-sigil .evidence-artifact__facet {
   opacity: 0.04;
+}
+
+.blocked-sigil.is-alive::before {
+  opacity: 0.25;
+  animation-duration: 24s;
 }
 
 .indicator-grid {
@@ -1755,22 +1904,180 @@ footer {
 @keyframes sigil-breathe {
   0%,
   100% {
-    opacity: 0.82;
-    transform: scale(0.985);
+    opacity: 0.78;
+    transform: translateY(0) scale(0.982) rotate(-0.4deg);
   }
-  48% {
+  50% {
     opacity: 1;
-    transform: scale(1.012);
+    transform: translateY(-0.28rem) scale(1.02) rotate(0.35deg);
   }
 }
 
 @keyframes evidence-artifact-breathe {
   0%,
   100% {
-    transform: translateY(0) scale(0.992);
+    transform: translateY(0) scale(0.988) rotate(-0.35deg);
   }
   50% {
-    transform: translateY(-0.35rem) scale(1.01);
+    transform: translateY(-0.55rem) scale(1.018) rotate(0.4deg);
+  }
+}
+
+@keyframes evidence-artifact-drift {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(0.2rem);
+  }
+}
+
+@keyframes evidence-artifact-breathe-weak {
+  0%,
+  100% {
+    transform: translateY(0) scale(0.995);
+    opacity: 0.78;
+  }
+  50% {
+    transform: translateY(-0.12rem) scale(1.004);
+    opacity: 0.86;
+  }
+}
+
+@keyframes evidence-glow-pulse {
+  0%,
+  100% {
+    opacity: calc(var(--trace-opacity, 0.18) * 0.72);
+  }
+  50% {
+    opacity: calc(var(--trace-opacity, 0.18) * 1.35);
+  }
+}
+
+@keyframes evidence-edge-shimmer {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -134;
+  }
+}
+
+@keyframes evidence-halo-spin {
+  from {
+    transform: rotate(0deg) scaleY(0.92);
+  }
+  to {
+    transform: rotate(360deg) scaleY(0.92);
+  }
+}
+
+@keyframes evidence-halo-spin-reverse {
+  from {
+    transform: rotate(0deg) scaleY(0.88);
+  }
+  to {
+    transform: rotate(-360deg) scaleY(0.88);
+  }
+}
+
+@keyframes evidence-halo-breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes evidence-field-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes evidence-atmosphere-drift {
+  0% {
+    transform: translate(-2%, -1%) scale(0.98);
+    opacity: 0.55;
+  }
+  100% {
+    transform: translate(3%, 2%) scale(1.06);
+    opacity: 0.95;
+  }
+}
+
+@keyframes evidence-particle-drift {
+  0%,
+  100% {
+    opacity: 0.18;
+    transform: translate(0, 0) scale(0.9);
+  }
+  35% {
+    opacity: 0.55;
+    transform: translate(0.35rem, -0.55rem) scale(1.15);
+  }
+  70% {
+    opacity: 0.28;
+    transform: translate(-0.25rem, 0.3rem) scale(1);
+  }
+}
+
+@keyframes evidence-node-pulse {
+  0%,
+  100% {
+    opacity: var(--trace-opacity, 0.85);
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
+@keyframes evidence-apex-pulse {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.82;
+  }
+  50% {
+    transform: scale(1.16);
+    opacity: 1;
+  }
+}
+
+@keyframes evidence-apex-ring {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes evidence-plinth-breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scaleX(0.96);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scaleX(1.04);
   }
 }
 
@@ -1927,7 +2234,28 @@ footer {
 .result.is-awakening .evidence-artifact__body {
   animation:
     repository-sigil-converge 1250ms cubic-bezier(0.22, 1, 0.36, 1) both,
-    evidence-artifact-breathe var(--artifact-period, 18s) ease-in-out 1250ms infinite;
+    evidence-artifact-breathe var(--artifact-period, 14s) ease-in-out 1250ms infinite;
+}
+
+.result.is-awakening .evidence-artifact__stage {
+  animation:
+    evidence-ambient-enter 1100ms ease both,
+    evidence-artifact-drift var(--drift-period, 22s) ease-in-out 1100ms infinite;
+}
+
+.result.is-awakening .evidence-artifact__ambient {
+  animation: evidence-ambient-enter 1100ms ease both;
+}
+
+@keyframes evidence-ambient-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .result.is-awakening .gate-badge {
@@ -2265,5 +2593,24 @@ footer {
 
   .awaiting-name {
     opacity: 1 !important;
+  }
+
+  .evidence-sigil.is-alive::before,
+  .evidence-artifact__ambient,
+  .evidence-artifact__edge--live,
+  .evidence-artifact__glow,
+  .evidence-artifact__particle,
+  .evidence-artifact__halo,
+  .evidence-artifact__field,
+  .evidence-artifact__node,
+  .evidence-artifact__apex-core,
+  .evidence-artifact__apex-ring,
+  .evidence-artifact__plinth {
+    animation: none !important;
+  }
+
+  .evidence-artifact__body {
+    animation: none !important;
+    transform: none !important;
   }
 }
