@@ -1,5 +1,5 @@
 (() => {
-  const data = window.SEMEAI_ENGINEERING_BOOK;
+  const base = window.SEMEAI_ENGINEERING_BOOK;
   const main = document.getElementById("book-main");
   const nav = document.getElementById("book-nav-list");
   const progress = document.getElementById("book-progress-bar");
@@ -7,7 +7,39 @@
   const printButton = document.getElementById("book-print-button");
   const startOrientation = document.getElementById("book-start");
 
-  if (!data || !main || !nav) return;
+  if (!base || !main || !nav) return;
+
+  function deepMergeChapter(enChapter, overlay) {
+    if (!overlay) return { ...enChapter };
+    const merged = { ...enChapter, ...overlay };
+    ["body", "steps", "nodes", "bullets", "layers", "cycle", "stages", "items", "claims", "focus", "meta", "title"].forEach((key) => {
+      if (overlay[key] !== undefined) merged[key] = overlay[key];
+    });
+    if (overlay.decisions) merged.decisions = overlay.decisions;
+    if (overlay.principles) merged.principles = overlay.principles;
+    if (overlay.links) merged.links = overlay.links;
+    return merged;
+  }
+
+  function localizedData() {
+    const lang = window.SemeAI_I18n?.lang || "en";
+    const pack = window.SEMEAI_BOOK_LOCALES?.[lang];
+    if (!pack || lang === "en") return base;
+    const chapters = (base.chapters || []).map((chapter) => deepMergeChapter(chapter, pack.chapters?.[chapter.id]));
+    const metrics = (base.metrics || []).map((metric, index) => ({
+      ...metric,
+      ...(pack.metrics?.[index] || {}),
+    }));
+    return {
+      ...base,
+      meta: { ...base.meta, ...(pack.meta || {}) },
+      metrics,
+      chapters,
+      _context: pack.context || null,
+    };
+  }
+
+  let data = localizedData();
 
   const escapeHtml = (value) =>
     String(value ?? "")
@@ -354,23 +386,26 @@
     return (map[chapter.layout] || renderEditorial)(chapter);
   }
 
-  main.innerHTML = data.chapters.map(renderChapter).join("");
-  if (startOrientation) main.firstElementChild?.after(startOrientation);
-  nav.innerHTML = data.chapters
-    .map(
-      (chapter) => `
-        <li>
-          <a href="#${escapeHtml(chapter.id)}" data-chapter-link="${escapeHtml(chapter.id)}">
-            <span>${escapeHtml(chapter.number)}</span>
-            ${escapeHtml(chapter.nav)}
-          </a>
-        </li>`
-    )
-    .join("");
+  let pageObserver = null;
 
-  const appendContextLinks = (chapterId, items) => {
+  function defaultContext(id) {
+    const map = {
+      gate: [
+        { label: "See this principle in the Benchmark", href: "/benchmark/" },
+        { label: "Return to the product Gate", href: "/gate.html" },
+      ],
+      proof: [
+        { label: "Run the Repository Evidence Benchmark", href: "/benchmark/" },
+        { label: "View the research boundary", href: "/research.html" },
+      ],
+      "not-claims": [{ label: "Inspect research limitations", href: "/research.html" }],
+    };
+    return map[id] || [];
+  }
+
+  function appendContextLinks(chapterId, items) {
     const chapter = document.getElementById(chapterId);
-    if (!chapter) return;
+    if (!chapter || !items?.length) return;
     const links = document.createElement("nav");
     links.className = "book-context-links";
     links.setAttribute("aria-label", "Related SemeAI routes");
@@ -381,43 +416,65 @@
       links.append(link);
     });
     chapter.append(links);
-  };
+  }
 
-  appendContextLinks("gate", [
-    { label: "See this principle in the Benchmark", href: "/benchmark/" },
-    { label: "Return to the product Gate", href: "/gate.html" },
-  ]);
-  appendContextLinks("proof", [
-    { label: "Run the Repository Evidence Benchmark", href: "/benchmark/" },
-    { label: "View the research boundary", href: "/research.html" },
-  ]);
-  appendContextLinks("not-claims", [
-    { label: "Inspect research limitations", href: "/research.html" },
-  ]);
+  function paintBook() {
+    data = localizedData();
+    main.innerHTML = data.chapters.map(renderChapter).join("");
+    // Orientation block lives after the cover chapter when present
+    if (startOrientation) {
+      const firstPage = main.querySelector(".book-page");
+      if (firstPage) firstPage.after(startOrientation);
+      else main.prepend(startOrientation);
+    }
 
-  const navLinks = Array.from(document.querySelectorAll("[data-chapter-link]"));
-  const pages = Array.from(document.querySelectorAll(".book-page"));
+    nav.innerHTML = data.chapters
+      .map(
+        (chapter) => `
+        <li>
+          <a href="#${escapeHtml(chapter.id)}" data-chapter-link="${escapeHtml(chapter.id)}">
+            <span>${escapeHtml(chapter.number)}</span>
+            ${escapeHtml(chapter.nav)}
+          </a>
+        </li>`
+      )
+      .join("");
 
-  const setActive = (id) => {
-    navLinks.forEach((link) => {
-      const active = link.dataset.chapterLink === id;
-      link.classList.toggle("active", active);
-      if (active) link.setAttribute("aria-current", "location");
-      else link.removeAttribute("aria-current");
+    const ctx = data._context || {};
+    ["gate", "proof", "not-claims"].forEach((id) => {
+      appendContextLinks(id, ctx[id] || defaultContext(id));
     });
-  };
 
-  if ("IntersectionObserver" in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActive(visible.target.id);
-      },
-      { threshold: [0.35, 0.55, 0.75] }
-    );
-    pages.forEach((page) => observer.observe(page));
+    if (pageObserver) pageObserver.disconnect();
+    const navLinks = Array.from(document.querySelectorAll("[data-chapter-link]"));
+    const pages = Array.from(document.querySelectorAll(".book-page"));
+    const setActive = (id) => {
+      navLinks.forEach((link) => {
+        const active = link.dataset.chapterLink === id;
+        link.classList.toggle("active", active);
+        if (active) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      });
+    };
+    if ("IntersectionObserver" in window) {
+      pageObserver = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible) setActive(visible.target.id);
+        },
+        { threshold: [0.35, 0.55, 0.75] }
+      );
+      pages.forEach((page) => pageObserver.observe(page));
+    }
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        document.body.classList.remove("book-nav-open");
+        menuButton?.setAttribute("aria-expanded", "false");
+      });
+    });
+    window.SemeAI_I18n?.apply?.(document);
   }
 
   const updateProgress = () => {
@@ -445,16 +502,13 @@
     }
   });
 
-  navLinks.forEach((link) => {
-    link.addEventListener("click", () => {
-      document.body.classList.remove("book-nav-open");
-      menuButton?.setAttribute("aria-expanded", "false");
-    });
-  });
-
   printButton?.addEventListener("click", () => window.print());
 
   if (new URLSearchParams(window.location.search).has("print")) {
     document.body.classList.add("book-print-intent");
   }
+
+  paintBook();
+  window.addEventListener("semeai:lang", () => paintBook());
 })();
+

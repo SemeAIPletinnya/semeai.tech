@@ -1,0 +1,496 @@
+/**
+ * Engineering Book locale overlays (UK / RU).
+ * Merged onto SEMEAI_ENGINEERING_BOOK by book.js.
+ */
+window.SEMEAI_BOOK_LOCALES = {
+  uk: {
+    meta: {
+      subtitle: "Будуємо AI-системи з перших принципів",
+      support: "Спостережувані системи. Inspectable рішення. Persistent evidence.",
+      role: "Незалежний AI Systems Engineer",
+      footer: "Engineering Book",
+    },
+    metrics: [
+      { label: "токенів Codex", note: "Метрика користувача з engineering-активності в Codex." },
+      { label: "engineering-задач", note: "Метрика користувача з ітеративної engineering-роботи." },
+      { label: "публічних репозиторіїв екосистеми", note: "Сайт, release-control adapter і governance source context." },
+      { label: "заявлених клієнтів", note: "Книга навмисно уникає unsupported adoption claims." },
+    ],
+    chapters: {
+      cover: {
+        nav: "Обкладинка",
+        kicker: "Engineering Book",
+        title: ["SemeAI", "Будуємо AI-системи", "з перших принципів"],
+        subtitle: "Спостережувані системи. Inspectable рішення. Persistent evidence.",
+        meta: ["Anton Semenenko", "Незалежний AI Systems Engineer"],
+      },
+      "every-ai-system": {
+        nav: "Silence",
+        title: ["Кожна AI-система", "генерує."],
+      },
+      "observable-path": {
+        nav: "Шлях",
+        title: ["Дуже мало систем", "роблять шлях від генерації", "до релізу спостережуваним."],
+      },
+      question: {
+        nav: "Питання",
+        kicker: "Спочатку було питання.",
+        title: "Що має статися після генерації?",
+        body: [
+          "Що має статися після того, як AI-система згенерувала відповідь, рекомендацію, пам’ять, дію чи tool call?",
+          "Як цей кандидат можна оцінити, перш ніж його релізнути або виконати?",
+        ],
+      },
+      author: {
+        nav: "Автор",
+        kicker: "Походження / Автор",
+        subtitle: "Незалежний AI Systems Engineer. Founder / Builder of SemeAI.",
+        body: [
+          "Я не починав із наміру стати conventional software engineer.",
+          "Я почав із питань про системи: як вони пам’ятають, як поширюються рішення, як виживає evidence і як generated output стає дією.",
+          "Програмування стало мовою реалізації.",
+        ],
+      },
+      candidate: {
+        nav: "Кандидат",
+        title: ["Генерація створює", "кандидата."],
+      },
+      release: {
+        nav: "Реліз",
+        title: ["Реліз", "— окреме рішення."],
+      },
+      "release-flow": {
+        nav: "Потік",
+        kicker: "Потік контролю релізу",
+        title: "Кандидат має пройти межу, перш ніж досягти користувача.",
+        steps: ["Генерація", "Кандидат", "Gate", "Рішення", "Receipt / Evidence", "Реліз або затримка"],
+        decisions: [
+          { public: "SHOW", internal: "PROCEED", desc: "Достатньо підтримано для релізу." },
+          { public: "REVIEW", internal: "NEEDS_REVIEW", desc: "Не релізити автоматично. Передати оператору." },
+          { public: "BLOCK", internal: "SILENCE", desc: "Реліз заборонено, виконання затримано, аудит збережено." },
+        ],
+        note: "SILENCE не означає видалення. Це означає: реліз заборонено, виконання затримано, audit evidence збережено.",
+      },
+      "why-layer": {
+        nav: "Чому",
+        kicker: "Чому існує цей шар",
+        title: "Генерація — capability. Реліз — authority. Evidence з’єднує їх.",
+        body: [
+          "AI-застосунки зазвичай зосереджені на production output. SemeAI досліджує окремий post-generation шар, який питає: чи варто кандидата показати, рев’ювати, затримати, зберегти чи виконати.",
+          "Мета — не більша модель. Мета — зробити перехід від output до релізу explicit, inspectable і replayable.",
+        ],
+      },
+      ecosystem: {
+        nav: "Екосистема",
+        kicker: "Одна екосистема",
+        title: "SemeAI — не один інтерфейс. Це пов’язана engineering-поверхня.",
+        nodes: [
+          "SemeAI Gate",
+          "SemeAI Local",
+          "Silence-as-Control",
+          "Local Runtime",
+          "Evidence and Replay",
+          "Research",
+          "Public Website / SaaS Surface",
+        ],
+      },
+      gate: {
+        nav: "Gate",
+        kicker: "SemeAI Gate",
+        title: "Post-generation шар контролю релізу для LLM-застосунків.",
+        body: [
+          "SemeAI Gate оцінює згенерованих кандидатів, медіює реліз, дає business-readable outcomes і зберігає inspectable receipts.",
+          "Поточний public basic adapter демонструє deterministic release-control behavior через examples, schemas, receipts і live demo surface.",
+        ],
+        bullets: [
+          "робочий прототип",
+          "детерміновані examples",
+          "публічне basic demo",
+          "inspectable decision evidence",
+          "без universal hallucination-detection claim",
+        ],
+      },
+      local: {
+        nav: "Local",
+        kicker: "SemeAI Local",
+        title: "Приватний локальний governed AI workspace.",
+        body: [
+          "SemeAI Local подається як workspace для memory, timelines, evidence, receipts, replay і governed reasoning.",
+          "Це не generic chatbot. Це operator surface, де відповіді можна зв’язати з source context і release metadata.",
+        ],
+      },
+      sac: {
+        nav: "SaC",
+        kicker: "Silence-as-Control",
+        title: "Відкритий engineering і research напрям release mediation.",
+        body: [
+          "Silence-as-Control досліджує deterministic release-control examples, provider capture і replay paths, release-risk experiments, evidence pipelines, documentation і local model experiments.",
+          "Benchmark outcomes трактуються як scoped evidence, не universal claims.",
+        ],
+        bullets: ["release mediation", "capture and replay", "risk experiments", "evidence pipelines", "local experiments"],
+      },
+      "runtime-stack": {
+        nav: "Runtime",
+        kicker: "Runtime governance stack",
+        title: "Багатошарова prototype-архітектура.",
+        layers: [
+          "Генерація кандидата",
+          "Release mediation",
+          "Memory admission",
+          "Continuity conflict evaluation",
+          "Tool execution mediation",
+          "JSONL evidence",
+          "Replay analytics",
+          "Governance state snapshot",
+          "Release candidate packaging",
+        ],
+        note: "Це implemented prototype architecture і development work, не industry standard.",
+      },
+      evidence: {
+        nav: "Evidence",
+        kicker: "Evidence важливіший за claims",
+        title: ["Evidence", "важливіший", "за claims."],
+        note: "Цифри описують масштаб ітерації. Репозиторії, тести, артефакти й робочі системи описують результат.",
+      },
+      method: {
+        nav: "Метод",
+        kicker: "Як я будую",
+        title: "Повторюваний engineering-цикл.",
+        cycle: ["Observe", "Audit", "Understand", "Design", "Prototype", "Verify", "Ship", "Repeat"],
+        body: [
+          "Аудитуй поточну систему. Визнач найменший coherent next step. Задай constraints. Імплементуй. Запусти тести й інспектуй evidence. Документуй зміни. Merge лише після verification.",
+          "AI-assisted implementation — інструмент усередині методу, не весь метод.",
+        ],
+      },
+      principles: {
+        nav: "Принципи",
+        kicker: "Engineering principles",
+        title: "Дисципліна за роботою.",
+        principles: [
+          ["Архітектура перед імплементацією.", "Спроєктуй межу, перш ніж писати механізм."],
+          ["Evidence над assumptions.", "Claim має вказувати на артефакт, коли це можливо."],
+          ["Генерація не є владою релізу.", "Кандидат і released answer — різні об’єкти."],
+          ["Документація — частина системи.", "Системі, яку не можна інспектувати, не можна відповідально довіряти."],
+          ["Ship найменше корисне покращення.", "Складність має заслужити своє місце."],
+          ["Local verification перед public claims.", "Публічна історія має відставати від proof, а не випереджати його."],
+        ],
+      },
+      evolution: {
+        nav: "Еволюція",
+        kicker: "Від питань до систем",
+        title: "Архітектурна еволюція, не startup mythology.",
+        stages: [
+          "Питання",
+          "Research framing",
+          "Прототип",
+          "Deterministic gate",
+          "Evidence pipeline",
+          "Local runtime",
+          "Memory and continuity",
+          "Execution mediation",
+          "Product surface",
+          "SaaS experiment",
+        ],
+      },
+      proof: {
+        nav: "Proof",
+        kicker: "Selected proof of work",
+        title: "Артефакти, які можна інспектувати.",
+        items: [
+          "release-control prototype",
+          "deterministic decision examples",
+          "replayable JSONL evidence",
+          "local governed runtime",
+          "memory admission policy",
+          "continuity conflict evaluation",
+          "tool execution mediation",
+          "replay analytics",
+          "governance state snapshots",
+          "release candidate packaging",
+          "responsive public product surface",
+        ],
+      },
+      "not-claims": {
+        nav: "Межі",
+        kicker: "Чого ця робота не заявляє",
+        title: "Довіра народжується з меж.",
+        claims: [
+          "foundation model",
+          "AGI",
+          "universal AI safety solution",
+          "guaranteed hallucination detector",
+          "заміну human review",
+          "certified security or compliance",
+          "proof, що кожен released result коректний",
+        ],
+        body: "Це engineering exploration того, де release decisions, memory decisions, execution decisions і evidence можуть стати explicit частинами AI-застосунку.",
+      },
+      "product-question": {
+        nav: "Продукт",
+        kicker: "Поточне product-питання",
+        title: "Архітектура — вже не головне питання, що лишилось.",
+        body: "Наступне питання — чи може ця система стати достатньо корисною, щоб люди обирали нею користуватись і платити.",
+        focus: ["Product", "Users", "Business signal"],
+      },
+      future: {
+        nav: "Майбутнє",
+        title: ["Я не хочу, щоб AI-системи", "ставали загадковішими.", "Я хочу, щоб вони ставали", "зрозумілішими,", "inspectable,", "і improvable."],
+        note: "Наступний етап — не більше архітектури заради архітектури. Це перетворення архітектури на корисний продукт.",
+      },
+      final: {
+        nav: "Evidence",
+        title: ["Кожна система лишає evidence.", "Кожне рішення формує", "те, що буде далі."],
+      },
+      back: {
+        nav: "Назад",
+        links: [
+          ["Website", "https://semeai.tech"],
+          ["GitHub", "https://github.com/SemeAIPletinnya"],
+          ["SemeAI Gate Basic", "https://github.com/SemeAIPletinnya/semeai-gate-basic"],
+          ["Silence-as-Control", "https://github.com/SemeAIPletinnya/silence-as-control"],
+        ],
+      },
+    },
+    context: {
+      gate: [
+        { label: "Побачити принцип у Benchmark", href: "/benchmark/" },
+        { label: "Повернутись до product Gate", href: "/gate.html" },
+      ],
+      proof: [
+        { label: "Запустити Repository Evidence Benchmark", href: "/benchmark/" },
+        { label: "Межа research", href: "/research.html" },
+      ],
+      "not-claims": [{ label: "Обмеження research", href: "/research.html" }],
+    },
+  },
+
+  ru: {
+    meta: {
+      subtitle: "Строим AI-системы с первых принципов",
+      support: "Наблюдаемые системы. Inspectable решения. Persistent evidence.",
+      role: "Независимый AI Systems Engineer",
+      footer: "Engineering Book",
+    },
+    metrics: [
+      { label: "токенов Codex", note: "Метрика пользователя по engineering-активности в Codex." },
+      { label: "engineering-задач", note: "Метрика пользователя по итеративной engineering-работе." },
+      { label: "публичных репозиториев экосистемы", note: "Сайт, release-control adapter и governance source context." },
+      { label: "заявленных клиентов", note: "Книга намеренно избегает unsupported adoption claims." },
+    ],
+    chapters: {
+      cover: {
+        nav: "Обложка",
+        kicker: "Engineering Book",
+        title: ["SemeAI", "Строим AI-системы", "с первых принципов"],
+        subtitle: "Наблюдаемые системы. Inspectable решения. Persistent evidence.",
+        meta: ["Anton Semenenko", "Независимый AI Systems Engineer"],
+      },
+      "every-ai-system": {
+        nav: "Silence",
+        title: ["Каждая AI-система", "генерирует."],
+      },
+      "observable-path": {
+        nav: "Путь",
+        title: ["Очень мало систем", "делают путь от генерации", "к релизу наблюдаемым."],
+      },
+      question: {
+        nav: "Вопрос",
+        kicker: "Сначала был вопрос.",
+        title: "Что должно произойти после генерации?",
+        body: [
+          "Что должно произойти после того, как AI-система сгенерировала ответ, рекомендацию, память, действие или tool call?",
+          "Как этого кандидата можно оценить, прежде чем релизнуть или выполнить?",
+        ],
+      },
+      author: {
+        nav: "Автор",
+        kicker: "Происхождение / Автор",
+        subtitle: "Независимый AI Systems Engineer. Founder / Builder of SemeAI.",
+        body: [
+          "Я не начинал с намерения стать conventional software engineer.",
+          "Я начал с вопросов о системах: как они помнят, как распространяются решения, как выживает evidence и как generated output становится действием.",
+          "Программирование стало языком реализации.",
+        ],
+      },
+      candidate: {
+        nav: "Кандидат",
+        title: ["Генерация создаёт", "кандидата."],
+      },
+      release: {
+        nav: "Релиз",
+        title: ["Релиз", "— отдельное решение."],
+      },
+      "release-flow": {
+        nav: "Поток",
+        kicker: "Поток контроля релиза",
+        title: "Кандидат должен пройти границу, прежде чем достичь пользователя.",
+        steps: ["Генерация", "Кандидат", "Gate", "Решение", "Receipt / Evidence", "Релиз или удержание"],
+        decisions: [
+          { public: "SHOW", internal: "PROCEED", desc: "Достаточно поддержано для релиза." },
+          { public: "REVIEW", internal: "NEEDS_REVIEW", desc: "Не релизить автоматически. Передать оператору." },
+          { public: "BLOCK", internal: "SILENCE", desc: "Релиз запрещён, выполнение задержано, аудит сохранён." },
+        ],
+        note: "SILENCE не означает удаление. Это значит: релиз запрещён, выполнение задержано, audit evidence сохранено.",
+      },
+      "why-layer": {
+        nav: "Почему",
+        kicker: "Почему существует этот слой",
+        title: "Генерация — capability. Релиз — authority. Evidence соединяет их.",
+        body: [
+          "AI-приложения обычно сосредоточены на production output. SemeAI исследует отдельный post-generation слой, который спрашивает: стоит ли кандидата показать, review-ить, удержать, сохранить или выполнить.",
+          "Цель — не большая модель. Цель — сделать переход от output к релизу explicit, inspectable и replayable.",
+        ],
+      },
+      ecosystem: {
+        nav: "Экосистема",
+        kicker: "Одна экосистема",
+        title: "SemeAI — не один интерфейс. Это связанная engineering-поверхность.",
+      },
+      gate: {
+        nav: "Gate",
+        kicker: "SemeAI Gate",
+        title: "Post-generation слой контроля релиза для LLM-приложений.",
+        body: [
+          "SemeAI Gate оценивает сгенерированных кандидатов, медирует релиз, даёт business-readable outcomes и сохраняет inspectable receipts.",
+          "Текущий public basic adapter демонстрирует deterministic release-control behavior через examples, schemas, receipts и live demo surface.",
+        ],
+        bullets: [
+          "рабочий прототип",
+          "детерминированные examples",
+          "публичное basic demo",
+          "inspectable decision evidence",
+          "без universal hallucination-detection claim",
+        ],
+      },
+      local: {
+        nav: "Local",
+        kicker: "SemeAI Local",
+        title: "Частный локальный governed AI workspace.",
+        body: [
+          "SemeAI Local подаётся как workspace для memory, timelines, evidence, receipts, replay и governed reasoning.",
+          "Это не generic chatbot. Это operator surface, где ответы можно связать с source context и release metadata.",
+        ],
+      },
+      sac: {
+        nav: "SaC",
+        kicker: "Silence-as-Control",
+        title: "Открытое engineering и research направление release mediation.",
+        body: [
+          "Silence-as-Control исследует deterministic release-control examples, provider capture и replay paths, release-risk experiments, evidence pipelines, documentation и local model experiments.",
+          "Benchmark outcomes трактуются как scoped evidence, не universal claims.",
+        ],
+      },
+      "runtime-stack": {
+        nav: "Runtime",
+        kicker: "Runtime governance stack",
+        title: "Многослойная prototype-архитектура.",
+        layers: [
+          "Генерация кандидата",
+          "Release mediation",
+          "Memory admission",
+          "Continuity conflict evaluation",
+          "Tool execution mediation",
+          "JSONL evidence",
+          "Replay analytics",
+          "Governance state snapshot",
+          "Release candidate packaging",
+        ],
+        note: "Это implemented prototype architecture и development work, не industry standard.",
+      },
+      evidence: {
+        nav: "Evidence",
+        kicker: "Evidence важнее claims",
+        title: ["Evidence", "важнее", "claims."],
+        note: "Цифры описывают масштаб итерации. Репозитории, тесты, артефакты и рабочие системы описывают результат.",
+      },
+      method: {
+        nav: "Метод",
+        kicker: "Как я строю",
+        title: "Повторяемый engineering-цикл.",
+        body: [
+          "Аудируй текущую систему. Определи наименьший coherent next step. Задай constraints. Имплементируй. Запусти тесты и инспектируй evidence. Документируй изменения. Merge только после verification.",
+          "AI-assisted implementation — инструмент внутри метода, не весь метод.",
+        ],
+      },
+      principles: {
+        nav: "Принципы",
+        kicker: "Engineering principles",
+        title: "Дисциплина за работой.",
+        principles: [
+          ["Архитектура перед имплементацией.", "Спроектируй границу, прежде чем писать механизм."],
+          ["Evidence над assumptions.", "Claim должен указывать на артефакт, когда это возможно."],
+          ["Генерация не является властью релиза.", "Кандидат и released answer — разные объекты."],
+          ["Документация — часть системы.", "Системе, которую нельзя инспектировать, нельзя ответственно доверять."],
+          ["Ship наименьшее полезное улучшение.", "Сложность должна заслужить своё место."],
+          ["Local verification перед public claims.", "Публичная история должна отставать от proof, а не опережать его."],
+        ],
+      },
+      evolution: {
+        nav: "Эволюция",
+        kicker: "От вопросов к системам",
+        title: "Архитектурная эволюция, не startup mythology.",
+        stages: [
+          "Вопрос",
+          "Research framing",
+          "Прототип",
+          "Deterministic gate",
+          "Evidence pipeline",
+          "Local runtime",
+          "Memory and continuity",
+          "Execution mediation",
+          "Product surface",
+          "SaaS experiment",
+        ],
+      },
+      proof: {
+        nav: "Proof",
+        kicker: "Selected proof of work",
+        title: "Артефакты, которые можно инспектировать.",
+      },
+      "not-claims": {
+        nav: "Границы",
+        kicker: "Чего эта работа не заявляет",
+        title: "Доверие рождается из границ.",
+        claims: [
+          "foundation model",
+          "AGI",
+          "universal AI safety solution",
+          "guaranteed hallucination detector",
+          "замену human review",
+          "certified security or compliance",
+          "proof, что каждый released result корректен",
+        ],
+        body: "Это engineering exploration того, где release decisions, memory decisions, execution decisions и evidence могут стать explicit частями AI-приложения.",
+      },
+      "product-question": {
+        nav: "Продукт",
+        kicker: "Текущий product-вопрос",
+        title: "Архитектура — уже не главный оставшийся вопрос.",
+        body: "Следующий вопрос — может ли эта система стать достаточно полезной, чтобы люди выбирали ею пользоваться и платить.",
+      },
+      future: {
+        nav: "Будущее",
+        title: ["Я не хочу, чтобы AI-системы", "становились загадочнее.", "Я хочу, чтобы они становились", "понятнее,", "inspectable,", "и improvable."],
+        note: "Следующий этап — не больше архитектуры ради архитектуры. Это превращение архитектуры в полезный продукт.",
+      },
+      final: {
+        nav: "Evidence",
+        title: ["Каждая система оставляет evidence.", "Каждое решение формирует", "то, что будет дальше."],
+      },
+      back: {
+        nav: "Назад",
+      },
+    },
+    context: {
+      gate: [
+        { label: "Увидеть принцип в Benchmark", href: "/benchmark/" },
+        { label: "Вернуться к product Gate", href: "/gate.html" },
+      ],
+      proof: [
+        { label: "Запустить Repository Evidence Benchmark", href: "/benchmark/" },
+        { label: "Граница research", href: "/research.html" },
+      ],
+      "not-claims": [{ label: "Ограничения research", href: "/research.html" }],
+    },
+  },
+};

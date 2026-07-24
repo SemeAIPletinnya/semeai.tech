@@ -13,7 +13,7 @@
       name="description"
       content="An isolated experimental benchmark of visible public repository evidence."
     />
-    <title>Repository Evidence Benchmark — SemeAI</title>
+    <title data-i18n-page="bench.title.page">Repository Evidence Benchmark — SemeAI</title>
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260723b" />
@@ -22,50 +22,31 @@
     <script src="./assets/benchmark.js?v=20260723a" defer></script>
   </head>
   <body class="mode-evidence" data-semeai-custom-bg>
-    <a class="skip-link" href="#benchmark-input">Skip to benchmark input</a>
+    <a class="skip-link" href="#benchmark-input" data-i18n="bench.skip">Skip to benchmark input</a>
 
-    <div data-semeai-nav>
-      <header class="site-header" data-semeai-header>
-        <div class="site-header-inner">
-          <a class="brand" href="/" aria-label="SemeAI home"><img class="brand-mark semeai-mark" src="/assets/brand/semeai-mark.svg" width="32" height="32" alt="" aria-hidden="true" /><span class="semeai-wordmark">SemeAI</span></a>
-          <nav class="site-nav" aria-label="Primary">
-            <a class="nav-link" href="/gate.html">Gate</a>
-            <a class="nav-link active" href="/benchmark/" aria-current="page">Benchmark</a>
-            <a class="nav-link" href="/genesis/">Genesis</a>
-            <a class="nav-link" href="/book/">Book</a>
-            <a class="nav-link" href="/research.html">Research</a>
-          </nav>
-          <a class="btn-ghost header-dashboard" href="/dashboard.html">Open dashboard</a>
-        </div>
-      </header>
-      <noscript>
-        <nav class="noscript-nav" aria-label="Primary navigation without JavaScript">
-          <a href="/gate.html">Gate</a><a aria-current="page" href="/benchmark/">Benchmark</a><a href="/genesis/">Genesis</a><a href="/book/">Book</a><a href="/research.html">Research</a><a href="/dashboard.html">Open dashboard</a>
-        </nav>
-      </noscript>
-    </div>
+    <div data-semeai-nav></div>
 
     <div class="page-shell">
       <header class="benchmark-header" aria-label="Repository Evidence Benchmark controls">
         <a class="wordmark" href="/" aria-label="SemeAI home">
           <img class="wordmark-mark" src="/assets/brand/semeai-mark-mono.svg" width="24" height="24" alt="" aria-hidden="true" />
-          <span>REPOSITORY EVIDENCE BENCHMARK</span>
+          <span data-i18n="bench.wordmark">REPOSITORY EVIDENCE BENCHMARK</span>
         </a>
         <div class="benchmark-header-actions">
           <div class="instrument-status" aria-current="page">
             <span class="status-light" aria-hidden="true"></span>
-            ISOLATED EVIDENCE INSTRUMENT
+            <span data-i18n="bench.status">ISOLATED EVIDENCE INSTRUMENT</span>
           </div>
           <nav class="benchmark-route-nav" aria-label="Benchmark context">
-            <a href="/gate.html">UNDERSTAND THE GATE</a>
-            <a href="/book/">METHOD</a>
+            <a href="/gate.html" data-i18n="bench.route.gate">UNDERSTAND THE GATE</a>
+            <a href="/book/" data-i18n="bench.route.method">METHOD</a>
           </nav>
           <div class="benchmark-auth-entry">
             <a
               href="https://api.semeai.tech/v0/oauth/github/start?return_path=%2Fbenchmark%2Fworkspace%2F"
-              >SIGN IN WITH GITHUB</a
+               data-i18n="bench.auth.cta">SIGN IN WITH GITHUB</a
             >
-            <span>Save results · track progression · connect repositories</span>
+            <span data-i18n="bench.auth.hint">Save results · track progression · connect repositories</span>
           </div>
         </div>
       </header>
@@ -73,13 +54,12 @@
       <main>
         <section class="hero" aria-labelledby="page-title">
           <div class="hero-copy">
-            <p class="eyebrow">REPOSITORY 001</p>
-            <h1 id="page-title">A REPOSITORY,<br /><span>NOT A PROFILE</span></h1>
+            <p class="eyebrow" data-i18n="bench.hero.eyebrow">REPOSITORY 001</p>
+            <h1 id="page-title"><span data-i18n="bench.hero.h1">A REPOSITORY,</span><br /><span data-i18n="bench.hero.h1.span">NOT A PROFILE</span></h1>
             <p class="hero-description">
-              A transparent benchmark of visible implementation, reproducibility, evidence,
-              continuity, and release-control signals.
+              <span data-i18n="bench.hero.desc">A transparent benchmark of visible implementation, reproducibility, evidence, continuity, and release-control signals.</span>
             </p>
-            <p class="hero-secondary">The project is the identity. The benchmark is the trace.</p>
+            <p class="hero-secondary" data-i18n="bench.hero.secondary">The project is the identity. The benchmark is the trace.</p>
           </div>
 
           <div class="hero-visual" aria-label="Deterministic repository sigil preview">
@@ -87,31 +67,30 @@
             <div class="orbit orbit-b" aria-hidden="true"></div>
             <div id="sigil" class="sigil" aria-hidden="true"></div>
             <div class="visual-caption">
-              <span>VISUAL IDENTITY</span>
+              <span data-i18n="bench.visual.identity">VISUAL IDENTITY</span>
               <span id="visual-phase-preview">+3 / EXPANSION</span>
             </div>
           </div>
 
           <p class="control-line">
             <span aria-hidden="true"></span>
-            Governed at the point of divergence.
+            <span data-i18n="bench.control">Governed at the point of divergence.</span>
           </p>
         </section>
 
         <section id="benchmark-input" class="input-panel" aria-labelledby="input-title">
           <div class="panel-intro">
-            <p class="section-index">01 / EVIDENCE INTAKE</p>
-            <h2 id="input-title">Name the repository.</h2>
+            <p class="section-index" data-i18n="bench.input.index">01 / EVIDENCE INTAKE</p>
+            <h2 id="input-title" data-i18n="bench.input.title">Name the repository.</h2>
             <p>
-              Public GitHub evidence only. Nothing is cloned, executed, authenticated, or sent
-              beyond GitHub's public API.
+              <span data-i18n="bench.input.lead">Public GitHub evidence only. Nothing is cloned, executed, authenticated, or sent beyond GitHub's public API.</span>
             </p>
           </div>
 
           <form id="benchmark-form" novalidate>
             <label for="repository-input">
-              <span>PUBLIC GITHUB REPOSITORY</span>
-              <small>OWNER / REPOSITORY OR FULL URL</small>
+              <span data-i18n="bench.input.label">PUBLIC GITHUB REPOSITORY</span>
+              <small data-i18n="bench.input.small">OWNER / REPOSITORY OR FULL URL</small>
             </label>
             <div class="input-row">
               <input
@@ -126,14 +105,13 @@
                 required
               />
               <button id="run-button" class="primary-button" type="submit">
-                <span>RUN BENCHMARK</span>
+                <span data-i18n="bench.input.run">RUN BENCHMARK</span>
                 <span aria-hidden="true">↗</span>
               </button>
             </div>
             <div class="form-meta">
-              <p id="input-help">Example: owner/repository or https://github.com/owner/repository</p>
-              <button id="reset-button" class="text-button" type="button">
-                RESET TO FIRST REPOSITORY
+              <p id="input-help" data-i18n="bench.input.help">Example: owner/repository or https://github.com/owner/repository</p>
+              <button id="reset-button" class="text-button" type="button" data-i18n="bench.input.reset">RESET TO FIRST REPOSITORY
               </button>
             </div>
             <p id="input-error" class="input-error" role="alert"></p>
@@ -141,7 +119,7 @@
 
           <div id="run-status" class="run-status" role="status" aria-live="polite">
             <span class="status-track" aria-hidden="true"><span></span></span>
-            <span id="run-status-text">READY FOR PUBLIC EVIDENCE</span>
+            <span id="run-status-text" data-i18n="bench.input.ready">READY FOR PUBLIC EVIDENCE</span>
           </div>
         </section>
 
@@ -158,42 +136,42 @@
 
         <section id="blocked-result" class="blocked-panel" aria-labelledby="blocked-title" hidden>
           <div class="blocked-copy">
-            <p class="section-index">PRESENTATION GATE / BLOCK</p>
+            <p class="section-index" data-i18n="bench.blocked.index">PRESENTATION GATE / BLOCK</p>
             <p id="blocked-repository" class="blocked-repository" hidden></p>
-            <h2 id="blocked-title">Score withheld.</h2>
+            <h2 id="blocked-title" data-i18n="bench.blocked.title">Score withheld.</h2>
             <p id="blocked-gate-explanation" class="blocked-gate-explanation">BLOCK — Score withheld.</p>
             <p id="blocked-message"></p>
             <ul id="blocked-reasons"></ul>
           </div>
           <div class="blocked-visual">
             <div id="blocked-sigil" class="evidence-sigil blocked-sigil"></div>
-            <p>INCOMPLETE MUTED TRACE / NO SCORE RELEASE</p>
+            <p data-i18n="bench.blocked.visual">INCOMPLETE MUTED TRACE / NO SCORE RELEASE</p>
           </div>
         </section>
 
         <article id="benchmark-result" class="result" aria-labelledby="result-title" hidden>
           <header class="result-header">
             <div>
-              <p class="section-index">02 / ADMITTED REPOSITORY TRACE</p>
+              <p class="section-index" data-i18n="bench.result.index">02 / ADMITTED REPOSITORY TRACE</p>
               <p id="source-mode" class="source-mode"></p>
               <h2 id="result-title"></h2>
               <dl class="source-facts">
                 <div>
-                  <dt>DEFAULT BRANCH</dt>
+                  <dt data-i18n="bench.result.branch">DEFAULT BRANCH</dt>
                   <dd id="default-branch"></dd>
                 </div>
                 <div>
-                  <dt>SOURCE COMMIT</dt>
+                  <dt data-i18n="bench.result.commit">SOURCE COMMIT</dt>
                   <dd><code id="source-commit"></code></dd>
                 </div>
                 <div>
-                  <dt>SNAPSHOT</dt>
+                  <dt data-i18n="bench.result.snapshot">SNAPSHOT</dt>
                   <dd id="snapshot-time"></dd>
                 </div>
               </dl>
             </div>
             <div id="gate-badge" class="gate-badge">
-              <span>PRESENTATION GATE</span>
+              <span data-i18n="bench.result.gate">PRESENTATION GATE</span>
               <strong id="gate-decision"></strong>
               <p id="gate-explanation"></p>
             </div>
@@ -203,34 +181,34 @@
 
           <section class="score-stage" aria-labelledby="score-title">
             <div class="score-primary">
-              <p id="score-title">REPOSITORY PROGRESSION INDEX</p>
+              <p id="score-title" data-i18n="bench.score.title">REPOSITORY PROGRESSION INDEX</p>
               <p class="score-number"><span id="total-score"></span><small>/ 100</small></p>
-              <p class="score-note">Visible evidence, transparently weighted.</p>
+              <p class="score-note" data-i18n="bench.score.note">Visible evidence, transparently weighted.</p>
               <div class="repository-profile">
-                <span>REPOSITORY PROFILE</span>
+                <span data-i18n="bench.score.profile">REPOSITORY PROFILE</span>
                 <p id="repository-profile"></p>
               </div>
             </div>
             <figure class="score-sigil-frame">
               <div id="result-sigil" class="evidence-sigil"></div>
               <figcaption>
-                <span>EVIDENCE SHAPES THIS FORM</span>
-                <span>FOCUS A CATEGORY TO ISOLATE ITS TRACE</span>
+                <span data-i18n="bench.score.shapes">EVIDENCE SHAPES THIS FORM</span>
+                <span data-i18n="bench.score.focus">FOCUS A CATEGORY TO ISOLATE ITS TRACE</span>
               </figcaption>
             </figure>
             <div class="indicator-grid" aria-label="Derived editorial indicators">
               <div class="indicator">
-                <span>REPOSITORY SIGNAL</span>
+                <span data-i18n="bench.ind.signal">REPOSITORY SIGNAL</span>
                 <strong id="repository-signal"></strong>
                 <div class="indicator-track" aria-hidden="true"><span id="repository-signal-bar"></span></div>
               </div>
               <div class="indicator">
-                <span>EVIDENCE DEPTH</span>
+                <span data-i18n="bench.ind.depth">EVIDENCE DEPTH</span>
                 <strong id="evidence-depth"></strong>
                 <div class="indicator-track" aria-hidden="true"><span id="evidence-depth-bar"></span></div>
               </div>
               <div class="indicator">
-                <span>GATE DISCIPLINE</span>
+                <span data-i18n="bench.ind.gate">GATE DISCIPLINE</span>
                 <strong id="gate-discipline"></strong>
                 <div class="indicator-track" aria-hidden="true"><span id="gate-discipline-bar"></span></div>
               </div>
@@ -240,11 +218,10 @@
           <section class="category-section" aria-labelledby="category-title">
             <div class="section-heading">
               <div>
-                <p class="section-index">03 / CATEGORY BREAKDOWN</p>
-                <h3 id="category-title">Every point remains inspectable.</h3>
+                <p class="section-index" data-i18n="bench.cat.index">03 / CATEGORY BREAKDOWN</p>
+                <h3 id="category-title" data-i18n="bench.cat.title">Every point remains inspectable.</h3>
               </div>
-              <button id="calculation-toggle" class="disclosure-button" type="button" aria-expanded="false">
-                HOW THIS SCORE WAS CALCULATED
+              <button id="calculation-toggle" class="disclosure-button" type="button" aria-expanded="false" data-i18n="bench.cat.how">HOW THIS SCORE WAS CALCULATED
               </button>
             </div>
             <div id="category-grid" class="category-grid"></div>
@@ -261,31 +238,31 @@
           <section class="evidence-section" aria-labelledby="evidence-title">
             <div class="section-heading">
               <div>
-                <p class="section-index">04 / EVIDENCE LEDGER</p>
-                <h3 id="evidence-title">Admitted and absent signals.</h3>
+                <p class="section-index" data-i18n="bench.ev.index">04 / EVIDENCE LEDGER</p>
+                <h3 id="evidence-title" data-i18n="bench.ev.title">Admitted and absent signals.</h3>
               </div>
               <p id="heuristic-count" class="quiet-stat"></p>
             </div>
             <div class="ledger-grid">
               <div>
-                <h4>ADMITTED EVIDENCE <span id="admitted-count"></span></h4>
+                <h4 data-i18n="bench.ev.admitted">ADMITTED EVIDENCE <span id="admitted-count"></span></h4>
                 <ul id="admitted-signals" class="ledger-list"></ul>
               </div>
               <div>
-                <h4>MISSING EVIDENCE <span id="missing-count"></span></h4>
+                <h4 data-i18n="bench.ev.missing">MISSING EVIDENCE <span id="missing-count"></span></h4>
                 <ul id="missing-signals" class="ledger-list missing"></ul>
               </div>
             </div>
             <div class="warnings">
-              <h4>HEURISTIC WARNINGS</h4>
+              <h4 data-i18n="bench.ev.warn">HEURISTIC WARNINGS</h4>
               <ul id="heuristic-warnings"></ul>
             </div>
           </section>
 
           <section class="receipt-section" aria-labelledby="receipt-title">
             <div>
-              <p class="section-index">05 / LOCAL RECEIPT</p>
-              <h3 id="receipt-title">Decision trace, ready to retain.</h3>
+              <p class="section-index" data-i18n="bench.receipt.index">05 / LOCAL RECEIPT</p>
+              <h3 id="receipt-title" data-i18n="bench.receipt.title">Decision trace, ready to retain.</h3>
               <p>
                 The receipt records the admitted candidate and presentation Gate decision. Its
                 SHA-256 value preserves the local decision trace.
@@ -318,8 +295,8 @@
 
           <aside class="save-trace" aria-labelledby="save-trace-title">
             <div>
-              <p class="section-index">REPOSITORY WORKSPACE</p>
-              <h3 id="save-trace-title">SAVE THIS TRACE</h3>
+              <p class="section-index" data-i18n="bench.save.index">REPOSITORY WORKSPACE</p>
+              <h3 id="save-trace-title" data-i18n="bench.save.title">SAVE THIS TRACE</h3>
               <p>Save results · track progression · connect repositories</p>
               <small>
                 Sign in to retain future authenticated runs. This completed anonymous result is
@@ -349,8 +326,8 @@
         </article>
 
         <section class="methodology" aria-labelledby="methodology-title">
-          <p class="section-index">METHOD / BOUNDARY</p>
-          <h2 id="methodology-title">What this instrument can—and cannot—say.</h2>
+          <p class="section-index" data-i18n="bench.method.index">METHOD / BOUNDARY</p>
+          <h2 id="methodology-title" data-i18n="bench.method.title">What this instrument can—and cannot—say.</h2>
           <div class="benchmark-boundary-flow" aria-label="Benchmark presentation flow">
             <span>INPUT</span><span>BOUNDED PUBLIC EVIDENCE</span><span>CANDIDATE SCORE</span><span>BENCHMARK PRESENTATION GATE</span><span>LOCAL RECEIPT</span>
           </div>
@@ -370,11 +347,12 @@
       </main>
 
       <footer>
-        <span>SEMEAI / REPOSITORY EVIDENCE BENCHMARK</span>
-        <span>EXPERIMENTAL PROTOTYPE · PUBLIC PREVIEW · NOINDEX</span>
+        <span data-i18n="bench.footer.1">SEMEAI / REPOSITORY EVIDENCE BENCHMARK</span>
+        <span data-i18n="bench.footer.2">EXPERIMENTAL PROTOTYPE · PUBLIC PREVIEW · NOINDEX</span>
       </footer>
     </div>
-    <script src="/assets/js/i18n.js?v=20260717e"></script>
-    <script src="/assets/js/site-shell.js?v=20260723b"></script>
+    <script src="/assets/js/i18n.js?v=20260724a"></script>
+    <script src="/assets/js/i18n-arch.js?v=20260724a"></script>
+    <script src="/assets/js/site-shell.js?v=20260724a"></script>
   </body>
 </html>

@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>SemeAI Engineering Book | Anton Semenenko</title>
+    <title data-i18n-page="book.title.page">SemeAI Engineering Book | Anton Semenenko</title>
     <meta
       name="description"
+      data-i18n-page="book.meta"
       content="A digital engineering book for SemeAI: observable AI systems, inspectable decisions, persistent evidence, and release-control architecture."
     />
     <meta name="robots" content="index,follow" />
@@ -21,74 +22,55 @@
     <meta name="theme-color" content="#070809" />
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="../assets/css/brand.css?v=20260723b" />
-    <link rel="stylesheet" href="../assets/css/site.css?v=20260723b" />
+    <link rel="stylesheet" href="../assets/css/site.css?v=20260724a" />
     <link rel="stylesheet" href="../assets/css/book.css?v=20260723b" />
   </head>
   <body class="book-body mode-editorial" data-semeai-custom-bg>
-    <a class="book-skip" href="#book-main">Skip to book content</a>
-    <div data-semeai-nav>
-      <header class="site-header" data-semeai-header>
-        <div class="site-header-inner">
-          <a class="brand" href="/" aria-label="SemeAI home"><img class="brand-mark semeai-mark" src="/assets/brand/semeai-mark.svg" width="32" height="32" alt="" aria-hidden="true" /><span class="semeai-wordmark">SemeAI</span></a>
-          <nav class="site-nav" aria-label="Primary">
-            <a class="nav-link" href="/gate.html">Gate</a>
-            <a class="nav-link" href="/benchmark/">Benchmark</a>
-            <a class="nav-link" href="/genesis/">Genesis</a>
-            <a class="nav-link active" href="/book/" aria-current="page">Book</a>
-            <a class="nav-link" href="/research.html">Research</a>
-          </nav>
-          <a class="btn-ghost header-dashboard" href="/dashboard.html">Open dashboard</a>
-        </div>
-      </header>
-      <noscript>
-        <nav class="noscript-nav" aria-label="Primary navigation without JavaScript">
-          <a href="/gate.html">Gate</a><a href="/benchmark/">Benchmark</a><a href="/genesis/">Genesis</a><a aria-current="page" href="/book/">Book</a><a href="/research.html">Research</a><a href="/dashboard.html">Open dashboard</a>
-        </nav>
-      </noscript>
-    </div>
+    <a class="book-skip" href="#book-main" data-i18n="book.skip">Skip to book content</a>
+    <div data-semeai-nav></div>
     <div class="book-progress" aria-hidden="true">
       <span id="book-progress-bar"></span>
     </div>
 
     <div class="book-shell">
       <aside class="book-nav" aria-label="Engineering book navigation">
-        <a class="book-brand" href="/" aria-label="Back to SemeAI home">
+        <a class="book-brand" href="/" data-i18n-aria="shell.home" aria-label="Back to SemeAI home">
           <img class="book-brand-mark" src="/assets/brand/semeai-mark.svg" width="38" height="38" alt="" aria-hidden="true" />
           <span>
             <strong>SemeAI</strong>
-            <small>Engineering Book</small>
+            <small data-i18n="book.brand.small">Engineering Book</small>
           </span>
         </a>
 
-        <button class="book-menu-button" type="button" id="book-menu-button" aria-expanded="false" aria-controls="book-nav-list">
+        <button class="book-menu-button" type="button" id="book-menu-button" aria-expanded="false" aria-controls="book-nav-list" data-i18n="book.chapters">
           Chapters
         </button>
 
         <ol class="book-nav-list" id="book-nav-list"></ol>
 
         <div class="book-nav-actions">
-          <span class="book-action book-action--current" aria-current="page">Engineering Book</span>
-          <button class="book-action" type="button" id="book-print-button">Print / PDF</button>
-          <a class="book-action" href="/gate.html">Gate</a>
-          <a class="book-action" href="/benchmark/">Benchmark</a>
-          <a class="book-action" href="/research.html">Research</a>
-          <a class="book-action" href="/">Back to SemeAI</a>
+          <span class="book-action book-action--current" aria-current="page" data-i18n="book.current">Engineering Book</span>
+          <button class="book-action" type="button" id="book-print-button" data-i18n="book.print">Print / PDF</button>
+          <a class="book-action" href="/gate.html" data-i18n="shell.nav.gate">Gate</a>
+          <a class="book-action" href="/benchmark/" data-i18n="shell.nav.benchmark">Benchmark</a>
+          <a class="book-action" href="/research.html" data-i18n="shell.nav.research">Research</a>
+          <a class="book-action" href="/" data-i18n="book.back">Back to SemeAI</a>
         </div>
       </aside>
 
       <main class="book-main" id="book-main" tabindex="-1">
         <section class="book-start" id="book-start" aria-labelledby="book-start-title">
-          <p class="book-kicker">Start here · seven reading paths</p>
-          <h2 id="book-start-title">Find the boundary you need to inspect.</h2>
-          <p>The Book is the implementation layer. These paths point into existing chapters; they do not create a second architecture.</p>
+          <p class="book-kicker" data-i18n="book.start.kicker">Start here · seven reading paths</p>
+          <h2 id="book-start-title" data-i18n="book.start.title">Find the boundary you need to inspect.</h2>
+          <p data-i18n="book.start.lead">The Book is the implementation layer. These paths point into existing chapters; they do not create a second architecture.</p>
           <ol>
-            <li><a href="#candidate"><span>01</span><strong>Candidate formation</strong><small>Generation creates a candidate.</small></a></li>
-            <li><a href="#release"><span>02</span><strong>Release authority</strong><small>Release remains a separate decision.</small></a></li>
-            <li><a href="#release-flow"><span>03</span><strong>Gate decisions</strong><small>The observable boundary and its outcomes.</small></a></li>
-            <li><a href="#evidence"><span>04</span><strong>Evidence and receipts</strong><small>Inspectable artifacts over claims.</small></a></li>
-            <li><a href="#evolution"><span>05</span><strong>Replay and continuity</strong><small>Architectural evolution and retained trace.</small></a></li>
-            <li><a href="#proof"><span>06</span><strong>Repository evidence surface</strong><small>Public artifacts that can be inspected.</small></a></li>
-            <li><a href="#runtime-stack"><span>07</span><strong>Runtime and product surfaces</strong><small>The layered prototype architecture.</small></a></li>
+            <li><a href="#candidate"><span>01</span><strong data-i18n="book.path.1.t">Candidate formation</strong><small data-i18n="book.path.1.d">Generation creates a candidate.</small></a></li>
+            <li><a href="#release"><span>02</span><strong data-i18n="book.path.2.t">Release authority</strong><small data-i18n="book.path.2.d">Release remains a separate decision.</small></a></li>
+            <li><a href="#release-flow"><span>03</span><strong data-i18n="book.path.3.t">Gate decisions</strong><small data-i18n="book.path.3.d">The observable boundary and its outcomes.</small></a></li>
+            <li><a href="#evidence"><span>04</span><strong data-i18n="book.path.4.t">Evidence and receipts</strong><small data-i18n="book.path.4.d">Inspectable artifacts over claims.</small></a></li>
+            <li><a href="#evolution"><span>05</span><strong data-i18n="book.path.5.t">Replay and continuity</strong><small data-i18n="book.path.5.d">Architectural evolution and retained trace.</small></a></li>
+            <li><a href="#proof"><span>06</span><strong data-i18n="book.path.6.t">Repository evidence surface</strong><small data-i18n="book.path.6.d">Public artifacts that can be inspected.</small></a></li>
+            <li><a href="#runtime-stack"><span>07</span><strong data-i18n="book.path.7.t">Runtime and product surfaces</strong><small data-i18n="book.path.7.d">The layered prototype architecture.</small></a></li>
           </ol>
         </section>
         <noscript>
@@ -104,9 +86,11 @@
       </main>
     </div>
 
+    <script src="../assets/js/i18n.js?v=20260724a"></script>
+    <script src="../assets/js/i18n-arch.js?v=20260724a"></script>
     <script src="../assets/js/book-content.js?v=20260721a"></script>
-    <script src="../assets/js/book.js?v=20260723a"></script>
-    <script src="../assets/js/i18n.js?v=20260717e"></script>
-    <script src="../assets/js/site-shell.js?v=20260723b"></script>
+    <script src="../assets/js/book-i18n.js?v=20260724a"></script>
+    <script src="../assets/js/book.js?v=20260724a"></script>
+    <script src="../assets/js/site-shell.js?v=20260724a"></script>
   </body>
 </html>

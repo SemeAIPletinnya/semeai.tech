@@ -1986,73 +1986,50 @@
     <div class="vignette" aria-hidden="true"></div>
 
     <div class="content">
-      <div data-semeai-nav>
-        <header class="site-header" data-semeai-header>
-          <div class="site-header-inner">
-            <a class="brand" href="/" aria-label="SemeAI home" aria-current="page"><img class="brand-mark semeai-mark" src="/assets/brand/semeai-mark.svg" width="32" height="32" alt="" aria-hidden="true" /><span class="semeai-wordmark">SemeAI</span></a>
-            <nav class="site-nav" aria-label="Primary">
-              <a class="nav-link" href="/gate.html">Gate</a>
-              <a class="nav-link" href="/benchmark/">Benchmark</a>
-              <a class="nav-link" href="/genesis/">Genesis</a>
-              <a class="nav-link" href="/book/">Book</a>
-              <a class="nav-link" href="/research.html">Research</a>
-            </nav>
-            <a class="btn-ghost header-dashboard" href="/dashboard.html">Open dashboard</a>
-          </div>
-        </header>
-        <noscript>
-          <nav class="noscript-nav" aria-label="Primary navigation without JavaScript">
-            <a href="/gate.html">Gate</a><a href="/benchmark/">Benchmark</a><a href="/genesis/">Genesis</a><a href="/book/">Book</a><a href="/research.html">Research</a><a href="/dashboard.html">Open dashboard</a>
-          </nav>
-        </noscript>
-      </div>
+      <div data-semeai-nav></div>
 
       <main id="top">
         <section class="hero">
           <div class="hero-layout">
             <div>
-              <div class="kicker"><span class="signal-dot"></span>SemeAI · governed release control</div>
+              <div class="kicker"><span class="signal-dot"></span><span data-i18n="home.kicker">SemeAI · governed release control</span></div>
               <h1 class="hero-title">
-                Generation creates a candidate.
-                <span>Release is a separate decision.</span>
+                <span data-i18n="home.h1">Generation creates a candidate.</span>
+                <span data-i18n="home.h1.span">Release is a separate decision.</span>
               </h1>
-              <p class="hero-copy">
-                SemeAI is a governed release-control layer for AI-generated outputs. The model produces a candidate;
-                the Gate evaluates evidence, policy, and context before the host receives
-                <strong class="text-ink">SHOW</strong>, <strong class="text-ink">REVIEW</strong>, or <strong class="text-ink">BLOCK</strong>.
-              </p>
-              <p class="hero-positioning">Generation is not release authority.</p>
+              <p class="hero-copy"><span data-i18n="home.hero.copy">SemeAI is a governed release-control layer for AI-generated outputs. The model produces a candidate; the Gate evaluates evidence, policy, and context before the host receives SHOW, REVIEW, or BLOCK.</span></p>
+              <p class="hero-positioning" data-i18n="home.hero.position">Generation is not release authority.</p>
               <div class="hero-actions mt-8">
-                <a class="btn-primary" href="/benchmark/">Run the Benchmark</a>
-                <a class="btn-ghost" href="/gate.html">Explore the Gate</a>
-                <a class="btn-ghost" href="/genesis/">Enter Genesis</a>
+                <a class="btn-primary" href="/benchmark/" data-i18n="home.cta.bench">Run the Benchmark</a>
+                <a class="btn-ghost" href="/gate.html" data-i18n="home.cta.gate">Explore the Gate</a>
+                <a class="btn-ghost" href="/genesis/" data-i18n="home.cta.genesis">Enter Genesis</a>
               </div>
               <div class="hero-control-strip" aria-label="SemeAI release-control chain">
                 <div class="hero-control-step" style="--step: #8fb8ff">
                   <small>01</small>
-                  <b>Candidate</b>
-                  <span>LLM output</span>
+                  <b data-i18n="home.step.1.t">Candidate</b>
+                  <span data-i18n="home.step.1.d">LLM output</span>
                 </div>
                 <div class="hero-control-step" style="--step: #7af0b1">
                   <small>02</small>
-                  <b>Evidence</b>
-                  <span>data and context</span>
+                  <b data-i18n="home.step.2.t">Evidence</b>
+                  <span data-i18n="home.step.2.d">data and context</span>
                 </div>
                 <div class="hero-control-step" style="--step: #ffd08a">
                   <small>03</small>
-                  <b>Decision</b>
-                  <span>SHOW / REVIEW / BLOCK</span>
+                  <b data-i18n="home.step.3.t">Decision</b>
+                  <span data-i18n="home.step.3.d">SHOW / REVIEW / BLOCK</span>
                 </div>
                 <div class="hero-control-step" style="--step: #86edf5">
                   <small>04</small>
-                  <b>Receipt</b>
-                  <span>audit preserved</span>
+                  <b data-i18n="home.step.4.t">Receipt</b>
+                  <span data-i18n="home.step.4.d">audit preserved</span>
                 </div>
               </div>
               <div class="hero-metrics">
-                <div class="metric rounded-2xl"><b>Bounded</b><span>Evidence and policy remain scoped</span></div>
-                <div class="metric rounded-2xl"><b>Inspect</b><span>Decision criteria stay visible</span></div>
-                <div class="metric rounded-2xl"><b>Retain</b><span>Receipts preserve the decision trace</span></div>
+                <div class="metric rounded-2xl"><b data-i18n="home.metric.1.t">Bounded</b><span data-i18n="home.metric.1.d">Evidence and policy remain scoped</span></div>
+                <div class="metric rounded-2xl"><b data-i18n="home.metric.2.t">Inspect</b><span data-i18n="home.metric.2.d">Decision criteria stay visible</span></div>
+                <div class="metric rounded-2xl"><b data-i18n="home.metric.3.t">Retain</b><span data-i18n="home.metric.3.d">Receipts preserve the decision trace</span></div>
               </div>
             </div>
 
@@ -2094,41 +2071,41 @@
               <span class="stage-crown" aria-hidden="true"></span>
               <span class="stage-root" aria-hidden="true"></span>
               <span class="stage-horizon" aria-hidden="true"></span>
-              <span class="field-label left">Candidate field</span>
-              <span class="field-label right">Release field</span>
-              <span class="field-label bottom">Audit preserved</span>
+              <span class="field-label left" data-i18n="home.field.left">Candidate field</span>
+              <span class="field-label right" data-i18n="home.field.right">Release field</span>
+              <span class="field-label bottom" data-i18n="home.field.bottom">Audit preserved</span>
 
               <div class="core-node">
-                <small>SemeAI Core</small>
-                <b>Living release ecosystem</b>
-                <span>Memory, evidence, timelines, receipts, and release decisions evolve without deleting audit history.</span>
+                <small data-i18n="home.core.small">SemeAI Core</small>
+                <b data-i18n="home.core.b">Living release ecosystem</b>
+                <span data-i18n="home.core.span">Memory, evidence, timelines, receipts, and release decisions evolve without deleting audit history.</span>
               </div>
 
               <button class="eco-node n-memory active" type="button" data-node="memory">
-                <strong>Memory</strong><span>Admitted context, not raw archive</span>
+                <strong data-i18n="home.node.memory.t">Memory</strong><span data-i18n="home.node.memory.d">Admitted context, not raw archive</span>
               </button>
               <button class="eco-node n-evidence" type="button" data-node="evidence">
-                <strong>Evidence</strong><span>Business data and source support</span>
+                <strong data-i18n="home.node.evidence.t">Evidence</strong><span data-i18n="home.node.evidence.d">Business data and source support</span>
               </button>
               <button class="eco-node n-timeline" type="button" data-node="timeline">
-                <strong>Timeline</strong><span>Every decision creates a path</span>
+                <strong data-i18n="home.node.timeline.t">Timeline</strong><span data-i18n="home.node.timeline.d">Every decision creates a path</span>
               </button>
               <button class="eco-node n-receipts" type="button" data-node="receipts">
-                <strong>Receipts</strong><span>Proof preserved on BLOCK</span>
+                <strong data-i18n="home.node.receipts.t">Receipts</strong><span data-i18n="home.node.receipts.d">Proof preserved on BLOCK</span>
               </button>
               <button class="eco-node n-runtime" type="button" data-node="runtime">
-                <strong>Runtime</strong><span>Candidate before release</span>
+                <strong data-i18n="home.node.runtime.t">Runtime</strong><span data-i18n="home.node.runtime.d">Candidate before release</span>
               </button>
               <button class="eco-node n-api" type="button" data-node="api">
-                <strong>API</strong><span>One call between LLM and user</span>
+                <strong data-i18n="home.node.api.t">API</strong><span data-i18n="home.node.api.d">One call between LLM and user</span>
               </button>
               <button class="eco-node n-release" type="button" data-node="release">
-                <strong>Release Control</strong><span>SHOW / REVIEW / BLOCK</span>
+                <strong data-i18n="home.node.release.t">Release Control</strong><span data-i18n="home.node.release.d">SHOW / REVIEW / BLOCK</span>
               </button>
 
               <div class="node-panel glass" id="node-panel">
                 <div>
-                  <h3 id="node-title">Memory is governed.</h3>
+                  <h3 id="node-title" data-i18n="home.node.memory.title">Memory is governed.</h3>
                   <p id="node-copy">
                     Raw archives and generated answers do not become trusted memory by default. SemeAI keeps source
                     evidence separate from admitted memory.
@@ -2143,21 +2120,20 @@
         <section id="orientation" class="mx-auto max-w-site px-5 pb-24 sm:px-6" aria-labelledby="orientation-title">
           <div class="chapter-card glass">
             <div>
-              <span class="pill">Navigate the system</span>
-              <h2 id="orientation-title" class="mt-5 max-w-2xl text-4xl font-black leading-[0.98] tracking-[-0.04em] text-white sm:text-6xl">
-                One principle. Distinct places to understand it.
+              <span class="pill" data-i18n="home.orient.pill">Navigate the system</span>
+              <h2 id="orientation-title" class="mt-5 max-w-2xl text-4xl font-black leading-[0.98] tracking-[-0.04em] text-white sm:text-6xl" data-i18n="home.orient.title">One principle. Distinct places to understand it.
               </h2>
               <p class="mt-5 max-w-2xl text-lg leading-relaxed text-mute">
                 Start with the question you have now. Each route has one job; none of them replaces the release decision.
               </p>
             </div>
             <div class="route-index" aria-label="SemeAI route roles">
-              <a href="/genesis/"><small>Why</small><strong>Genesis</strong><span>The conceptual and emotional origin.</span></a>
-              <a href="/gate.html"><small>What</small><strong>SemeAI Gate</strong><span>The post-generation release authority.</span></a>
-              <a href="/benchmark/"><small>Proof</small><strong>Repository Evidence Benchmark</strong><span>The principle operating on bounded public evidence.</span></a>
-              <a href="/book/"><small>How</small><strong>Engineering Book</strong><span>Architecture, decisions, receipts, replay, and continuity.</span></a>
-              <a href="/research.html"><small>Boundary</small><strong>Research</strong><span>Evidence, experiments, limitations, and claim boundaries.</span></a>
-              <a href="/dashboard.html"><small>Use</small><strong>Dashboard</strong><span>Operational Gate actions, receipts, history, team, and account.</span></a>
+              <a href="/genesis/"><small><span data-i18n="home.route.genesis.k">Why</span></small><strong><span data-i18n="home.route.genesis.t">Genesis</span></strong><span><span data-i18n="home.route.genesis.d">The conceptual and emotional origin.</span></span></a>
+              <a href="/gate.html"><small>What</small><strong data-i18n="home.spine.3.t">SemeAI Gate</strong><span>The post-generation release authority.</span></a>
+              <a href="/benchmark/"><small data-i18n="home.route.bench.k">Proof</small><strong data-i18n="home.route.bench.t">Repository Evidence Benchmark</strong><span data-i18n="home.route.bench.d">The principle operating on bounded public evidence.</span></a>
+              <a href="/book/"><small data-i18n="home.route.book.k">How</small><strong data-i18n="home.route.book.t">Engineering Book</strong><span data-i18n="home.route.book.d">Architecture, decisions, receipts, replay, and continuity.</span></a>
+              <a href="/research.html"><small data-i18n="home.route.research.k">Boundary</small><strong data-i18n="home.route.research.t">Research</strong><span data-i18n="home.route.research.d">Evidence, experiments, limitations, and claim boundaries.</span></a>
+              <a href="/dashboard.html"><small data-i18n="home.route.dash.k">Use</small><strong data-i18n="home.route.dash.t">Dashboard</strong><span data-i18n="home.route.dash.d">Operational Gate actions, receipts, history, team, and account.</span></a>
             </div>
           </div>
         </section>
@@ -2166,33 +2142,31 @@
           <div class="system-spine glass">
             <div class="grid gap-8 lg:grid-cols-[0.84fr_1.16fr] lg:items-end">
               <div>
-                <span class="pill">Control corridor</span>
-                <h2 class="mt-5 max-w-2xl text-4xl font-black leading-[0.98] tracking-[-0.04em] text-white sm:text-6xl">
-                  The answer crosses a boundary before it reaches anyone.
+                <span class="pill" data-i18n="home.spine.pill">Control corridor</span>
+                <h2 class="mt-5 max-w-2xl text-4xl font-black leading-[0.98] tracking-[-0.04em] text-white sm:text-6xl" data-i18n="home.spine.title">The answer crosses a boundary before it reaches anyone.
                 </h2>
               </div>
               <p class="max-w-2xl text-lg leading-relaxed text-mute">
-                SemeAI does not replace the model. It adds the missing release layer between fluent generation and
-                real-world exposure: business data, context integrity, risk checks, release decision, and audit proof.
+                <span data-i18n="home.spine.lead">SemeAI does not replace the model. It adds the missing release layer between fluent generation and real-world exposure: business data, context integrity, risk checks, release decision, and audit proof.</span>
               </p>
             </div>
 
             <div class="spine-flow" aria-label="SemeAI release-control flow">
               <div class="spine-step" data-index="01">
-                <strong>Candidate answer</strong>
-                <span>The LLM writes text. It is not release authority.</span>
+                <strong data-i18n="home.spine.1.t">Candidate answer</strong>
+                <span data-i18n="home.spine.1.d">The LLM writes text. It is not release authority.</span>
               </div>
               <div class="spine-step" data-index="02">
-                <strong>Evidence and context</strong>
-                <span>Business data, rules, and expected scope are checked before release.</span>
+                <strong data-i18n="home.spine.2.t">Evidence and context</strong>
+                <span data-i18n="home.spine.2.d">Business data, rules, and expected scope are checked before release.</span>
               </div>
               <div class="spine-step gate" data-index="03">
-                <strong>SemeAI Gate</strong>
-                <span>Returns SHOW, REVIEW, or BLOCK while preserving canonical audit states.</span>
+                <strong data-i18n="home.spine.3.t">SemeAI Gate</strong>
+                <span data-i18n="home.spine.3.d">Returns SHOW, REVIEW, or BLOCK while preserving canonical audit states.</span>
               </div>
               <div class="spine-step" data-index="04">
-                <strong>Receipt trail</strong>
-                <span>Decisions and withheld outputs remain replayable instead of disappearing.</span>
+                <strong data-i18n="home.spine.4.t">Receipt trail</strong>
+                <span data-i18n="home.spine.4.d">Decisions and withheld outputs remain replayable instead of disappearing.</span>
               </div>
             </div>
 
@@ -2202,8 +2176,8 @@
               <div><span class="text-blue">BLOCK</span> = SILENCE</div>
             </div>
             <div class="mt-7 flex flex-wrap gap-3">
-              <a class="btn-primary" href="/gate.html">Explore the Gate</a>
-              <a class="btn-ghost" href="/book/#release-flow">Inspect the architecture</a>
+              <a class="btn-primary" href="/gate.html" data-i18n="home.cta.gate">Explore the Gate</a>
+              <a class="btn-ghost" href="/book/#release-flow" data-i18n="home.spine.cta.book">Inspect the architecture</a>
             </div>
           </div>
         </section>
@@ -2211,13 +2185,11 @@
         <section id="problem" class="mx-auto max-w-site px-5 py-24 sm:px-6">
           <div class="chapter-card glass">
             <div>
-              <span class="pill">Why this matters</span>
-              <h2 class="mt-5 max-w-xl text-4xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-5xl">
-                AI answers can be fluent and still not allowed.
+              <span class="pill" data-i18n="home.problem.pill">Why this matters</span>
+              <h2 class="mt-5 max-w-xl text-4xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-5xl" data-i18n="home.problem.title">AI answers can be fluent and still not allowed.
               </h2>
               <p class="mt-5 max-w-xl text-lg leading-relaxed text-mute">
-                Fake promo codes are only the smallest demo. The same boundary applies wherever generated output can
-                mutate customer-visible facts, workflows, medical guidance, finance claims, game worlds, or internal operations.
+                <span data-i18n="home.problem.lead">Fake promo codes are only the smallest demo. The same boundary applies wherever generated output can mutate customer-visible facts, workflows, medical guidance, finance claims, game worlds, or internal operations.</span>
               </p>
             </div>
             <div>
@@ -2489,7 +2461,7 @@
                 a candidate score, a display-only Benchmark Presentation Gate decision, and a local receipt.
               </p>
               <p class="mt-4 text-sm leading-relaxed text-faint">SHOW means evidence is sufficient to display. It is not a quality approval, security verdict, or production endorsement.</p>
-              <div class="mt-7 flex flex-wrap gap-3"><a class="btn-primary" href="/benchmark/">Run the Benchmark</a><a class="btn-ghost" href="/research.html">View evidence boundaries</a></div>
+              <div class="mt-7 flex flex-wrap gap-3"><a class="btn-primary" href="/benchmark/" data-i18n="home.cta.bench">Run the Benchmark</a><a class="btn-ghost" href="/research.html">View evidence boundaries</a></div>
             </div>
             <div class="proof-grid">
               <article class="proof-card">
@@ -2524,7 +2496,7 @@
                 <h2 id="origins-title" class="mt-5 text-4xl font-black leading-[0.98] tracking-[-0.05em] text-white sm:text-5xl">Possibility forms before authority arrives.</h2>
                 <p class="mt-5 text-lg leading-relaxed text-mute">Genesis is the conceptual origin and visual language of SemeAI: candidate formation, divergence, and the moment generation becomes insufficient.</p>
               </div>
-              <div class="mt-7"><a class="btn-ghost" href="/genesis/">Enter Genesis</a></div>
+              <div class="mt-7"><a class="btn-ghost" href="/genesis/" data-i18n="home.cta.genesis">Enter Genesis</a></div>
             </article>
             <article class="chapter-card glass">
               <div>
@@ -2579,8 +2551,8 @@
             </p>
             <div class="mt-8 flex flex-wrap justify-center gap-3">
               <a class="btn-primary" href="/dashboard.html">Open Dashboard</a>
-              <a class="btn-ghost" href="/benchmark/">Run the Benchmark</a>
-              <a class="btn-ghost" href="/gate.html">Explore the Gate</a>
+              <a class="btn-ghost" href="/benchmark/" data-i18n="home.cta.bench">Run the Benchmark</a>
+              <a class="btn-ghost" href="/gate.html" data-i18n="home.cta.gate">Explore the Gate</a>
             </div>
           </div>
         </section>
@@ -2591,8 +2563,9 @@
 
     <script src="assets/js/api.js?v=20260720a"></script>
     <script src="assets/js/cache-bust.js?v=20260720a"></script>
-    <script src="assets/js/i18n.js?v=20260720a"></script>
-    <script src="assets/js/site-shell.js?v=20260723b"></script>
+    <script src="assets/js/i18n.js?v=20260724a"></script>
+    <script src="assets/js/i18n-arch.js?v=20260724a"></script>
+    <script src="assets/js/site-shell.js?v=20260724a"></script>
     <script>
       (function initCanvas() {
         const canvas = document.getElementById("bg-canvas");
@@ -2788,44 +2761,45 @@
         else raf = requestAnimationFrame(draw);
       })();
 
+            const t = (key, fallback) => {
+        const api = window.SemeAI_I18n;
+        if (!api || typeof api.t !== "function") return fallback;
+        const value = api.t(key);
+        return value && value !== key ? value : fallback;
+      };
+      const nodeCopyFor = (key) => ({
+        title: t("home.node." + key + ".title", ""),
+        copy: t("home.node." + key + ".copy", ""),
+        code: ({
+          memory: "raw evidence != admitted memory",
+          evidence: "retrieval != truth",
+          timeline: "decision -> timeline event",
+          receipts: "release denied / audit preserved",
+          runtime: "candidate != released answer",
+          api: "POST /v0/check",
+          release: "SHOW / REVIEW / BLOCK",
+        })[key],
+      });
       const NODE_COPY = {
-        memory: {
-          title: "Memory is governed.",
-          copy: "Raw archives and generated answers do not become trusted memory by default. SemeAI keeps source evidence separate from admitted memory.",
-          code: "raw evidence != admitted memory",
-        },
-        evidence: {
-          title: "Evidence is the source of support.",
-          copy: "The gate compares candidate answers against business data, context markers, source records, and release rules before anything is shown.",
-          code: "retrieval != truth",
-        },
-        timeline: {
-          title: "Every decision creates a path.",
-          copy: "SemeAI treats release decisions as timeline events. Branches can continue, merge, stop, or wait for review without disappearing.",
-          code: "decision -> timeline event",
-        },
-        receipts: {
-          title: "SILENCE is not deletion.",
-          copy: "A blocked answer is withheld from users, but the audit record remains. Receipts preserve what was generated, why it was blocked, and what the runtime did.",
-          code: "release denied / audit preserved",
-        },
-        runtime: {
-          title: "The candidate is not the release.",
-          copy: "The model may generate a candidate answer, but the release boundary evaluates that candidate before it becomes visible or actionable.",
-          code: "candidate != released answer",
-        },
-        api: {
-          title: "One API call between model and user.",
-          copy: "Host products send the user message, AI answer, business data, context, and rules. SemeAI returns SHOW, REVIEW, or BLOCK.",
-          code: "POST /v0/check",
-        },
-        release: {
-          title: "Release control is the authority layer.",
-          copy: "SHOW maps to PROCEED, REVIEW maps to NEEDS_REVIEW, and BLOCK maps to SILENCE. Machine values remain canonical for audit and replay.",
-          code: "SHOW / REVIEW / BLOCK",
-        },
+        memory: nodeCopyFor("memory"),
+        evidence: nodeCopyFor("evidence"),
+        timeline: nodeCopyFor("timeline"),
+        receipts: nodeCopyFor("receipts"),
+        runtime: nodeCopyFor("runtime"),
+        api: nodeCopyFor("api"),
+        release: nodeCopyFor("release"),
       };
 
+      window.addEventListener("semeai:lang", () => {
+        const active = document.querySelector(".eco-node.active")?.dataset?.node || "memory";
+        const data = nodeCopyFor(active);
+        const title = document.querySelector("#node-title");
+        const copy = document.querySelector("#node-copy");
+        const code = document.querySelector("#node-code");
+        if (title) title.textContent = data.title;
+        if (copy) copy.textContent = data.copy;
+        if (code) code.textContent = data.code;
+      });
       document.querySelectorAll(".eco-node").forEach((node) => {
         node.addEventListener("click", () => {
           document.querySelectorAll(".eco-node").forEach((n) => n.classList.remove("active"));
