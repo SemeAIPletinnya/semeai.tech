@@ -12,107 +12,130 @@
   let motionActive = false;
   let activeAct = null;
 
+  // Cinematic profiles tuned to D:\render style: volumetric gold light,
+  // slow living-space drift, and non-flat depth motion (not flat slides).
   const sceneProfiles = {
     "first-impulse": {
-      period: 27.3,
+      period: 21.5,
       phase: 0.4,
-      scale: 0.0008,
-      x: 0.025,
-      y: 0.018,
-      entryDelay: 160,
-      entryDuration: 3100,
-      entryAttack: 0.12,
-      entryStrength: 0.11,
-    },
-    emergence: {
-      period: 19.7,
-      phase: 1.3,
-      scale: 0.0025,
-      x: 0.055,
-      y: 0.045,
-      entryDelay: 110,
-      entryDuration: 3600,
-      entryAttack: 0.2,
-      entryStrength: 0.075,
-    },
-    "first-continuity": {
-      period: 22.9,
-      phase: 2.1,
-      scale: 0.0015,
-      x: 0.025,
-      y: 0.1,
-      entryDelay: 240,
-      entryDuration: 3900,
-      entryAttack: 0.18,
-      entryStrength: 0.065,
-    },
-    "living-space": {
-      period: 25.7,
-      phase: 0.8,
-      scale: 0.0022,
-      x: 0.11,
-      y: 0.045,
-      entryDelay: 180,
-      entryDuration: 4300,
-      entryAttack: 0.23,
-      entryStrength: 0.055,
-    },
-    "space-responds": {
-      period: 21.1,
-      phase: 2.7,
-      scale: 0.0017,
-      x: 0.085,
-      y: 0.03,
-      entryDelay: 620,
-      entryDuration: 4700,
-      entryAttack: 0.19,
-      entryStrength: 0.055,
-    },
-    "first-horizon": {
-      period: 31.3,
-      phase: 1.8,
-      scale: 0.0012,
-      x: 0.04,
-      y: 0.025,
-      entryDelay: 320,
-      entryDuration: 5200,
-      entryAttack: 0.28,
-      entryStrength: 0.03,
-    },
-    "hidden-current": {
-      period: 26.3,
-      phase: 3.2,
-      scale: 0.0016,
-      x: 0.13,
-      y: 0.035,
-      entryDelay: 260,
-      entryDuration: 4400,
-      entryAttack: 0.2,
-      entryStrength: 0.055,
-    },
-    "field-awakens": {
-      period: 18.7,
-      phase: 0.15,
-      scale: 0.002,
-      x: 0.075,
-      y: 0.05,
-      entryDelay: 120,
-      entryDuration: 4200,
-      entryAttack: 0.17,
-      entryStrength: 0.07,
-    },
-    "living-continuum": {
-      period: 33.7,
-      phase: 2.45,
-      scale: 0.0018,
+      scale: 0.0045,
       x: 0.055,
       y: 0.04,
-      entryDelay: 340,
-      entryDuration: 5600,
+      rotate: 0.35,
+      entryDelay: 120,
+      entryDuration: 3400,
+      entryAttack: 0.1,
+      entryStrength: 0.16,
+      brightness: 0.08,
+    },
+    emergence: {
+      period: 16.4,
+      phase: 1.3,
+      scale: 0.0065,
+      x: 0.09,
+      y: 0.07,
+      rotate: 0.55,
+      entryDelay: 90,
+      entryDuration: 3900,
+      entryAttack: 0.18,
+      entryStrength: 0.12,
+      brightness: 0.1,
+    },
+    "first-continuity": {
+      period: 19.2,
+      phase: 2.1,
+      scale: 0.005,
+      x: 0.05,
+      y: 0.14,
+      rotate: 0.28,
+      entryDelay: 180,
+      entryDuration: 4200,
+      entryAttack: 0.16,
+      entryStrength: 0.1,
+      brightness: 0.07,
+    },
+    "living-space": {
+      period: 22.8,
+      phase: 0.8,
+      scale: 0.007,
+      x: 0.16,
+      y: 0.07,
+      rotate: 0.42,
+      entryDelay: 140,
+      entryDuration: 4600,
+      entryAttack: 0.2,
+      entryStrength: 0.1,
+      brightness: 0.09,
+    },
+    "space-responds": {
+      period: 17.6,
+      phase: 2.7,
+      scale: 0.006,
+      x: 0.14,
+      y: 0.055,
+      rotate: 0.5,
+      entryDelay: 480,
+      entryDuration: 5000,
+      entryAttack: 0.17,
+      entryStrength: 0.1,
+      brightness: 0.1,
+    },
+    "first-horizon": {
+      period: 26.4,
+      phase: 1.8,
+      scale: 0.0042,
+      x: 0.07,
+      y: 0.05,
+      rotate: 0.22,
+      entryDelay: 260,
+      entryDuration: 5400,
       entryAttack: 0.24,
-      entryStrength: 0.04,
+      entryStrength: 0.07,
+      brightness: 0.06,
+    },
+    "hidden-current": {
+      period: 20.1,
+      phase: 3.2,
+      scale: 0.0062,
+      x: 0.18,
+      y: 0.06,
+      rotate: 0.6,
+      entryDelay: 200,
+      entryDuration: 4700,
+      entryAttack: 0.18,
+      entryStrength: 0.1,
+      brightness: 0.09,
+    },
+    "field-awakens": {
+      period: 15.2,
+      phase: 0.15,
+      scale: 0.0075,
+      x: 0.12,
+      y: 0.08,
+      rotate: 0.65,
+      entryDelay: 100,
+      entryDuration: 4500,
+      entryAttack: 0.15,
+      entryStrength: 0.12,
+      brightness: 0.12,
+    },
+    "living-continuum": {
+      period: 28.5,
+      phase: 2.45,
+      scale: 0.0068,
+      x: 0.1,
+      y: 0.07,
+      rotate: 0.48,
+      entryDelay: 280,
+      entryDuration: 6000,
+      entryAttack: 0.22,
+      entryStrength: 0.09,
+      brightness: 0.11,
     },
   };
+
+  const sceneState = new WeakMap();
+  let smoothedProgress = new WeakMap();
 
   const clamp = (value, min = 0, max = 1) => Math.min(max, Math.max(min, value));
   const mix = (from, to, progress) => from + (to - from) * progress;
@@ -137,10 +160,10 @@
   }
 
   function viewportAmplitude() {
-    if (portrait.matches) return 0.26;
-    if (shortViewport.matches) return 0.3;
-    if (narrow.matches) return 0.48;
-    return 1;
+    if (portrait.matches) return 0.38;
+    if (shortViewport.matches) return 0.42;
+    if (narrow.matches) return 0.62;
+    return 1.15;
   }
 
   function originValues(progress, amplitude) {
@@ -332,22 +355,50 @@
   }
 
   function writeScene(scene, values, context) {
-    const profile = sceneProfiles[scene.dataset.scene];
+    const profile = sceneProfiles[scene.dataset.scene] || sceneProfiles.emergence;
     const wave = irregularWave(context.timeSeconds, profile);
+    const tertiary = 0.5 + 0.5 * Math.sin(context.timeSeconds * 0.31 + profile.phase * 1.7);
     const distance = Math.abs(context.index - context.activeIndex);
-    const proximity = distance === 0 ? 1 : distance === 1 ? 0.32 : 0;
+    const proximity = distance === 0 ? 1 : distance === 1 ? 0.42 : 0.08;
     const elapsed = context.isActive ? context.now - context.enteredAt : -1;
     const semantic = semanticValues(scene.dataset.scene, elapsed, context.timeSeconds, wave, context.progress, proximity);
     const entry = context.isActive
       ? eventEnvelope(elapsed, profile.entryDelay, profile.entryDuration, profile.entryAttack) * profile.entryStrength * semantic.damping
       : 0;
     const ambientStrength = proximity * context.amplitude * semantic.damping;
-    const ambientScale = 1 + profile.scale * (0.3 + 0.7 * wave) * ambientStrength;
-    const ambientX = Math.sin((context.timeSeconds / profile.period) * Math.PI * 2 + profile.phase) * profile.x * ambientStrength;
-    const ambientY = Math.sin((context.timeSeconds / (profile.period * 1.39)) * Math.PI * 2 + profile.phase * 0.63) * profile.y * ambientStrength;
+    // Multi-frequency living motion (render-style volumetric breathe).
+    const breathe = 0.55 + 0.45 * wave;
+    const swirl = Math.sin(context.timeSeconds * 0.17 + profile.phase);
+    const lift = Math.sin(context.timeSeconds * 0.11 + profile.phase * 0.4);
+    const ambientScale = 1 + profile.scale * (0.55 + 0.9 * breathe + 0.25 * tertiary) * ambientStrength + entry * 0.35;
+    const ambientX =
+      (Math.sin((context.timeSeconds / profile.period) * Math.PI * 2 + profile.phase) * profile.x +
+        swirl * profile.x * 0.35) *
+      ambientStrength;
+    const ambientY =
+      (Math.sin((context.timeSeconds / (profile.period * 1.39)) * Math.PI * 2 + profile.phase * 0.63) * profile.y +
+        lift * profile.y * 0.4) *
+      ambientStrength;
+    const rotateZ = swirl * (profile.rotate || 0.3) * ambientStrength;
+    const rotateX = lift * (profile.rotate || 0.3) * 0.45 * ambientStrength;
+    const brightness = 1 + (profile.brightness || 0.08) * (0.35 + 0.65 * wave) * proximity + entry * 0.35;
+    const contrast = 1 + 0.04 * proximity * wave;
+    const saturate = 1 + 0.08 * proximity * (0.4 + 0.6 * wave);
+    const bloom = (0.04 + 0.12 * wave + entry * 0.5) * proximity * semantic.damping;
+    const grain = (0.028 + 0.02 * tertiary) * proximity;
 
-    scene.style.setProperty("--scene-opacity", values.opacity.toFixed(4));
-    scene.style.setProperty("--copy-opacity", values.copyOpacity.toFixed(4));
+    // Smooth opacity to avoid flat hard cuts between stacked scenes.
+    let state = sceneState.get(scene);
+    if (!state) {
+      state = { opacity: values.opacity, copy: values.copyOpacity };
+      sceneState.set(scene, state);
+    }
+    const ease = context.isActive ? 0.14 : 0.09;
+    state.opacity += (values.opacity - state.opacity) * ease;
+    state.copy += (values.copyOpacity - state.copy) * ease;
+
+    scene.style.setProperty("--scene-opacity", state.opacity.toFixed(4));
+    scene.style.setProperty("--copy-opacity", state.copy.toFixed(4));
     scene.style.setProperty("--image-scale", values.scale.toFixed(5));
     scene.style.setProperty("--image-x", `${values.x.toFixed(3)}%`);
     scene.style.setProperty("--image-y", `${values.y.toFixed(3)}%`);
@@ -356,6 +407,13 @@
     scene.style.setProperty("--ambient-scale", ambientScale.toFixed(6));
     scene.style.setProperty("--ambient-x", `${ambientX.toFixed(4)}%`);
     scene.style.setProperty("--ambient-y", `${ambientY.toFixed(4)}%`);
+    scene.style.setProperty("--ambient-rotate", `${rotateZ.toFixed(4)}deg`);
+    scene.style.setProperty("--ambient-tilt", `${rotateX.toFixed(4)}deg`);
+    scene.style.setProperty("--image-brightness", brightness.toFixed(4));
+    scene.style.setProperty("--image-contrast", contrast.toFixed(4));
+    scene.style.setProperty("--image-saturate", saturate.toFixed(4));
+    scene.style.setProperty("--bloom-opacity", bloom.toFixed(4));
+    scene.style.setProperty("--grain-opacity", grain.toFixed(4));
     scene.style.setProperty("--semantic-primary-opacity", semantic.primary.toFixed(4));
     scene.style.setProperty("--semantic-secondary-opacity", semantic.secondary.toFixed(4));
     scene.style.setProperty("--entry-opacity", entry.toFixed(4));
@@ -364,6 +422,7 @@
     scene.style.setProperty("--field-x", `${(semantic.fieldX * context.amplitude).toFixed(3)}%`);
     scene.style.setProperty("--field-y", `${(semantic.fieldY * context.amplitude).toFixed(3)}%`);
     scene.style.setProperty("--field-scale", semantic.fieldScale.toFixed(5));
+    scene.style.setProperty("--volume-opacity", (0.08 + 0.16 * wave * proximity).toFixed(4));
   }
 
   function rhythmValues(act, progress, amplitude) {
@@ -405,8 +464,13 @@
 
   function paintAct(act, rect, now, viewportHeight) {
     const range = Math.max(rect.height - viewportHeight, 1);
-    const progress = clamp(-rect.top / range);
-    const amplitude = viewportAmplitude();
+    const rawProgress = clamp(-rect.top / range);
+    // Smooth scroll progress for cinematic non-flat transitions.
+    let prev = smoothedProgress.get(act);
+    if (prev == null) prev = rawProgress;
+    const progress = prev + (rawProgress - prev) * 0.12;
+    smoothedProgress.set(act, progress);
+    const amplitude = viewportAmplitude() * 1.15;
     const values = rhythmValues(act, progress, amplitude);
     const scenes = Array.from(act.querySelectorAll("[data-scene]"));
     const identity = act.querySelector(".act__identity");
