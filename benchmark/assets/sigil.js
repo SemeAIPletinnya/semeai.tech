@@ -1220,14 +1220,24 @@
       "data-evolution": model.rank.code,
       "data-family": model.rank.family,
     });
+    const seedMagnitude = Math.abs(model.metrics.identityBias);
     const breathePeriod =
-      model.gateDecision === "SHOW" ? 12 + model.rank.level * 0.6 : model.gateDecision === "REVIEW" ? 16 + model.rank.level : 22;
+      model.gateDecision === "SHOW"
+        ? 9 + model.rank.level * 0.35
+        : model.gateDecision === "REVIEW"
+          ? 10.5 + model.rank.level * 0.25
+          : 16;
+    const fieldPeriod = 36 + seedMagnitude * 17;
+    const structurePeriod = 19 + seedMagnitude * 8;
+    const flowPeriod = 12 + seedMagnitude * 6;
+    const wavePeriod = 18 + seedMagnitude * 7;
     body.style.setProperty("--artifact-period", `${round(breathePeriod)}s`);
-    body.style.setProperty("--glow-period", `${round(breathePeriod * 0.72)}s`);
-    body.style.setProperty("--drift-period", `${round(breathePeriod * 1.35)}s`);
-    body.style.setProperty("--identity-angle", `${round((model.metrics.yaw - 0.44) * 5)}deg`);
+    body.style.setProperty("--structure-period", `${round(structurePeriod)}s`);
     stage.style.setProperty("--artifact-period", `${round(breathePeriod)}s`);
-    stage.style.setProperty("--drift-period", `${round(breathePeriod * 1.35)}s`);
+    stage.style.setProperty("--field-period", `${round(fieldPeriod)}s`);
+    stage.style.setProperty("--structure-period", `${round(structurePeriod)}s`);
+    stage.style.setProperty("--flow-period", `${round(flowPeriod)}s`);
+    stage.style.setProperty("--wave-period", `${round(wavePeriod)}s`);
     const identity = createSvgElement("g", {
       class: "evidence-artifact__identity",
       transform: `translate(${round(model.metrics.identityBias * 4)} ${round(model.metrics.identityBias * 1.5)}) rotate(${round(model.metrics.identityBias * 3)} 180 220)`,
@@ -1262,6 +1272,9 @@
         .forEach((path, pathIndex) => {
           const color = path.color === "gold" ? "#e2c788" : "#9a88b0";
           const glowColor = path.color === "gold" ? "#d7b66f" : "#8b78a0";
+          const flowSlot = Math.abs(Math.round(model.metrics.identityBias * 10) + categoryIndex + pathIndex) % 3;
+          const carriesFlow = path.primary !== false && pathIndex === 0 && flowSlot === 0;
+          const carriesWave = path.primary !== false && category.key === "implementation" && pathIndex === 0;
           const shared = {
             d: path.d,
             fill: "none",
@@ -1283,7 +1296,12 @@
           }
           const trace = createSvgElement("path", {
             ...shared,
-            class: `evidence-sigil__trace evidence-artifact__edge${path.primary !== false ? " evidence-artifact__edge--live" : ""}`,
+            class: [
+              "evidence-sigil__trace",
+              "evidence-artifact__edge",
+              carriesFlow ? "evidence-artifact__edge--flow" : "",
+              carriesWave ? "evidence-artifact__edge--wave" : "",
+            ].filter(Boolean).join(" "),
             stroke: color,
             "stroke-width": path.width,
             "data-trace-index": pathIndex,

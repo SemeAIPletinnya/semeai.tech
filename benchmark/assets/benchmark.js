@@ -865,6 +865,35 @@
     return globalScope.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
+  const motionVisibility = new WeakMap();
+
+  function updateEvidenceMotionState() {
+    [elements.sigil, elements.resultSigil, elements.blockedSigil].forEach((target) => {
+      if (!target) return;
+      const intersects = motionVisibility.get(target) !== false;
+      target.dataset.motionState = document.visibilityState === "visible" && intersects ? "running" : "paused";
+    });
+  }
+
+  function setupEvidenceMotionController() {
+    const targets = [elements.sigil, elements.resultSigil, elements.blockedSigil].filter(Boolean);
+    targets.forEach((target) => motionVisibility.set(target, true));
+
+    if ("IntersectionObserver" in globalScope) {
+      const observer = new globalScope.IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => motionVisibility.set(entry.target, entry.isIntersecting));
+          updateEvidenceMotionState();
+        },
+        { rootMargin: "160px 0px", threshold: 0.01 },
+      );
+      targets.forEach((target) => observer.observe(target));
+    }
+
+    document.addEventListener("visibilitychange", updateEvidenceMotionState);
+    updateEvidenceMotionState();
+  }
+
   function cancelRepositoryNameTransfer() {
     if (repositoryNameTransfer) repositoryNameTransfer.remove();
     repositoryNameTransfer = null;
@@ -1409,6 +1438,7 @@
     });
   }
 
+  setupEvidenceMotionController();
   applyRankI18nDom();
   globalScope.addEventListener("semeai:lang", () => {
     applyRankI18nDom();

@@ -535,9 +535,87 @@ async function runBrowserBoundaryTests() {
     await browserCollectionFailure(browser, origin);
     await browserMalformedInputs(browser, origin);
     await browserMutationSafety(browser, origin);
+    await browserMotionBoundaries(browser, origin);
   } finally {
     await browser.close();
     await closeServer(server);
+  }
+}
+
+async function browserMotionBoundaries(browser, origin) {
+  const { context, page, unexpectedExternalRequests } = await newBenchmarkPage(browser, origin, {
+    reducedMotion: "no-preference",
+    routeGitHub: async (route) => route.abort("failed"),
+  });
+  try {
+    await submitRepository(page, "SemeAIPletinnya/silence-as-control");
+    await page.locator("#result-sigil").scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => document.querySelector("#result-sigil").dataset.motionState === "running");
+    await page.waitForTimeout(1400);
+
+    const motion = await page.locator("#result-sigil").evaluate((mount) => {
+      const names = [...mount.querySelectorAll("*")]
+        .map((node) => getComputedStyle(node).animationName)
+        .filter((name) => name && name !== "none");
+      return [...new Set(names)].sort();
+    });
+    assert.deepEqual(
+      motion,
+      [
+        "evidence-ambient-depth",
+        "evidence-core-breath",
+        "evidence-field-drift",
+        "evidence-flow",
+        "evidence-structural-response",
+        "evidence-wave",
+      ],
+    );
+
+    await page.evaluate(() => scrollTo(0, 999999));
+    await page.waitForFunction(() => document.querySelector("#result-sigil").dataset.motionState === "paused");
+    const offscreenPlayStates = await page.locator("#result-sigil").evaluate((mount) =>
+      [...mount.querySelectorAll("*")]
+        .map((node) => getComputedStyle(node).animationPlayState)
+        .filter(Boolean),
+    );
+    assert.ok(offscreenPlayStates.length > 0);
+    assert.ok(offscreenPlayStates.every((state) => state === "paused"));
+
+    await page.locator("#result-sigil").scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => document.querySelector("#result-sigil").dataset.motionState === "running");
+    const visibilityPause = await page.evaluate(() => {
+      Object.defineProperty(document, "visibilityState", { configurable: true, value: "hidden" });
+      document.dispatchEvent(new Event("visibilitychange"));
+      const hiddenState = document.querySelector("#result-sigil").dataset.motionState;
+      Object.defineProperty(document, "visibilityState", { configurable: true, value: "visible" });
+      document.dispatchEvent(new Event("visibilitychange"));
+      return {
+        hiddenState,
+        visibleState: document.querySelector("#result-sigil").dataset.motionState,
+      };
+    });
+    assert.deepEqual(visibilityPause, { hiddenState: "paused", visibleState: "running" });
+    assert.deepEqual(unexpectedExternalRequests, []);
+  } finally {
+    await context.close();
+  }
+
+  const reduced = await newBenchmarkPage(browser, origin, {
+    reducedMotion: "reduce",
+    routeGitHub: async (route) => route.abort("failed"),
+  });
+  try {
+    await submitRepository(reduced.page, "SemeAIPletinnya/silence-as-control");
+    await reduced.page.locator("#result-sigil").scrollIntoViewIfNeeded();
+    const reducedAnimations = await reduced.page.locator("#result-sigil").evaluate((mount) =>
+      [...mount.querySelectorAll("*")]
+        .map((node) => getComputedStyle(node).animationName)
+        .filter((name) => name && name !== "none"),
+    );
+    assert.deepEqual(reducedAnimations, []);
+    assert.deepEqual(reduced.unexpectedExternalRequests, []);
+  } finally {
+    await reduced.context.close();
   }
 }
 
