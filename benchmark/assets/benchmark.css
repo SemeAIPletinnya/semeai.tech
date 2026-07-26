@@ -188,17 +188,11 @@ body {
   line-height: 1.25;
 }
 
-.benchmark-auth-entry a {
+.benchmark-auth-entry .benchmark-auth-state {
   color: var(--gold-bright);
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  text-decoration: none;
-}
-
-.benchmark-auth-entry a:hover,
-.benchmark-auth-entry a:focus-visible {
-  color: var(--paper);
 }
 
 .benchmark-auth-entry span {
@@ -552,6 +546,13 @@ form label small {
   background: transparent;
 }
 
+.primary-button:disabled {
+  border-color: var(--line-strong);
+  color: var(--muted);
+  background: rgba(215, 182, 111, 0.04);
+  cursor: not-allowed;
+}
+
 .form-meta {
   display: flex;
   align-items: center;
@@ -747,6 +748,8 @@ form label small {
 .save-trace-button {
   min-width: 13.5rem;
   text-decoration: none;
+  text-align: left;
+  line-height: 1.45;
 }
 
 .result-route-actions {
@@ -787,7 +790,7 @@ form label small {
     display: none;
   }
 
-  .benchmark-auth-entry a {
+  .benchmark-auth-entry .benchmark-auth-state {
     max-width: 8rem;
     text-align: right;
   }

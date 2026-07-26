@@ -41,12 +41,11 @@
             <a href="/gate.html" data-i18n="bench.route.gate">UNDERSTAND THE GATE</a>
             <a href="/book/" data-i18n="bench.route.method">METHOD</a>
           </nav>
-          <div class="benchmark-auth-entry">
-            <a
-              href="https://api.semeai.tech/v0/oauth/github/start?return_path=%2Fbenchmark%2Fworkspace%2F"
-               data-i18n="bench.auth.cta">SIGN IN WITH GITHUB</a
+          <div class="benchmark-auth-entry" role="status">
+            <span class="benchmark-auth-state" aria-disabled="true" data-i18n="bench.auth.cta"
+              >GITHUB CONNECTION UNAVAILABLE</span
             >
-            <span data-i18n="bench.auth.hint">Save results · track progression · connect repositories</span>
+            <span data-i18n="bench.auth.hint">Anonymous benchmark remains available.</span>
           </div>
         </div>
       </header>
@@ -308,19 +307,20 @@
             <div>
               <p class="section-index" data-i18n="bench.save.index">REPOSITORY WORKSPACE</p>
               <h3 id="save-trace-title" data-i18n="bench.save.title">SAVE THIS TRACE</h3>
-              <p>Save results · track progression · connect repositories</p>
-              <small>
-                Sign in to retain future authenticated runs. This completed anonymous result is
-                not associated with an account.
+              <p data-i18n="bench.save.lead">GITHUB CONNECTION UNAVAILABLE</p>
+              <small data-i18n="bench.save.small">
+                Anonymous benchmark remains available. This completed anonymous result is not
+                associated with an account.
               </small>
             </div>
-            <a
+            <button
               class="primary-button save-trace-button"
-              href="https://api.semeai.tech/v0/oauth/github/start?return_path=%2Fbenchmark%2Fworkspace%2F"
+              type="button"
+              disabled
+              aria-disabled="true"
             >
-              <span>SIGN IN WITH GITHUB</span>
-              <span aria-hidden="true">↗</span>
-            </a>
+              <span data-i18n="bench.auth.cta">GITHUB CONNECTION UNAVAILABLE</span>
+            </button>
           </aside>
 
           <nav class="result-route-actions" aria-label="Continue after benchmark result">

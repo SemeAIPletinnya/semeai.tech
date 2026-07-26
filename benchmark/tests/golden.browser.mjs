@@ -628,6 +628,21 @@ async function browserFallbackGolden(browser, origin) {
     },
   });
   try {
+    const authBoundary = await page.evaluate(() => ({
+      oauthLinks: [...document.querySelectorAll("a[href]")].filter((link) =>
+        link.href.includes("/v0/oauth/github/start"),
+      ).length,
+      headerState: document.querySelector(".benchmark-auth-state")?.textContent.trim(),
+      headerDisabled: document.querySelector(".benchmark-auth-state")?.getAttribute("aria-disabled"),
+      headerHint: document.querySelector(".benchmark-auth-entry > span:last-child")?.textContent.trim(),
+    }));
+    assert.deepEqual(authBoundary, {
+      oauthLinks: 0,
+      headerState: "GITHUB CONNECTION UNAVAILABLE",
+      headerDisabled: "true",
+      headerHint: "Anonymous benchmark remains available.",
+    });
+
     await submitRepository(page, "SemeAIPletinnya/silence-as-control");
     const result = await page.evaluate(() => ({
       resultHidden: document.querySelector("#benchmark-result").hidden,
@@ -641,6 +656,8 @@ async function browserFallbackGolden(browser, origin) {
       family: document.querySelector("#evidence-rank-family").textContent.trim(),
       receiptHash: document.querySelector("#receipt-hash").textContent.trim(),
       receiptEnabled: !document.querySelector("#download-receipt").disabled,
+      saveControlDisabled: document.querySelector(".save-trace-button").disabled,
+      saveControlLabel: document.querySelector(".save-trace-button").textContent.trim(),
     }));
     assert.equal(result.resultHidden, false);
     assert.equal(result.blockedHidden, true);
@@ -652,6 +669,8 @@ async function browserFallbackGolden(browser, origin) {
     assert.equal(result.family, "ARCHIVE CROWN");
     assert.equal(result.receiptHash, expectedFallback.receipt_hash);
     assert.equal(result.receiptEnabled, true);
+    assert.equal(result.saveControlDisabled, true);
+    assert.equal(result.saveControlLabel, "GITHUB CONNECTION UNAVAILABLE");
     assert.ok(requestCounter.count >= 1, "fallback must begin with a real collection attempt in the UI");
     assert.deepEqual(unexpectedExternalRequests, []);
   } finally {
