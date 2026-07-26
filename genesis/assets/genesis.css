@@ -536,6 +536,119 @@ a:focus-visible {
   box-shadow: inset 0 0 120px rgba(217, 182, 111, 0.05);
 }
 
+/* Constructed-space layer: image planes become material inside a persistent relational field. */
+.scene__picture {
+  isolation: isolate;
+  clip-path: inset(1.5% 1% round 0.15rem);
+}
+
+.scene__picture img {
+  position: relative;
+  z-index: 0;
+  opacity: 0.9;
+  -webkit-mask-image: radial-gradient(
+    ellipse 94% 84% at var(--focal-position, 50% 50%),
+    #000 0%,
+    #000 52%,
+    rgba(0, 0, 0, 0.94) 72%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 94% 84% at var(--focal-position, 50% 50%),
+    #000 0%,
+    #000 52%,
+    rgba(0, 0, 0, 0.94) 72%,
+    transparent 100%
+  );
+}
+
+.scene__picture::before,
+.scene__picture::after {
+  position: absolute;
+  z-index: 1;
+  content: "";
+  pointer-events: none;
+  will-change: opacity, transform;
+}
+
+.scene__picture::before {
+  inset: 9% 7%;
+  border-top: 1px solid rgba(217, 182, 111, 0.2);
+  border-left: 1px solid rgba(114, 231, 239, 0.1);
+  clip-path: polygon(0 0, 76% 0, 76% 8%, 100% 8%, 100% 100%, 88% 100%, 88% 86%, 0 86%);
+  opacity: var(--residue-opacity, 0.06);
+  transform:
+    translate3d(calc(var(--field-x, 0) * -0.35), calc(var(--field-y, 0) * -0.35), 0)
+    scale(var(--field-scale, 1));
+  transform-origin: var(--focal-position, 50% 50%);
+  transition: opacity 1.4s ease;
+}
+
+.scene__picture::after {
+  inset: 4%;
+  background:
+    linear-gradient(116deg, transparent 22%, rgba(217, 182, 111, 0.13) 22.12%, transparent 22.24%),
+    linear-gradient(66deg, transparent 67%, rgba(114, 231, 239, 0.09) 67.1%, transparent 67.22%),
+    linear-gradient(rgba(244, 239, 230, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 239, 230, 0.028) 1px, transparent 1px);
+  background-size: auto, auto, 92px 92px, 92px 92px;
+  -webkit-mask-image: radial-gradient(ellipse 58% 54% at var(--focal-position, 50% 50%), #000 0%, rgba(0, 0, 0, 0.86) 48%, transparent 82%);
+  mask-image: radial-gradient(ellipse 58% 54% at var(--focal-position, 50% 50%), #000 0%, rgba(0, 0, 0, 0.86) 48%, transparent 82%);
+  opacity: var(--structure-opacity, 0.08);
+  transform:
+    translate3d(calc(var(--field-x, 0) * 0.5), calc(var(--field-y, 0) * 0.5), 0)
+    scale(var(--field-scale, 1));
+  transform-origin: var(--focal-position, 50% 50%);
+  transition: opacity 1.4s ease;
+}
+
+.motion-enabled .scene[data-scene-state="active"] .scene__picture::before {
+  opacity: max(var(--residue-opacity, 0.1), 0.18);
+}
+
+.motion-enabled .scene[data-scene-state="active"] .scene__picture::after {
+  opacity: max(var(--structure-opacity, 0.1), 0.15);
+}
+
+.motion-enabled .scene[data-scene-state="residue"] .scene__picture::before {
+  opacity: 0.22;
+}
+
+.motion-enabled .scene[data-scene-state="residue"] .scene__picture::after {
+  opacity: 0.07;
+}
+
+.motion-enabled .scene[data-scene-state="latent"] .scene__picture::after {
+  opacity: 0.025;
+}
+
+.scene--living-space .scene__picture::after {
+  background:
+    linear-gradient(122deg, transparent 18%, rgba(217, 182, 111, 0.16) 18.12%, transparent 18.24%),
+    linear-gradient(58deg, transparent 62%, rgba(114, 231, 239, 0.12) 62.1%, transparent 62.22%),
+    linear-gradient(rgba(244, 239, 230, 0.034) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(244, 239, 230, 0.034) 1px, transparent 1px);
+  background-size: auto, auto, 72px 72px, 72px 72px;
+}
+
+.scene--living-space .scene__picture::before {
+  inset: 12% 9% 15% 14%;
+  border-color: rgba(217, 182, 111, 0.22);
+  clip-path: polygon(0 0, 68% 0, 68% 12%, 100% 12%, 100% 78%, 84% 78%, 84% 100%, 0 100%);
+}
+
+.motion-enabled .scene--living-space[data-scene-state="active"] .scene__picture::after {
+  opacity: max(var(--structure-opacity, 0.14), 0.2);
+}
+
+.motion-enabled .scene__shade::after {
+  animation-play-state: paused;
+}
+
+.motion-enabled .scene[data-scene-state="active"] .scene__shade::after {
+  animation-play-state: running;
+}
+
 @keyframes genesis-grain {
   0% { transform: translate(0, 0); }
   25% { transform: translate(-1.2%, 0.8%); }

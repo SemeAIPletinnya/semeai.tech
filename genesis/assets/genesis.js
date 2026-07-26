@@ -11,6 +11,7 @@
   let animationFrame = 0;
   let motionActive = false;
   let activeAct = null;
+  let storyVisible = true;
 
   // Cinematic profiles tuned to D:\render style: volumetric gold light,
   // slow living-space drift, and non-flat depth motion (not flat slides).
@@ -381,9 +382,9 @@
       ambientStrength;
     const rotateZ = swirl * (profile.rotate || 0.3) * ambientStrength;
     const rotateX = lift * (profile.rotate || 0.3) * 0.45 * ambientStrength;
-    const brightness = 1 + (profile.brightness || 0.08) * (0.35 + 0.65 * wave) * proximity + entry * 0.35;
-    const contrast = 1 + 0.04 * proximity * wave;
-    const saturate = 1 + 0.08 * proximity * (0.4 + 0.6 * wave);
+    const brightness = 0.86 + (profile.brightness || 0.08) * (0.25 + 0.55 * wave) * proximity + entry * 0.22;
+    const contrast = 1.05 + 0.035 * proximity * wave;
+    const saturate = 0.86 + 0.055 * proximity * (0.4 + 0.6 * wave);
     const bloom = (0.04 + 0.12 * wave + entry * 0.5) * proximity * semantic.damping;
     const grain = (0.028 + 0.02 * tertiary) * proximity;
 
@@ -423,6 +424,8 @@
     scene.style.setProperty("--field-y", `${(semantic.fieldY * context.amplitude).toFixed(3)}%`);
     scene.style.setProperty("--field-scale", semantic.fieldScale.toFixed(5));
     scene.style.setProperty("--volume-opacity", (0.08 + 0.16 * wave * proximity).toFixed(4));
+    scene.style.setProperty("--structure-opacity", (0.08 + 0.17 * wave * proximity).toFixed(4));
+    scene.style.setProperty("--residue-opacity", (distance === 1 ? 0.18 : distance === 0 ? 0.11 : 0.025).toFixed(4));
   }
 
   function rhythmValues(act, progress, amplitude) {
@@ -453,6 +456,7 @@
   function quietAct(act) {
     if (!act) return;
     act.querySelectorAll("[data-scene]").forEach((scene) => {
+      scene.dataset.sceneState = "latent";
       scene.style.setProperty("--ambient-scale", "1");
       scene.style.setProperty("--ambient-x", "0%");
       scene.style.setProperty("--ambient-y", "0%");
@@ -485,6 +489,11 @@
     if (runtime.activeIndex !== activeIndex) {
       runtime.activeIndex = activeIndex;
       runtime.enteredAt = now;
+      root.dataset.genesisAct = act.dataset.act || "";
+      root.dataset.genesisScene = scenes[activeIndex]?.dataset.scene || "";
+      scenes.forEach((scene, index) => {
+        scene.dataset.sceneState = index === activeIndex ? "active" : index === activeIndex - 1 ? "residue" : "latent";
+      });
     }
 
     identity?.style.setProperty("--act-label-opacity", (1 - smoothstep(0.08, 0.2, progress)).toFixed(4));
@@ -506,7 +515,7 @@
 
   function render(now) {
     animationFrame = 0;
-    if (!motionActive || document.hidden) return;
+    if (!motionActive || document.hidden || !storyVisible) return;
 
     const viewportHeight = Math.max(window.innerHeight, 1);
     const selected = selectActiveAct(viewportHeight);
@@ -524,7 +533,7 @@
   }
 
   function requestRender() {
-    if (!motionActive || document.hidden || animationFrame) return;
+    if (!motionActive || document.hidden || !storyVisible || animationFrame) return;
     animationFrame = window.requestAnimationFrame(render);
   }
 
@@ -533,10 +542,15 @@
     acts.forEach((act) => {
       const identity = act.querySelector(".act__identity");
       identity?.removeAttribute("style");
-      act.querySelectorAll("[data-scene]").forEach((scene) => scene.removeAttribute("style"));
+      act.querySelectorAll("[data-scene]").forEach((scene) => {
+        scene.removeAttribute("style");
+        delete scene.dataset.sceneState;
+      });
       const runtime = actRuntime.get(act);
       if (runtime) runtime.activeIndex = -1;
     });
+    delete root.dataset.genesisAct;
+    delete root.dataset.genesisScene;
   }
 
   function enableMotion() {
@@ -585,6 +599,20 @@
     animationFrame = 0;
   });
   window.addEventListener("pageshow", requestRender, { passive: true });
+
+  window.SemeAIMotion?.watch(
+    document.querySelector(".genesis-transition"),
+    (state) => {
+      storyVisible = state !== "running";
+      if (!storyVisible && animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+        animationFrame = 0;
+      } else if (storyVisible) {
+        requestRender();
+      }
+    },
+    { threshold: 0.02, rootMargin: "-18% 0px" }
+  );
 
   applyMotionPreference();
 })();
