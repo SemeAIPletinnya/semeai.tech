@@ -1968,6 +1968,365 @@
         }
       }
 
+      /* Living-system pass: one authored state cycle instead of unrelated decorative loops. */
+      .hero,
+      .ecosystem-stage {
+        --home-phase-ease: 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .ecosystem-stage {
+        transform: none;
+      }
+
+      .ecosystem-stage::after {
+        inset: 13% 9%;
+        border-radius: 42% 58% 47% 53%;
+        background:
+          linear-gradient(112deg, transparent 18%, rgba(134, 237, 245, 0.045) 43%, transparent 58%),
+          radial-gradient(ellipse at 52% 48%, rgba(134, 237, 245, 0.08), transparent 54%);
+        filter: blur(12px);
+        opacity: 0.36;
+        animation: none;
+      }
+
+      .ecosystem-stage .stage-crown {
+        opacity: 0.26;
+        animation: none;
+        filter: blur(20px);
+      }
+
+      .ecosystem-stage .orbit-ring {
+        border-radius: 44% 56% 48% 52%;
+        animation: none;
+        opacity: 0.1;
+      }
+
+      .ecosystem-stage .orbit-r2 { opacity: 0.055; transform: translate(-50%, -50%) rotate(18deg); }
+      .ecosystem-stage .orbit-r3 { opacity: 0.035; transform: translate(-50%, -50%) rotate(-24deg); }
+      .ecosystem-stage .signal { display: none; }
+
+      .ecosystem-stage .eco-line,
+      .ecosystem-stage .decision-beam,
+      .ecosystem-stage .eco-node,
+      .ecosystem-stage .core-node,
+      .home-narrative > * {
+        transition:
+          opacity var(--home-phase-ease),
+          transform var(--home-phase-ease),
+          stroke-dashoffset var(--home-phase-ease),
+          filter var(--home-phase-ease),
+          box-shadow var(--home-phase-ease);
+      }
+
+      .ecosystem-stage .eco-line {
+        animation: none;
+        opacity: 0.2;
+        stroke-dasharray: 3 17;
+        stroke-dashoffset: 34;
+      }
+
+      .ecosystem-stage .core-node {
+        animation: corePulse 12s ease-in-out infinite;
+      }
+
+      .ecosystem-stage .decision-beam { opacity: 0.16; }
+
+      .ecosystem-stage .decision-beam::before {
+        animation: none;
+        opacity: 0;
+        transition: opacity var(--home-phase-ease), transform 2.1s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+
+      .home-narrative path {
+        fill: none;
+        stroke-linecap: round;
+        vector-effect: non-scaling-stroke;
+      }
+
+      .home-candidate-path {
+        stroke: rgba(255, 208, 138, 0.62);
+        stroke-width: 1.4;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+      }
+
+      .home-authority-boundary {
+        stroke: rgba(255, 208, 138, 0.54);
+        stroke-width: 1;
+        stroke-dasharray: 4 12;
+        opacity: 0.14;
+      }
+
+      .home-release-path,
+      .home-review-path,
+      .home-withheld-path,
+      .home-receipt-path {
+        stroke-width: 1.3;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        opacity: 0.08;
+      }
+
+      .home-release-path { stroke: rgba(134, 237, 245, 0.76); }
+      .home-review-path { stroke: rgba(182, 156, 255, 0.68); }
+      .home-withheld-path { stroke: rgba(255, 208, 138, 0.5); }
+      .home-receipt-path { stroke: rgba(255, 208, 138, 0.6); }
+
+      .home-candidate-signal {
+        fill: #fff0d5;
+        opacity: 0.42;
+        filter: drop-shadow(0 0 7px rgba(255, 208, 138, 0.62));
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      .home-candidate-signal.is-arrived { opacity: 0.12; }
+
+      .home-receipt-glyph {
+        fill: rgba(4, 7, 9, 0.84);
+        stroke: rgba(255, 208, 138, 0.66);
+        opacity: 0.18;
+        transform-box: fill-box;
+        transform-origin: center;
+        transform: scale(0.86);
+      }
+
+      .home-trace-residue {
+        stroke: rgba(134, 237, 245, 0.2);
+        stroke-width: 0.8;
+        stroke-dasharray: 2 11;
+        opacity: 0.24;
+      }
+
+      .ecosystem-stage[data-motion-phase="candidate"] .home-candidate-path { stroke-dashoffset: 52; }
+
+      .ecosystem-stage[data-motion-phase="candidate"] .home-candidate-signal {
+        opacity: 0.92;
+        transform: scale(1.06);
+      }
+
+      .ecosystem-stage[data-motion-phase="candidate"] .home-candidate-signal.is-arrived {
+        opacity: 0.12;
+        transform: scale(0.8);
+      }
+
+      .ecosystem-stage[data-motion-phase="candidate"] .eco-node { opacity: 0.45; }
+
+      .ecosystem-stage[data-motion-phase="evidence"] .home-candidate-path,
+      .ecosystem-stage[data-motion-phase="boundary"] .home-candidate-path,
+      .ecosystem-stage[data-motion-phase="decision"] .home-candidate-path,
+      .ecosystem-stage[data-motion-phase="trace"] .home-candidate-path {
+        stroke-dashoffset: 0;
+      }
+
+      .ecosystem-stage[data-motion-phase="evidence"] .home-candidate-signal,
+      .ecosystem-stage[data-motion-phase="boundary"] .home-candidate-signal,
+      .ecosystem-stage[data-motion-phase="decision"] .home-candidate-signal,
+      .ecosystem-stage[data-motion-phase="trace"] .home-candidate-signal {
+        opacity: 0.2;
+        transform: scale(0.82);
+      }
+
+      .ecosystem-stage[data-motion-phase="evidence"] .home-candidate-signal.is-arrived,
+      .ecosystem-stage[data-motion-phase="boundary"] .home-candidate-signal.is-arrived,
+      .ecosystem-stage[data-motion-phase="decision"] .home-candidate-signal.is-arrived,
+      .ecosystem-stage[data-motion-phase="trace"] .home-candidate-signal.is-arrived {
+        opacity: 0.84;
+        transform: scale(0.92);
+      }
+
+      .ecosystem-stage[data-motion-phase="evidence"] .eco-line {
+        opacity: 0.76;
+        stroke-dashoffset: 0;
+      }
+
+      .ecosystem-stage[data-motion-phase="evidence"] .n-memory,
+      .ecosystem-stage[data-motion-phase="evidence"] .n-evidence,
+      .ecosystem-stage[data-motion-phase="evidence"] .n-runtime {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .ecosystem-stage[data-motion-phase="boundary"] .home-authority-boundary,
+      .ecosystem-stage[data-motion-phase="decision"] .home-authority-boundary,
+      .ecosystem-stage[data-motion-phase="trace"] .home-authority-boundary {
+        opacity: 0.82;
+      }
+
+      .ecosystem-stage[data-motion-phase="boundary"] .decision-beam,
+      .ecosystem-stage[data-motion-phase="decision"] .decision-beam,
+      .ecosystem-stage[data-motion-phase="trace"] .decision-beam {
+        opacity: 0.7;
+      }
+
+      .ecosystem-stage[data-motion-phase="boundary"] .decision-beam::before,
+      .ecosystem-stage[data-motion-phase="decision"] .decision-beam::before {
+        opacity: 0.72;
+        transform: translate(-50%, 370%);
+      }
+
+      .ecosystem-stage[data-motion-phase="boundary"] .n-release,
+      .ecosystem-stage[data-motion-phase="decision"] .n-release {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .ecosystem-stage[data-motion-outcome="show"][data-motion-phase="decision"] .home-release-path,
+      .ecosystem-stage[data-motion-outcome="show"][data-motion-phase="trace"] .home-release-path,
+      .ecosystem-stage[data-motion-outcome="review"][data-motion-phase="decision"] .home-review-path,
+      .ecosystem-stage[data-motion-outcome="review"][data-motion-phase="trace"] .home-review-path,
+      .ecosystem-stage[data-motion-outcome="block"][data-motion-phase="decision"] .home-withheld-path,
+      .ecosystem-stage[data-motion-outcome="block"][data-motion-phase="trace"] .home-withheld-path {
+        stroke-dashoffset: 0;
+        opacity: 0.9;
+        filter: drop-shadow(0 0 5px rgba(134, 237, 245, 0.2));
+      }
+
+      .ecosystem-stage[data-motion-phase="trace"] .home-receipt-path {
+        stroke-dashoffset: 0;
+        opacity: 0.76;
+      }
+
+      .ecosystem-stage[data-motion-phase="trace"] .home-receipt-glyph {
+        opacity: 0.92;
+        transform: scale(1);
+      }
+
+      .ecosystem-stage[data-motion-phase="trace"] .n-receipts {
+        opacity: 1;
+        transform: translateY(-2px);
+      }
+
+      .ecosystem-stage[data-motion-phase="candidate"] .home-receipt-glyph {
+        opacity: 0.34;
+        transform: scale(0.9);
+      }
+
+      .ecosystem-stage[data-motion-state="paused"] *,
+      .system-spine[data-motion-state="paused"] *,
+      .chapter-visual[data-motion-state="paused"] *,
+      .boundary-visual[data-motion-state="paused"] * {
+        animation-play-state: paused !important;
+      }
+
+      .route-index a {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .route-index a::after {
+        content: "";
+        position: absolute;
+        right: 1rem;
+        bottom: 0.65rem;
+        left: 1rem;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(134, 237, 245, 0.42), rgba(255, 208, 138, 0.22), transparent);
+        transform: scaleX(0.18);
+        transform-origin: left;
+        opacity: 0.28;
+        transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s ease;
+      }
+
+      .route-index a:hover::after,
+      .route-index a:focus-visible::after {
+        transform: scaleX(1);
+        opacity: 0.8;
+      }
+
+      .hero-mobile-system { display: none; }
+
+      @media (max-width: 760px) {
+        .hero {
+          isolation: isolate;
+        }
+
+        .hero-layout {
+          position: relative;
+          z-index: 1;
+        }
+
+        .hero-mobile-system {
+          position: absolute;
+          z-index: 0;
+          top: 4rem;
+          right: 0;
+          display: block;
+          width: min(100%, 24rem);
+          height: 44rem;
+          pointer-events: none;
+          opacity: 0.78;
+          filter: drop-shadow(0 0 12px rgba(134, 237, 245, 0.08));
+        }
+
+        .hero-mobile-system path {
+          fill: none;
+          stroke-linecap: round;
+          vector-effect: non-scaling-stroke;
+          transition: opacity var(--home-phase-ease), stroke-dashoffset var(--home-phase-ease);
+        }
+
+        .hero-mobile-evidence {
+          stroke: rgba(134, 237, 245, 0.22);
+          stroke-width: 1;
+          stroke-dasharray: 4 17;
+          stroke-dashoffset: 54;
+          opacity: 0.22;
+        }
+
+        .hero-mobile-evidence.is-secondary { stroke: rgba(182, 156, 255, 0.2); }
+        .hero-mobile-evidence.is-warm { stroke: rgba(255, 208, 138, 0.26); }
+
+        .hero-mobile-boundary {
+          stroke: rgba(255, 208, 138, 0.34);
+          stroke-width: 1;
+          stroke-dasharray: 3 11;
+          opacity: 0.18;
+        }
+
+        .hero-mobile-release {
+          stroke: rgba(134, 237, 245, 0.4);
+          stroke-width: 1.2;
+          stroke-dasharray: 100;
+          stroke-dashoffset: 100;
+          opacity: 0.12;
+        }
+
+        .hero-mobile-candidate,
+        .hero-mobile-core {
+          fill: #fff0d5;
+          opacity: 0.25;
+          transition: opacity var(--home-phase-ease), transform var(--home-phase-ease);
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+
+        .hero-mobile-receipt {
+          fill: rgba(4, 7, 9, 0.72);
+          stroke: rgba(255, 208, 138, 0.5);
+          opacity: 0.2;
+          transition: opacity var(--home-phase-ease), transform var(--home-phase-ease);
+          transform-box: fill-box;
+          transform-origin: center;
+        }
+
+        .hero[data-motion-phase="candidate"] .hero-mobile-candidate { opacity: 0.9; transform: scale(1.08); }
+        .hero[data-motion-phase="evidence"] .hero-mobile-evidence { opacity: 0.62; stroke-dashoffset: 0; }
+        .hero[data-motion-phase="evidence"] .hero-mobile-core,
+        .hero[data-motion-phase="boundary"] .hero-mobile-core,
+        .hero[data-motion-phase="decision"] .hero-mobile-core,
+        .hero[data-motion-phase="trace"] .hero-mobile-core { opacity: 0.78; }
+        .hero[data-motion-phase="boundary"] .hero-mobile-boundary,
+        .hero[data-motion-phase="decision"] .hero-mobile-boundary,
+        .hero[data-motion-phase="trace"] .hero-mobile-boundary { opacity: 0.68; }
+        .hero[data-motion-phase="decision"] .hero-mobile-release,
+        .hero[data-motion-phase="trace"] .hero-mobile-release {
+          opacity: 0.68;
+          stroke-dashoffset: 0;
+        }
+        .hero[data-motion-phase="trace"] .hero-mobile-receipt { opacity: 0.84; transform: scale(1); }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         *,
         *::before,
@@ -1990,6 +2349,16 @@
 
       <main id="top">
         <section class="hero">
+          <svg class="hero-mobile-system" viewBox="0 0 390 720" aria-hidden="true">
+            <path class="hero-mobile-evidence" d="M356 112 C322 176 298 232 304 314 C308 380 334 416 318 482" />
+            <path class="hero-mobile-evidence is-secondary" d="M382 226 C338 248 324 278 304 314" />
+            <path class="hero-mobile-evidence is-warm" d="M364 516 C338 494 326 486 318 482" />
+            <path class="hero-mobile-boundary" d="M326 96 C312 212 314 438 332 612" />
+            <path class="hero-mobile-release" d="M304 314 C327 330 342 360 354 404" />
+            <circle class="hero-mobile-candidate" cx="356" cy="112" r="4" />
+            <circle class="hero-mobile-core" cx="304" cy="314" r="5" />
+            <rect class="hero-mobile-receipt" x="310" y="474" width="16" height="16" />
+          </svg>
           <div class="hero-layout">
             <div>
               <div class="kicker"><span class="signal-dot"></span><span data-i18n="home.kicker">SemeAI · governed release control</span></div>
@@ -2057,6 +2426,18 @@
                 <path class="eco-line warm" d="M320 60 C320 150 320 214 320 460" />
                 <path class="eco-line soft" d="M320 460 C260 452 222 472 172 496" />
                 <path class="eco-line soft" d="M320 460 C380 452 420 472 468 496" />
+                <g class="home-narrative">
+                  <path class="home-candidate-path" pathLength="100" d="M92 260 C166 258 238 246 320 246" />
+                  <path class="home-authority-boundary" d="M430 118 C420 190 424 318 438 392" />
+                  <path class="home-release-path" pathLength="100" d="M320 246 C382 238 444 234 548 246" />
+                  <path class="home-review-path" pathLength="100" d="M320 246 C360 226 394 230 421 260 C430 270 433 282 432 300" />
+                  <path class="home-withheld-path" pathLength="100" d="M320 246 C352 250 382 262 410 282" />
+                  <path class="home-receipt-path" pathLength="100" d="M548 246 C554 304 542 352 518 404" />
+                  <path class="home-trace-residue" d="M320 246 C364 288 428 352 518 404" />
+                  <circle class="home-candidate-signal" cx="92" cy="260" r="4" />
+                  <circle class="home-candidate-signal is-arrived" cx="320" cy="246" r="4" />
+                  <rect class="home-receipt-glyph" x="508" y="394" width="20" height="20" />
+                </g>
               </svg>
 
               <i class="signal s1"></i>
@@ -2565,9 +2946,12 @@
     <script src="assets/js/cache-bust.js?v=20260720a"></script>
     <script src="assets/js/i18n.js?v=20260724a"></script>
     <script src="assets/js/i18n-arch.js?v=20260724a"></script>
-    <script src="assets/js/site-shell.js?v=20260724a"></script>
+    <script src="assets/js/semeai-motion.js?v=20260726a"></script>
+    <script src="assets/js/site-shell.js?v=20260726a"></script>
+    <script src="assets/js/home-motion.js?v=20260726a"></script>
     <script>
       (function initCanvas() {
+        if (window.SemeAIHomeMotion) return;
         const canvas = document.getElementById("bg-canvas");
         const ctx = canvas.getContext("2d", { alpha: true });
         const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
