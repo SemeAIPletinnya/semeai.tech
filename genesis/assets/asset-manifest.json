@@ -1,23 +1,42 @@
 {
-  "version": 1,
-  "generated_at": "2026-07-21",
+  "version": 2,
+  "generated_at": "2026-07-26",
+  "runtime": {
+    "entrypoint": "genesis/index.html",
+    "active_variant": "v02",
+    "scene_count": 9,
+    "responsive_widths": [960, 1672],
+    "preserved_legacy_variant": "v01",
+    "legacy_asset_count": 18
+  },
   "pipeline": {
-    "encoder": "Pillow 12.2.0",
     "format": "WebP",
-    "quality": 90,
-    "method": 6,
-    "resampling": "Lanczos",
-    "metadata": "stripped except source ICC profile",
+    "current_variant_source_style": "high-detail Genesis cinematic stills",
+    "current_variant_encoder_settings": "not asserted; manifest records verified repository bytes only",
     "source_files_deployed": false
   },
   "scenes": [
     {
       "scene_id": "001-a",
-      "source_filename": "Genesis 001-A — First Impulse.png",
-      "source_sha256": "746f9cb90526b7a07321328f24328faa8ec1679200a71817261e8dd3f14c94ea",
-      "dimensions": { "width": 1672, "height": 941 },
+      "slug": "first-impulse",
       "focal_position": "50% 51%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-001-a-first-impulse-960w-v02.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 19706,
+          "sha256": "c12347f9abac5802c0197033b3c4606df56b2a4f53a26cd93747019d2f079ce3"
+        },
+        {
+          "filename": "images/genesis-001-a-first-impulse-1672w-v02.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 52188,
+          "sha256": "c049dcbc20f353c0ee67f4eee3d00acab60f400c53b4a49b45c90beac1d628e5"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-001-a-first-impulse-960w-v01.webp",
           "width": 960,
@@ -36,11 +55,25 @@
     },
     {
       "scene_id": "001-c",
-      "source_filename": "Genesis 001-C — Emergence.png",
-      "source_sha256": "b96c2484614f8f455ec8d09297972ebca8893933b0cee0e209c4f92fdea9313d",
-      "dimensions": { "width": 1672, "height": 941 },
+      "slug": "emergence",
       "focal_position": "51% 51%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-001-c-emergence-960w-v02.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 65690,
+          "sha256": "4fb1e410e9800af7c4575726b300b0f65012edb396b1fc3347b3dd8e72da6ad7"
+        },
+        {
+          "filename": "images/genesis-001-c-emergence-1672w-v02.webp",
+          "width": 1672,
+          "height": 1114,
+          "bytes": 153670,
+          "sha256": "31508e699fec19ea3b347e70d5d92a473bd8ffda7172a5fb5d559d9ea36993da"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-001-c-emergence-960w-v01.webp",
           "width": 960,
@@ -59,11 +92,25 @@
     },
     {
       "scene_id": "001-d",
-      "source_filename": "Genesis 001-D — First Continuity.png",
-      "source_sha256": "fd4c23e2321447dfcb60a00194dd62e26137c02fefdecb7f5a45d8ffca55ddbb",
-      "dimensions": { "width": 1536, "height": 1024 },
+      "slug": "first-continuity",
       "focal_position": "50% 66%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-001-d-first-continuity-960w-v02.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 53626,
+          "sha256": "e444f8875cbf0ece606ca660bf543d1db597ce859669308022222ba1fc514366"
+        },
+        {
+          "filename": "images/genesis-001-d-first-continuity-1672w-v02.webp",
+          "width": 1672,
+          "height": 1114,
+          "bytes": 131226,
+          "sha256": "17aea58dcd65f9518f9411c99626dc6c3667f58667e77fbf5c5f56242e70771a"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-001-d-first-continuity-960w-v01.webp",
           "width": 960,
@@ -82,11 +129,25 @@
     },
     {
       "scene_id": "002-a",
-      "source_filename": "Genesis 002-A — The Living Space.png",
-      "source_sha256": "70f996d4cc00dc79aad9ecfd6680b228c3270a6a00bc9bb281413c246a6c3c22",
-      "dimensions": { "width": 1536, "height": 1024 },
+      "slug": "living-space",
       "focal_position": "64% 54%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-002-a-living-space-960w-v02.webp",
+          "width": 960,
+          "height": 640,
+          "bytes": 15294,
+          "sha256": "40a4d4b1d6586dc24686b79bb001a78331d110fa3415707950028c146ca24fb6"
+        },
+        {
+          "filename": "images/genesis-002-a-living-space-1672w-v02.webp",
+          "width": 1672,
+          "height": 1114,
+          "bytes": 37660,
+          "sha256": "1682b8701fa29515296e2e598dd6d38c09da253e520a62d1cee7aa84f22145d8"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-002-a-living-space-960w-v01.webp",
           "width": 960,
@@ -105,11 +166,25 @@
     },
     {
       "scene_id": "002-b",
-      "source_filename": "Genesis 002-B — The Space Responds.png",
-      "source_sha256": "0658e4068bcb72d39a0b9c58ca2aaa99c7da2b680cb956b7b97eb6211c8b72e5",
-      "dimensions": { "width": 1672, "height": 941 },
+      "slug": "space-responds",
       "focal_position": "67% 52%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-002-b-space-responds-960w-v02.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 27950,
+          "sha256": "b576aa5862c75ccf21beb6206b8b1498defb98e95e668ba49eb0fd60c821b392"
+        },
+        {
+          "filename": "images/genesis-002-b-space-responds-1672w-v02.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 75738,
+          "sha256": "d3fcf0c8b5248bf85baa0380e71fdcb787ea30b54d2eeef6117236c0abf37d1e"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-002-b-space-responds-960w-v01.webp",
           "width": 960,
@@ -128,11 +203,25 @@
     },
     {
       "scene_id": "002-c",
-      "source_filename": "Genesis 002-C — The First Horizon.png",
-      "source_sha256": "9dcf2f54d8dcc0f44ed2201f90b7cfac67b1bcd028be1274f14e7b5b505e0c07",
-      "dimensions": { "width": 1672, "height": 941 },
+      "slug": "first-horizon",
       "focal_position": "47% 55%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-002-c-first-horizon-960w-v02.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 26964,
+          "sha256": "c7b06e4d436fee741e2e43369f65c128ed1b44d47c9c15e392eaf38b3a1c5ed1"
+        },
+        {
+          "filename": "images/genesis-002-c-first-horizon-1672w-v02.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 72610,
+          "sha256": "141d108b5de42515d3b503362b4684bff425907071e730066cbd0e3feb0016fb"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-002-c-first-horizon-960w-v01.webp",
           "width": 960,
@@ -151,11 +240,25 @@
     },
     {
       "scene_id": "002-d",
-      "source_filename": "Genesis 002-D — The Hidden Current.png",
-      "source_sha256": "7e39c4e3942f94db33f45a8d1285a634b640af5cc341d4e534010dedf61617af",
-      "dimensions": { "width": 1672, "height": 941 },
+      "slug": "hidden-current",
       "focal_position": "66% 51%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-002-d-hidden-current-960w-v02.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 43276,
+          "sha256": "2151c249982db096cfa548a496a85e6db1207dd815cf7d164784014b6b6a1db3"
+        },
+        {
+          "filename": "images/genesis-002-d-hidden-current-1672w-v02.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 109310,
+          "sha256": "dbbd0cab68b6c874b52af46a9190c04d47485647e9c77c394cafe243f7471509"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-002-d-hidden-current-960w-v01.webp",
           "width": 960,
@@ -174,11 +277,25 @@
     },
     {
       "scene_id": "002-e",
-      "source_filename": "Genesis 002-E — The Field Awakens.png",
-      "source_sha256": "dffa74f4ff19ed9df20677a0824936f35b1216c64db613f8cf4e20d8a2b1e2b6",
-      "dimensions": { "width": 1672, "height": 941 },
+      "slug": "field-awakens",
       "focal_position": "66% 52%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-002-e-field-awakens-960w-v02.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 41280,
+          "sha256": "d3769d859747631dfdae4a55a4e5e81f6901782fa68c03ab2ff2e4244268ed7a"
+        },
+        {
+          "filename": "images/genesis-002-e-field-awakens-1672w-v02.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 105038,
+          "sha256": "46f34c3007a087097ef8a43629208a0947c8af6a81950349f96aa03c8cfad333"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-002-e-field-awakens-960w-v01.webp",
           "width": 960,
@@ -197,11 +314,25 @@
     },
     {
       "scene_id": "002-f",
-      "source_filename": "Genesis 002-F — The Living Continuum.png",
-      "source_sha256": "a051b4006c274f4203f966212f60caae3b1c092fe0397e118b3a4fe9cf85a7a1",
-      "dimensions": { "width": 1672, "height": 941 },
+      "slug": "living-continuum",
       "focal_position": "65% 34%",
-      "derivatives": [
+      "runtime_derivatives": [
+        {
+          "filename": "images/genesis-002-f-living-continuum-960w-v02.webp",
+          "width": 960,
+          "height": 540,
+          "bytes": 84026,
+          "sha256": "400aea304bac63f12c089ce68aaa93a3de7d25d9b846e7fa737e19cfa2ca5ca4"
+        },
+        {
+          "filename": "images/genesis-002-f-living-continuum-1672w-v02.webp",
+          "width": 1672,
+          "height": 941,
+          "bytes": 194448,
+          "sha256": "707718ff7a5d7c0051a6839d70d976ad9c6c317151eee9c516f9b5998ca9688c"
+        }
+      ],
+      "preserved_legacy_derivatives": [
         {
           "filename": "images/genesis-002-f-living-continuum-960w-v01.webp",
           "width": 960,
