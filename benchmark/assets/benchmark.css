@@ -1112,14 +1112,13 @@ form label small {
 
 .score-sigil-frame::before {
   position: absolute;
-  inset: 8% 12% 14%;
+  inset: 26% 4% 8%;
   content: "";
-  border: 1px solid rgba(215, 182, 111, 0.1);
-  border-radius: 46% 54% 48% 52% / 42% 48% 52% 58%;
   background:
-    radial-gradient(ellipse at 50% 42%, rgba(215, 182, 111, 0.07), transparent 58%),
-    radial-gradient(ellipse at 48% 60%, rgba(120, 101, 142, 0.06), transparent 52%);
-  transform: rotate(-8deg);
+    radial-gradient(ellipse at 32% 64%, rgba(215, 182, 111, 0.08), transparent 46%),
+    radial-gradient(ellipse at 69% 44%, rgba(120, 101, 142, 0.055), transparent 50%);
+  filter: blur(12px);
+  transform: rotate(-5deg);
   pointer-events: none;
   z-index: 0;
 }
@@ -1155,13 +1154,12 @@ form label small {
 
 .evidence-sigil.is-alive::before {
   position: absolute;
-  inset: 8% 12% 14%;
+  inset: 18% 3% 10%;
   content: "";
-  border-radius: 50%;
   background:
-    radial-gradient(circle at 42% 38%, rgba(215, 182, 111, 0.12), transparent 42%),
-    radial-gradient(circle at 62% 58%, rgba(139, 120, 160, 0.1), transparent 48%);
-  filter: blur(10px);
+    radial-gradient(ellipse at 34% 64%, rgba(215, 182, 111, 0.11), transparent 38%),
+    radial-gradient(ellipse at 68% 52%, rgba(139, 120, 160, 0.075), transparent 46%);
+  filter: blur(16px);
   animation: evidence-atmosphere-drift 14s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 0;
@@ -1188,10 +1186,24 @@ form label small {
 }
 
 .evidence-artifact__field {
-  opacity: 0.85;
+  opacity: 0.42;
   animation: evidence-field-pulse var(--artifact-period, 14s) ease-in-out infinite;
   transform-box: fill-box;
   transform-origin: center;
+}
+
+.evidence-artifact__field-line {
+  opacity: 0.72;
+  transition: opacity 180ms ease;
+}
+
+.evidence-artifact__source {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.evidence-artifact__source-core {
+  filter: drop-shadow(0 0 0.25rem rgba(215, 182, 111, 0.45));
 }
 
 .evidence-artifact__halo {
@@ -1270,7 +1282,7 @@ form label small {
 
 /* Gate: SHOW — fullest confidence */
 .result[data-gate="SHOW"] .evidence-artifact__field {
-  opacity: 1;
+  opacity: 0.62;
 }
 
 .result[data-gate="SHOW"] .evidence-artifact__halo--outer {
@@ -1296,7 +1308,7 @@ form label small {
 }
 
 .result[data-gate="REVIEW"] .evidence-artifact__field {
-  opacity: 0.62;
+  opacity: 0.42;
   animation-duration: 18s;
 }
 

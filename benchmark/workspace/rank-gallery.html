@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <title>Evidence Rank Gallery — test only</title>
-    <link rel="stylesheet" href="../assets/benchmark.css?v=20260724e" />
+    <link rel="stylesheet" href="../assets/benchmark.css?v=20260726a" />
     <style>
       body {
         margin: 0;
@@ -63,7 +63,7 @@
         font-size: 0.8rem;
       }
     </style>
-    <script src="../assets/sigil.js?v=20260724e" defer></script>
+    <script src="../assets/sigil.js?v=20260726a" defer></script>
   </head>
   <body>
     <h1>Evidence Rank silhouette gallery</h1>
@@ -120,10 +120,18 @@
         samples.forEach((sample) => {
           const card = document.createElement("article");
           card.className = "card";
-          card.innerHTML = `<header><strong>${sample.code}</strong><span></span></header><div class="mount" id="m-${sample.code}"></div>`;
+          const header = document.createElement("header");
+          const code = document.createElement("strong");
+          const label = document.createElement("span");
+          const mount = document.createElement("div");
+          code.textContent = sample.code;
+          mount.className = "mount";
+          mount.id = `m-${sample.code}`;
+          header.append(code, label);
+          card.append(header, mount);
           grid.appendChild(card);
           const family = window.SemeAISigil.FAMILY_META[sample.family].name;
-          card.querySelector("span").textContent = family;
+          label.textContent = family;
           const indicators =
             sample.code === "SS-4"
               ? { repositorySignal: 98, evidenceDepth: 100, gateDiscipline: 100 }
@@ -142,7 +150,7 @@
           });
           // Ensure derived code matches intended sample for label honesty.
           if (model && model.rank && model.rank.code !== sample.code) {
-            card.querySelector("strong").textContent = `${sample.code}→${model.rank.code}`;
+            code.textContent = `${sample.code}→${model.rank.code}`;
           }
         });
       });

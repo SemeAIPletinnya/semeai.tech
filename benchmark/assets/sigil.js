@@ -660,15 +660,307 @@
     return geo;
   }
 
+  function organicEvidenceOpacity(ctx, category, minimum, span) {
+    const floor = minimum == null ? 0.12 : minimum;
+    const range = span == null ? 0.78 : span;
+    return round((floor + (ctx.cov[category] || 0) * range) * ctx.intensity * levelFactor(ctx.level));
+  }
+
+  function pushOrganicTrajectory(geo, ctx, category, d, options) {
+    const settings = options || {};
+    const coverage = ctx.cov[category] || 0;
+    pushEdge(geo.paths, category, d, {
+      color: settings.color || "gold",
+      width: settings.width == null ? 1.2 : settings.width,
+      opacity: organicEvidenceOpacity(ctx, category, settings.minimum, settings.span),
+      dash: settings.dash || (coverage <= 0 ? "5 11" : coverage < 0.4 ? "8 7 2 7" : ""),
+      primary: settings.primary !== false,
+    });
+  }
+
+  function pushOrganicBoundary(geo, ctx, category, d, options) {
+    const settings = options || {};
+    pushOrganicTrajectory(geo, ctx, category, d, {
+      color: settings.color || "gold",
+      width: settings.width == null ? 1.05 : settings.width,
+      minimum: settings.minimum == null ? 0.16 : settings.minimum,
+      span: settings.span == null ? 0.58 : settings.span,
+      dash: settings.dash || "",
+      primary: settings.primary !== false,
+    });
+  }
+
+  function configureOrganicFrame(geo, apexX, apexY) {
+    geo.origin = { x: 180, y: 232 };
+    geo.source = { x: 43, y: 263 };
+    geo.apex = { x: apexX, y: apexY };
+    return geo;
+  }
+
+  function addOrganicMaturityMarks(geo, ctx, family) {
+    const marks = [
+      ["research", "M 70 272 C 118 286 224 286 292 266", "violet"],
+      ["external", "M 82 248 C 118 220 145 207 181 207", "gold"],
+      ["continuity", "M 118 283 C 161 290 220 286 259 269", "violet"],
+      ["evidence", "M 145 121 C 166 108 190 105 213 115", "gold"],
+    ];
+    for (let index = 0; index < clamp(ctx.level, 1, 5) - 1; index += 1) {
+      const [category, d, color] = marks[(index + family.length) % marks.length];
+      pushOrganicTrajectory(geo, ctx, category, d, {
+        color,
+        width: 0.65,
+        minimum: 0.06,
+        span: 0.28,
+        dash: index % 2 === 0 ? "3 9" : "",
+        primary: false,
+      });
+    }
+  }
+
+  function buildOrganicFragmentGeometry(ctx) {
+    const geo = emptyGeometry(180, 232);
+    pushOrganicTrajectory(geo, ctx, "implementation", "M 43 263 C 72 256 84 233 103 218 C 115 209 126 208 140 212", { width: 1.35 });
+    if (ctx.level >= 2) {
+      pushOrganicTrajectory(geo, ctx, "tests", "M 151 204 C 174 185 190 179 212 184", {
+        color: "violet",
+        dash: "7 9 2 8",
+      });
+    }
+    if (ctx.level >= 3) {
+      pushOrganicTrajectory(geo, ctx, "continuity", "M 92 247 C 106 261 121 267 140 269", {
+        width: 0.75,
+        minimum: 0.08,
+        span: 0.36,
+      });
+    }
+    if (ctx.level >= 4) {
+      pushOrganicTrajectory(geo, ctx, "evidence", "M 228 182 C 247 187 261 201 276 218", {
+        color: "violet",
+        width: 0.75,
+        dash: "4 10",
+      });
+    }
+    if (ctx.level >= 5) {
+      pushAnchor(geo.anchors, "research", 140, 212, {
+        radius: 1.8,
+        opacity: organicEvidenceOpacity(ctx, "research", 0.12, 0.54),
+      });
+    }
+    return configureOrganicFrame(geo, 151, 204);
+  }
+
+  function buildOrganicShardGeometry(ctx) {
+    const geo = emptyGeometry(180, 232);
+    pushOrganicTrajectory(geo, ctx, "implementation", "M 43 263 C 92 245 109 205 146 186 C 179 169 211 145 272 96", { width: 1.5 });
+    pushOrganicTrajectory(geo, ctx, "tests", "M 109 231 C 143 231 168 213 191 182", { color: "violet", width: 1.05 });
+    if (ctx.level >= 2) {
+      pushOrganicTrajectory(geo, ctx, "evidence", "M 140 190 C 173 193 206 205 248 231", {
+        width: 0.72,
+        dash: ctx.level < 4 ? "4 9" : "",
+      });
+    }
+    if (ctx.level >= 3) {
+      pushOrganicBoundary(geo, ctx, "release_control", "M 91 260 L 159 178 L 252 233", {
+        width: 0.78,
+        minimum: 0.08,
+        span: 0.34,
+      });
+    }
+    if (ctx.level >= 4) {
+      pushOrganicTrajectory(geo, ctx, "continuity", "M 146 186 C 181 197 209 216 252 233", {
+        color: "violet",
+        width: 0.65,
+        primary: false,
+      });
+    }
+    if (ctx.level >= 5) {
+      pushAnchor(geo.anchors, "external", 272, 96, {
+        radius: 2.1,
+        opacity: organicEvidenceOpacity(ctx, "external", 0.12, 0.58),
+      });
+    }
+    return configureOrganicFrame(geo, 272, 96);
+  }
+
+  function buildOrganicStoneGeometry(ctx) {
+    const geo = emptyGeometry(180, 232);
+    pushOrganicBoundary(geo, ctx, "release_control", "M 63 251 C 88 199 142 174 205 186 C 248 194 277 225 269 259 C 224 282 136 287 63 251 Z");
+    pushOrganicTrajectory(geo, ctx, "implementation", "M 43 263 C 87 249 111 217 152 212 C 188 208 204 235 256 222", { width: 1.35 });
+    pushOrganicTrajectory(geo, ctx, "continuity", "M 80 252 C 122 260 165 252 191 225 C 213 202 232 194 281 212", {
+      color: "violet",
+      width: 1.05,
+    });
+    if (ctx.level >= 3) {
+      pushOrganicTrajectory(geo, ctx, "evidence", "M 109 200 C 139 223 166 233 217 241", {
+        width: 0.68,
+        dash: "4 10",
+        primary: false,
+      });
+      pushAnchor(geo.anchors, "evidence", 191, 225, {
+        radius: 2.3,
+        opacity: organicEvidenceOpacity(ctx, "evidence", 0.12, 0.6),
+      });
+    }
+    addOrganicMaturityMarks(geo, ctx, "D");
+    return configureOrganicFrame(geo, 205, 186);
+  }
+
+  function buildOrganicPrismGeometry(ctx) {
+    const geo = emptyGeometry(180, 232);
+    pushOrganicBoundary(geo, ctx, "release_control", "M 76 258 C 69 206 107 158 159 148 C 211 139 270 176 279 225 C 272 262 224 284 167 279 C 121 276 89 269 76 258 Z");
+    pushOrganicTrajectory(geo, ctx, "implementation", "M 43 263 C 99 253 107 212 145 196 C 177 179 209 185 260 222", { width: 1.35 });
+    pushOrganicTrajectory(geo, ctx, "continuity", "M 121 239 C 142 265 193 261 218 230 C 240 202 214 172 184 171", {
+      color: "violet",
+      width: 1.08,
+    });
+    if (ctx.level >= 2) {
+      pushOrganicTrajectory(geo, ctx, "tests", "M 96 211 C 131 205 157 216 176 244", {
+        width: 0.72,
+        minimum: 0.08,
+        span: 0.42,
+      });
+    }
+    addOrganicMaturityMarks(geo, ctx, "C");
+    return configureOrganicFrame(geo, 159, 148);
+  }
+
+  function buildOrganicRelicGeometry(ctx) {
+    const geo = emptyGeometry(180, 232);
+    pushOrganicBoundary(geo, ctx, "release_control", "M 54 247 C 77 180 131 141 203 154 C 258 164 292 207 275 257 C 230 289 117 289 54 247 Z");
+    pushOrganicBoundary(geo, ctx, "evidence", "M 124 237 C 132 200 158 181 190 188 C 219 194 232 219 216 243 C 192 263 150 260 124 237 Z", {
+      color: "violet",
+      width: 0.82,
+    });
+    pushOrganicTrajectory(geo, ctx, "implementation", "M 43 263 C 86 243 113 224 145 215 C 173 208 206 217 267 246", { width: 1.4 });
+    pushOrganicTrajectory(geo, ctx, "tests", "M 87 192 C 123 202 144 222 153 250", { color: "violet", width: 0.95 });
+    if (ctx.level >= 3) {
+      pushOrganicTrajectory(geo, ctx, "continuity", "M 190 155 C 184 182 196 204 235 223", {
+        width: 0.72,
+        minimum: 0.09,
+        span: 0.42,
+      });
+    }
+    if (ctx.level >= 4) {
+      pushOrganicTrajectory(geo, ctx, "research", "M 73 262 C 111 279 177 278 232 258", {
+        color: "violet",
+        width: 0.65,
+        dash: "4 10",
+        primary: false,
+      });
+    }
+    addOrganicMaturityMarks(geo, ctx, "B");
+    return configureOrganicFrame(geo, 203, 154);
+  }
+
+  function buildOrganicCrystalGeometry(ctx) {
+    const geo = emptyGeometry(180, 232);
+    pushOrganicBoundary(geo, ctx, "release_control", "M 73 256 C 86 181 127 127 179 121 C 235 128 274 180 278 247 C 244 280 112 287 73 256 Z");
+    pushOrganicBoundary(geo, ctx, "evidence", "M 123 243 C 128 185 151 154 183 148 C 216 156 232 193 225 243 C 198 264 151 263 123 243 Z", {
+      color: "violet",
+      width: 0.82,
+    });
+    pushOrganicTrajectory(geo, ctx, "implementation", "M 43 263 C 95 240 113 209 153 191 C 194 173 226 194 275 228", { width: 1.42 });
+    pushOrganicTrajectory(geo, ctx, "tests", "M 97 171 C 130 187 151 216 177 256", { color: "violet", width: 1.0 });
+    pushOrganicTrajectory(geo, ctx, "continuity", "M 181 123 C 174 164 180 202 202 245", { width: 1.15 });
+    if (ctx.level >= 3) {
+      pushAnchor(geo.anchors, "evidence", 183, 202, {
+        radius: 2.8 + ctx.level * 0.18,
+        opacity: organicEvidenceOpacity(ctx, "evidence", 0.18, 0.7),
+      });
+    }
+    if (ctx.level >= 4) {
+      pushOrganicTrajectory(geo, ctx, "external", "M 75 250 C 126 275 211 274 273 248", {
+        width: 0.62,
+        dash: "4 11",
+        primary: false,
+      });
+    }
+    addOrganicMaturityMarks(geo, ctx, "A");
+    return configureOrganicFrame(geo, 179, 121);
+  }
+
+  function buildOrganicMonolithGeometry(ctx) {
+    const geo = emptyGeometry(180, 232);
+    pushOrganicBoundary(geo, ctx, "release_control", "M 86 260 L 112 141 C 140 112 190 99 225 124 L 270 256 C 228 286 130 290 86 260 Z", { width: 1.12 });
+    pushOrganicBoundary(geo, ctx, "evidence", "M 126 250 L 143 161 C 160 142 184 135 202 148 L 225 250 C 193 267 154 268 126 250 Z", {
+      color: "violet",
+      width: 0.78,
+    });
+    pushOrganicTrajectory(geo, ctx, "implementation", "M 43 263 C 92 243 119 207 151 187 C 183 167 214 182 281 226", { width: 1.4 });
+    pushOrganicTrajectory(geo, ctx, "release_control", "M 177 107 C 167 155 171 206 187 261", { width: 1.3 });
+    pushOrganicTrajectory(geo, ctx, "tests", "M 108 141 C 143 169 174 177 226 124", { color: "violet", width: 0.95 });
+    if (ctx.level >= 3) {
+      pushOrganicTrajectory(geo, ctx, "continuity", "M 94 261 C 137 277 221 276 267 254", {
+        width: 0.65,
+        dash: "4 10",
+        primary: false,
+      });
+    }
+    pushAnchor(geo.anchors, "release_control", 177, 107, {
+      radius: 2.25,
+      opacity: organicEvidenceOpacity(ctx, "release_control", 0.2, 0.72),
+    });
+    addOrganicMaturityMarks(geo, ctx, "S");
+    return configureOrganicFrame(geo, 177, 107);
+  }
+
+  function buildOrganicArchiveGeometry(ctx) {
+    const geo = emptyGeometry(180, 232);
+    pushOrganicBoundary(geo, ctx, "release_control", "M 34 254 C 71 179 123 140 180 140 C 242 135 298 179 325 252 C 269 290 89 294 34 254 Z", { width: 1.15 });
+    pushOrganicBoundary(geo, ctx, "evidence", "M 110 248 C 119 182 143 151 182 148 C 220 153 244 191 239 248 C 210 271 145 271 110 248 Z", {
+      color: "violet",
+      width: 0.85,
+    });
+    pushOrganicTrajectory(geo, ctx, "implementation", "M 24 270 C 74 251 95 208 134 189 C 171 171 210 185 252 216 C 278 235 301 243 335 237", { width: 1.42 });
+    pushOrganicTrajectory(geo, ctx, "tests", "M 47 223 C 92 238 121 256 171 261 C 222 266 270 247 319 208", { color: "violet", width: 1.05 });
+    pushOrganicTrajectory(geo, ctx, "evidence", "M 95 164 C 127 191 147 223 169 262", { width: 1.05 });
+    pushOrganicTrajectory(geo, ctx, "continuity", "M 181 115 C 171 160 179 210 200 262", { color: "violet", width: 1.15 });
+    pushOrganicTrajectory(geo, ctx, "release_control", "M 266 162 C 236 183 218 214 207 260", { width: 1.05 });
+    if (ctx.level >= 2) {
+      pushOrganicTrajectory(geo, ctx, "research", "M 57 261 C 115 286 255 285 311 254", {
+        width: 0.65,
+        dash: "4 10",
+        primary: false,
+      });
+    }
+    if (ctx.level >= 3) {
+      pushOrganicTrajectory(geo, ctx, "external", "M 73 196 C 118 150 149 124 184 115 C 218 124 246 143 294 189", {
+        color: "violet",
+        width: 0.72,
+      });
+    }
+    if (ctx.level >= 4) {
+      pushOrganicTrajectory(geo, ctx, "continuity", "M 61 250 C 112 226 151 216 185 217 C 226 218 267 230 317 250", {
+        width: 0.68,
+        minimum: 0.1,
+        span: 0.4,
+        primary: false,
+      });
+    }
+    if (ctx.level >= 5) {
+      pushOrganicBoundary(geo, ctx, "external", "M 26 245 C 62 151 119 105 183 103 C 252 107 310 159 334 243", {
+        color: "violet",
+        width: 0.82,
+        minimum: 0.1,
+        span: 0.42,
+      });
+    }
+    pushAnchor(geo.anchors, "evidence", 182, 148, {
+      radius: 3.1,
+      opacity: organicEvidenceOpacity(ctx, "evidence", 0.2, 0.72),
+    });
+    return configureOrganicFrame(geo, 181, 115);
+  }
+
   const GEOMETRY_BUILDERS = Object.freeze({
-    F: buildFragmentGeometry,
-    E: buildShardGeometry,
-    D: buildStoneGeometry,
-    C: buildPrismGeometry,
-    B: buildRelicGeometry,
-    A: buildCrystalGeometry,
-    S: buildMonolithGeometry,
-    SS: buildArchiveCrownGeometry,
+    F: buildOrganicFragmentGeometry,
+    E: buildOrganicShardGeometry,
+    D: buildOrganicStoneGeometry,
+    C: buildOrganicPrismGeometry,
+    B: buildOrganicRelicGeometry,
+    A: buildOrganicCrystalGeometry,
+    S: buildOrganicMonolithGeometry,
+    SS: buildOrganicArchiveGeometry,
   });
 
   /* ---------------- Preview hero sigil (compact) ---------------- */
@@ -786,8 +1078,9 @@
     const canonicalInput = `${repository}|${commitSha}|${policyVersion}|${visualSeed}|${visualPhase}|${scoreSignature}|${indicatorSignature}|${rank.code}`;
     const random = mulberry32(xmur3(canonicalInput)());
     const yaw = (visualSeed > 0 ? 0.35 : -0.3) + random() * 0.18;
+    const identityBias = round(random() * 2 - 1);
     const intensity = gateDecision === "SHOW" ? 1 : gateDecision === "REVIEW" ? 0.78 : 0.42;
-    const builder = GEOMETRY_BUILDERS[rank.family] || buildFragmentGeometry;
+    const builder = GEOMETRY_BUILDERS[rank.family] || buildOrganicFragmentGeometry;
     const geo = builder({
       originX: 180,
       originY: 200,
@@ -823,6 +1116,7 @@
         family: rank.family,
         level: rank.level,
         yaw: round(yaw),
+        identityBias,
         gateIntensity: intensity,
         evolution: rank.code,
       },
@@ -831,6 +1125,7 @@
       anchors: geo.anchors,
       apex: geo.apex,
       origin: geo.origin,
+      source: geo.source,
     };
   }
 
@@ -845,7 +1140,7 @@
 
     const model = buildEvidenceSigilModel(input);
     const svg = createSvgElement("svg", {
-      viewBox: "0 0 360 360",
+      viewBox: "0 0 360 320",
       role: "img",
       "aria-label": `Evidence rank ${model.rank.code} ${model.rank.familyName} for ${model.repository}. Gate ${model.gateDecision}.`,
       focusable: "false",
@@ -890,84 +1185,34 @@
       createSvgElement("circle", {
         class: "evidence-artifact__field",
         cx: model.origin.x,
-        cy: model.origin.y - 8,
-        r: 118,
+        cy: model.origin.y - 18,
+        r: model.rank.family === "SS" ? 136 : 108,
         fill: `url(#${filterPrefix}-atm)`,
         filter: `url(#${filterPrefix}-bloom)`,
       }),
     );
     ambient.appendChild(
-      createSvgElement("ellipse", {
-        class: "evidence-artifact__halo evidence-artifact__halo--outer",
-        cx: model.origin.x,
-        cy: model.origin.y - 4,
-        rx: 112,
-        ry: 118,
+      createSvgElement("path", {
+        class: "evidence-artifact__field-line evidence-artifact__field-line--outer",
+        d: model.rank.family === "SS"
+          ? "M 18 271 C 76 298 272 300 344 263"
+          : "M 43 270 C 102 294 248 292 316 261",
         fill: "none",
         stroke: "rgba(215,182,111,0.18)",
         "stroke-width": 0.7,
       }),
     );
     ambient.appendChild(
-      createSvgElement("ellipse", {
-        class: "evidence-artifact__halo evidence-artifact__halo--mid",
-        cx: model.origin.x,
-        cy: model.origin.y + 2,
-        rx: 86,
-        ry: 78,
+      createSvgElement("path", {
+        class: "evidence-artifact__field-line evidence-artifact__field-line--inner",
+        d: "M 72 246 C 112 219 146 207 181 207",
         fill: "none",
         stroke: "rgba(139,120,160,0.16)",
         "stroke-width": 0.55,
+        "stroke-dasharray": "4 12",
       }),
     );
-    ambient.appendChild(
-      createSvgElement("ellipse", {
-        class: "evidence-artifact__halo evidence-artifact__halo--inner",
-        cx: model.origin.x,
-        cy: model.origin.y + 6,
-        rx: 58,
-        ry: 52,
-        fill: "none",
-        stroke: "rgba(239,215,154,0.14)",
-        "stroke-width": 0.5,
-      }),
-    );
-
-    // Deterministic faint orbiting particles (visual-only; seeded from model).
-    const particleSeed = mulberry32(xmur3(`${model.canonicalInput}|ambient`)());
-    const particleGroup = createSvgElement("g", { class: "evidence-artifact__particles" });
-    const particleCount = model.gateDecision === "BLOCK" ? 4 : model.gateDecision === "REVIEW" ? 7 : 10;
-    for (let index = 0; index < particleCount; index += 1) {
-      const angle = particleSeed() * Math.PI * 2;
-      const radius = 48 + particleSeed() * 62;
-      const px = round(model.origin.x + Math.cos(angle) * radius);
-      const py = round(model.origin.y - 6 + Math.sin(angle) * radius * 0.72);
-      const particle = createSvgElement("circle", {
-        class: "evidence-artifact__particle",
-        cx: px,
-        cy: py,
-        r: round(0.7 + particleSeed() * 1.35),
-        fill: index % 2 === 0 ? "#efd79a" : "#9a88b0",
-      });
-      particle.style.setProperty("--particle-index", String(index));
-      particle.style.setProperty("--particle-delay", `${round(particleSeed() * 6)}s`);
-      particle.style.setProperty("--particle-duration", `${round(10 + particleSeed() * 10)}s`);
-      particleGroup.appendChild(particle);
-    }
-    ambient.appendChild(particleGroup);
     stage.appendChild(ambient);
-
-    stage.appendChild(
-      createSvgElement("ellipse", {
-        class: "evidence-artifact__plinth",
-        cx: model.origin.x,
-        cy: model.origin.y + 82,
-        rx: 96,
-        ry: 15,
-        fill: "rgba(0,0,0,0.62)",
-        opacity: 0.9,
-      }),
-    );
 
     const body = createSvgElement("g", {
       class: "evidence-artifact__body",
@@ -980,8 +1225,13 @@
     body.style.setProperty("--artifact-period", `${round(breathePeriod)}s`);
     body.style.setProperty("--glow-period", `${round(breathePeriod * 0.72)}s`);
     body.style.setProperty("--drift-period", `${round(breathePeriod * 1.35)}s`);
+    body.style.setProperty("--identity-angle", `${round((model.metrics.yaw - 0.44) * 5)}deg`);
     stage.style.setProperty("--artifact-period", `${round(breathePeriod)}s`);
     stage.style.setProperty("--drift-period", `${round(breathePeriod * 1.35)}s`);
+    const identity = createSvgElement("g", {
+      class: "evidence-artifact__identity",
+      transform: `translate(${round(model.metrics.identityBias * 4)} ${round(model.metrics.identityBias * 1.5)}) rotate(${round(model.metrics.identityBias * 3)} 180 220)`,
+    });
 
     model.categories.forEach((category, categoryIndex) => {
       const group = createSvgElement("g", {
@@ -1059,8 +1309,34 @@
           group.appendChild(node);
         });
 
-      body.appendChild(group);
+      identity.appendChild(group);
     });
+
+    if (model.source) {
+      const sourceGroup = createSvgElement("g", { class: "evidence-artifact__source", "aria-hidden": "true" });
+      sourceGroup.appendChild(
+        createSvgElement("circle", {
+          class: "evidence-artifact__source-glow",
+          cx: model.source.x,
+          cy: model.source.y,
+          r: 8,
+          fill: "#d7b66f",
+          opacity: model.gateDecision === "BLOCK" ? 0.12 : 0.2,
+          filter: `url(#${filterPrefix}-bloom)`,
+        }),
+      );
+      sourceGroup.appendChild(
+        createSvgElement("circle", {
+          class: "evidence-artifact__source-core",
+          cx: model.source.x,
+          cy: model.source.y,
+          r: 2.7,
+          fill: "#f0d9a0",
+          opacity: model.gateDecision === "BLOCK" ? 0.34 : 0.94,
+        }),
+      );
+      identity.appendChild(sourceGroup);
+    }
 
     // Apex marker
     if (model.apex) {
@@ -1070,29 +1346,19 @@
           class: "evidence-artifact__apex-core",
           cx: model.apex.x,
           cy: model.apex.y,
-          r: 3.6,
+          r: 2.35,
           fill: "#f0d9a0",
           opacity: model.gateDecision === "BLOCK" ? 0.35 : 0.96,
         }),
       );
-      apexGroup.appendChild(
-        createSvgElement("circle", {
-          class: "evidence-artifact__apex-ring",
-          cx: model.apex.x,
-          cy: model.apex.y,
-          r: 9.5,
-          fill: "none",
-          stroke: "rgba(239,215,154,0.35)",
-          "stroke-width": 0.7,
-        }),
-      );
-      body.appendChild(apexGroup);
+      identity.appendChild(apexGroup);
     }
 
+    body.appendChild(identity);
     stage.appendChild(body);
     svg.appendChild(stage);
     container.dataset.gate = model.gateDecision;
-    container.dataset.artifact = "family-v3-alive";
+    container.dataset.artifact = "organic-architecture-v4";
     container.dataset.evolution = model.rank.code;
     container.dataset.family = model.rank.family;
     container.classList.add("is-alive");
