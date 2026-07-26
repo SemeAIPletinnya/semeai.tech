@@ -136,6 +136,7 @@
       element,
       (state) => {
         currentState = state;
+        options.onState?.(state);
         clear();
         if (state === "reduced") {
           applyPhase(options.reducedPhase ?? phases.length - 1);

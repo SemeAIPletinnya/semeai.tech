@@ -55,6 +55,9 @@
   let activeChapterId = data.chapters?.[0]?.id || "cover";
   let coverVisible = true;
   let hashScrollToken = 0;
+  let coverCycle = null;
+  let fallbackCoverObserver = null;
+  let continuityTimer = 0;
 
   const escapeHtml = (value) =>
     String(value ?? "")
@@ -144,6 +147,7 @@
             <path class="book-field-path is-released" style="--i:4" pathLength="100" d="M 232 406 C 280 330 313 260 353 164 C 377 111 424 83 493 80" />
             <path class="book-field-path is-released is-violet" style="--i:5" pathLength="100" d="M 232 406 C 312 398 370 322 438 314 C 497 307 553 330 616 299" />
             <path class="book-field-path is-held is-gold" style="--i:6" pathLength="100" d="M 232 406 C 283 382 305 345 332 318" />
+            <path class="book-field-persistent" pathLength="100" d="M 232 406 C 320 438 375 430 451 386 C 513 350 592 348 692 382" />
           </g>
           <g class="book-field-points">
             <circle class="book-field-point" style="--i:0" cx="660" cy="148" r="2.4"/>
@@ -154,12 +158,26 @@
             <circle class="book-field-point is-violet" style="--i:5" cx="616" cy="299" r="2.4"/>
             <circle class="book-field-point is-held is-gold" style="--i:6" cx="332" cy="318" r="2"/>
           </g>
+          <rect class="book-field-receipt" x="684" y="374" width="16" height="16"/>
           <g class="book-field-origin">
             <path d="M 204 384 L 204 428 M 204 384 L 224 384 M 204 428 L 224 428
               M 260 384 L 260 428 M 240 384 L 260 384 M 240 428 L 260 428"/>
             <circle class="book-field-core-ring" cx="232" cy="406" r="15"/>
             <circle class="book-field-core" cx="232" cy="406" r="4.8"/>
           </g>
+        </svg>
+      </div>`;
+  }
+
+  function renderContinuityField() {
+    return `
+      <div class="book-continuity-field" aria-hidden="true">
+        <svg viewBox="0 0 240 720" role="presentation" focusable="false">
+          <path class="book-continuity-boundary" d="M 172 54 C 151 214 158 504 188 666" />
+          <path class="book-continuity-thread is-primary" pathLength="100" d="M 28 116 C 92 142 126 212 154 310 C 176 386 172 492 188 612" />
+          <path class="book-continuity-thread is-secondary" pathLength="100" d="M 54 462 C 102 426 130 382 154 310" />
+          <circle class="book-continuity-node" cx="154" cy="310" r="4" />
+          <rect class="book-continuity-receipt" x="181" y="605" width="14" height="14" />
         </svg>
       </div>`;
   }
@@ -532,6 +550,13 @@
     const chapter = chapters[index];
     const total = chapters.length;
     const ratio = total > 1 ? index / (total - 1) : 0;
+    const continuity = document.querySelector(".book-continuity-field");
+    document.body.style.setProperty("--book-continuity-shift", `${((index % 7) - 3) * 6}px`);
+    document.body.style.setProperty("--book-continuity-turn", `${((index % 5) - 2) * 0.45}deg`);
+    document.body.style.setProperty("--book-continuity-dash", String(index * -7));
+    document.body.style.setProperty("--book-continuity-progress", ratio.toFixed(4));
+    document.body.dataset.bookChapter = id;
+    document.body.dataset.bookChapterPhase = String(index % 6);
 
     document.querySelectorAll("[data-chapter-link]").forEach((link) => {
       const active = link.dataset.chapterLink === id;
@@ -556,6 +581,13 @@
         // force reflow
         void page.offsetWidth;
         page.classList.add("is-entering");
+      }
+      if (continuity) {
+        window.clearTimeout(continuityTimer);
+        continuity.classList.remove("is-reorganizing");
+        void continuity.offsetWidth;
+        continuity.classList.add("is-reorganizing");
+        continuityTimer = window.setTimeout(() => continuity.classList.remove("is-reorganizing"), 900);
       }
     }
   }
@@ -629,20 +661,45 @@
 
   function observeCoverVisibility() {
     const field = document.querySelector(".book-field");
-    if (!field || !("IntersectionObserver" in window)) return;
-    const observer = new IntersectionObserver(
+    coverCycle?.destroy();
+    coverCycle = null;
+    fallbackCoverObserver?.disconnect();
+    fallbackCoverObserver = null;
+    if (!field) return;
+
+    if (window.SemeAIMotion) {
+      coverCycle = window.SemeAIMotion.cycle(field, {
+        phases: [
+          { name: "candidate", duration: 2300 },
+          { name: "paths", duration: 3000 },
+          { name: "evidence", duration: 2800 },
+          { name: "boundary", duration: 2500 },
+          { name: "trace", duration: 3600 },
+        ],
+        reducedPhase: 4,
+        threshold: 0.1,
+        rootMargin: "80px 0px",
+        onState(state) {
+          field.classList.toggle("is-motion-paused", state !== "running");
+        },
+      });
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) return;
+    fallbackCoverObserver = new IntersectionObserver(
       (entries) => {
         coverVisible = entries.some((entry) => entry.isIntersecting);
         startCoverMotion();
       },
       { threshold: 0.12 }
     );
-    observer.observe(field);
+    fallbackCoverObserver.observe(field);
   }
 
   function paintBook() {
     data = localizedData();
-    main.innerHTML = data.chapters.map((chapter, index) => renderChapter(chapter, index)).join("");
+    main.innerHTML = renderContinuityField() + data.chapters.map((chapter, index) => renderChapter(chapter, index)).join("");
 
     if (startOrientation) {
       const firstPage = main.querySelector(".book-page");
@@ -746,7 +803,7 @@
   }
 
   document.addEventListener("visibilitychange", () => {
-    startCoverMotion();
+    if (!window.SemeAIMotion) startCoverMotion();
   });
 
   paintBook();
