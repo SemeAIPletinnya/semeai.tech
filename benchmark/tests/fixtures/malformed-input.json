@@ -1,0 +1,49 @@
+{
+  "fixture_role": "INPUTS DENIED BEFORE EVIDENCE CAPTURE",
+  "cases": [
+    {
+      "name": "empty",
+      "input": ""
+    },
+    {
+      "name": "slash only",
+      "input": "/"
+    },
+    {
+      "name": "missing repository",
+      "input": "owner/"
+    },
+    {
+      "name": "missing owner",
+      "input": "/repo"
+    },
+    {
+      "name": "non-GitHub URL",
+      "input": "https://example.com/foo/bar"
+    },
+    {
+      "name": "javascript scheme",
+      "input": "javascript:alert(1)"
+    },
+    {
+      "name": "GitHub URL with extra path",
+      "input": "https://github.com/owner/repo/issues"
+    },
+    {
+      "name": "GitHub URL with query",
+      "input": "https://github.com/owner/repo?tab=readme"
+    },
+    {
+      "name": "unsupported owner characters",
+      "input": "bad owner/repo"
+    },
+    {
+      "name": "excessively malformed form",
+      "input": "owner///repo///extra"
+    },
+    {
+      "name": "over maximum length",
+      "input": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ]
+}

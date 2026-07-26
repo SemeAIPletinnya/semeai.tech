@@ -1,0 +1,57 @@
+{
+  "fixture_role": "DETERMINISTIC BUILT-IN FALLBACK GOLDEN",
+  "receipt_hash": "8fae1c025eb703961011df2ea083ec8d74cd85cf61b170b895b8e06e503f4897",
+  "canonical_without_hash_bytes": 8386,
+  "canonical_without_hash_sha256": "8fae1c025eb703961011df2ea083ec8d74cd85cf61b170b895b8e06e503f4897",
+  "download_json_bytes": 11494,
+  "download_json_sha256": "54c47f5437426d5221d2c163f50a82b690198b6de34b0b1bcbf15dc1c2df6846",
+  "receipt_root_keys": [
+    "schema_version",
+    "artifact_type",
+    "repository",
+    "owner",
+    "source_mode",
+    "source_commit_sha",
+    "snapshot_timestamp",
+    "analyzer_version",
+    "scoring_policy_version",
+    "total_score",
+    "category_scores",
+    "admitted_signals",
+    "missing_signals",
+    "heuristic_warnings",
+    "presentation_gate",
+    "stars_snapshot",
+    "visual_phase",
+    "visual_seed",
+    "visual_tier",
+    "integrity_description",
+    "receipt_hash"
+  ],
+  "category_score_keys": [
+    "key",
+    "name",
+    "score",
+    "maximum"
+  ],
+  "admitted_signal_keys": [
+    "category",
+    "signal",
+    "points",
+    "basis",
+    "evidence"
+  ],
+  "missing_signal_keys": [
+    "category",
+    "signal",
+    "missing_points",
+    "basis"
+  ],
+  "presentation_gate_keys": [
+    "decision",
+    "decision_reasons",
+    "authority_boundary"
+  ],
+  "admitted_signal_count": 36,
+  "missing_signal_count": 1
+}

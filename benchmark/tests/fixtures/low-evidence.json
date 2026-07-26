@@ -1,0 +1,64 @@
+{
+  "schema_version": "semeai.repository-evidence.snapshot.v1",
+  "source_mode": "LIVE GITHUB SNAPSHOT",
+  "captured_at": "2026-07-26T00:00:00.000Z",
+  "repository": "FixtureOrg/low-evidence",
+  "owner": "FixtureOrg",
+  "default_branch": "master",
+  "commit_sha": "1111111111111111111111111111111111111111",
+  "commit_date": "2026-07-26T00:00:00.000Z",
+  "public_metadata": {
+    "description": null,
+    "html_url": "https://github.com/FixtureOrg/low-evidence",
+    "visibility": "public",
+    "fork": false,
+    "archived": false,
+    "disabled": false,
+    "stars": 0,
+    "forks": 0,
+    "open_issues": 0,
+    "size_kb": 1,
+    "created_at": "2026-07-26T00:00:00.000Z",
+    "updated_at": "2026-07-26T00:00:00.000Z",
+    "pushed_at": "2026-07-26T00:00:00.000Z",
+    "license_spdx": null,
+    "topics": [],
+    "languages": {},
+    "latest_release": null
+  },
+  "tree": {
+    "entry_count": 0,
+    "blob_count": 0,
+    "truncated": false
+  },
+  "documentation_signals": {
+    "selected_paths": [],
+    "documents_with_tristate_terms": []
+  },
+  "normalized_evidence": {
+    "recent_default_commit": [
+      "2026-07-26T00:00:00.000Z"
+    ],
+    "public_visibility": [
+      "public"
+    ]
+  },
+  "expected": {
+    "internal_total_score": 3,
+    "category_scores": [
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      1
+    ],
+    "indicators": {
+      "repositorySignal": 8,
+      "evidenceDepth": 0,
+      "gateDiscipline": 0
+    },
+    "presentation_gate": "BLOCK"
+  }
+}

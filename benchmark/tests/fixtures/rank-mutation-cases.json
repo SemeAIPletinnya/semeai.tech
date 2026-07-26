@@ -1,0 +1,89 @@
+{
+  "ordinary_ranges": [
+    { "code": "F-1", "min": 0, "max": 3 },
+    { "code": "F-2", "min": 4, "max": 7 },
+    { "code": "F-3", "min": 8, "max": 11 },
+    { "code": "F-4", "min": 12, "max": 15 },
+    { "code": "F-5", "min": 16, "max": 19 },
+    { "code": "E-1", "min": 20, "max": 22 },
+    { "code": "E-2", "min": 23, "max": 25 },
+    { "code": "E-3", "min": 26, "max": 28 },
+    { "code": "E-4", "min": 29, "max": 31 },
+    { "code": "E-5", "min": 32, "max": 34 },
+    { "code": "D-1", "min": 35, "max": 37 },
+    { "code": "D-2", "min": 38, "max": 40 },
+    { "code": "D-3", "min": 41, "max": 43 },
+    { "code": "D-4", "min": 44, "max": 46 },
+    { "code": "D-5", "min": 47, "max": 49 },
+    { "code": "C-1", "min": 50, "max": 52 },
+    { "code": "C-2", "min": 53, "max": 55 },
+    { "code": "C-3", "min": 56, "max": 58 },
+    { "code": "C-4", "min": 59, "max": 61 },
+    { "code": "C-5", "min": 62, "max": 64 },
+    { "code": "B-1", "min": 65, "max": 67 },
+    { "code": "B-2", "min": 68, "max": 69 },
+    { "code": "B-3", "min": 70, "max": 72 },
+    { "code": "B-4", "min": 73, "max": 74 },
+    { "code": "B-5", "min": 75, "max": 76 },
+    { "code": "A-1", "min": 77, "max": 79 },
+    { "code": "A-2", "min": 80, "max": 81 },
+    { "code": "A-3", "min": 82, "max": 84 },
+    { "code": "A-4", "min": 85, "max": 86 },
+    { "code": "A-5", "min": 87, "max": 88 },
+    { "code": "S-1", "min": 89, "max": 90 },
+    { "code": "S-2", "min": 91, "max": 92 },
+    { "code": "S-3", "min": 93, "max": 93 },
+    { "code": "S-4", "min": 94, "max": 95 },
+    { "code": "S-5", "min": 96, "max": 96 }
+  ],
+  "special_cases": [
+    {
+      "name": "97 point candidate",
+      "total": 97,
+      "expected": "SS-1"
+    },
+    {
+      "name": "98 point candidate",
+      "total": 98,
+      "expected": "SS-2"
+    },
+    {
+      "name": "99 without stronger completion",
+      "total": 99,
+      "expected": "SS-3"
+    },
+    {
+      "name": "canonical 99 completion",
+      "total": 99,
+      "expected": "SS-4"
+    },
+    {
+      "name": "complete 100",
+      "total": 100,
+      "expected": "SS-5"
+    },
+    {
+      "name": "CURRENT BEHAVIOR: inconsistent 100 with insufficient indicators",
+      "total": 100,
+      "expected": "SS-1",
+      "future_policy_decision": true
+    }
+  ],
+  "presentation_permutations": [
+    {
+      "gateDecision": "SHOW",
+      "visualSeed": 3,
+      "visualPhase": "EXPANSION"
+    },
+    {
+      "gateDecision": "REVIEW",
+      "visualSeed": 3,
+      "visualPhase": "EXPANSION"
+    },
+    {
+      "gateDecision": "BLOCK",
+      "visualSeed": -3,
+      "visualPhase": "CONSOLIDATION"
+    }
+  ]
+}

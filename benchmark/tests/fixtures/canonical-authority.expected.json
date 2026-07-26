@@ -1,0 +1,88 @@
+{
+  "fixture": "benchmark/data/silence-as-control.snapshot.json",
+  "analyzer_version": "1.0.0",
+  "scoring_policy_version": "semeai.repository-evidence.score.v1",
+  "snapshot_schema_version": "semeai.repository-evidence.snapshot.v1",
+  "policy_canonical_bytes": 4524,
+  "policy_sha256": "80f9539d07bc0396de8ab6ff7ee88e1d92448ba6fd7c459707150566ca6efe95",
+  "protected_function_sha256": {
+    "normalizeRepositoryInput": "0498a4a6a09188642a97fc67302e27c61dee5d18ffab7e5d896fafb0e8972a69",
+    "stableStringify": "cf6b70862f8bca02742b77b606efd8ea629650b560a12b408067beb5a35e9ef7",
+    "sha256Hex": "2fbdb7bc9a1254bbd6f12d2fc5763ef9d49c97165db42cca6799896e3f36480e",
+    "deriveEvidence": "7d99790cf37c338872533c21107e8036bbbee42197a37cc91bfce1e33c608a28",
+    "scoreSnapshot": "6fdf5b58412a807795a03e72778d0ca294d21ff1a646a4a46218300e4b3777c3",
+    "runPresentationGate": "ae8074e1a1ec113727068257d70fe53651e7e2e96218f5e07921cd6a792efa0d",
+    "computeIndicators": "846fe1aa8f2ffbddf0bf528e11eb139864f01a2941e4e2cdd10d3a44c24e9020",
+    "computeVisualPhase": "febe1b44bbaa174a12db58c73b053d743f30a5100f9a2df7223885244ff5d4e0",
+    "buildReceipt": "9b88eb013a799b77505137077e6d6bd201c3c3561340ab5ec8365cb27fa752c2"
+  },
+  "total_score": 99,
+  "category_scores": [
+    {
+      "key": "implementation",
+      "name": "Implementation Evidence",
+      "score": 20,
+      "maximum": 20
+    },
+    {
+      "key": "tests",
+      "name": "Tests & Reproducibility",
+      "score": 20,
+      "maximum": 20
+    },
+    {
+      "key": "evidence",
+      "name": "Evidence & Receipts",
+      "score": 20,
+      "maximum": 20
+    },
+    {
+      "key": "continuity",
+      "name": "Continuity & Replay",
+      "score": 15,
+      "maximum": 15
+    },
+    {
+      "key": "release_control",
+      "name": "Release-Control Discipline",
+      "score": 15,
+      "maximum": 15
+    },
+    {
+      "key": "research",
+      "name": "Research & Documentation",
+      "score": 5,
+      "maximum": 5
+    },
+    {
+      "key": "external",
+      "name": "External Public Signal",
+      "score": 4,
+      "maximum": 5
+    }
+  ],
+  "indicators": {
+    "repositorySignal": 98,
+    "evidenceDepth": 100,
+    "gateDiscipline": 100
+  },
+  "presentation_gate": {
+    "decision": "REVIEW",
+    "reasons": [
+      "The repository candidate is complete enough to inspect, but it is fallback-based rather than a current live capture."
+    ]
+  },
+  "visual": {
+    "tier": 0,
+    "visualSeed": 3,
+    "visualPhase": "EXPANSION"
+  },
+  "rank": {
+    "code": "SS-4",
+    "family": "SS",
+    "level": 4,
+    "name": "Archive Crown"
+  },
+  "canonical_artifact_bytes": 10852,
+  "canonical_artifact_sha256": "9bfbf89aaf4df36bc9f7842c827661669ebe69444ec486bc833b140adbb79923"
+}
