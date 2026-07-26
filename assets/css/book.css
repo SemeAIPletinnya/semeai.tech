@@ -1944,9 +1944,42 @@ body[data-book-chapter="cover"] .book-continuity-field {
     text-shadow: none !important;
   }
 
-  .book-field,
+  .book-field {
+    display: grid !important;
+    opacity: 0.46 !important;
+  }
+
   .book-field-svg {
-    display: none !important;
+    display: block !important;
+    width: 48% !important;
+    max-width: none !important;
+    opacity: 0.86 !important;
+    transform: translate(48%, -1%) !important;
+  }
+
+  .book-field-boundaries {
+    opacity: 0.56 !important;
+    transform: none !important;
+  }
+
+  .book-field-path.is-released {
+    opacity: 0.36 !important;
+    stroke-dasharray: 14 86 !important;
+    stroke-dashoffset: -20 !important;
+  }
+
+  .book-field-path.is-held {
+    opacity: 0.08 !important;
+  }
+
+  .book-field-persistent {
+    opacity: 0.84 !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .book-field-receipt {
+    opacity: 0.84 !important;
+    transform: scale(1) !important;
   }
 
   .book-cover-number {

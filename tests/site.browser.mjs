@@ -471,6 +471,81 @@ async function validateBenchmarkBoundary(browser, origin, tailwindRuntime) {
   await page.close();
 }
 
+async function validateMotionSemantics(browser, origin, tailwindRuntime) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    locale: "en-US",
+    reducedMotion: "no-preference",
+  });
+  await context.addInitScript(() => {
+    const requestFrame = window.requestAnimationFrame.bind(window);
+    window.__semeaiRouteRafCount = 0;
+    window.requestAnimationFrame = (callback) =>
+      requestFrame((time) => {
+        window.__semeaiRouteRafCount += 1;
+        callback(time);
+      });
+  });
+
+  const page = await context.newPage();
+  const errors = [];
+  await wirePage(page, tailwindRuntime, errors);
+
+  await loadRoute(page, origin, "/gate.html");
+  assert.equal(await page.locator(".gate-state-visual").getAttribute("aria-hidden"), "true");
+  for (const state of ["show", "review", "block"]) {
+    await page.locator(`[data-gate-state="${state}"]`).focus();
+    assert.equal(
+      await page.locator(".gate-state-visual").getAttribute("data-motion-phase"),
+      state,
+      `Gate keyboard focus should expose the ${state} structural state`,
+    );
+  }
+
+  await loadRoute(page, origin, "/research.html");
+  await page.locator(".research-artifact-section").scrollIntoViewIfNeeded();
+  await page.waitForFunction(
+    () => document.querySelector(".research-artifact-section")?.dataset.evidenceAdmitted === "true",
+  );
+  assert.equal(
+    await page.locator(".research-artifact-section").getAttribute("data-evidence-admitted"),
+    "true",
+  );
+
+  await loadRoute(page, origin, "/dashboard.html");
+  await page.evaluate(() => {
+    window.__semeaiRouteRafCount = 0;
+  });
+  await page.waitForTimeout(300);
+  const dashboard = await page.evaluate(() => ({
+    lifecycle: Boolean(window.SemeAIDashboardMotion),
+    rafCount: window.__semeaiRouteRafCount,
+    canvasWidth: document.querySelector("#bg-canvas")?.width || 0,
+  }));
+  assert.equal(dashboard.lifecycle, true);
+  assert.equal(dashboard.rafCount, 0, "Dashboard should not retain a cinematic frame loop");
+  assert.ok(dashboard.canvasWidth > 0, "Dashboard should retain its deterministic operational field");
+
+  await loadRoute(page, origin, "/");
+  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await page.waitForFunction(
+    () => document.querySelector(".hero")?.dataset.motionState === "paused",
+  );
+  await page.evaluate(() => {
+    window.__semeaiRouteRafCount = 0;
+  });
+  await page.waitForTimeout(300);
+  assert.equal(
+    await page.evaluate(() => window.__semeaiRouteRafCount),
+    0,
+    "Home should pause its frame loop when the hero is offscreen",
+  );
+
+  assert.deepEqual(errors, [], "semantic motion states should remain error-free");
+  await context.close();
+  return "Gate focus, Research admission, Dashboard calm state, Home offscreen pause verified";
+}
+
 async function main() {
   const playwright = loadPlaywright();
   const { server, origin } = await startServer();
@@ -484,6 +559,7 @@ async function main() {
     const noJavaScript = await validateNoJavaScript(browser, origin);
     const reducedMotion = await validateReducedMotion(browser, origin, tailwindRuntime);
     await validateBenchmarkBoundary(browser, origin, tailwindRuntime);
+    const motionSemantics = await validateMotionSemantics(browser, origin, tailwindRuntime);
 
     console.log(
       JSON.stringify(
@@ -495,6 +571,7 @@ async function main() {
           deepLinks,
           noJavaScript,
           reducedMotion,
+          motionSemantics,
           benchmarkBoundary: "CSP, noindex, auth withholding verified",
         },
         null,

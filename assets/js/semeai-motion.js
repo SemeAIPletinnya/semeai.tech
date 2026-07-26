@@ -170,30 +170,38 @@
   function frameLoop(element, draw, options = {}) {
     if (!element || typeof draw !== "function") return { destroy() {}, request() {} };
     let animationFrame = 0;
+    let frameTimer = 0;
     let destroyed = false;
-    let lastFrame = 0;
     let currentState = "paused";
     let lifecycle = { destroy() {}, state: () => currentState };
     const minimumFrameTime = options.fps ? 1000 / Math.max(1, options.fps) : 0;
 
     function cancel() {
       if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      if (frameTimer) window.clearTimeout(frameTimer);
       animationFrame = 0;
+      frameTimer = 0;
     }
 
     function frame(time) {
       animationFrame = 0;
       if (destroyed || lifecycle.state() !== "running") return;
-      if (!minimumFrameTime || time - lastFrame >= minimumFrameTime) {
-        lastFrame = time;
-        draw(time, { reduced: false });
-      }
-      animationFrame = window.requestAnimationFrame(frame);
+      draw(time, { reduced: false });
+      request();
     }
 
     function request() {
-      if (destroyed || animationFrame || lifecycle.state() !== "running") return;
-      animationFrame = window.requestAnimationFrame(frame);
+      if (destroyed || animationFrame || frameTimer || lifecycle.state() !== "running") return;
+      if (!minimumFrameTime) {
+        animationFrame = window.requestAnimationFrame(frame);
+        return;
+      }
+      frameTimer = window.setTimeout(() => {
+        frameTimer = 0;
+        if (!destroyed && lifecycle.state() === "running") {
+          animationFrame = window.requestAnimationFrame(frame);
+        }
+      }, minimumFrameTime);
     }
 
     lifecycle = watch(
