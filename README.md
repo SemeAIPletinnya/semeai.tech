@@ -60,7 +60,7 @@ The product story is intentionally hybrid:
 
 - Open Source - teams can inspect and run the basic release-control adapter themselves.
 - Self-hosted Enterprise - sensitive teams can deploy inside their own infrastructure or VPC so documents do not leave their boundary.
-- SaaS API - teams that want the fastest start can call the hosted `api.semeai.tech` endpoint.
+- SaaS API - teams can call the hosted `api.semeai.tech` endpoint.
 
 This matters for privacy objections: SemeAI does not require a company to send sensitive documents to the hosted SaaS. The same contract can be run locally or self-hosted when data residency matters.
 
