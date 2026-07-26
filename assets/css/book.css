@@ -576,6 +576,7 @@ body.book-nav-collapsed .book-nav {
 .book-page {
   position: relative;
   min-height: 100vh;
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 0.75rem);
   padding: clamp(3.5rem, 7vw, 7rem) clamp(2rem, 7vw, 7.5rem);
   display: grid;
   align-content: center;
@@ -687,24 +688,101 @@ body.book-nav-collapsed .book-nav {
 }
 
 .book-field-svg {
-  width: min(56vw, 38rem);
+  width: min(60vw, 44rem);
   max-width: 92%;
   height: auto;
   opacity: 0.92;
-  transform: translate(18%, -4%);
+  transform: translate(19%, -2%);
 }
 
-.book-field-rings {
-  transform-origin: 320px 320px;
+.book-field-boundaries {
+  fill: none;
+  stroke: rgba(114, 231, 239, 0.18);
+  stroke-width: 1;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bookBoundaryDrift 42s ease-in-out infinite;
 }
 
-.book-field-core-ring {
-  transform-origin: 320px 320px;
-  animation: bookCorePulse 7s ease-in-out infinite;
+.book-field-boundaries .is-inner {
+  stroke: rgba(217, 189, 120, 0.16);
+  stroke-dasharray: 4 12;
+}
+
+.book-field-boundaries .is-architecture {
+  stroke: rgba(151, 134, 171, 0.28);
+  stroke-width: 1.15;
+}
+
+.book-field-path {
+  fill: none;
+  stroke: url("#bookFieldTrace");
+  stroke-width: 1.25;
+  stroke-linecap: round;
 }
 
 .book-field-path.is-released {
+  stroke-dasharray: 14 86;
   filter: drop-shadow(0 0 4px rgba(114, 231, 239, 0.18));
+  animation: bookEvidenceFlow 18s linear calc(var(--i) * -1.7s) infinite;
+}
+
+.book-field-path.is-held {
+  stroke: rgba(114, 231, 239, 0.2);
+  stroke-width: 0.9;
+  stroke-dasharray: 5 11;
+}
+
+.book-field-path.is-violet {
+  stroke: rgba(151, 134, 171, 0.52);
+}
+
+.book-field-path.is-gold {
+  stroke: rgba(217, 189, 120, 0.58);
+}
+
+.book-field-point {
+  fill: #72e7ef;
+  opacity: 0.72;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: bookPointBreathe 9s ease-in-out calc(var(--i) * -0.8s) infinite;
+}
+
+.book-field-point.is-gold {
+  fill: #d9bd78;
+}
+
+.book-field-point.is-violet {
+  fill: #9786ab;
+}
+
+.book-field-point.is-held {
+  opacity: 0.32;
+}
+
+.book-field-origin path {
+  fill: none;
+  stroke: rgba(217, 189, 120, 0.42);
+  stroke-width: 1;
+}
+
+.book-field-core {
+  fill: #f1d99f;
+  filter: drop-shadow(0 0 7px rgba(217, 189, 120, 0.65));
+}
+
+.book-field-core-ring {
+  fill: none;
+  stroke: rgba(114, 231, 239, 0.4);
+  stroke-width: 1;
+  transform-origin: 232px 406px;
+  animation: bookCorePulse 7s ease-in-out infinite;
+}
+
+.book-field.is-motion-paused *,
+.book-field.is-motion-paused::before {
+  animation-play-state: paused !important;
 }
 
 .book-cover-copy {
@@ -1321,10 +1399,41 @@ body.book-nav-collapsed .book-nav {
   }
 }
 
+@keyframes bookEvidenceFlow {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes bookBoundaryDrift {
+  0%,
+  100% {
+    transform: translate(-0.16rem, 0.08rem) scale(0.997);
+  }
+  52% {
+    transform: translate(0.2rem, -0.1rem) scale(1.004);
+  }
+}
+
+@keyframes bookPointBreathe {
+  0%,
+  100% {
+    opacity: 0.42;
+    transform: scale(0.86);
+  }
+  50% {
+    opacity: 0.86;
+    transform: scale(1.12);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
-  .book-field-rings,
+  .book-field-boundaries,
   .book-field-core-ring,
   .book-field-point,
   .book-field-path,
@@ -1334,7 +1443,7 @@ body.book-nav-collapsed .book-nav {
     transition: none !important;
   }
 
-  .book-field-rings {
+  .book-field-boundaries {
     transform: none !important;
   }
 }
@@ -1566,11 +1675,11 @@ body.book-nav-collapsed .book-nav {
     position: relative !important;
     opacity: 1 !important;
     transform: none !important;
-    min-height: 176mm;
-    height: 176mm;
+    min-height: 190mm;
+    height: 190mm;
     width: 100%;
-    padding: 16mm 18mm;
-    overflow: hidden;
+    padding: 12mm 14mm;
+    overflow: visible;
     break-after: page;
     page-break-after: always;
     border-bottom: 0;
@@ -1610,21 +1719,22 @@ body.book-nav-collapsed .book-nav {
   }
 
   .book-page h1 {
-    font-size: 56pt;
+    font-size: 52pt;
   }
 
   .book-page h2 {
-    font-size: 44pt;
+    font-size: 39pt;
   }
 
   .book-page p {
-    font-size: 12pt;
+    font-size: 10.5pt;
+    line-height: 1.48;
     color: #a2a8b0 !important;
   }
 
   .book-chapter-meta {
-    left: 18mm;
-    top: 10mm;
+    left: 14mm;
+    top: 8mm;
     color: #626a74 !important;
   }
 
@@ -1645,7 +1755,36 @@ body.book-nav-collapsed .book-nav {
   .book-diagram-grid,
   .book-page--negative {
     grid-template-columns: 0.9fr 1.1fr;
-    gap: 12mm;
+    gap: 8mm;
+  }
+
+  .book-author-grid {
+    grid-template-columns: 0.78fr 0.62fr 1fr;
+    gap: 7mm;
+  }
+
+  .book-author-card {
+    min-height: 102mm;
+    border-radius: 8mm;
+  }
+
+  .book-portrait-placeholder {
+    width: 48mm;
+    height: 48mm;
+  }
+
+  .book-author-body p {
+    font-size: 9.5pt;
+  }
+
+  .book-ecosystem-copy {
+    margin-bottom: 6mm;
+  }
+
+  .ecosystem-diagram {
+    min-height: 104mm;
+    height: 104mm;
+    border-radius: 7mm;
   }
 
   .book-page--diagram {
@@ -1698,6 +1837,43 @@ body.book-nav-collapsed .book-nav {
   .focus-row,
   .decision-row {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4mm;
+    margin-top: 9mm;
+  }
+
+  .metrics-grid article,
+  .principles-grid article,
+  .proof-grid article,
+  .focus-row article {
+    padding: 4mm;
+  }
+
+  .metrics-grid strong {
+    font-size: 28pt;
+  }
+
+  .principles-grid,
+  .proof-grid {
+    gap: 4mm;
+    margin-top: 8mm;
+  }
+
+  .proof-grid article {
+    min-height: 28mm;
+  }
+
+  .focus-row {
+    gap: 4mm;
+    margin-top: 9mm;
+  }
+
+  .focus-row article {
+    min-height: 46mm;
+    font-size: 24pt;
   }
 
   .evolution-line {

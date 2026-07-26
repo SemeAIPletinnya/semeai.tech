@@ -14,6 +14,9 @@
   const railProgress = document.getElementById("book-rail-progress");
   const navAside = document.getElementById("book-nav");
   const SIDEBAR_KEY = "semeai.book.sidebar.collapsed";
+  const CHAPTER_HASH_ALIASES = Object.freeze({
+    runtime: "runtime-stack",
+  });
 
   if (!base || !main || !nav) return;
 
@@ -50,8 +53,8 @@
   let data = localizedData();
   let pageObserver = null;
   let activeChapterId = data.chapters?.[0]?.id || "cover";
-  let coverRaf = 0;
   let coverVisible = true;
+  let hashScrollToken = 0;
 
   const escapeHtml = (value) =>
     String(value ?? "")
@@ -112,58 +115,51 @@
   }
 
   function renderCoverVisual() {
-    // Static SVG structure; motion is applied by CSS / rAF controller.
+    // A candidate field: paths originate together, diverge, stop, or reach the release boundary.
     return `
       <div class="book-field" aria-hidden="true">
-        <svg class="book-field-svg" viewBox="0 0 640 640" role="presentation" focusable="false">
+        <svg class="book-field-svg" viewBox="0 0 760 640" role="presentation" focusable="false">
           <defs>
-            <radialGradient id="bookFieldCore" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stop-color="#72e7ef" stop-opacity="0.28"/>
-              <stop offset="45%" stop-color="#72e7ef" stop-opacity="0.08"/>
-              <stop offset="100%" stop-color="#72e7ef" stop-opacity="0"/>
-            </radialGradient>
+            <linearGradient id="bookFieldTrace" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#d9bd78" stop-opacity="0.92"/>
+              <stop offset="58%" stop-color="#72e7ef" stop-opacity="0.72"/>
+              <stop offset="100%" stop-color="#72e7ef" stop-opacity="0.18"/>
+            </linearGradient>
+            <filter id="bookFieldBloom" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="9"/>
+            </filter>
           </defs>
-          <circle class="book-field-glow" cx="320" cy="320" r="210" fill="url(#bookFieldCore)"/>
-          <g class="book-field-rings">
-            <circle cx="320" cy="320" r="78" fill="none" stroke="rgba(114,231,239,0.22)" stroke-width="1"/>
-            <circle cx="320" cy="320" r="128" fill="none" stroke="rgba(114,231,239,0.14)" stroke-width="1"/>
-            <circle cx="320" cy="320" r="176" fill="none" stroke="rgba(217,189,120,0.1)" stroke-width="1"/>
-            <circle cx="320" cy="320" r="214" fill="none" stroke="rgba(114,231,239,0.1)" stroke-width="1"/>
-          </g>
-          <g class="book-field-grid" opacity="0.18">
-            ${Array.from({ length: 9 }, (_, i) => {
-              const p = 80 + i * 60;
-              return `<line x1="${p}" y1="70" x2="${p}" y2="570" stroke="rgba(114,231,239,0.35)" stroke-width="0.5"/>
-                <line x1="70" y1="${p}" x2="570" y2="${p}" stroke="rgba(114,231,239,0.28)" stroke-width="0.5"/>`;
-            }).join("")}
+          <path class="book-field-glow" d="M 210 414 C 330 516 552 522 688 356" fill="none"
+            stroke="rgba(114,231,239,0.16)" stroke-width="48" filter="url(#bookFieldBloom)"/>
+          <g class="book-field-boundaries">
+            <path d="M 248 530 C 360 560 570 510 650 382 C 706 290 680 160 568 100" />
+            <path class="is-inner" d="M 312 493 C 421 514 548 458 602 356 C 638 288 623 208 552 160" />
+            <path class="is-architecture" d="M 566 130 L 622 174 L 605 448 L 548 488" />
           </g>
           <g class="book-field-paths">
-            ${Array.from({ length: 18 }, (_, i) => {
-              const angle = (i / 18) * Math.PI * 2;
-              const released = i % 5 !== 2 && i % 7 !== 3;
-              const outer = released ? 210 : 150 + (i % 3) * 12;
-              const x2 = 320 + Math.cos(angle) * outer;
-              const y2 = 320 + Math.sin(angle) * outer;
-              const mid = 320 + Math.cos(angle) * (outer * 0.55);
-              const midY = 320 + Math.sin(angle) * (outer * 0.55);
-              return `<path class="book-field-path ${released ? "is-released" : "is-held"}" data-i="${i}"
-                d="M 320 320 Q ${mid.toFixed(1)} ${midY.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}"
-                fill="none" stroke="${released ? "rgba(114,231,239,0.42)" : "rgba(114,231,239,0.16)"}"
-                stroke-width="${released ? 1.15 : 0.8}" />`;
-            }).join("")}
+            <path class="book-field-path is-released" style="--i:0" pathLength="100" d="M 232 406 C 290 384 322 302 398 256 C 468 214 553 207 660 148" />
+            <path class="book-field-path is-released is-gold" style="--i:1" pathLength="100" d="M 232 406 C 320 438 375 430 451 386 C 513 350 592 348 692 382" />
+            <path class="book-field-path is-held is-violet" style="--i:2" pathLength="100" d="M 232 406 C 291 360 345 352 404 371 C 457 388 504 436 558 480" />
+            <path class="book-field-path is-held" style="--i:3" pathLength="100" d="M 232 406 C 275 425 316 491 383 522" />
+            <path class="book-field-path is-released" style="--i:4" pathLength="100" d="M 232 406 C 280 330 313 260 353 164 C 377 111 424 83 493 80" />
+            <path class="book-field-path is-released is-violet" style="--i:5" pathLength="100" d="M 232 406 C 312 398 370 322 438 314 C 497 307 553 330 616 299" />
+            <path class="book-field-path is-held is-gold" style="--i:6" pathLength="100" d="M 232 406 C 283 382 305 345 332 318" />
           </g>
           <g class="book-field-points">
-            ${Array.from({ length: 10 }, (_, i) => {
-              const angle = (i / 10) * Math.PI * 2 + 0.2;
-              const r = 96 + (i % 4) * 28;
-              const x = 320 + Math.cos(angle) * r;
-              const y = 320 + Math.sin(angle) * r;
-              return `<circle class="book-field-point" data-i="${i}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2"
-                fill="${i % 3 === 0 ? "#d9bd78" : "#72e7ef"}" opacity="0.85"/>`;
-            }).join("")}
+            <circle class="book-field-point" style="--i:0" cx="660" cy="148" r="2.4"/>
+            <circle class="book-field-point is-gold" style="--i:1" cx="692" cy="382" r="2.4"/>
+            <circle class="book-field-point is-held" style="--i:2" cx="558" cy="480" r="2"/>
+            <circle class="book-field-point is-held" style="--i:3" cx="383" cy="522" r="2"/>
+            <circle class="book-field-point" style="--i:4" cx="493" cy="80" r="2.4"/>
+            <circle class="book-field-point is-violet" style="--i:5" cx="616" cy="299" r="2.4"/>
+            <circle class="book-field-point is-held is-gold" style="--i:6" cx="332" cy="318" r="2"/>
           </g>
-          <circle class="book-field-core" cx="320" cy="320" r="7" fill="#b4f7fa" opacity="0.95"/>
-          <circle class="book-field-core-ring" cx="320" cy="320" r="16" fill="none" stroke="rgba(180,247,250,0.45)" stroke-width="1"/>
+          <g class="book-field-origin">
+            <path d="M 204 384 L 204 428 M 204 384 L 224 384 M 204 428 L 224 428
+              M 260 384 L 260 428 M 240 384 L 260 384 M 240 428 L 260 428"/>
+            <circle class="book-field-core-ring" cx="232" cy="406" r="15"/>
+            <circle class="book-field-core" cx="232" cy="406" r="4.8"/>
+          </g>
         </svg>
       </div>`;
   }
@@ -599,38 +595,36 @@
     history.replaceState(null, "", `#${next.id}`);
   }
 
-  function startCoverMotion() {
-    cancelAnimationFrame(coverRaf);
-    if (prefersReducedMotion()) return;
-    const field = document.querySelector(".book-field-svg");
-    if (!field) return;
-    const points = Array.from(field.querySelectorAll(".book-field-point"));
-    const paths = Array.from(field.querySelectorAll(".book-field-path"));
-    const rings = field.querySelector(".book-field-rings");
-    let t0 = performance.now();
-
-    const tick = (now) => {
-      if (document.hidden || !coverVisible) {
-        coverRaf = requestAnimationFrame(tick);
-        return;
-      }
-      const t = (now - t0) / 1000;
-      if (rings) rings.style.transform = `rotate(${t * 2.2}deg)`;
-      points.forEach((point, index) => {
-        const baseAngle = (index / points.length) * Math.PI * 2 + 0.2;
-        const radius = 96 + (index % 4) * 28 + Math.sin(t * 0.55 + index) * 6;
-        const angle = baseAngle + t * 0.12 * (index % 2 === 0 ? 1 : -1);
-        point.setAttribute("cx", (320 + Math.cos(angle) * radius).toFixed(1));
-        point.setAttribute("cy", (320 + Math.sin(angle) * radius).toFixed(1));
-        point.setAttribute("opacity", (0.45 + (Math.sin(t * 1.3 + index) + 1) * 0.25).toFixed(2));
-      });
-      paths.forEach((path, index) => {
-        const pulse = 0.55 + (Math.sin(t * 0.8 + index * 0.4) + 1) * 0.22;
-        path.style.opacity = path.classList.contains("is-released") ? String(0.55 + pulse * 0.35) : String(0.2 + pulse * 0.15);
-      });
-      coverRaf = requestAnimationFrame(tick);
+  function revealHashChapter(id, options = {}) {
+    const chapterId = CHAPTER_HASH_ALIASES[id] || id;
+    const target = document.getElementById(chapterId);
+    if (!target) return;
+    setActiveChapter(chapterId, { animate: options.animate === true });
+    const token = ++hashScrollToken;
+    const reveal = () => {
+      const currentHash = location.hash.replace(/^#/, "");
+      if (token !== hashScrollToken || (CHAPTER_HASH_ALIASES[currentHash] || currentHash) !== chapterId) return;
+      target.scrollIntoView({ behavior: "auto", block: "start" });
     };
-    coverRaf = requestAnimationFrame(tick);
+    reveal();
+    if (!options.settle) return;
+
+    const fontsReady = document.fonts?.ready || Promise.resolve();
+    Promise.resolve(fontsReady)
+      .catch(() => undefined)
+      .then(
+        () =>
+          new Promise((resolve) => {
+            requestAnimationFrame(() => requestAnimationFrame(resolve));
+          })
+      )
+      .then(reveal);
+  }
+
+  function startCoverMotion() {
+    const field = document.querySelector(".book-field");
+    if (!field) return;
+    field.classList.toggle("is-motion-paused", document.hidden || !coverVisible || prefersReducedMotion());
   }
 
   function observeCoverVisibility() {
@@ -639,6 +633,7 @@
     const observer = new IntersectionObserver(
       (entries) => {
         coverVisible = entries.some((entry) => entry.isIntersecting);
+        startCoverMotion();
       },
       { threshold: 0.12 }
     );
@@ -703,7 +698,8 @@
     });
 
     const hashId = location.hash.replace(/^#/, "");
-    if (hashId && document.getElementById(hashId)) setActiveChapter(hashId);
+    const resolvedHashId = CHAPTER_HASH_ALIASES[hashId] || hashId;
+    if (resolvedHashId && document.getElementById(resolvedHashId)) revealHashChapter(hashId, { settle: true });
     else if (data.chapters[0]) setActiveChapter(data.chapters[0].id);
 
     window.SemeAI_I18n?.apply?.(document);
@@ -750,13 +746,13 @@
   }
 
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && !prefersReducedMotion()) startCoverMotion();
+    startCoverMotion();
   });
 
   paintBook();
   window.addEventListener("semeai:lang", () => paintBook());
   window.addEventListener("hashchange", () => {
     const id = location.hash.replace(/^#/, "");
-    if (id) setActiveChapter(id, { animate: true });
+    if (id) revealHashChapter(id, { animate: true, settle: true });
   });
 })();
