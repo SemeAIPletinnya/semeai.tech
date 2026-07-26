@@ -16,14 +16,31 @@
   }
 
   function currentRoute() {
+    if (path === "/workspace/" || path.endsWith("/workspace/index.html")) return "workspace";
+    if (path === "/account/" || path.endsWith("/account/index.html") || path.endsWith("/account.html")) return "account";
     if (path === "/" || (path.endsWith("/index.html") && !path.includes("/book/") && !path.includes("/genesis/") && !path.includes("/benchmark/"))) return "home";
     if (path.includes("/benchmark/")) return "benchmark";
     if (path.includes("/genesis/")) return "genesis";
     if (path.includes("/book/")) return "book";
     if (path.endsWith("/gate.html")) return "gate";
     if (path.endsWith("/research.html")) return "research";
-    if (path.endsWith("/dashboard.html") || path.endsWith("/account.html")) return "dashboard";
+    if (path.endsWith("/dashboard.html")) return "dashboard";
     return "";
+  }
+
+  function privateEntryRoute() {
+    let token = "";
+    try {
+      token =
+        window.SemeAI?.getStoredToken?.() ||
+        sessionStorage.getItem("semeai_session_token") ||
+        sessionStorage.getItem("semeai_dashboard_api_key") ||
+        localStorage.getItem("semeai_session_token") ||
+        "";
+    } catch {}
+    return token.trim()
+      ? { key: "workspace", i18n: "shell.nav.workspace", label: "Workspace", href: "/workspace/" }
+      : { key: "account", i18n: "shell.nav.workspace", label: "Workspace", href: "/account/" };
   }
 
   function element(name, attributes = {}, textValue = "") {
@@ -103,10 +120,7 @@
     routes.forEach((route) => nav.append(routeLink(route, "nav-link")));
 
     const actions = element("div", { class: "header-actions" });
-    const dashboard = routeLink(
-      { key: "dashboard", i18n: "shell.nav.dashboard", label: "Open dashboard", href: "/dashboard.html" },
-      "btn-ghost header-dashboard"
-    );
+    const dashboard = routeLink(privateEntryRoute(), "btn-ghost header-dashboard");
     const burger = element("button", {
       type: "button",
       class: "nav-burger",
@@ -131,10 +145,7 @@
     mobileNav.append(mobileTitle);
     routes.forEach((route) => mobileNav.append(routeLink(route, "mobile-link")));
     mobileNav.append(
-      routeLink(
-        { key: "dashboard", i18n: "shell.nav.dashboard", label: "Open dashboard", href: "/dashboard.html" },
-        "mobile-link mobile-dashboard"
-      )
+      routeLink(privateEntryRoute(), "mobile-link mobile-dashboard")
     );
     mobileInner.append(mobileLanguage, mobileNav);
     mobile.append(mobileInner);
@@ -183,7 +194,7 @@
         { label: "Research", i18n: "shell.footer.research", href: "/research.html" },
       ]),
       footerColumn("shell.footer.use", "Use", [
-        { label: "Open dashboard", i18n: "shell.nav.dashboard", href: "/dashboard.html" },
+        privateEntryRoute(),
         { label: "Support", i18n: "shell.footer.support", href: "mailto:support@semeai.tech" },
       ])
     );
