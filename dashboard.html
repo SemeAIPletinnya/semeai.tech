@@ -822,7 +822,8 @@
           const canvas = document.getElementById("bg-canvas");
           if (!canvas) return;
           const ctx = canvas.getContext("2d");
-          let w = 0, h = 0, pts = [];
+          const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+          let w = 0, h = 0, pts = [], animationFrame = 0;
           const N = 32, LINK = 100;
           function resize() {
             w = canvas.width = innerWidth;
@@ -836,6 +837,7 @@
             }));
           }
           function frame() {
+            animationFrame = 0;
             ctx.clearRect(0, 0, w, h);
             for (const p of pts) {
               p.x += p.vx; p.y += p.vy;
@@ -846,11 +848,31 @@
               ctx.arc(p.x, p.y, 1.05, 0, Math.PI * 2);
               ctx.fill();
             }
-            requestAnimationFrame(frame);
+            if (!motionPreference.matches && !document.hidden) {
+              animationFrame = requestAnimationFrame(frame);
+            }
+          }
+          function restart() {
+            if (animationFrame) cancelAnimationFrame(animationFrame);
+            animationFrame = 0;
+            frame();
           }
           addEventListener("resize", resize);
+          if (typeof motionPreference.addEventListener === "function") {
+            motionPreference.addEventListener("change", restart);
+          } else {
+            motionPreference.addListener(restart);
+          }
+          document.addEventListener("visibilitychange", () => {
+            if (document.hidden) {
+              if (animationFrame) cancelAnimationFrame(animationFrame);
+              animationFrame = 0;
+            } else {
+              restart();
+            }
+          });
           resize();
-          requestAnimationFrame(frame);
+          restart();
         })();
 
         // Boot
