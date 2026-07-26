@@ -13,7 +13,7 @@
     <link rel="canonical" href="https://semeai.tech/dashboard.html" />
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/brand.css?v=20260723b" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260723b" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260726b" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -69,12 +69,24 @@
       .scenario b { display: block; color: #fff; font-size: 0.95rem; margin: 0.35rem 0 0.25rem; }
       .scenario small { color: var(--mute); font-size: 0.8rem; line-height: 1.4; }
       .result-card {
+        --decision-reach: 0.16;
+        position: relative; overflow: hidden;
         border-radius: 1rem; border: 1px solid var(--line);
         padding: 1.15rem 1.25rem; background: rgba(3,3,6,0.55);
       }
-      .result-card.SHOW { border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.08); }
-      .result-card.REVIEW { border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); }
-      .result-card.BLOCK { border-color: rgba(248,113,113,0.45); background: rgba(248,113,113,0.08); }
+      .result-card::after {
+        content: ""; position: absolute; inset: auto 0 0; height: 1px;
+        background: linear-gradient(90deg, rgba(217,189,120,0.75), rgba(114,231,239,0.25));
+        transform: scaleX(var(--decision-reach)); transform-origin: left;
+      }
+      .result-card.SHOW { --decision-reach: 1; border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.08); }
+      .result-card.REVIEW { --decision-reach: 0.63; border-color: rgba(251,191,36,0.4); background: rgba(251,191,36,0.08); }
+      .result-card.BLOCK { --decision-reach: 0.34; border-color: rgba(248,113,113,0.45); background: rgba(248,113,113,0.08); }
+      .result-card.is-transitioning::after { animation: dashboardTraceAdmit 0.56s cubic-bezier(.2,.7,.2,1); }
+      @keyframes dashboardTraceAdmit {
+        from { opacity: 0.25; transform: scaleX(0.12); }
+        to { opacity: 1; transform: scaleX(var(--decision-reach)); }
+      }
       .result-card .act {
         font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; color: #fff; margin: 0;
       }
@@ -84,6 +96,11 @@
         font-size: 0.85rem; color: var(--mute);
       }
       .receipt-row:last-child { border-bottom: 0; }
+      .receipt-row.is-admitted { animation: dashboardReceiptAdmit 0.34s ease-out both; }
+      @keyframes dashboardReceiptAdmit {
+        from { opacity: 0.55; transform: translateY(4px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
       .hidden { display: none !important; }
       .auth-card {
         border: 1px solid var(--line); border-radius: var(--semeai-radius-panel);
@@ -411,6 +428,8 @@
     <script src="assets/js/i18n-arch.js?v=20260724a"></script>
     <script src="assets/js/api.js?v=20260717e"></script>
     <script src="assets/js/site-shell.js?v=20260724a"></script>
+    <script src="assets/js/semeai-motion.js?v=20260726a"></script>
+    <script src="assets/js/dashboard-motion.js?v=20260726a"></script>
     <script>
       (() => {
         const scenarios = {
@@ -819,6 +838,7 @@
 
         // light bg
         (function () {
+          if (window.SemeAIDashboardMotion) return;
           const canvas = document.getElementById("bg-canvas");
           if (!canvas) return;
           const ctx = canvas.getContext("2d");
