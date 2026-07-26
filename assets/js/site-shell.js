@@ -253,89 +253,138 @@
 
   function startCanvas() {
     if (document.body.hasAttribute("data-semeai-custom-bg")) return;
-    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
     const canvas = document.getElementById("bg-canvas");
     if (!canvas || canvas.dataset.bound === "1") return;
     canvas.dataset.bound = "1";
-    const ctx = canvas.getContext("2d");
-    let w = 0,
-      h = 0,
-      particles = [],
-      raf = 0;
-    let mx = 0.5,
-      my = 0.3,
-      tmx = 0.5,
-      tmy = 0.3;
-    const COUNT = 42,
-      LINK = 110;
+    canvas.dataset.motionKind = currentRoute() === "research" ? "provenance" : "authority";
+    const ctx = canvas.getContext("2d", { alpha: true });
+    let w = 0;
+    let h = 0;
+    let dpr = 1;
 
     function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
-    function seed() {
-      particles = Array.from({ length: COUNT }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.18,
-        vy: (Math.random() - 0.5) * 0.18,
-        r: 0.5 + Math.random() * 1.2,
-      }));
+
+    function line(x1, y1, x2, y2, color, width = 1) {
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
     }
-    function frame() {
-      mx += (tmx - mx) * 0.035;
-      my += (tmy - my) * 0.035;
+
+    function curve(start, controlA, controlB, end, color, width = 1) {
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.moveTo(start[0], start[1]);
+      ctx.bezierCurveTo(controlA[0], controlA[1], controlB[0], controlB[1], end[0], end[1]);
+      ctx.stroke();
+    }
+
+    function anchor(x, y, color, radius = 2) {
+      ctx.beginPath();
+      ctx.fillStyle = color;
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawAuthority(time, isReduced) {
+      const phase = isReduced ? 0.72 : (time * 0.000055) % 1;
+      const drift = Math.sin(phase * Math.PI * 2) * Math.min(5, w * 0.004);
+      const boundaryX = w * 0.62;
+      const sourceX = Math.max(42, w * 0.08);
+      const receiptX = Math.min(w - 44, w * 0.9);
+      const centerY = h * 0.43;
+
+      const glow = ctx.createLinearGradient(boundaryX - 90, 0, boundaryX + 110, 0);
+      glow.addColorStop(0, "rgba(217,189,120,0)");
+      glow.addColorStop(0.5, "rgba(217,189,120,0.055)");
+      glow.addColorStop(1, "rgba(114,231,239,0)");
+      ctx.fillStyle = glow;
+      ctx.fillRect(boundaryX - 90, 0, 200, h);
+
+      line(boundaryX, h * 0.12, boundaryX, h * 0.86, "rgba(217,189,120,0.16)");
+      line(boundaryX + 8, h * 0.19, boundaryX + 8, h * 0.78, "rgba(217,189,120,0.055)");
+
+      const rows = [-0.22, 0, 0.22];
+      rows.forEach((row, index) => {
+        const startY = centerY + h * row;
+        const endY = centerY + h * row * 0.72;
+        const stopX = index === 0 ? boundaryX - 18 : index === 1 ? receiptX : boundaryX - 5;
+        const hue = index === 1 ? "114,231,239" : index === 2 ? "151,134,171" : "217,189,120";
+        ctx.setLineDash(index === 1 ? [14, 26] : [5, 18]);
+        ctx.lineDashOffset = isReduced ? -18 : -phase * (index === 1 ? 80 : 44);
+        curve(
+          [sourceX, startY],
+          [w * 0.28, startY + drift * (index - 1)],
+          [boundaryX - w * 0.08, endY - drift],
+          [stopX, endY],
+          `rgba(${hue},${index === 1 ? 0.22 : 0.13})`,
+          index === 1 ? 1.2 : 0.85
+        );
+        anchor(sourceX, startY, `rgba(${hue},0.28)`, 1.6);
+        anchor(stopX, endY, `rgba(${hue},${index === 1 ? 0.48 : 0.25})`, index === 1 ? 2.2 : 1.6);
+      });
+      ctx.setLineDash([]);
+
+      line(receiptX - 8, centerY - 8, receiptX + 8, centerY - 8, "rgba(217,189,120,0.24)");
+      line(receiptX + 8, centerY - 8, receiptX + 8, centerY + 8, "rgba(217,189,120,0.24)");
+      line(receiptX + 8, centerY + 8, receiptX - 8, centerY + 8, "rgba(217,189,120,0.24)");
+      line(receiptX - 8, centerY + 8, receiptX - 8, centerY - 8, "rgba(217,189,120,0.24)");
+    }
+
+    function drawProvenance(time, isReduced) {
+      const phase = isReduced ? 0.64 : (time * 0.00004) % 1;
+      const spineX = w * 0.72;
+      const sourceX = Math.max(38, w * 0.09);
+      const top = h * 0.18;
+      const spacing = h * 0.145;
+
+      line(spineX, h * 0.12, spineX, h * 0.86, "rgba(217,189,120,0.12)");
+      for (let index = 0; index < 5; index += 1) {
+        const y = top + spacing * index;
+        const admittedY = h * (0.24 + index * 0.12);
+        const offset = Math.sin(phase * Math.PI * 2 + index * 0.9) * 4;
+        ctx.setLineDash([4 + index, 18 + index * 2]);
+        ctx.lineDashOffset = isReduced ? -12 : -phase * (38 + index * 7);
+        curve(
+          [sourceX + index * w * 0.035, y],
+          [w * 0.34, y + offset],
+          [spineX - w * 0.1, admittedY - offset],
+          [spineX, admittedY],
+          index % 2 ? "rgba(114,231,239,0.12)" : "rgba(217,189,120,0.14)",
+          index === 2 ? 1.15 : 0.8
+        );
+        anchor(sourceX + index * w * 0.035, y, "rgba(244,239,230,0.2)", 1.5);
+        anchor(spineX, admittedY, index % 2 ? "rgba(114,231,239,0.4)" : "rgba(217,189,120,0.38)", 1.9);
+      }
+      ctx.setLineDash([]);
+      line(spineX, h * 0.82, Math.min(w - 36, spineX + w * 0.18), h * 0.82, "rgba(217,189,120,0.1)");
+    }
+
+    function draw(time, state = {}) {
       ctx.clearRect(0, 0, w, h);
-      for (const p of particles) {
-        p.x += p.vx + (mx - 0.5) * 0.02;
-        p.y += p.vy + (my - 0.5) * 0.02;
-        if (p.x < -20) p.x = w + 20;
-        if (p.x > w + 20) p.x = -20;
-        if (p.y < -20) p.y = h + 20;
-        if (p.y > h + 20) p.y = -20;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(134,237,245,0.18)";
-        ctx.fill();
-      }
-      for (let i = 0; i < particles.length; i += 1) {
-        for (let j = i + 1; j < particles.length; j += 1) {
-          const a = particles[i],
-            b = particles[j];
-          const dx = a.x - b.x,
-            dy = a.y - b.y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < LINK) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(134,237,245,${(1 - d / LINK) * 0.055})`;
-            ctx.lineWidth = 0.6;
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.stroke();
-          }
-        }
-      }
-      raf = requestAnimationFrame(frame);
+      if (canvas.dataset.motionKind === "provenance") drawProvenance(time, state.reduced);
+      else drawAuthority(time, state.reduced);
     }
+
     window.addEventListener("resize", () => {
       resize();
-      seed();
-    });
-    window.addEventListener(
-      "pointermove",
-      (event) => {
-        tmx = event.clientX / Math.max(w, 1);
-        tmy = event.clientY / Math.max(h, 1);
-      },
-      { passive: true }
-    );
+      loop?.request();
+    }, { passive: true });
     resize();
-    seed();
-    raf = requestAnimationFrame(frame);
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) cancelAnimationFrame(raf);
-      else raf = requestAnimationFrame(frame);
-    });
+    let loop = window.SemeAIMotion?.frameLoop(canvas, draw, { fps: 20, threshold: 0 }) || null;
+    if (!loop) draw(0, { reduced: true });
   }
 
   function mountShell() {
