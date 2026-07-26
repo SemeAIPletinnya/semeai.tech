@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n-page="account.title.page">SemeAI Account</title>
+    <meta
+      name="description"
+      data-i18n-page="account.meta"
+      content="Identity and access for one governed SemeAI workspace."
+    />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' https://api.semeai.tech; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'"
+    />
+    <link rel="canonical" href="https://semeai.tech/account/" />
+    <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/css/brand.css?v=20260726b" />
+    <link rel="stylesheet" href="/assets/css/site.css?v=20260726b" />
+    <link rel="stylesheet" href="/assets/css/workspace.css?v=20260726b" />
+  </head>
+  <body class="mode-evidence product-private account-route" data-product-route="account" data-semeai-custom-bg>
+    <a class="skip-link" href="#account-main" data-i18n="account.skip">Skip to account access</a>
+
+    <div class="content">
+      <div data-semeai-nav></div>
+
+      <main class="account-main" id="account-main">
+        <header class="account-hero">
+          <p class="product-kicker" data-i18n="account.kicker">ACCOUNT / IDENTITY + ACCESS</p>
+          <h1 data-i18n="account.title">Enter your governed workspace.</h1>
+          <p class="account-lead" data-i18n="account.lead">
+            Account establishes identity and access. Workspace preserves governed context. Gate remains the release authority.
+          </p>
+          <div class="boundary-sequence" aria-label="Product boundary" data-i18n-aria="account.boundary.aria">
+            <span data-i18n="account.boundary.context">context</span>
+            <i aria-hidden="true">→</i>
+            <span data-i18n="account.boundary.candidate">candidate</span>
+            <i aria-hidden="true">→</i>
+            <span class="authority" data-i18n="account.boundary.gate">Gate</span>
+            <i aria-hidden="true">→</i>
+            <span data-i18n="account.boundary.decision">decision</span>
+            <i aria-hidden="true">→</i>
+            <span data-i18n="account.boundary.receipt">receipt</span>
+          </div>
+        </header>
+
+        <div class="account-layout">
+          <section class="account-access-panel" aria-labelledby="account-access-title">
+            <div id="account-loading" class="product-status" role="status" aria-live="polite">
+              <span class="status-trace" aria-hidden="true"></span>
+              <span data-i18n="account.loading">Checking the current session…</span>
+            </div>
+
+            <div id="account-signed-out" hidden>
+              <div class="section-heading">
+                <p class="section-index" data-i18n="account.access.index">01 / ACCESS</p>
+                <h2 id="account-access-title" data-i18n="account.access.title">Identify the workspace owner.</h2>
+              </div>
+
+              <div class="auth-mode-tabs" role="tablist" aria-label="Account access mode" data-i18n-aria="account.tabs.aria">
+                <button type="button" role="tab" aria-selected="true" aria-controls="account-login-panel" id="account-login-tab" data-auth-mode="login" data-i18n="account.tab.login">Sign in</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="account-register-panel" id="account-register-tab" data-auth-mode="register" data-i18n="account.tab.register">Create workspace</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="account-verify-panel" id="account-verify-tab" data-auth-mode="verify" data-i18n="account.tab.verify">Verify</button>
+              </div>
+
+              <div class="auth-panel" id="account-login-panel" role="tabpanel" aria-labelledby="account-login-tab">
+                <form id="account-login-form" class="product-form">
+                  <label for="account-login-email" data-i18n="account.field.email">Email</label>
+                  <input id="account-login-email" name="email" type="email" autocomplete="email" required />
+                  <label for="account-login-password" data-i18n="account.field.password">Password</label>
+                  <input id="account-login-password" name="password" type="password" autocomplete="current-password" minlength="8" required />
+                  <label class="check-field" for="account-login-remember">
+                    <input id="account-login-remember" name="remember" type="checkbox" />
+                    <span data-i18n="account.login.remember">Keep this session on this device</span>
+                  </label>
+                  <button class="product-action product-action--primary" type="submit" data-i18n="account.login.submit">Sign in</button>
+                </form>
+              </div>
+
+              <div class="auth-panel" id="account-register-panel" role="tabpanel" aria-labelledby="account-register-tab" hidden>
+                <p class="panel-note" data-i18n="account.register.note">
+                  v0.1 creates one real governed workspace for this account. Secondary workspace controls are not exposed by the current API.
+                </p>
+                <form id="account-register-form" class="product-form">
+                  <label for="account-register-workspace" data-i18n="account.field.workspace">Workspace name</label>
+                  <input id="account-register-workspace" name="workspace" autocomplete="organization" required />
+                  <label for="account-register-email" data-i18n="account.field.workEmail">Work email</label>
+                  <input id="account-register-email" name="email" type="email" autocomplete="email" required />
+                  <label for="account-register-password" data-i18n="account.field.newPassword">Password</label>
+                  <input id="account-register-password" name="password" type="password" autocomplete="new-password" minlength="8" required />
+                  <label for="account-register-confirm" data-i18n="account.field.confirm">Confirm password</label>
+                  <input id="account-register-confirm" name="password_confirm" type="password" autocomplete="new-password" minlength="8" required />
+                  <button class="product-action product-action--primary" type="submit" data-i18n="account.register.submit">Create account + workspace</button>
+                </form>
+              </div>
+
+              <div class="auth-panel" id="account-verify-panel" role="tabpanel" aria-labelledby="account-verify-tab" hidden>
+                <p class="panel-note" data-i18n="account.verify.note">Use the one-time verification token sent by the existing account service.</p>
+                <form id="account-verify-form" class="product-form">
+                  <label for="account-verification-token" data-i18n="account.field.verifyToken">Verification token</label>
+                  <input id="account-verification-token" name="verification_token" type="text" autocomplete="one-time-code" required />
+                  <button class="product-action product-action--primary" type="submit" data-i18n="account.verify.submit">Verify workspace</button>
+                </form>
+              </div>
+
+              <div id="account-form-status" class="form-status" role="status" aria-live="polite" hidden></div>
+              <div id="account-form-alert" class="form-alert" role="alert" hidden></div>
+
+              <section id="account-key-once" class="one-time-key" aria-labelledby="account-key-title" hidden>
+                <p class="section-index" data-i18n="account.key.index">ONE-TIME SERVER CREDENTIAL</p>
+                <h3 id="account-key-title" data-i18n="account.key.title">Copy the integration API key now.</h3>
+                <p data-i18n="account.key.note">It is shown only from this verification response and is not persisted by this page.</p>
+                <code id="account-key-value"></code>
+                <button id="account-key-copy" class="product-action product-action--secondary" type="button" data-i18n="account.key.copy">Copy key</button>
+                <div id="account-key-status" class="form-status" role="status" aria-live="polite" hidden></div>
+              </section>
+            </div>
+
+            <div id="account-signed-in" hidden>
+              <div class="section-heading">
+                <p class="section-index" data-i18n="account.identity.index">01 / CURRENT IDENTITY</p>
+                <h2 id="account-workspace-name">—</h2>
+                <p data-i18n="account.identity.lead">One account. One governed workspace in v0.1.</p>
+              </div>
+
+              <dl class="account-facts">
+                <div>
+                  <dt data-i18n="account.fact.email">Account email</dt>
+                  <dd id="account-email">—</dd>
+                </div>
+                <div>
+                  <dt data-i18n="account.fact.workspaceId">Workspace ID</dt>
+                  <dd id="account-workspace-id" class="mono-value">—</dd>
+                </div>
+                <div>
+                  <dt data-i18n="account.fact.plan">Plan</dt>
+                  <dd id="account-plan">—</dd>
+                </div>
+                <div>
+                  <dt data-i18n="account.fact.usage">Checks today / remaining</dt>
+                  <dd id="account-usage">—</dd>
+                </div>
+                <div>
+                  <dt data-i18n="account.fact.billing">Billing state</dt>
+                  <dd id="account-billing">—</dd>
+                </div>
+                <div>
+                  <dt data-i18n="account.fact.receipts">Retained receipts returned</dt>
+                  <dd id="account-receipt-count">0</dd>
+                </div>
+              </dl>
+
+              <div class="account-actions">
+                <a class="product-action product-action--primary" href="/workspace/" data-i18n="account.action.workspace">Open workspace</a>
+                <a class="product-action product-action--secondary" href="/dashboard.html" data-i18n="account.action.dashboard">Open operator dashboard</a>
+                <button class="product-action product-action--quiet" id="account-sign-out" type="button" data-i18n="account.action.signout">Sign out</button>
+              </div>
+              <div id="account-session-status" class="form-status" role="status" aria-live="polite" hidden></div>
+            </div>
+          </section>
+
+          <aside class="account-boundary-panel" aria-labelledby="account-boundary-title">
+            <p class="section-index" data-i18n="account.boundary.index">PRODUCT BOUNDARY</p>
+            <h2 id="account-boundary-title" data-i18n="account.boundary.title">Access is not release authority.</h2>
+            <p data-i18n="account.boundary.body">
+              The account identifies who may enter. The workspace keeps governed context. The operator dashboard executes Gate operations. Only the Gate decides release.
+            </p>
+            <dl class="boundary-definitions">
+              <div>
+                <dt data-i18n="account.boundary.account">Account</dt>
+                <dd data-i18n="account.boundary.accountBody">Identity, verification, and session access.</dd>
+              </div>
+              <div>
+                <dt data-i18n="account.boundary.workspace">Workspace</dt>
+                <dd data-i18n="account.boundary.workspaceBody">A governed context container backed by the current account API.</dd>
+              </div>
+              <div>
+                <dt data-i18n="account.boundary.dashboard">Operator dashboard</dt>
+                <dd data-i18n="account.boundary.dashboardBody">The existing Gate console for checks, receipts, billing, keys, and team operations.</dd>
+              </div>
+            </dl>
+            <p class="authority-note" data-i18n="account.principle">Generation is not release authority. Workspace access is not release authority.</p>
+          </aside>
+        </div>
+
+        <noscript>
+          <div class="noscript-product">
+            <h2 data-i18n="account.noscript.title">JavaScript is required for private account access.</h2>
+            <p data-i18n="account.noscript.body">The product boundary remains: Account → Workspace → Operator Dashboard. No account data has been loaded.</p>
+          </div>
+        </noscript>
+      </main>
+
+      <div data-semeai-footer></div>
+    </div>
+
+    <script src="/assets/js/i18n.js?v=20260726b"></script>
+    <script src="/assets/js/i18n-arch.js?v=20260726b"></script>
+    <script src="/assets/js/api.js?v=20260726b"></script>
+    <script src="/assets/js/site-shell.js?v=20260726b"></script>
+    <script src="/assets/js/workspace-foundation.js?v=20260726b"></script>
+  </body>
+</html>

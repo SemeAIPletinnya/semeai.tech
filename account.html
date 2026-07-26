@@ -1,16 +1,22 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SemeAI Account → Dashboard</title>
-    <meta http-equiv="refresh" content="0; url=dashboard.html?v=20260717c" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SemeAI Account</title>
+    <meta name="robots" content="noindex,nofollow,noarchive" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <link rel="canonical" href="https://semeai.tech/dashboard.html" />
+    <meta http-equiv="refresh" content="0; url=/account/" />
+    <link rel="canonical" href="https://semeai.tech/account/" />
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
-    <script>location.replace("dashboard.html?v=20260717c" + (location.hash || ""));</script>
+    <script>
+      (() => {
+        const target = "/account/" + (location.search || "") + (location.hash || "");
+        location.replace(target);
+      })();
+    </script>
   </head>
-  <body style="margin:0;background:#030306;color:#a1a1aa;font-family:Inter,system-ui,sans-serif;padding:2rem">
-    <p>Account console moved to the product <a href="dashboard.html?v=20260717c" style="color:#22d3ee">Dashboard</a>.</p>
+  <body style="margin:0;background:#030506;color:#a5afb6;font-family:Inter,system-ui,sans-serif;padding:2rem">
+    <p>Account access moved to <a href="/account/" style="color:#d9bd78">SemeAI Account</a>.</p>
   </body>
 </html>
