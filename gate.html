@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/brand.css?v=20260723b" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260724a" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260726b" />
   </head>
   <body class="mode-gate">
     <a class="skip-link" href="#gate-main" data-i18n="gate.skip">Skip to Gate explanation</a>
@@ -59,10 +59,25 @@
             </article>
             <article class="panel">
               <span class="eyebrow" data-i18n="gate.sem.business">Business-facing presentation</span>
-              <p data-i18n="gate.sem.show">SHOW maps to PROCEED.</p>
-              <p data-i18n="gate.sem.reviewMap">REVIEW maps to NEEDS_REVIEW.</p>
-              <p data-i18n="gate.sem.blockMap">BLOCK maps to SILENCE.</p>
+              <p tabindex="0" data-gate-state="show" data-i18n="gate.sem.show">SHOW maps to PROCEED.</p>
+              <p tabindex="0" data-gate-state="review" data-i18n="gate.sem.reviewMap">REVIEW maps to NEEDS_REVIEW.</p>
+              <p tabindex="0" data-gate-state="block" data-i18n="gate.sem.blockMap">BLOCK maps to SILENCE.</p>
             </article>
+          </div>
+          <div class="gate-state-visual" data-motion-phase="review" aria-hidden="true">
+            <svg viewBox="0 0 960 210" preserveAspectRatio="none">
+              <path class="gate-field-line" d="M20 36H940M20 105H940M20 174H940" />
+              <path class="gate-boundary-line" d="M548 16V194" />
+              <path class="gate-evidence-line gate-evidence-line--one" d="M42 72C168 72 190 102 310 102" />
+              <path class="gate-evidence-line gate-evidence-line--two" d="M42 136C164 136 194 108 310 108" />
+              <path class="gate-candidate-line" d="M310 105C404 105 442 105 538 105" />
+              <path class="gate-release-line" d="M558 105C674 105 758 105 892 105" />
+              <path class="gate-review-line" d="M492 105C492 58 524 48 548 48C572 48 598 64 598 105C598 144 574 162 548 162" />
+              <path class="gate-block-line" d="M418 105H522" />
+              <circle class="gate-node gate-node--candidate" cx="310" cy="105" r="5" />
+              <circle class="gate-node gate-node--decision" cx="548" cy="105" r="6" />
+              <circle class="gate-node gate-node--receipt" cx="892" cy="105" r="7" />
+            </svg>
           </div>
           <p class="boundary-note" data-i18n="gate.sem.note"><strong style="color:#fff">SILENCE is controlled non-release, not deletion.</strong> The candidate, decision, and audit trail remain distinct. Payment, metadata, and generation are not Gate authority.</p>
         </section>
@@ -88,5 +103,6 @@
     <script src="assets/js/i18n-arch.js?v=20260724a"></script>
     <script src="assets/js/semeai-motion.js?v=20260726a"></script>
     <script src="assets/js/site-shell.js?v=20260726a"></script>
+    <script src="assets/js/surface-motion.js?v=20260726a"></script>
   </body>
 </html>
