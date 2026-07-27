@@ -14,6 +14,7 @@ const requireFromTest = createRequire(import.meta.url);
 const ROUTES = [
   "/",
   "/genesis/",
+  "/genesis/archive/v02/",
   "/gate.html",
   "/benchmark/",
   "/book/",
@@ -495,6 +496,7 @@ async function validateNoJavaScript(browser, origin) {
       textLength: (document.querySelector("main") || document.body).innerText.trim().length,
       noscriptLength: document.querySelector("noscript")?.textContent.trim().length || 0,
       scenes: document.querySelectorAll("[data-scene]").length,
+      eras: document.querySelectorAll("[data-era]").length,
     }));
 
     assert.equal(state.overflow, 0, `${route} no-JS baseline should not overflow`);
@@ -510,7 +512,10 @@ async function validateNoJavaScript(browser, origin) {
       assert.ok(state.noscriptLength >= 40, `${route} should explain its private-product no-JS boundary`);
     }
     if (route === "/genesis/") {
-      assert.equal(state.scenes, 9, "Genesis should keep all nine scenes without JavaScript");
+      assert.equal(state.eras, 12, "Genesis v03 should keep all twelve eras without JavaScript");
+    }
+    if (route === "/genesis/archive/v02/") {
+      assert.equal(state.scenes, 9, "Genesis v02 archive should keep all nine scenes without JavaScript");
     }
 
     results.push(route);
@@ -1033,6 +1038,87 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
   return "Gate focus, Research admission, Dashboard calm state, Home offscreen pause verified";
 }
 
+async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    locale: "en-US",
+  });
+  const page = await context.newPage();
+  const errors = [];
+  const requests = [];
+  page.on("request", (request) => requests.push(request.url()));
+  await wirePage(page, tailwindRuntime, errors);
+
+  await loadRoute(page, origin, "/genesis/");
+  await page.waitForFunction(
+    () => document.querySelector("[data-genesis-status]")?.dataset.state === "ready",
+  );
+
+  const state = await page.evaluate(() => ({
+    eras: document.querySelectorAll("[data-era]").length,
+    admittedMilestones: document.querySelectorAll(".milestone .evidence-state").length,
+    eraControls: document.querySelectorAll("[data-era-control]").length,
+    lineageEdges: document.querySelectorAll(".lineage-edge").length,
+    lineageNodes: document.querySelectorAll(".lineage-node").length,
+    firstParty: document.querySelector('[data-repository-count="first_party"]')?.textContent,
+    forks: document.querySelector('[data-repository-count="forks"]')?.textContent,
+    status: document.querySelector("[data-genesis-status]")?.textContent,
+    unsafeMarker: window.__unsafe,
+  }));
+  assert.equal(state.eras, 12, "Genesis v03 should render the twelve curated eras");
+  assert.equal(state.eraControls, 12, "each era should have a keyboard control");
+  assert.equal(state.admittedMilestones, 10, "only the ten admitted milestones should render");
+  assert.equal(state.lineageEdges, 13, "the curated lineage should render all thirteen relations");
+  assert.equal(state.lineageNodes, 14, "forks should remain outside the first-party lineage geometry");
+  assert.equal(state.firstParty, "6");
+  assert.equal(state.forks, "6");
+  assert.match(state.status, /STRUCTURED PROVENANCE LOADED/);
+  assert.equal(state.unsafeMarker, undefined, "manifest data must not execute as markup");
+
+  const controls = page.locator("[data-era-control]");
+  await controls.first().focus();
+  await page.keyboard.press("ArrowDown");
+  assert.equal(
+    await page.evaluate(() => document.activeElement?.getAttribute("data-era-control")),
+    "01-signal",
+    "era navigation should support arrow keys",
+  );
+
+  const unexpectedExternal = requests.filter((url) => {
+    const parsed = new URL(url);
+    return parsed.origin !== origin
+      && parsed.origin !== "https://cdn.tailwindcss.com"
+      && parsed.origin !== "https://fonts.googleapis.com"
+      && parsed.origin !== "https://fonts.gstatic.com";
+  });
+  assert.deepEqual(unexpectedExternal, [], "Genesis v03 should not add external requests");
+  assert.deepEqual(errors, [], "Genesis v03 should remain console and request error-free");
+
+  await loadRoute(page, origin, "/genesis/archive/v02/");
+  assert.equal(
+    await page.locator("[data-scene]").count(),
+    9,
+    "the archived cinematic v02 should preserve all nine scenes",
+  );
+  assert.deepEqual(errors, [], "the Genesis v02 archive should remain error-free");
+
+  const genesisScript = fs.readFileSync(path.join(ROOT, "genesis", "assets", "genesis.js"), "utf8");
+  assert.equal(
+    genesisScript.includes("innerHTML"),
+    false,
+    "Genesis manifest rendering should not use innerHTML",
+  );
+
+  await context.close();
+  return {
+    eras: state.eras,
+    admittedMilestones: state.admittedMilestones,
+    lineageEdges: state.lineageEdges,
+    lineageNodes: state.lineageNodes,
+    archivedScenes: 9,
+  };
+}
+
 async function main() {
   const playwright = loadPlaywright();
   const { server, origin } = await startServer();
@@ -1049,6 +1135,7 @@ async function main() {
     const productRoadmap = await validateProductRoadmap(browser, origin, tailwindRuntime);
     await validateBenchmarkBoundary(browser, origin, tailwindRuntime);
     const motionSemantics = await validateMotionSemantics(browser, origin, tailwindRuntime);
+    const genesisEvolutionTrace = await validateGenesisEvolutionTrace(browser, origin, tailwindRuntime);
 
     console.log(
       JSON.stringify(
@@ -1063,6 +1150,7 @@ async function main() {
           accountWorkspaceFoundation,
           productRoadmap,
           motionSemantics,
+          genesisEvolutionTrace,
           benchmarkBoundary: "CSP, noindex, auth withholding verified",
         },
         null,
