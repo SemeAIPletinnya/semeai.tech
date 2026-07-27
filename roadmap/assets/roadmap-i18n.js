@@ -189,6 +189,34 @@
     },
   };
 
+  const completedPhaseUpdate = {
+    en: {
+      "roadmap.release.available.body": "Account and Workspace remain available. The historical evidence archive, Genesis v03, and the bounded Benchmark evidence roadmap now have repository-backed implementation evidence.",
+      "roadmap.release.notyet.body": "Live repository evidence persistence in Workspace, Codex improvement loops, Skill Forge, registry, and marketplace behavior still require later exit gates.",
+      "roadmap.phase.2.body": "Structured manifests retain admitted public artifacts, repository facts, curated lineage, provenance, and explicit archive boundaries.",
+      "roadmap.phase.3.body": "Twelve evidence-backed eras are generated from the structured archive; cinematic v02 remains available as an archive.",
+      "roadmap.phase.4.body": "Missing fixed criteria now produce a deterministic bounded roadmap while scoring, Gate, and receipt authority remain frozen.",
+      "roadmap.phase.5.body": "Next gate: deploy and verify authenticated immutable evidence persistence with real GitHub App authority.",
+    },
+    uk: {
+      "roadmap.release.available.body": "Account і Workspace залишаються доступними. Історичний доказовий архів, Genesis v03 та обмежена доказова дорожня карта Benchmark тепер мають репозиторні докази реалізації.",
+      "roadmap.release.notyet.body": "Живе збереження доказів репозиторію у Workspace, цикли Codex, Skill Forge, реєстр і marketplace усе ще потребують наступних exit gate.",
+      "roadmap.phase.2.body": "Структуровані маніфести зберігають допущені публічні артефакти, факти репозиторіїв, кураторований lineage, походження й явні межі архіву.",
+      "roadmap.phase.3.body": "Дванадцять доказово підкріплених епох генеруються зі структурованого архіву; кінематографічний v02 збережений як архів.",
+      "roadmap.phase.4.body": "Відсутні фіксовані критерії тепер утворюють детерміновану обмежену дорожню карту, а scoring, Gate і receipt authority залишаються замороженими.",
+      "roadmap.phase.5.body": "Наступний gate: розгорнути й перевірити автентифіковане незмінне збереження доказів із реальною владою GitHub App.",
+    },
+    ru: {
+      "roadmap.release.available.body": "Account и Workspace остаются доступными. Исторический архив доказательств, Genesis v03 и ограниченная доказательная дорожная карта Benchmark теперь имеют репозиторные доказательства реализации.",
+      "roadmap.release.notyet.body": "Живое сохранение доказательств репозитория в Workspace, циклы Codex, Skill Forge, реестр и marketplace всё ещё требуют последующих exit gate.",
+      "roadmap.phase.2.body": "Структурированные манифесты сохраняют допущенные публичные артефакты, факты репозиториев, курируемый lineage, происхождение и явные границы архива.",
+      "roadmap.phase.3.body": "Двенадцать подкреплённых доказательствами эпох генерируются из структурированного архива; кинематографический v02 сохранён как архив.",
+      "roadmap.phase.4.body": "Отсутствующие фиксированные критерии теперь формируют детерминированную ограниченную дорожную карту, а scoring, Gate и receipt authority остаются замороженными.",
+      "roadmap.phase.5.body": "Следующий gate: развернуть и проверить аутентифицированное неизменяемое хранение доказательств с реальными полномочиями GitHub App.",
+    },
+  };
+  ["en", "uk", "ru"].forEach((lang) => Object.assign(roadmap[lang], completedPhaseUpdate[lang]));
+
   function merge() {
     const api = window.SemeAI_I18n;
     if (!api || !api.dict) return false;

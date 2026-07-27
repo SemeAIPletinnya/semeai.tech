@@ -901,9 +901,9 @@ async function validateProductRoadmap(browser, origin, tailwindRuntime) {
   assert.equal(state.pdfHref, "/roadmap/SemeAI_Product_Roadmap_v1.0.pdf");
   assert.equal(state.hash, "ad32c712afd07e9b13f3050737a97e28384620d120cccad07ea303cc9b1dafcb");
   assert.equal(state.phases, 12, "Roadmap should expose all twelve dependency phases");
-  assert.equal(state.complete, 2, "Only repository-backed phases should be marked implemented");
+  assert.equal(state.complete, 5, "Only repository-backed phases should be marked implemented");
   assert.equal(state.next, 1, "Exactly one next dependency gate should be identified");
-  assert.equal(state.held, 9, "Later phases should remain explicitly dependency-held");
+  assert.equal(state.held, 6, "Later phases should remain explicitly dependency-held");
   assert.equal(state.fakeItems, 0, "Roadmap must not simulate future product data");
   assert.equal(state.overflow, 0);
   assert.equal(state.footerLink, "Product Roadmap");
@@ -934,8 +934,8 @@ async function validateProductRoadmap(browser, origin, tailwindRuntime) {
   await context.close();
   return [
     "12-phase dependency ledger",
-    "only phases 0–1 marked implemented",
-    "phase 2 next + phases 3–11 held",
+    "phases 0–4 marked implemented",
+    "phase 5 next + phases 6–11 held",
     "hosted PDF hash",
     "EN / UK / RU",
   ];
