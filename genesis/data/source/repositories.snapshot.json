@@ -1,0 +1,561 @@
+{
+  "schema": "semeai.genesis.repository-snapshot.v1",
+  "account": "SemeAIPletinnya",
+  "captured_at": "2026-07-27T12:50:00.000Z",
+  "source": "GitHub REST API via authenticated gh CLI",
+  "repositories": [
+    {
+      "id": "SemeAi_ProofOfResonance",
+      "github_id": 1078118485,
+      "full_name": "SemeAIPletinnya/SemeAi_ProofOfResonance",
+      "html_url": "https://github.com/SemeAIPletinnya/SemeAi_ProofOfResonance",
+      "created_at": "2025-10-17T08:32:39Z",
+      "updated_at": "2026-04-18T04:53:59Z",
+      "pushed_at": "2026-03-14T13:02:21Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Official release of the SemeAi + Pletinnya system — Proof-of-Resonance (PoR) v3.1. Created by Anton Semenenko.",
+      "language": "Python",
+      "license": "NOASSERTION",
+      "commit_count": 62,
+      "first_commit": {
+        "sha": "2ef959cb7bcd34fb3a54f8369bdddc08c419ef93",
+        "committed_at": "2025-10-17T10:04:14Z",
+        "url": "https://github.com/SemeAIPletinnya/SemeAi_ProofOfResonance/commit/2ef959cb7bcd34fb3a54f8369bdddc08c419ef93"
+      },
+      "current_head": {
+        "sha": "fc6f702cf7c9789c8238716156cb20832957b4f8",
+        "committed_at": "2026-03-14T13:02:21Z",
+        "url": "https://github.com/SemeAIPletinnya/SemeAi_ProofOfResonance/commit/fc6f702cf7c9789c8238716156cb20832957b4f8"
+      }
+    },
+    {
+      "id": "semeai-resonance-core",
+      "github_id": 1079225152,
+      "full_name": "SemeAIPletinnya/semeai-resonance-core",
+      "html_url": "https://github.com/SemeAIPletinnya/semeai-resonance-core",
+      "created_at": "2025-10-19T11:32:24Z",
+      "updated_at": "2025-10-19T13:02:30Z",
+      "pushed_at": "2025-10-19T13:02:26Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "",
+      "language": null,
+      "license": null,
+      "commit_count": 2,
+      "first_commit": {
+        "sha": "6244903e7ba8252a5276a343bb375ecf06183961",
+        "committed_at": "2025-10-19T12:55:31Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai-resonance-core/commit/6244903e7ba8252a5276a343bb375ecf06183961"
+      },
+      "current_head": {
+        "sha": "89e7776a7a31f0b7075e762b5cbb04bdecb5f735",
+        "committed_at": "2025-10-19T13:02:27Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai-resonance-core/commit/89e7776a7a31f0b7075e762b5cbb04bdecb5f735"
+      }
+    },
+    {
+      "id": "proof-of-resonance-online",
+      "github_id": 1111644679,
+      "full_name": "SemeAIPletinnya/proof-of-resonance-online",
+      "html_url": "https://github.com/SemeAIPletinnya/proof-of-resonance-online",
+      "created_at": "2025-12-07T11:16:12Z",
+      "updated_at": "2026-01-08T09:05:45Z",
+      "pushed_at": "2026-01-08T09:05:40Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Online prototype of Proof-of-Resonance (PoR) - long-chain stability through resonance.",
+      "language": "Python",
+      "license": "MIT",
+      "commit_count": 115,
+      "first_commit": {
+        "sha": "02b85bb4683160d241d55815ac9eaccbcdf93dc0",
+        "committed_at": "2025-12-07T11:28:52Z",
+        "url": "https://github.com/SemeAIPletinnya/proof-of-resonance-online/commit/02b85bb4683160d241d55815ac9eaccbcdf93dc0"
+      },
+      "current_head": {
+        "sha": "1b3bdd9fb72c208a2e252825b6680b7e5886cca1",
+        "committed_at": "2026-01-08T09:05:40Z",
+        "url": "https://github.com/SemeAIPletinnya/proof-of-resonance-online/commit/1b3bdd9fb72c208a2e252825b6680b7e5886cca1"
+      }
+    },
+    {
+      "id": "attest-build-provenance",
+      "github_id": 1112361532,
+      "full_name": "SemeAIPletinnya/attest-build-provenance",
+      "html_url": "https://github.com/SemeAIPletinnya/attest-build-provenance",
+      "created_at": "2025-12-08T14:16:46Z",
+      "updated_at": "2025-12-08T14:16:46Z",
+      "pushed_at": "2025-12-10T19:52:32Z",
+      "default_branch": "main",
+      "fork": true,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Action for generating build provenance attestations for workflow artifacts",
+      "language": null,
+      "license": "MIT",
+      "commit_count": 205,
+      "first_commit": {
+        "sha": "1a4323c55b0d0512c72d352f4bd260ab410f168a",
+        "committed_at": "2024-02-20T19:26:39Z",
+        "url": "https://github.com/SemeAIPletinnya/attest-build-provenance/commit/1a4323c55b0d0512c72d352f4bd260ab410f168a"
+      },
+      "current_head": {
+        "sha": "ca0aaa1889e301c8331fbdb338d9475431b75b13",
+        "committed_at": "2025-12-01T18:42:59Z",
+        "url": "https://github.com/SemeAIPletinnya/attest-build-provenance/commit/ca0aaa1889e301c8331fbdb338d9475431b75b13"
+      }
+    },
+    {
+      "id": "set-commit-status-action",
+      "github_id": 1113775541,
+      "full_name": "SemeAIPletinnya/set-commit-status-action",
+      "html_url": "https://github.com/SemeAIPletinnya/set-commit-status-action",
+      "created_at": "2025-12-10T12:56:39Z",
+      "updated_at": "2025-12-10T12:56:39Z",
+      "pushed_at": "2025-12-10T05:54:26Z",
+      "default_branch": "master",
+      "fork": true,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "GitHub Action to set commit status",
+      "language": null,
+      "license": "MIT",
+      "commit_count": 999,
+      "first_commit": {
+        "sha": "f99b877cc76d60fc65dc835de0524fae270c8900",
+        "committed_at": "2021-04-11T02:52:29Z",
+        "url": "https://github.com/SemeAIPletinnya/set-commit-status-action/commit/f99b877cc76d60fc65dc835de0524fae270c8900"
+      },
+      "current_head": {
+        "sha": "5d69de619c047ea5ccb07e6c4ac5947dcf33c308",
+        "committed_at": "2025-12-10T05:54:25Z",
+        "url": "https://github.com/SemeAIPletinnya/set-commit-status-action/commit/5d69de619c047ea5ccb07e6c4ac5947dcf33c308"
+      }
+    },
+    {
+      "id": "hn-time-capsule",
+      "github_id": 1114031621,
+      "full_name": "SemeAIPletinnya/hn-time-capsule",
+      "html_url": "https://github.com/SemeAIPletinnya/hn-time-capsule",
+      "created_at": "2025-12-10T19:57:55Z",
+      "updated_at": "2026-03-22T07:13:22Z",
+      "pushed_at": "2026-03-22T07:13:18Z",
+      "default_branch": "master",
+      "fork": true,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "por-hindsight-capsule",
+      "language": "Python",
+      "license": null,
+      "commit_count": 17,
+      "first_commit": {
+        "sha": "e9345a4b351bbac1c2d364cb0d14d86cf5989f6c",
+        "committed_at": "2025-12-09T21:27:19Z",
+        "url": "https://github.com/SemeAIPletinnya/hn-time-capsule/commit/e9345a4b351bbac1c2d364cb0d14d86cf5989f6c"
+      },
+      "current_head": {
+        "sha": "b5bf4d2b66bc6ba1c18e3ecff6ccf175c7240cc7",
+        "committed_at": "2026-03-22T07:13:18Z",
+        "url": "https://github.com/SemeAIPletinnya/hn-time-capsule/commit/b5bf4d2b66bc6ba1c18e3ecff6ccf175c7240cc7"
+      }
+    },
+    {
+      "id": "proof-of-resonance",
+      "github_id": 1114492620,
+      "full_name": "SemeAIPletinnya/proof-of-resonance",
+      "html_url": "https://github.com/SemeAIPletinnya/proof-of-resonance",
+      "created_at": "2025-12-11T12:59:06Z",
+      "updated_at": "2026-03-19T06:31:39Z",
+      "pushed_at": "2026-03-19T06:31:35Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "",
+      "language": "Python",
+      "license": "MIT",
+      "commit_count": 113,
+      "first_commit": {
+        "sha": "02b85bb4683160d241d55815ac9eaccbcdf93dc0",
+        "committed_at": "2025-12-07T11:28:52Z",
+        "url": "https://github.com/SemeAIPletinnya/proof-of-resonance/commit/02b85bb4683160d241d55815ac9eaccbcdf93dc0"
+      },
+      "current_head": {
+        "sha": "fea17494dc29c8a5627a7d459d3cea12e2c4b564",
+        "committed_at": "2026-03-19T06:31:35Z",
+        "url": "https://github.com/SemeAIPletinnya/proof-of-resonance/commit/fea17494dc29c8a5627a7d459d3cea12e2c4b564"
+      }
+    },
+    {
+      "id": "openai-python",
+      "github_id": 1118198546,
+      "full_name": "SemeAIPletinnya/openai-python",
+      "html_url": "https://github.com/SemeAIPletinnya/openai-python",
+      "created_at": "2025-12-17T12:01:11Z",
+      "updated_at": "2026-01-17T19:18:54Z",
+      "pushed_at": "2026-01-17T19:18:47Z",
+      "default_branch": "main",
+      "fork": true,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "The official Python library for the OpenAI API",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "commit_count": 1199,
+      "first_commit": {
+        "sha": "3c6d4cd64362e7b7d8b3f822e4e534c1fe65a161",
+        "committed_at": "2020-10-25T23:23:05Z",
+        "url": "https://github.com/SemeAIPletinnya/openai-python/commit/3c6d4cd64362e7b7d8b3f822e4e534c1fe65a161"
+      },
+      "current_head": {
+        "sha": "722d3fffb82e9150a16da01e432b70d126ca5254",
+        "committed_at": "2026-01-09T22:09:12Z",
+        "url": "https://github.com/SemeAIPletinnya/openai-python/commit/722d3fffb82e9150a16da01e432b70d126ca5254"
+      }
+    },
+    {
+      "id": "silence-as-control",
+      "github_id": 1123163834,
+      "full_name": "SemeAIPletinnya/silence-as-control",
+      "html_url": "https://github.com/SemeAIPletinnya/silence-as-control",
+      "created_at": "2025-12-26T10:00:09Z",
+      "updated_at": "2026-07-15T19:00:10Z",
+      "pushed_at": "2026-06-07T09:26:42Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Silence-as-Control is a control-layer primitive for AI systems: when coherence cannot be guaranteed, intentional silence is preferred over misleading output.",
+      "language": "Python",
+      "license": "NOASSERTION",
+      "commit_count": 329,
+      "first_commit": {
+        "sha": "0c0478dd117c51b66e05d87361f2cf45a51ba41b",
+        "committed_at": "2025-12-26T10:00:09Z",
+        "url": "https://github.com/SemeAIPletinnya/silence-as-control/commit/0c0478dd117c51b66e05d87361f2cf45a51ba41b"
+      },
+      "current_head": {
+        "sha": "a0f8103935cd557b88e00a3f4965a8604d50c040",
+        "committed_at": "2026-06-06T21:11:24Z",
+        "url": "https://github.com/SemeAIPletinnya/silence-as-control/commit/a0f8103935cd557b88e00a3f4965a8604d50c040"
+      }
+    },
+    {
+      "id": "PoR-use-silence-as-contol-from-model_a_response",
+      "github_id": 1130520009,
+      "full_name": "SemeAIPletinnya/PoR-use-silence-as-contol-from-model_a_response",
+      "html_url": "https://github.com/SemeAIPletinnya/PoR-use-silence-as-contol-from-model_a_response",
+      "created_at": "2026-01-08T16:13:22Z",
+      "updated_at": "2026-01-09T08:21:11Z",
+      "pushed_at": "2026-01-09T08:21:08Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "https://x.com/adelayida210519/status/1942543426865562095?s=20",
+      "language": null,
+      "license": "MIT",
+      "commit_count": 7,
+      "first_commit": {
+        "sha": "e6cc904a5d06d2096cee6ba7d872f903d2af8681",
+        "committed_at": "2026-01-08T16:16:44Z",
+        "url": "https://github.com/SemeAIPletinnya/PoR-use-silence-as-contol-from-model_a_response/commit/e6cc904a5d06d2096cee6ba7d872f903d2af8681"
+      },
+      "current_head": {
+        "sha": "a09abac56d9e9e4c6e96bf9efad83f06935d32e9",
+        "committed_at": "2026-01-09T08:21:07Z",
+        "url": "https://github.com/SemeAIPletinnya/PoR-use-silence-as-contol-from-model_a_response/commit/a09abac56d9e9e4c6e96bf9efad83f06935d32e9"
+      }
+    },
+    {
+      "id": "PoR-Kernel-module-to-silence-as-control",
+      "github_id": 1131487718,
+      "full_name": "SemeAIPletinnya/PoR-Kernel-module-to-silence-as-control",
+      "html_url": "https://github.com/SemeAIPletinnya/PoR-Kernel-module-to-silence-as-control",
+      "created_at": "2026-01-10T05:26:27Z",
+      "updated_at": "2026-01-29T09:16:37Z",
+      "pushed_at": "2026-01-29T09:16:33Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Kernel",
+      "language": "Python",
+      "license": "MIT",
+      "commit_count": 77,
+      "first_commit": {
+        "sha": "8d01cbea8c74641b3e1f0ef5ca0b9f6a4f88f5c7",
+        "committed_at": "2026-01-10T05:26:27Z",
+        "url": "https://github.com/SemeAIPletinnya/PoR-Kernel-module-to-silence-as-control/commit/8d01cbea8c74641b3e1f0ef5ca0b9f6a4f88f5c7"
+      },
+      "current_head": {
+        "sha": "54e6d3b3bd34188ef3c468a475a64ada23c181fc",
+        "committed_at": "2026-01-29T09:16:33Z",
+        "url": "https://github.com/SemeAIPletinnya/PoR-Kernel-module-to-silence-as-control/commit/54e6d3b3bd34188ef3c468a475a64ada23c181fc"
+      }
+    },
+    {
+      "id": "DEMO-ECONOMY-PoR-",
+      "github_id": 1131603115,
+      "full_name": "SemeAIPletinnya/DEMO-ECONOMY-PoR-",
+      "html_url": "https://github.com/SemeAIPletinnya/DEMO-ECONOMY-PoR-",
+      "created_at": "2026-01-10T10:44:10Z",
+      "updated_at": "2026-03-24T22:01:45Z",
+      "pushed_at": "2026-03-24T22:01:41Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "PoR Demoeconomy: Control-First Economic Simulation",
+      "language": "Python",
+      "license": null,
+      "commit_count": 27,
+      "first_commit": {
+        "sha": "42b14dce39fec4d10d145507b9f68d53098e9c5d",
+        "committed_at": "2026-01-10T10:44:11Z",
+        "url": "https://github.com/SemeAIPletinnya/DEMO-ECONOMY-PoR-/commit/42b14dce39fec4d10d145507b9f68d53098e9c5d"
+      },
+      "current_head": {
+        "sha": "6397b6528eb607ce9a3690ca6de231631e1cbb23",
+        "committed_at": "2026-03-24T22:01:39Z",
+        "url": "https://github.com/SemeAIPletinnya/DEMO-ECONOMY-PoR-/commit/6397b6528eb607ce9a3690ca6de231631e1cbb23"
+      }
+    },
+    {
+      "id": "PoR-Kernel-v-0.2.0",
+      "github_id": 1139176805,
+      "full_name": "SemeAIPletinnya/PoR-Kernel-v-0.2.0",
+      "html_url": "https://github.com/SemeAIPletinnya/PoR-Kernel-v-0.2.0",
+      "created_at": "2026-01-21T16:12:21Z",
+      "updated_at": "2026-03-20T09:33:41Z",
+      "pushed_at": "2026-03-20T09:35:38Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "You are an experienced software engineer and repository maintainer.",
+      "language": "Python",
+      "license": null,
+      "commit_count": 8,
+      "first_commit": {
+        "sha": "1110401a73e4ca926a3fda62f28241fed1e138eb",
+        "committed_at": "2026-01-21T16:14:50Z",
+        "url": "https://github.com/SemeAIPletinnya/PoR-Kernel-v-0.2.0/commit/1110401a73e4ca926a3fda62f28241fed1e138eb"
+      },
+      "current_head": {
+        "sha": "961184450e10cc673997ac3c03b7208bd0501e7d",
+        "committed_at": "2026-03-20T09:33:37Z",
+        "url": "https://github.com/SemeAIPletinnya/PoR-Kernel-v-0.2.0/commit/961184450e10cc673997ac3c03b7208bd0501e7d"
+      }
+    },
+    {
+      "id": "por-copilot-bridge",
+      "github_id": 1140397031,
+      "full_name": "SemeAIPletinnya/por-copilot-bridge",
+      "html_url": "https://github.com/SemeAIPletinnya/por-copilot-bridge",
+      "created_at": "2026-01-23T08:14:18Z",
+      "updated_at": "2026-05-10T13:49:56Z",
+      "pushed_at": "2026-05-10T13:49:54Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Why silence beats retries",
+      "language": "Python",
+      "license": null,
+      "commit_count": 12,
+      "first_commit": {
+        "sha": "18b2fb8d42021e593c07912787a6beafda1acccd",
+        "committed_at": "2026-01-29T09:24:01Z",
+        "url": "https://github.com/SemeAIPletinnya/por-copilot-bridge/commit/18b2fb8d42021e593c07912787a6beafda1acccd"
+      },
+      "current_head": {
+        "sha": "11d616f9fecb7db96afc5ba73ed4c4b46b28c8cc",
+        "committed_at": "2026-05-10T13:49:52Z",
+        "url": "https://github.com/SemeAIPletinnya/por-copilot-bridge/commit/11d616f9fecb7db96afc5ba73ed4c4b46b28c8cc"
+      }
+    },
+    {
+      "id": "copilot-por-sdk",
+      "github_id": 1143432805,
+      "full_name": "SemeAIPletinnya/copilot-por-sdk",
+      "html_url": "https://github.com/SemeAIPletinnya/copilot-por-sdk",
+      "created_at": "2026-01-27T15:19:49Z",
+      "updated_at": "2026-04-10T09:10:42Z",
+      "pushed_at": "2026-04-10T09:10:08Z",
+      "default_branch": "main",
+      "fork": true,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Fork of GitHub Copilot SDK with an interception layer for control primitives (abstention, drift invariants) via PoR Kernel.",
+      "language": "TypeScript",
+      "license": "MIT",
+      "commit_count": 335,
+      "first_commit": {
+        "sha": "088fc1ce780cfff56b9f787e642eea60b052dd82",
+        "committed_at": "2026-01-14T00:44:47Z",
+        "url": "https://github.com/SemeAIPletinnya/copilot-por-sdk/commit/088fc1ce780cfff56b9f787e642eea60b052dd82"
+      },
+      "current_head": {
+        "sha": "6029b37401e8a9f85f4c1afab128ef55cc128773",
+        "committed_at": "2026-04-08T16:13:20Z",
+        "url": "https://github.com/SemeAIPletinnya/copilot-por-sdk/commit/6029b37401e8a9f85f4c1afab128ef55cc128773"
+      }
+    },
+    {
+      "id": "AI_Behavior_Overhaul",
+      "github_id": 1156839014,
+      "full_name": "SemeAIPletinnya/AI_Behavior_Overhaul",
+      "html_url": "https://github.com/SemeAIPletinnya/AI_Behavior_Overhaul",
+      "created_at": "2026-02-13T05:30:49Z",
+      "updated_at": "2026-02-14T13:59:41Z",
+      "pushed_at": "2026-02-13T05:30:49Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Experimental AI stability layer for Civilization VI. Measures drift and applies indirect control to reduce late-game collapse.",
+      "language": null,
+      "license": null,
+      "commit_count": 0,
+      "first_commit": null,
+      "current_head": null,
+      "capture_error": "Command failed: gh api -i repos/SemeAIPletinnya/AI_Behavior_Overhaul/commits?sha=main&per_page=1\ngh: Git Repository is empty. (HTTP 409)\n"
+    },
+    {
+      "id": "semeai-local-runtime",
+      "github_id": 1249051657,
+      "full_name": "SemeAIPletinnya/semeai-local-runtime",
+      "html_url": "https://github.com/SemeAIPletinnya/semeai-local-runtime",
+      "created_at": "2026-05-25T09:53:59Z",
+      "updated_at": "2026-05-31T07:49:55Z",
+      "pushed_at": "2026-05-31T08:03:19Z",
+      "default_branch": "main",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Local AI runtime prototype with release-control, memory, replay/evidence architecture, and PROCEED / NEEDS_REVIEW / SILENCE routing.",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "commit_count": 46,
+      "first_commit": {
+        "sha": "615f5672e632b0bb6a682fb80e6db0fe04f3fb26",
+        "committed_at": "2026-05-25T09:54:00Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai-local-runtime/commit/615f5672e632b0bb6a682fb80e6db0fe04f3fb26"
+      },
+      "current_head": {
+        "sha": "e847bb068330d435efc9b1e8dd66a48914fd9046",
+        "committed_at": "2026-05-31T07:49:51Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai-local-runtime/commit/e847bb068330d435efc9b1e8dd66a48914fd9046"
+      }
+    },
+    {
+      "id": "semeai-gate-basic",
+      "github_id": 1281033381,
+      "full_name": "SemeAIPletinnya/semeai-gate-basic",
+      "html_url": "https://github.com/SemeAIPletinnya/semeai-gate-basic",
+      "created_at": "2026-06-26T06:59:30Z",
+      "updated_at": "2026-07-20T12:35:28Z",
+      "pushed_at": "2026-07-20T12:34:26Z",
+      "default_branch": "master",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Release-control gate for AI answers: SHOW / REVIEW / BLOCK before user release",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "commit_count": 62,
+      "first_commit": {
+        "sha": "e1979acdc37c83026fbba97e1fa33070ee70e3f7",
+        "committed_at": "2026-06-26T06:59:27Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai-gate-basic/commit/e1979acdc37c83026fbba97e1fa33070ee70e3f7"
+      },
+      "current_head": {
+        "sha": "e8947960f3de2d1f7a3ab4727bb3762729e01065",
+        "committed_at": "2026-07-20T12:33:53Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai-gate-basic/commit/e8947960f3de2d1f7a3ab4727bb3762729e01065"
+      }
+    },
+    {
+      "id": "semeai.tech",
+      "github_id": 1286093954,
+      "full_name": "SemeAIPletinnya/semeai.tech",
+      "html_url": "https://github.com/SemeAIPletinnya/semeai.tech",
+      "created_at": "2026-07-01T12:43:30Z",
+      "updated_at": "2026-07-27T12:24:55Z",
+      "pushed_at": "2026-07-27T12:23:53Z",
+      "default_branch": "master",
+      "fork": false,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "",
+      "language": "JavaScript",
+      "license": null,
+      "commit_count": 104,
+      "first_commit": {
+        "sha": "828a343246addc5732e72c6754f41e70a334a5aa",
+        "committed_at": "2026-07-01T12:42:45Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/828a343246addc5732e72c6754f41e70a334a5aa"
+      },
+      "current_head": {
+        "sha": "29a34152fbe91b277954f51924feae6e87ed13a5",
+        "committed_at": "2026-07-27T12:24:02Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/29a34152fbe91b277954f51924feae6e87ed13a5"
+      }
+    },
+    {
+      "id": "grok-1",
+      "github_id": 1310814594,
+      "full_name": "SemeAIPletinnya/grok-1",
+      "html_url": "https://github.com/SemeAIPletinnya/grok-1",
+      "created_at": "2026-07-24T08:31:53Z",
+      "updated_at": "2026-07-24T08:32:49Z",
+      "pushed_at": "2024-08-30T04:17:25Z",
+      "default_branch": "main",
+      "fork": true,
+      "parent_full_name": null,
+      "archived": false,
+      "visibility": "public",
+      "description": "Grok open release",
+      "language": null,
+      "license": "Apache-2.0",
+      "commit_count": 9,
+      "first_commit": {
+        "sha": "5aabc78af1e0621d51432c145d755be9e1ecbcec",
+        "committed_at": "2024-03-14T02:38:44Z",
+        "url": "https://github.com/SemeAIPletinnya/grok-1/commit/5aabc78af1e0621d51432c145d755be9e1ecbcec"
+      },
+      "current_head": {
+        "sha": "7050ed204b8206bb8645c7b7bbef7252f79561b0",
+        "committed_at": "2024-03-19T15:48:22Z",
+        "url": "https://github.com/SemeAIPletinnya/grok-1/commit/7050ed204b8206bb8645c7b7bbef7252f79561b0"
+      }
+    }
+  ]
+}

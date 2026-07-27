@@ -1,0 +1,92 @@
+{
+  "schema": "semeai.genesis.twitter-selection.v1",
+  "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+  "account_login": "adelayida210519",
+  "policy": {
+    "archive_is_admission": false,
+    "historical_framing_is_current_claim": false,
+    "public_posts_are_implementation_proof": false
+  },
+  "artifacts": [
+    {
+      "tweet_id": "1942448943687778407",
+      "state": "ADMITTED",
+      "era_ids": ["00-before-code", "01-signal"],
+      "claims_supported": [
+        "Public SemeAi and Pletinnya framing was preserved by 2025-07-08."
+      ],
+      "historical_framing": true,
+      "curation_note": "Admitted only as evidence of public historical framing. Emergence and self-awareness language is not endorsed as a current technical claim."
+    },
+    {
+      "tweet_id": "1942621613838782908",
+      "state": "ADMITTED",
+      "era_ids": ["01-signal", "02-early-language"],
+      "claims_supported": [
+        "An early public artifact connected the SemeAi, Pletinnya, and Proof-of-Resonance names on 2025-07-08."
+      ],
+      "historical_framing": true,
+      "curation_note": "The artifact preserves early AGI and emergence language as historical framing, not evidence that those claims were established."
+    },
+    {
+      "tweet_id": "1943213832886788261",
+      "state": "ADMITTED",
+      "era_ids": ["02-early-language"],
+      "claims_supported": [
+        "Silence appeared in the public project vocabulary by 2025-07-10."
+      ],
+      "historical_framing": true,
+      "curation_note": "Narrative language about silence predates the later Silence-as-Control implementation; this artifact is not implementation proof."
+    },
+    {
+      "tweet_id": "1966168916083814707",
+      "state": "ADMITTED",
+      "era_ids": ["03-structure"],
+      "claims_supported": [
+        "Public project language described separated directive-core and path-network layers by 2025-09-11."
+      ],
+      "historical_framing": true,
+      "curation_note": "Admitted as a dated architecture-language artifact. Repository history remains the implementation authority."
+    },
+    {
+      "tweet_id": "2047558794402521132",
+      "state": "ADMITTED",
+      "era_ids": ["06-convergence"],
+      "claims_supported": [
+        "By 2026-04-24 the public framing explicitly separated generation from authority."
+      ],
+      "historical_framing": false,
+      "curation_note": "The linked Silence-as-Control repository supplies the implementation evidence; this post supplies the public trace."
+    },
+    {
+      "tweet_id": "2049918139735974213",
+      "state": "ADMITTED",
+      "era_ids": ["07-release-authority"],
+      "claims_supported": [
+        "By 2026-04-30 public project language described a candidate output and a separate runtime release decision."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted for release-authority vocabulary only. It does not establish universal reliability or safety."
+    },
+    {
+      "tweet_id": "2050625099783405868",
+      "state": "ADMITTED",
+      "era_ids": ["08-productization"],
+      "claims_supported": [
+        "A local Qwen/Ollama demonstration with a PoR release gate was publicly described on 2026-05-02."
+      ],
+      "historical_framing": false,
+      "curation_note": "The linked pull request and repository remain the implementation evidence."
+    },
+    {
+      "tweet_id": "2058860026161172840",
+      "state": "ADMITTED",
+      "era_ids": ["08-productization"],
+      "claims_supported": [
+        "SemeAi Local Runtime was publicly described as a local runtime prototype with candidate/release separation on 2026-05-25."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted as a public trace paired with the first-party semeai-local-runtime repository."
+    }
+  ]
+}

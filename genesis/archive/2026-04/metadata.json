@@ -1,0 +1,42 @@
+{
+  "schema": "semeai.genesis.archive-period.v1",
+  "period": "2026-04",
+  "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+  "source_boundary": "Curated public X records only; private archive data is excluded.",
+  "artifacts": [
+    {
+      "id": "x-2047558794402521132",
+      "state": "ADMITTED",
+      "published_at": "2026-04-24T06:10:33.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2047558794402521132",
+      "record_path": "genesis/archive/2026-04/originals/x-2047558794402521132.json",
+      "record_sha256": "7d07cde2d2a16dcb6b21e75c25a1d3a3b4c750dce9d9578f7c4a8b7ee4d89b10",
+      "media": [],
+      "era_ids": [
+        "06-convergence"
+      ],
+      "claims_supported": [
+        "By 2026-04-24 the public framing explicitly separated generation from authority."
+      ],
+      "historical_framing": false,
+      "curation_note": "The linked Silence-as-Control repository supplies the implementation evidence; this post supplies the public trace."
+    },
+    {
+      "id": "x-2049918139735974213",
+      "state": "ADMITTED",
+      "published_at": "2026-04-30T18:25:44.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2049918139735974213",
+      "record_path": "genesis/archive/2026-04/originals/x-2049918139735974213.json",
+      "record_sha256": "67a11179efc639910e46415eda612b5ef4e7efe9a388dd633eda88fa3788cafa",
+      "media": [],
+      "era_ids": [
+        "07-release-authority"
+      ],
+      "claims_supported": [
+        "By 2026-04-30 public project language described a candidate output and a separate runtime release decision."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted for release-authority vocabulary only. It does not establish universal reliability or safety."
+    }
+  ]
+}

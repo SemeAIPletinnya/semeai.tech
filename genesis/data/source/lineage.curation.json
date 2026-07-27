@@ -1,0 +1,101 @@
+{
+  "schema": "semeai.genesis.lineage-curation.v1",
+  "policy": {
+    "manual_conceptual_edges": true,
+    "code_ancestry_claimed": false,
+    "chronology_alone_is_not_derivation": true
+  },
+  "edges": [
+    {
+      "from": "SemeAi_ProofOfResonance",
+      "to": "semeai-resonance-core",
+      "relation": "EXPERIMENTAL_BRANCH",
+      "basis": "Manual conceptual curation from repository names, descriptions, creation order, and public project framing.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "SemeAi_ProofOfResonance",
+      "to": "proof-of-resonance-online",
+      "relation": "ONLINE_PROTOTYPE",
+      "basis": "The later repository describes an online Proof-of-Resonance prototype.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "proof-of-resonance-online",
+      "to": "proof-of-resonance",
+      "relation": "CONCEPTUAL_SUCCESSOR",
+      "basis": "Manual conceptual lineage; Git history is not asserted as shared.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "proof-of-resonance",
+      "to": "silence-as-control",
+      "relation": "CONTROL_CONVERGENCE",
+      "basis": "The later repository makes intentional withholding and release control explicit.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "silence-as-control",
+      "to": "PoR-use-silence-as-contol-from-model_a_response",
+      "relation": "BOUNDED_EXPERIMENT",
+      "basis": "Repository description and chronology identify a bounded application experiment.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "silence-as-control",
+      "to": "PoR-Kernel-module-to-silence-as-control",
+      "relation": "KERNEL_EXPERIMENT",
+      "basis": "Repository description identifies a kernel-oriented experiment.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "silence-as-control",
+      "to": "DEMO-ECONOMY-PoR-",
+      "relation": "DOMAIN_EXPERIMENT",
+      "basis": "Repository description identifies a control-first economic simulation.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "silence-as-control",
+      "to": "PoR-Kernel-v-0.2.0",
+      "relation": "KERNEL_ITERATION",
+      "basis": "Manual successor classification; Git object ancestry is not asserted.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "silence-as-control",
+      "to": "por-copilot-bridge",
+      "relation": "BRIDGE_EXPERIMENT",
+      "basis": "Repository description applies PoR control primitives to a Copilot-facing bridge.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "silence-as-control",
+      "to": "AI_Behavior_Overhaul",
+      "relation": "DOMAIN_EXPERIMENT",
+      "basis": "Repository description identifies a game-specific stability application.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "silence-as-control",
+      "to": "semeai-local-runtime",
+      "relation": "RUNTIME_INTEGRATION",
+      "basis": "The local runtime description explicitly includes release-control and evidence/replay architecture.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "semeai-local-runtime",
+      "to": "semeai-gate-basic",
+      "relation": "PRODUCT_EXTRACTION",
+      "basis": "Manual product lineage from local runtime release control to the bounded Gate/API surface.",
+      "code_ancestry_claimed": false
+    },
+    {
+      "from": "semeai-gate-basic",
+      "to": "semeai.tech",
+      "relation": "PUBLIC_PRODUCT_SURFACE",
+      "basis": "The site documents and exposes the public product Gate while preserving separate runtime authority.",
+      "code_ancestry_claimed": false
+    }
+  ]
+}

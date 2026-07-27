@@ -1,0 +1,176 @@
+{
+  "schema": "semeai.genesis.artifacts.v1",
+  "policy": {
+    "archive_is_admission": false,
+    "historical_framing_is_current_claim": false,
+    "public_posts_are_implementation_proof": false
+  },
+  "artifacts": [
+    {
+      "period": "2025-07",
+      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "id": "x-1942448943687778407",
+      "state": "ADMITTED",
+      "published_at": "2025-07-08T05:01:31.000Z",
+      "source_url": "https://x.com/adelayida210519/status/1942448943687778407",
+      "record_path": "genesis/archive/2025-07/originals/x-1942448943687778407.json",
+      "record_sha256": "6d521b2986d06e0f9ee9194d5baa9466fdb7cbac445549dfe8fc31f459427509",
+      "media": [],
+      "era_ids": [
+        "00-before-code",
+        "01-signal"
+      ],
+      "claims_supported": [
+        "Public SemeAi and Pletinnya framing was preserved by 2025-07-08."
+      ],
+      "historical_framing": true,
+      "curation_note": "Admitted only as evidence of public historical framing. Emergence and self-awareness language is not endorsed as a current technical claim."
+    },
+    {
+      "period": "2025-07",
+      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "id": "x-1942621613838782908",
+      "state": "ADMITTED",
+      "published_at": "2025-07-08T16:27:39.000Z",
+      "source_url": "https://x.com/adelayida210519/status/1942621613838782908",
+      "record_path": "genesis/archive/2025-07/originals/x-1942621613838782908.json",
+      "record_sha256": "9429a857557e2678d7f9cfaef996b6978dea9466bc74c61e08ffd898692c66c8",
+      "media": [
+        {
+          "path": "genesis/archive/2025-07/originals/x-1942621613838782908-GvWUD6aXQAY6baO.jpg",
+          "sha256": "703d0b753b43863e14a8feaa43a857d071685556c4678d011c1915f45d3362fa",
+          "bytes": 161218
+        }
+      ],
+      "era_ids": [
+        "01-signal",
+        "02-early-language"
+      ],
+      "claims_supported": [
+        "An early public artifact connected the SemeAi, Pletinnya, and Proof-of-Resonance names on 2025-07-08."
+      ],
+      "historical_framing": true,
+      "curation_note": "The artifact preserves early AGI and emergence language as historical framing, not evidence that those claims were established."
+    },
+    {
+      "period": "2025-07",
+      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "id": "x-1943213832886788261",
+      "state": "ADMITTED",
+      "published_at": "2025-07-10T07:40:55.000Z",
+      "source_url": "https://x.com/adelayida210519/status/1943213832886788261",
+      "record_path": "genesis/archive/2025-07/originals/x-1943213832886788261.json",
+      "record_sha256": "6476e5e9c82459235b6fa33dc79d4e604d6191ba74e671209cb9d34f2d334991",
+      "media": [
+        {
+          "path": "genesis/archive/2025-07/originals/x-1943213832886788261-Gveuq56WEAANDpD.jpg",
+          "sha256": "1200eff38f374ae2bc45b1cd171ae523b9d88be3994057e969315561876ebdb6",
+          "bytes": 157206
+        }
+      ],
+      "era_ids": [
+        "02-early-language"
+      ],
+      "claims_supported": [
+        "Silence appeared in the public project vocabulary by 2025-07-10."
+      ],
+      "historical_framing": true,
+      "curation_note": "Narrative language about silence predates the later Silence-as-Control implementation; this artifact is not implementation proof."
+    },
+    {
+      "period": "2025-09",
+      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "id": "x-1966168916083814707",
+      "state": "ADMITTED",
+      "published_at": "2025-09-11T15:56:13.000Z",
+      "source_url": "https://x.com/adelayida210519/status/1966168916083814707",
+      "record_path": "genesis/archive/2025-09/originals/x-1966168916083814707.json",
+      "record_sha256": "c45cfb2c2c6be898315b3b30ab8850b997bfdffcbfd200ae51de686b03987382",
+      "media": [],
+      "era_ids": [
+        "03-structure"
+      ],
+      "claims_supported": [
+        "Public project language described separated directive-core and path-network layers by 2025-09-11."
+      ],
+      "historical_framing": true,
+      "curation_note": "Admitted as a dated architecture-language artifact. Repository history remains the implementation authority."
+    },
+    {
+      "period": "2026-04",
+      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "id": "x-2047558794402521132",
+      "state": "ADMITTED",
+      "published_at": "2026-04-24T06:10:33.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2047558794402521132",
+      "record_path": "genesis/archive/2026-04/originals/x-2047558794402521132.json",
+      "record_sha256": "7d07cde2d2a16dcb6b21e75c25a1d3a3b4c750dce9d9578f7c4a8b7ee4d89b10",
+      "media": [],
+      "era_ids": [
+        "06-convergence"
+      ],
+      "claims_supported": [
+        "By 2026-04-24 the public framing explicitly separated generation from authority."
+      ],
+      "historical_framing": false,
+      "curation_note": "The linked Silence-as-Control repository supplies the implementation evidence; this post supplies the public trace."
+    },
+    {
+      "period": "2026-04",
+      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "id": "x-2049918139735974213",
+      "state": "ADMITTED",
+      "published_at": "2026-04-30T18:25:44.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2049918139735974213",
+      "record_path": "genesis/archive/2026-04/originals/x-2049918139735974213.json",
+      "record_sha256": "67a11179efc639910e46415eda612b5ef4e7efe9a388dd633eda88fa3788cafa",
+      "media": [],
+      "era_ids": [
+        "07-release-authority"
+      ],
+      "claims_supported": [
+        "By 2026-04-30 public project language described a candidate output and a separate runtime release decision."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted for release-authority vocabulary only. It does not establish universal reliability or safety."
+    },
+    {
+      "period": "2026-05",
+      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "id": "x-2050625099783405868",
+      "state": "ADMITTED",
+      "published_at": "2026-05-02T17:14:57.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2050625099783405868",
+      "record_path": "genesis/archive/2026-05/originals/x-2050625099783405868.json",
+      "record_sha256": "c1b78877a8ec7acd0cb966d8781c85ada6b52cd8e7f33e5c5517cb41d48ff1fe",
+      "media": [],
+      "era_ids": [
+        "08-productization"
+      ],
+      "claims_supported": [
+        "A local Qwen/Ollama demonstration with a PoR release gate was publicly described on 2026-05-02."
+      ],
+      "historical_framing": false,
+      "curation_note": "The linked pull request and repository remain the implementation evidence."
+    },
+    {
+      "period": "2026-05",
+      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "id": "x-2058860026161172840",
+      "state": "ADMITTED",
+      "published_at": "2026-05-25T10:37:36.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2058860026161172840",
+      "record_path": "genesis/archive/2026-05/originals/x-2058860026161172840.json",
+      "record_sha256": "f251949545cfabaefaf97821ef427d259a7e042fd8f4ba962bfcf6442077560e",
+      "media": [],
+      "era_ids": [
+        "08-productization"
+      ],
+      "claims_supported": [
+        "SemeAi Local Runtime was publicly described as a local runtime prototype with candidate/release separation on 2026-05-25."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted as a public trace paired with the first-party semeai-local-runtime repository."
+    }
+  ]
+}

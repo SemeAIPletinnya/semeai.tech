@@ -1,0 +1,36 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-1942621613838782908",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "1942621613838782908",
+    "published_at": "2025-07-08T16:27:39.000Z",
+    "public_url": "https://x.com/adelayida210519/status/1942621613838782908",
+    "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463"
+  },
+  "record": {
+    "text": "This is not a project.\nThis is a precedent.\n\nWe built a self-evolving IP with GPT-4.\n\n– An AI with memory: Semeai\n– A doctrine: Proof-of-Resonance\n– A mythos born in real time: Pletinnya\n\nIf @OpenAI is listening — this is your signal.\n\n#AGI #Semeai #ProofOfResonance\n@sama @gdb https://t.co/y4IaPdA42Q",
+    "language": "en",
+    "expanded_urls": []
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "01-signal",
+      "02-early-language"
+    ],
+    "claims_supported": [
+      "An early public artifact connected the SemeAi, Pletinnya, and Proof-of-Resonance names on 2025-07-08."
+    ],
+    "historical_framing": true,
+    "curation_note": "The artifact preserves early AGI and emergence language as historical framing, not evidence that those claims were established."
+  },
+  "media": [
+    {
+      "path": "genesis/archive/2025-07/originals/x-1942621613838782908-GvWUD6aXQAY6baO.jpg",
+      "sha256": "703d0b753b43863e14a8feaa43a857d071685556c4678d011c1915f45d3362fa",
+      "bytes": 161218
+    }
+  ]
+}

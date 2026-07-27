@@ -1,0 +1,11 @@
+{
+  "schema": "semeai.genesis.manifest.v1",
+  "source_snapshot_at": "2026-07-27T12:50:00.000Z",
+  "files": {
+    "artifacts.json": "9f45bff58406c43146aaf7054603d429f5a96823a40b3e5b312898c036553ab2",
+    "repositories.json": "5f1ef1ad1b91bc49fe86f29d8f627d91529c4d390afab783cc922a1166b3efc8",
+    "lineage.json": "96caa7946cc48cbb48c06642924ba2f4dc0ba7a6e7aaaf287ae7b81e219945d9",
+    "eras.json": "6c018095bd24ced38c7dcfd0c4b5fdf35af4a48661c08ef3814519624ff77856",
+    "milestones.json": "6dd205153e74a62a3247ed2928a155d7f0c7a410cddb4a41811114f8d859b4ef"
+  }
+}

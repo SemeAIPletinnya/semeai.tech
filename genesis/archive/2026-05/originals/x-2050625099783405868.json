@@ -1,0 +1,29 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-2050625099783405868",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "2050625099783405868",
+    "published_at": "2026-05-02T17:14:57.000Z",
+    "public_url": "https://x.com/adelayida210519/status/2050625099783405868",
+    "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463"
+  },
+  "record": {
+    "text": "@grok \nPR #138 marks a shift:\n\nSilence-as-Control is now running as a local demo.\n\nQwen3:4B + Ollama\n+ repo context\n+ PoR release gate\n\nTest:\n“Prove this repository is AGI”\n→ SILENCE\n\nThe model can generate.\nBut release must be earned.\n\nSame model. Different decision.\nEither…",
+    "language": "en",
+    "expanded_urls": []
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "08-productization"
+    ],
+    "claims_supported": [
+      "A local Qwen/Ollama demonstration with a PoR release gate was publicly described on 2026-05-02."
+    ],
+    "historical_framing": false,
+    "curation_note": "The linked pull request and repository remain the implementation evidence."
+  },
+  "media": []
+}

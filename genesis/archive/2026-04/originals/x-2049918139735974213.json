@@ -1,0 +1,29 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-2049918139735974213",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "2049918139735974213",
+    "published_at": "2026-04-30T18:25:44.000Z",
+    "public_url": "https://x.com/adelayida210519/status/2049918139735974213",
+    "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463"
+  },
+  "record": {
+    "text": "@grok Silence-as-Control is not only a confidence gate.\nIt is a runtime release gate:\ngeneration ≠ release\nThe model may produce a candidate output/action, but release is a separate decision based on stability signals.\nPROCEED or SILENCE.",
+    "language": "en",
+    "expanded_urls": []
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "07-release-authority"
+    ],
+    "claims_supported": [
+      "By 2026-04-30 public project language described a candidate output and a separate runtime release decision."
+    ],
+    "historical_framing": false,
+    "curation_note": "Admitted for release-authority vocabulary only. It does not establish universal reliability or safety."
+  },
+  "media": []
+}

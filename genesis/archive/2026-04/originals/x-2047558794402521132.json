@@ -1,0 +1,31 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-2047558794402521132",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "2047558794402521132",
+    "published_at": "2026-04-24T06:10:33.000Z",
+    "public_url": "https://x.com/adelayida210519/status/2047558794402521132",
+    "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463"
+  },
+  "record": {
+    "text": "@grok \nSilence-as-Control v0.4 is out.\n\nNow integration-ready:\nrelease gate for LLM output\nruntime hardening + API safety\nembedding hooks + tests\nNo change to core claim:\nGeneration != Authority.\nhttps://t.co/z4UIWIilpM",
+    "language": "en",
+    "expanded_urls": [
+      "https://github.com/SemeAIPletinnya/silence-as-control"
+    ]
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "06-convergence"
+    ],
+    "claims_supported": [
+      "By 2026-04-24 the public framing explicitly separated generation from authority."
+    ],
+    "historical_framing": false,
+    "curation_note": "The linked Silence-as-Control repository supplies the implementation evidence; this post supplies the public trace."
+  },
+  "media": []
+}

@@ -1,0 +1,111 @@
+{
+  "schema": "semeai.genesis.eras-curation.v1",
+  "eras": [
+    {
+      "id": "00-before-code",
+      "index": 0,
+      "title": "Before Code",
+      "principle": "Minimal trace; no mythology presented as fact.",
+      "artifact_ids": ["x-1942448943687778407"],
+      "repository_ids": []
+    },
+    {
+      "id": "01-signal",
+      "index": 1,
+      "title": "The Signal",
+      "principle": "Original public evidence foregrounded.",
+      "artifact_ids": ["x-1942448943687778407", "x-1942621613838782908"],
+      "repository_ids": []
+    },
+    {
+      "id": "02-early-language",
+      "index": 2,
+      "title": "Early Language",
+      "principle": "Historical framing, not current brand or technical authority.",
+      "artifact_ids": ["x-1942621613838782908", "x-1943213832886788261"],
+      "repository_ids": []
+    },
+    {
+      "id": "03-structure",
+      "index": 3,
+      "title": "Structure",
+      "principle": "Narrative language begins becoming architecture.",
+      "artifact_ids": ["x-1966168916083814707"],
+      "repository_ids": []
+    },
+    {
+      "id": "04-first-repository",
+      "index": 4,
+      "title": "First Repository",
+      "principle": "One verifiable first-party origin in the current public account inventory.",
+      "artifact_ids": [],
+      "repository_ids": ["SemeAi_ProofOfResonance"]
+    },
+    {
+      "id": "05-expansion",
+      "index": 5,
+      "title": "Expansion",
+      "principle": "Repository growth shown chronologically; forks remain separate.",
+      "artifact_ids": [],
+      "repository_ids": [
+        "semeai-resonance-core",
+        "proof-of-resonance-online",
+        "proof-of-resonance",
+        "PoR-use-silence-as-contol-from-model_a_response",
+        "PoR-Kernel-module-to-silence-as-control",
+        "DEMO-ECONOMY-PoR-",
+        "PoR-Kernel-v-0.2.0",
+        "por-copilot-bridge",
+        "AI_Behavior_Overhaul"
+      ]
+    },
+    {
+      "id": "06-convergence",
+      "index": 6,
+      "title": "Convergence",
+      "principle": "Experiments converge toward a release-control thesis.",
+      "artifact_ids": ["x-2047558794402521132"],
+      "repository_ids": ["proof-of-resonance", "silence-as-control"]
+    },
+    {
+      "id": "07-release-authority",
+      "index": 7,
+      "title": "Release Authority",
+      "principle": "Candidate, Gate, decision, and retained trace become explicit.",
+      "artifact_ids": ["x-2049918139735974213"],
+      "repository_ids": ["silence-as-control"]
+    },
+    {
+      "id": "08-productization",
+      "index": 8,
+      "title": "Productization",
+      "principle": "Runtime and Gate surfaces become products without changing authority.",
+      "artifact_ids": ["x-2050625099783405868", "x-2058860026161172840"],
+      "repository_ids": ["semeai-local-runtime", "semeai-gate-basic"]
+    },
+    {
+      "id": "09-evidence",
+      "index": 9,
+      "title": "Evidence",
+      "principle": "The public system begins inspecting its own visible implementation trace.",
+      "artifact_ids": [],
+      "repository_ids": ["semeai.tech", "silence-as-control", "semeai-gate-basic"]
+    },
+    {
+      "id": "10-workspace",
+      "index": 10,
+      "title": "Workspace",
+      "principle": "A real account-backed governed context appears; access remains outside Gate authority.",
+      "artifact_ids": [],
+      "repository_ids": ["semeai.tech", "semeai-gate-basic"]
+    },
+    {
+      "id": "11-current-head",
+      "index": 11,
+      "title": "Current Head",
+      "principle": "A captured repository state, not an ending or a ranking claim.",
+      "artifact_ids": [],
+      "repository_ids": ["silence-as-control", "semeai-local-runtime", "semeai-gate-basic", "semeai.tech"]
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "semeai.genesis.repository-classifications.v1",
+  "account": "SemeAIPletinnya",
+  "policy": {
+    "forks_count_as_first_party": false,
+    "classification_implies_quality": false,
+    "classification_implies_code_ancestry": false
+  },
+  "repositories": {
+    "SemeAi_ProofOfResonance": {
+      "classification": "FIRST_PARTY",
+      "rationale": "Earliest public repository in the account inventory carrying the SemeAi and Proof-of-Resonance system framing."
+    },
+    "semeai-resonance-core": {
+      "classification": "EXPERIMENT",
+      "rationale": "Early first-party resonance-core experiment."
+    },
+    "proof-of-resonance-online": {
+      "classification": "EXPERIMENT",
+      "rationale": "Online Proof-of-Resonance prototype."
+    },
+    "proof-of-resonance": {
+      "classification": "FIRST_PARTY",
+      "rationale": "First-party Proof-of-Resonance repository."
+    },
+    "silence-as-control": {
+      "classification": "FIRST_PARTY",
+      "rationale": "Canonical first-party release-control implementation."
+    },
+    "PoR-use-silence-as-contol-from-model_a_response": {
+      "classification": "EXPERIMENT",
+      "rationale": "Bounded experiment connecting a model response with Silence-as-Control."
+    },
+    "PoR-Kernel-module-to-silence-as-control": {
+      "classification": "EXPERIMENT",
+      "rationale": "Kernel-module experiment around Silence-as-Control."
+    },
+    "DEMO-ECONOMY-PoR-": {
+      "classification": "EXPERIMENT",
+      "rationale": "Control-first economic simulation."
+    },
+    "PoR-Kernel-v-0.2.0": {
+      "classification": "SUCCESSOR_DERIVED",
+      "rationale": "Later PoR Kernel iteration; conceptual successor classification does not assert Git object ancestry."
+    },
+    "por-copilot-bridge": {
+      "classification": "EXPERIMENT",
+      "rationale": "Bridge experiment applying control primitives to a Copilot-facing surface."
+    },
+    "AI_Behavior_Overhaul": {
+      "classification": "EXPERIMENT",
+      "rationale": "Game-specific stability experiment."
+    },
+    "semeai-local-runtime": {
+      "classification": "FIRST_PARTY",
+      "rationale": "First-party local runtime integrating release control, memory, replay, and evidence-oriented architecture."
+    },
+    "semeai-gate-basic": {
+      "classification": "FIRST_PARTY",
+      "rationale": "First-party product Gate and API surface."
+    },
+    "semeai.tech": {
+      "classification": "FIRST_PARTY",
+      "rationale": "First-party public product, evidence, and documentation surface."
+    }
+  }
+}

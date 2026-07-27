@@ -1,0 +1,107 @@
+{
+  "schema": "semeai.genesis.milestones-curation.v1",
+  "milestones": [
+    {
+      "id": "public-framing-preserved",
+      "date": "2025-07-08",
+      "era_id": "01-signal",
+      "title": "First preserved public framing",
+      "claim": "Public SemeAi and Pletinnya framing is preserved in the selected archive by 2025-07-08.",
+      "evidence": [{"type": "artifact", "id": "x-1942448943687778407"}],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "structured-language-visible",
+      "date": "2025-09-11",
+      "era_id": "03-structure",
+      "title": "Structured architecture language",
+      "claim": "A public post described separated directive-core and path-network layers.",
+      "evidence": [{"type": "artifact", "id": "x-1966168916083814707"}],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "first-public-repository",
+      "date": "2025-10-17",
+      "era_id": "04-first-repository",
+      "title": "First repository in the current public inventory",
+      "claim": "SemeAi_ProofOfResonance is the earliest-created non-fork repository in the captured public account inventory.",
+      "evidence": [{"type": "repository", "id": "SemeAi_ProofOfResonance"}],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "release-control-repository",
+      "date": "2025-12-26",
+      "era_id": "06-convergence",
+      "title": "Silence-as-Control repository",
+      "claim": "The public Silence-as-Control repository made intentional withholding a first-party implementation surface.",
+      "evidence": [{"type": "repository", "id": "silence-as-control"}],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "generation-authority-separated",
+      "date": "2026-04-24",
+      "era_id": "06-convergence",
+      "title": "Generation separated from authority",
+      "claim": "The public trace explicitly stated that generation is not authority.",
+      "evidence": [
+        {"type": "artifact", "id": "x-2047558794402521132"},
+        {"type": "repository", "id": "silence-as-control"}
+      ],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "candidate-release-language",
+      "date": "2026-04-30",
+      "era_id": "07-release-authority",
+      "title": "Candidate and release decision",
+      "claim": "The public trace described candidate production and release as separate runtime decisions.",
+      "evidence": [
+        {"type": "artifact", "id": "x-2049918139735974213"},
+        {"type": "repository", "id": "silence-as-control"}
+      ],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "local-demo",
+      "date": "2026-05-02",
+      "era_id": "08-productization",
+      "title": "Local release-control demonstration",
+      "claim": "A local Qwen/Ollama demonstration with repository context and a PoR release gate was publicly described.",
+      "evidence": [
+        {"type": "artifact", "id": "x-2050625099783405868"},
+        {"type": "repository", "id": "silence-as-control"}
+      ],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "local-runtime",
+      "date": "2026-05-25",
+      "era_id": "08-productization",
+      "title": "SemeAi Local Runtime",
+      "claim": "A first-party local runtime repository and matching public trace exposed candidate/release separation.",
+      "evidence": [
+        {"type": "artifact", "id": "x-2058860026161172840"},
+        {"type": "repository", "id": "semeai-local-runtime"}
+      ],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "product-gate",
+      "date": "2026-06-26",
+      "era_id": "08-productization",
+      "title": "Product Gate repository",
+      "claim": "The first-party semeai-gate-basic repository established the bounded SHOW / REVIEW / BLOCK product surface.",
+      "evidence": [{"type": "repository", "id": "semeai-gate-basic"}],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "public-system",
+      "date": "2026-07-01",
+      "era_id": "09-evidence",
+      "title": "Public system repository",
+      "claim": "The first-party semeai.tech repository became the public product, evidence, and engineering-book surface.",
+      "evidence": [{"type": "repository", "id": "semeai.tech"}],
+      "state": "ADMITTED"
+    }
+  ]
+}

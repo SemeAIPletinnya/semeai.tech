@@ -1,0 +1,25 @@
+{
+  "schema": "semeai.genesis.archive-period.v1",
+  "period": "2025-09",
+  "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+  "source_boundary": "Curated public X records only; private archive data is excluded.",
+  "artifacts": [
+    {
+      "id": "x-1966168916083814707",
+      "state": "ADMITTED",
+      "published_at": "2025-09-11T15:56:13.000Z",
+      "source_url": "https://x.com/adelayida210519/status/1966168916083814707",
+      "record_path": "genesis/archive/2025-09/originals/x-1966168916083814707.json",
+      "record_sha256": "c45cfb2c2c6be898315b3b30ab8850b997bfdffcbfd200ae51de686b03987382",
+      "media": [],
+      "era_ids": [
+        "03-structure"
+      ],
+      "claims_supported": [
+        "Public project language described separated directive-core and path-network layers by 2025-09-11."
+      ],
+      "historical_framing": true,
+      "curation_note": "Admitted as a dated architecture-language artifact. Repository history remains the implementation authority."
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-2058860026161172840",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "2058860026161172840",
+    "published_at": "2026-05-25T10:37:36.000Z",
+    "public_url": "https://x.com/adelayida210519/status/2058860026161172840",
+    "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463"
+  },
+  "record": {
+    "text": "@grok SemeAi Local Runtime (pre-alpha)\nhttps://t.co/nfaG877bhU\nA local AI runtime prototype with:\n- local LLM orchestration\n- runtime release-control\n- candidate/release separation\n- automated gate validation\n- replay/evidence-oriented architecture",
+    "language": "en",
+    "expanded_urls": [
+      "https://github.com/SemeAIPletinnya/semeai-local-runtime"
+    ]
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "08-productization"
+    ],
+    "claims_supported": [
+      "SemeAi Local Runtime was publicly described as a local runtime prototype with candidate/release separation on 2026-05-25."
+    ],
+    "historical_framing": false,
+    "curation_note": "Admitted as a public trace paired with the first-party semeai-local-runtime repository."
+  },
+  "media": []
+}

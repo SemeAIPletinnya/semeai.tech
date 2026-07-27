@@ -1,0 +1,42 @@
+{
+  "schema": "semeai.genesis.archive-period.v1",
+  "period": "2026-05",
+  "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+  "source_boundary": "Curated public X records only; private archive data is excluded.",
+  "artifacts": [
+    {
+      "id": "x-2050625099783405868",
+      "state": "ADMITTED",
+      "published_at": "2026-05-02T17:14:57.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2050625099783405868",
+      "record_path": "genesis/archive/2026-05/originals/x-2050625099783405868.json",
+      "record_sha256": "c1b78877a8ec7acd0cb966d8781c85ada6b52cd8e7f33e5c5517cb41d48ff1fe",
+      "media": [],
+      "era_ids": [
+        "08-productization"
+      ],
+      "claims_supported": [
+        "A local Qwen/Ollama demonstration with a PoR release gate was publicly described on 2026-05-02."
+      ],
+      "historical_framing": false,
+      "curation_note": "The linked pull request and repository remain the implementation evidence."
+    },
+    {
+      "id": "x-2058860026161172840",
+      "state": "ADMITTED",
+      "published_at": "2026-05-25T10:37:36.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2058860026161172840",
+      "record_path": "genesis/archive/2026-05/originals/x-2058860026161172840.json",
+      "record_sha256": "f251949545cfabaefaf97821ef427d259a7e042fd8f4ba962bfcf6442077560e",
+      "media": [],
+      "era_ids": [
+        "08-productization"
+      ],
+      "claims_supported": [
+        "SemeAi Local Runtime was publicly described as a local runtime prototype with candidate/release separation on 2026-05-25."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted as a public trace paired with the first-party semeai-local-runtime repository."
+    }
+  ]
+}
