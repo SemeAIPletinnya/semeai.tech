@@ -19,7 +19,9 @@ const ROUTES = [
   "/benchmark/",
   "/book/",
   "/research.html",
+  "/skills/",
   "/roadmap/",
+  "/benchmark/workspace/",
   "/dashboard.html",
   "/account/",
   "/workspace/",
@@ -201,6 +203,16 @@ async function wirePage(page, tailwindRuntime, errors) {
       }),
     }),
   );
+  await page.route("http://127.0.0.1:8787/**", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        github: { enabled: false, app_configured: false },
+        analyzer: { configured: false },
+      }),
+    }),
+  );
 
   page.on("pageerror", (error) => errors.push(`pageerror ${error.message}`));
   page.on("console", (message) => {
@@ -266,6 +278,13 @@ async function wireProductPage(page, errors, requests) {
       body: JSON.stringify(body),
     });
   });
+  await page.route("http://127.0.0.1:8787/**", (route) =>
+    route.fulfill({
+      status: 404,
+      contentType: "application/json",
+      body: JSON.stringify({ error: "Unexpected local product endpoint" }),
+    }),
+  );
 
   page.on("pageerror", (error) => errors.push(`pageerror ${error.message}`));
   page.on("console", (message) => {
@@ -803,6 +822,17 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
       "Unconnected product surfaces must not fabricate items",
     );
 
+    await page.locator('[data-workspace-view="skills"]').click();
+    assert.equal(
+      await page.locator('[data-workspace-section="skills"] .unconnected-surface strong').textContent(),
+      "Persistence not connected in v0.1.",
+    );
+    assert.equal(
+      await page.locator('[data-workspace-section="skills"] .unconnected-surface').locator("li,[data-item]").count(),
+      0,
+      "Skills must remain an honest structural surface until persistence and admission exist",
+    );
+
     await page.locator('[data-workspace-view="memory"]').focus();
     await page.keyboard.press("Tab");
     const focusState = await page.evaluate(() => {
@@ -892,6 +922,8 @@ async function validateProductRoadmap(browser, origin, tailwindRuntime) {
     complete: document.querySelectorAll(".roadmap-phases > .is-complete").length,
     next: document.querySelectorAll(".roadmap-phases > .is-next").length,
     held: document.querySelectorAll(".roadmap-phases > .is-held").length,
+    partial: document.querySelectorAll(".roadmap-phases > .is-partial").length,
+    future: document.querySelectorAll(".roadmap-phases > .is-future").length,
     fakeItems: document.querySelectorAll("[data-fake-item]").length,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     footerLink: document.querySelector('.site-footer a[href="/roadmap/"]')?.textContent.trim() || "",
@@ -902,8 +934,10 @@ async function validateProductRoadmap(browser, origin, tailwindRuntime) {
   assert.equal(state.hash, "ad32c712afd07e9b13f3050737a97e28384620d120cccad07ea303cc9b1dafcb");
   assert.equal(state.phases, 12, "Roadmap should expose all twelve dependency phases");
   assert.equal(state.complete, 5, "Only repository-backed phases should be marked implemented");
-  assert.equal(state.next, 1, "Exactly one next dependency gate should be identified");
-  assert.equal(state.held, 6, "Later phases should remain explicitly dependency-held");
+  assert.equal(state.next, 0, "No phase should be presented as an uncomplicated next gate");
+  assert.equal(state.partial, 5, "Locally implemented or structurally integrated phases should remain partial");
+  assert.equal(state.future, 1, "Marketplace operation should remain a future hypothesis");
+  assert.equal(state.held, 1, "Market evidence should remain dependency-held");
   assert.equal(state.fakeItems, 0, "Roadmap must not simulate future product data");
   assert.equal(state.overflow, 0);
   assert.equal(state.footerLink, "Product Roadmap");
@@ -1063,6 +1097,7 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
     firstParty: document.querySelector('[data-repository-count="first_party"]')?.textContent,
     forks: document.querySelector('[data-repository-count="forks"]')?.textContent,
     status: document.querySelector("[data-genesis-status]")?.textContent,
+    chronicleEntries: document.querySelectorAll(".chronicle-entry").length,
     unsafeMarker: window.__unsafe,
   }));
   assert.equal(state.eras, 12, "Genesis v03 should render the twelve curated eras");
@@ -1072,6 +1107,7 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
   assert.equal(state.lineageNodes, 14, "forks should remain outside the first-party lineage geometry");
   assert.equal(state.firstParty, "6");
   assert.equal(state.forks, "6");
+  assert.equal(state.chronicleEntries, 4, "Genesis should render four verified seed Chronicle entries");
   assert.match(state.status, /STRUCTURED PROVENANCE LOADED/);
   assert.equal(state.unsafeMarker, undefined, "manifest data must not execute as markup");
 
@@ -1116,7 +1152,97 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
     lineageEdges: state.lineageEdges,
     lineageNodes: state.lineageNodes,
     archivedScenes: 9,
+    chronicleEntries: state.chronicleEntries,
   };
+}
+
+async function validateSkillForge(browser, origin, tailwindRuntime) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    locale: "en-US",
+  });
+  const page = await context.newPage();
+  const errors = [];
+  const requests = [];
+  page.on("request", (request) => requests.push(request.url()));
+  await wirePage(page, tailwindRuntime, errors);
+  await loadRoute(page, origin, "/skills/");
+  await page.waitForFunction(() => document.querySelector("#skills-status")?.dataset.state === "ready");
+
+  const state = await page.evaluate(() => ({
+    skills: document.querySelectorAll(".skill-record").length,
+    cases: document.querySelectorAll(".case-record").length,
+    counts: document.querySelector("#registry-counts")?.textContent.trim(),
+    admission: [...document.querySelectorAll(".skill-facts dd")].map((node) => node.textContent),
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    unsafe: window.__unsafe,
+  }));
+  assert.equal(state.skills, 1);
+  assert.equal(state.cases, 3);
+  assert.equal(state.counts, "1 REVIEW · 0 ADMITTED");
+  assert.ok(state.admission.includes("NO DECISION"));
+  assert.equal(state.overflow, 0);
+  assert.equal(state.unsafe, undefined);
+
+  await page.locator('[data-lang="uk"]:visible').first().click();
+  assert.equal(await page.locator("#skills-title").innerText(), "МЕТОД СТАЄ КАНДИДАТОМ.\nПЕРЕГЛЯД ВИРІШУЄ ДОПУСК.");
+  await page.locator('[data-lang="ru"]:visible').first().click();
+  assert.equal(await page.locator("#skills-title").innerText(), "МЕТОД СТАНОВИТСЯ КАНДИДАТОМ.\nПРОВЕРКА РЕШАЕТ ДОПУСК.");
+
+  const unexpectedExternal = requests.filter((url) => {
+    const parsed = new URL(url);
+    return parsed.origin !== origin
+      && parsed.origin !== "https://cdn.tailwindcss.com"
+      && parsed.origin !== "https://fonts.googleapis.com"
+      && parsed.origin !== "https://fonts.gstatic.com";
+  });
+  assert.deepEqual(unexpectedExternal, []);
+  assert.deepEqual(errors, []);
+  assert.equal(
+    fs.readFileSync(path.join(ROOT, "skills", "assets", "skills.js"), "utf8").includes("innerHTML"),
+    false,
+    "Skill evidence must not use unsafe innerHTML",
+  );
+  await context.close();
+  return { candidates: 1, admitted: 0, cases: 3, languages: ["en", "uk", "ru"] };
+}
+
+async function validateRepositoryWorkspaceBoundary(browser, origin) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => {
+    if (message.type() === "error") errors.push(message.text());
+  });
+  const fulfillRepositoryConfiguration = async (route) => {
+    const pathName = new URL(route.request().url()).pathname;
+    if (pathName === "/v0/benchmark/configuration") {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify({
+          github: { enabled: false, app_configured: false },
+          analyzer: { configured: false },
+        }),
+      });
+      return;
+    }
+    await route.fulfill({ status: 404, contentType: "application/json", body: "{}" });
+  };
+  await page.route("https://api.semeai.tech/**", fulfillRepositoryConfiguration);
+  await page.route("http://127.0.0.1:8787/**", fulfillRepositoryConfiguration);
+  await page.goto(`${origin}/benchmark/workspace/`, { waitUntil: "load" });
+  await page.waitForFunction(() => document.querySelector("#workspace-notice:not([hidden])"));
+  assert.equal(await page.locator("#sign-in-button").getAttribute("href"), null);
+  assert.equal(await page.locator("#sign-in-button").getAttribute("aria-disabled"), "true");
+  assert.equal(
+    await page.locator("#workspace-notice").textContent(),
+    "GitHub identity authorization is not configured for this environment.",
+  );
+  assert.deepEqual(errors, []);
+  await context.close();
+  return "disabled until backend reports real GitHub and analyzer configuration";
 }
 
 async function main() {
@@ -1136,6 +1262,8 @@ async function main() {
     await validateBenchmarkBoundary(browser, origin, tailwindRuntime);
     const motionSemantics = await validateMotionSemantics(browser, origin, tailwindRuntime);
     const genesisEvolutionTrace = await validateGenesisEvolutionTrace(browser, origin, tailwindRuntime);
+    const skillForge = await validateSkillForge(browser, origin, tailwindRuntime);
+    const repositoryWorkspaceBoundary = await validateRepositoryWorkspaceBoundary(browser, origin);
 
     console.log(
       JSON.stringify(
@@ -1151,6 +1279,8 @@ async function main() {
           productRoadmap,
           motionSemantics,
           genesisEvolutionTrace,
+          skillForge,
+          repositoryWorkspaceBoundary,
           benchmarkBoundary: "CSP, noindex, auth withholding verified",
         },
         null,
