@@ -31,6 +31,7 @@
       "shell.footer.support": "Support",
       "shell.footer.genesis": "Genesis",
       "shell.footer.research": "Research",
+      "shell.footer.roadmap": "Product Roadmap",
 
       // —— Account + Workspace ——
       "account.title.page": "SemeAI Account",
@@ -518,6 +519,7 @@
       "shell.footer.support": "Підтримка",
       "shell.footer.genesis": "Genesis",
       "shell.footer.research": "Дослідження",
+      "shell.footer.roadmap": "Дорожня карта",
 
       "account.title.page": "Обліковий запис SemeAI",
       "account.meta": "Ідентичність і доступ до одного керованого робочого простору SemeAI.",
@@ -999,6 +1001,7 @@
       "shell.footer.support": "Поддержка",
       "shell.footer.genesis": "Genesis",
       "shell.footer.research": "Исследования",
+      "shell.footer.roadmap": "Дорожная карта",
 
       "account.title.page": "Учётная запись SemeAI",
       "account.meta": "Идентичность и доступ к одному управляемому рабочему пространству SemeAI.",

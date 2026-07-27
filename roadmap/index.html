@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n-page="roadmap.title.page">SemeAI Product Roadmap v1.0</title>
+    <meta
+      name="description"
+      data-i18n-page="roadmap.meta"
+      content="The dependency-gated SemeAI product roadmap from evidence runtime to agent skill systems."
+    />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <link rel="canonical" href="https://semeai.tech/roadmap/" />
+    <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
+    <link rel="stylesheet" href="/assets/css/site.css?v=20260726b" />
+    <link rel="stylesheet" href="/roadmap/assets/roadmap.css?v=20260727a" />
+  </head>
+  <body class="mode-roadmap">
+    <a class="skip-link" href="#roadmap-main" data-i18n="roadmap.skip">Skip to roadmap</a>
+    <canvas id="bg-canvas" aria-hidden="true"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="content">
+      <div data-semeai-nav></div>
+
+      <main class="site-main roadmap-main" id="roadmap-main">
+        <section class="roadmap-hero" aria-labelledby="roadmap-title">
+          <div class="roadmap-hero-copy">
+            <span class="eyebrow" data-i18n="roadmap.eyebrow">PRODUCT ROADMAP / v1.0</span>
+            <h1 class="page-title editorial-title" id="roadmap-title">
+              <span data-i18n="roadmap.h1">From evidence runtime</span><br />
+              <span class="authority-text" data-i18n="roadmap.h1.span">to agent skill systems.</span>
+            </h1>
+            <p class="lead" data-i18n="roadmap.lead">
+              A dependency-gated execution plan. Each phase begins only when the previous phase leaves inspectable implementation evidence.
+            </p>
+            <div class="btn-row roadmap-actions">
+              <a
+                class="btn-primary"
+                href="/roadmap/SemeAI_Product_Roadmap_v1.0.pdf"
+                target="_blank"
+                rel="noopener"
+                data-roadmap-pdf
+                data-i18n="roadmap.action.read"
+              >Read the 35-page roadmap</a>
+              <a
+                class="btn-ghost"
+                href="/roadmap/SemeAI_Product_Roadmap_v1.0.pdf"
+                download="SemeAI_Product_Roadmap_v1.0.pdf"
+                data-i18n="roadmap.action.download"
+              >Download PDF</a>
+            </div>
+          </div>
+
+          <aside class="roadmap-document" aria-label="Roadmap document identity" data-i18n-aria="roadmap.document.aria">
+            <div class="roadmap-document-head">
+              <span>SEMEAI</span>
+              <span>1.0</span>
+            </div>
+            <div class="roadmap-document-trace" aria-hidden="true">
+              <i></i><i></i><i></i><i></i>
+            </div>
+            <div class="roadmap-document-title">
+              <strong data-i18n="roadmap.document.title">FULL PRODUCT</strong>
+              <span data-i18n="roadmap.document.subtitle">EVIDENCE → SKILLS</span>
+            </div>
+            <dl class="roadmap-document-facts">
+              <div>
+                <dt data-i18n="roadmap.document.version">VERSION</dt>
+                <dd>1.0</dd>
+              </div>
+              <div>
+                <dt data-i18n="roadmap.document.pages">PAGES</dt>
+                <dd>35</dd>
+              </div>
+              <div>
+                <dt data-i18n="roadmap.document.format">FORMAT</dt>
+                <dd>PDF</dd>
+              </div>
+            </dl>
+          </aside>
+        </section>
+
+        <section class="roadmap-authority" aria-labelledby="roadmap-authority-title">
+          <span class="roadmap-section-index">AUTHORITY / 01</span>
+          <div>
+            <h2 id="roadmap-authority-title" data-i18n="roadmap.authority.title">Generation is not release authority.</h2>
+            <p data-i18n="roadmap.authority.body">
+              Candidate generation, metadata, retrieval, memory, and skill production remain upstream of SaC/PoR. The Gate keeps final release authority; SILENCE withholds release while preserving the audit trace.
+            </p>
+          </div>
+        </section>
+
+        <section class="roadmap-release" aria-labelledby="roadmap-release-title">
+          <div class="roadmap-section-heading">
+            <div>
+              <span class="roadmap-section-index">CURRENT RELEASE / 02</span>
+              <h2 id="roadmap-release-title" data-i18n="roadmap.release.title">Published plan. Explicit implementation state.</h2>
+            </div>
+            <p data-i18n="roadmap.release.lead">
+              Publishing this document does not make a future phase operational. The status below is grounded in the current deployed repository.
+            </p>
+          </div>
+
+          <div class="roadmap-release-grid">
+            <article>
+              <span class="roadmap-state is-complete" data-i18n="roadmap.state.complete">IMPLEMENTED</span>
+              <h3 data-i18n="roadmap.release.available">Available now</h3>
+              <p data-i18n="roadmap.release.available.body">
+                Account and one real governed workspace per account use the existing API contract. Public Gate, Benchmark, Genesis, Book, and Research remain available.
+              </p>
+              <div class="roadmap-inline-links">
+                <a href="/account/" data-i18n="roadmap.release.account">Account</a>
+                <a href="/workspace/" data-i18n="roadmap.release.workspace">Workspace</a>
+                <a href="/benchmark/" data-i18n="roadmap.release.benchmark">Benchmark</a>
+              </div>
+            </article>
+            <article>
+              <span class="roadmap-state is-held" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+              <h3 data-i18n="roadmap.release.notyet">Not represented as complete</h3>
+              <p data-i18n="roadmap.release.notyet.body">
+                Historical archive admission, Genesis v03, repository evidence in Workspace, Codex improvement loops, Skill Forge, registry, and marketplace behavior require later exit gates.
+              </p>
+              <p class="roadmap-claim-boundary" data-i18n="roadmap.release.boundary">No fake workspaces, activity, memories, files, metrics, or skill admission are shown.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="roadmap-ledger" aria-labelledby="roadmap-ledger-title">
+          <div class="roadmap-section-heading">
+            <div>
+              <span class="roadmap-section-index">DEPENDENCY LEDGER / 03</span>
+              <h2 id="roadmap-ledger-title" data-i18n="roadmap.ledger.title">Twelve phases. One evidence chain.</h2>
+            </div>
+            <p data-i18n="roadmap.ledger.lead">
+              Phase status describes implementation evidence in this repository, not aspiration or visual completion.
+            </p>
+          </div>
+
+          <ol class="roadmap-phases">
+            <li class="is-complete">
+              <span class="roadmap-phase-number">00</span>
+              <div><h3 data-i18n="roadmap.phase.0">Authority Freeze &amp; Inventory</h3><p data-i18n="roadmap.phase.0.body">Frozen invariants and current-system inventory establish the behavioral baseline.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.complete">IMPLEMENTED</span>
+            </li>
+            <li class="is-complete">
+              <span class="roadmap-phase-number">01</span>
+              <div><h3 data-i18n="roadmap.phase.1">Account + Workspace Foundation v0.1</h3><p data-i18n="roadmap.phase.1.body">Identity, access, one governed workspace, live usage, billing status, decisions, and retained receipts.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.complete">IMPLEMENTED</span>
+            </li>
+            <li class="is-next">
+              <span class="roadmap-phase-number">02</span>
+              <div><h3 data-i18n="roadmap.phase.2">Historical Archive + Genesis Manifest</h3><p data-i18n="roadmap.phase.2.body">Next dependency: curated provenance and explicit admission boundaries for historical material.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.next">NEXT GATE</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">03</span>
+              <div><h3 data-i18n="roadmap.phase.3">Genesis v03 Evolution Trace</h3><p data-i18n="roadmap.phase.3.body">Held until the historical evidence manifest is complete.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">04</span>
+              <div><h3 data-i18n="roadmap.phase.4">Benchmark Audit + Evidence Roadmap</h3><p data-i18n="roadmap.phase.4.body">Held; Benchmark analytical and receipt authority remains frozen.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">05</span>
+              <div><h3 data-i18n="roadmap.phase.5">Repository Evidence in Workspace</h3><p data-i18n="roadmap.phase.5.body">Held until canonical shared analysis and persistence boundaries are proven.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">06</span>
+              <div><h3 data-i18n="roadmap.phase.6">Codex Improvement Loop v0.1</h3><p data-i18n="roadmap.phase.6.body">Held until repository evidence can be retained without creating release authority.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">07</span>
+              <div><h3 data-i18n="roadmap.phase.7">Skill Forge v0.1</h3><p data-i18n="roadmap.phase.7.body">Held; generated skills remain candidates and require explicit admission.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">08</span>
+              <div><h3 data-i18n="roadmap.phase.8">Skill Registry + Compatibility</h3><p data-i18n="roadmap.phase.8.body">Held until admitted skill artifacts have stable compatibility evidence.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">09</span>
+              <div><h3 data-i18n="roadmap.phase.9">Optional Agent Skill Marketplace</h3><p data-i18n="roadmap.phase.9.body">Optional and held until internal reuse and demand are demonstrated.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">10</span>
+              <div><h3 data-i18n="roadmap.phase.10">Cross-System Integration &amp; Final Polish</h3><p data-i18n="roadmap.phase.10.body">Held until the preceding product contracts exist and interoperate.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+            <li class="is-held">
+              <span class="roadmap-phase-number">11</span>
+              <div><h3 data-i18n="roadmap.phase.11">Pilot / GTM / Monetization Evidence</h3><p data-i18n="roadmap.phase.11.body">Held until real product use can supply evidence without fabricated metrics.</p></div>
+              <span class="roadmap-state" data-i18n="roadmap.state.held">DEPENDENCY-HELD</span>
+            </li>
+          </ol>
+        </section>
+
+        <section class="roadmap-integrity" aria-labelledby="roadmap-integrity-title">
+          <span class="roadmap-section-index">DOCUMENT TRACE / 04</span>
+          <div>
+            <h2 id="roadmap-integrity-title" data-i18n="roadmap.integrity.title">The published file is byte-identical to the approved source.</h2>
+            <p data-i18n="roadmap.integrity.body">SHA-256 integrity value for the hosted PDF:</p>
+            <code data-roadmap-hash>ad32c712afd07e9b13f3050737a97e28384620d120cccad07ea303cc9b1dafcb</code>
+            <p class="roadmap-integrity-note" data-i18n="roadmap.integrity.note">Integrity hash, not a signature or release receipt.</p>
+          </div>
+        </section>
+      </main>
+
+      <div data-semeai-footer></div>
+    </div>
+
+    <noscript>
+      <nav class="noscript-nav" aria-label="Roadmap navigation">
+        <a href="/">SemeAI</a>
+        <a href="/roadmap/SemeAI_Product_Roadmap_v1.0.pdf">Roadmap PDF</a>
+        <a href="/account/">Account</a>
+        <a href="/workspace/">Workspace</a>
+      </nav>
+    </noscript>
+    <script src="/assets/js/i18n.js?v=20260724a"></script>
+    <script src="/assets/js/i18n-arch.js?v=20260727a"></script>
+    <script src="/roadmap/assets/roadmap-i18n.js?v=20260727a"></script>
+    <script src="/assets/js/semeai-motion.js?v=20260726a"></script>
+    <script src="/assets/js/site-shell.js?v=20260727a"></script>
+  </body>
+</html>
