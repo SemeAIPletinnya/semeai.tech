@@ -969,7 +969,7 @@ async function validateProductRoadmap(browser, origin, tailwindRuntime) {
   return [
     "12-phase dependency ledger",
     "phases 0–4 marked implemented",
-    "phase 5 next + phases 6–11 held",
+    "phases 5–8 and 10 partial; phase 9 future; phase 11 held",
     "hosted PDF hash",
     "EN / UK / RU",
   ];
