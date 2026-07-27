@@ -217,6 +217,43 @@
   };
   ["en", "uk", "ru"].forEach((lang) => Object.assign(roadmap[lang], completedPhaseUpdate[lang]));
 
+  const integrationPhaseUpdate = {
+    en: {
+      "roadmap.state.partial": "PARTIAL",
+      "roadmap.state.future": "FUTURE HYPOTHESIS",
+      "roadmap.release.notyet.body": "Production GitHub repository retention, an admitted installable skill, marketplace operation, and market evidence still require later exit gates.",
+      "roadmap.phase.5.body": "The bounded backend and Workspace surface are locally verified; production awaits GitHub App credentials and the canonical analyzer path.",
+      "roadmap.phase.6.body": "GET JOB cases provide qualitative workflow evidence; no automated retained improvement loop or statistical claim exists.",
+      "roadmap.phase.7.body": "A public candidate/evidence review foundation exists. GET JOB remains REVIEW with no admission decision.",
+      "roadmap.phase.8.body": "A minimal registry schema exposes one review candidate and zero admitted skills; installable compatibility remains absent.",
+      "roadmap.phase.9.body": "Commerce remains a product hypothesis until admission, installation, versioning, evaluation, demand, legal, and payment contracts exist.",
+      "roadmap.phase.10.body": "Public, product, and evidence routes now share explicit transitions; authenticated GitHub-to-Workspace production execution remains blocked."
+    },
+    uk: {
+      "roadmap.state.partial": "ЧАСТКОВО",
+      "roadmap.state.future": "МАЙБУТНЯ ГІПОТЕЗА",
+      "roadmap.release.notyet.body": "Production-збереження GitHub-репозиторіїв, допущена встановлювана навичка, робота маркетплейсу та ринкові докази все ще потребують наступних exit gate.",
+      "roadmap.phase.5.body": "Обмежений backend і поверхня Workspace локально перевірені; production очікує credentials GitHub App і шлях до канонічного analyzer.",
+      "roadmap.phase.6.body": "Випадки GET JOB дають якісні докази процесу; автоматизованого збереженого improvement loop або статистичного твердження немає.",
+      "roadmap.phase.7.body": "Існує публічна основа перегляду кандидатів і доказів. GET JOB залишається у REVIEW без рішення про допуск.",
+      "roadmap.phase.8.body": "Мінімальна схема реєстру показує одного кандидата на перегляді й нуль допущених навичок; встановлювана сумісність відсутня.",
+      "roadmap.phase.9.body": "Комерція залишається продуктовою гіпотезою, доки не існують допуск, встановлення, версіонування, оцінка, попит, юридичні та платіжні контракти.",
+      "roadmap.phase.10.body": "Публічні, продуктові й доказові маршрути мають явні переходи; production-виконання GitHub-to-Workspace з автентифікацією залишається заблокованим."
+    },
+    ru: {
+      "roadmap.state.partial": "ЧАСТИЧНО",
+      "roadmap.state.future": "БУДУЩАЯ ГИПОТЕЗА",
+      "roadmap.release.notyet.body": "Production-хранение GitHub-репозиториев, допущенный устанавливаемый навык, работа маркетплейса и рыночные доказательства всё ещё требуют следующих exit gate.",
+      "roadmap.phase.5.body": "Ограниченный backend и поверхность Workspace локально проверены; production ожидает credentials GitHub App и путь к каноническому analyzer.",
+      "roadmap.phase.6.body": "Случаи GET JOB дают качественные доказательства процесса; автоматизированного сохраняемого improvement loop или статистического утверждения нет.",
+      "roadmap.phase.7.body": "Существует публичная основа проверки кандидатов и доказательств. GET JOB остаётся в REVIEW без решения о допуске.",
+      "roadmap.phase.8.body": "Минимальная схема реестра показывает одного кандидата на проверке и ноль допущенных навыков; устанавливаемая совместимость отсутствует.",
+      "roadmap.phase.9.body": "Коммерция остаётся продуктовой гипотезой, пока не существуют допуск, установка, версионирование, оценка, спрос, юридические и платёжные контракты.",
+      "roadmap.phase.10.body": "Публичные, продуктовые и доказательные маршруты имеют явные переходы; production-выполнение GitHub-to-Workspace с аутентификацией остаётся заблокированным."
+    }
+  };
+  ["en", "uk", "ru"].forEach((lang) => Object.assign(roadmap[lang], integrationPhaseUpdate[lang]));
+
   function merge() {
     const api = window.SemeAI_I18n;
     if (!api || !api.dict) return false;

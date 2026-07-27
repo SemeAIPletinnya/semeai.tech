@@ -324,6 +324,14 @@
   color: #9d94ad;
 }
 
+.roadmap-phases .is-partial .roadmap-state {
+  color: var(--accent-soft);
+}
+
+.roadmap-phases .is-future .roadmap-state {
+  color: var(--faint);
+}
+
 .roadmap-phases {
   margin: 0;
   padding: 0;
@@ -347,6 +355,10 @@
 
 .roadmap-phases li.is-next {
   background: linear-gradient(90deg, rgba(114, 231, 239, 0.045), transparent 62%);
+}
+
+.roadmap-phases li.is-partial {
+  background: linear-gradient(90deg, rgba(114, 231, 239, 0.035), transparent 62%);
 }
 
 .roadmap-phase-number {

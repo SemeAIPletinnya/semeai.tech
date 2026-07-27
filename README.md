@@ -8,7 +8,7 @@
 
 SemeAI separates an AI-generated candidate from the decision to release it. The public site presents one connected system: Genesis establishes the premise, the Gate holds release authority, the Repository Evidence Benchmark inspects bounded visible evidence, and the Engineering Book records the architecture and its limits.
 
-[Open SemeAI](https://semeai.tech/) · [Run the Repository Benchmark](https://semeai.tech/benchmark/) · [Enter Genesis](https://semeai.tech/genesis/) · [Inspect the Gate](https://semeai.tech/gate.html) · [Read the Engineering Book](https://semeai.tech/book/) · [Review Research Boundaries](https://semeai.tech/research.html)
+[Open SemeAI](https://semeai.tech/) · [Enter Workspace](https://semeai.tech/account/) · [Run the Repository Benchmark](https://semeai.tech/benchmark/) · [Enter Genesis](https://semeai.tech/genesis/) · [Inspect the Gate](https://semeai.tech/gate.html) · [Read the Engineering Book](https://semeai.tech/book/) · [Review Skill Forge evidence](https://semeai.tech/skills/)
 
 ## One system, distinct authorities
 
@@ -23,6 +23,8 @@ SemeAI separates an AI-generated candidate from the decision to release it. The 
 | [Repository Evidence Benchmark](https://semeai.tech/benchmark/) | Anonymous instrument for bounded visible repository evidence | Its display-only Presentation Gate is not SaC/PoR runtime release authority |
 | [Engineering Book](https://semeai.tech/book/) | Architecture, implementation thinking, evidence, continuity, and limits | A 24-chapter inspectable publication, not a second runtime |
 | [Research](https://semeai.tech/research.html) | Public artifacts, active inquiry, and claim boundaries | Retrieval and repository history are evidence sources, not truth or certification |
+| [Account / Workspace](https://semeai.tech/account/) | Identity, access, and one governed context through the current account API | Workspace access is not release authority; unavailable persistence surfaces are labeled |
+| [Skill Forge](https://semeai.tech/skills/) | Candidate-method evidence and registry review | Candidate generation and registry presence are not skill admission |
 | [Dashboard](https://semeai.tech/dashboard.html) | API-backed operational surface | Candidate, release decision, and receipt remain separate artifacts |
 
 Generation creates a candidate. Release is a separate decision.
@@ -77,6 +79,21 @@ Screenshot context: captured **2026-07-26** from the verified local public route
 
 The Benchmark remains available anonymously. GitHub account connection is currently withheld in the public interface rather than linking to an unavailable endpoint.
 
+The isolated Repository Workspace surface exists at [`/benchmark/workspace/`](https://semeai.tech/benchmark/workspace/) but keeps GitHub actions disabled until the backend reports real GitHub App and canonical-analyzer configuration. Local backend implementation is not represented as production authentication.
+
+## Product and evidence spine
+
+Account answers who the current user is and which single governed workspace the current API returns. Workspace presents real account, usage, billing, decision, and receipt data; conversations, sources, memory, evidence, and skills remain explicitly unconnected when no persistence endpoint exists. Dashboard remains the operator Gate console.
+
+Genesis includes a data-driven Chronicle for significant public, verified system changes. Skill Forge exposes one GET JOB candidate in `REVIEW`, three bounded case records, and zero admitted skills. No installable skill or operating marketplace is claimed.
+
+Implementation and authority boundaries are documented in:
+
+- [`docs/system-architecture.md`](./docs/system-architecture.md);
+- [`docs/runtime_decision_contract.md`](./docs/runtime_decision_contract.md);
+- [`docs/review_release_receipt_layer.md`](./docs/review_release_receipt_layer.md);
+- [`docs/skill-forge-boundary.md`](./docs/skill-forge-boundary.md).
+
 ## Engineering Book
 
 The [SemeAI Engineering Book](https://semeai.tech/book/) contains 24 chapters by **Anton Semenenko, Independent AI Systems Engineer**. It follows the system from candidate generation through release authority, Gate decisions, evidence, receipts, replay, runtime structure, limitations, and future design.
@@ -92,8 +109,9 @@ The editable source is [`assets/js/book-content.js`](./assets/js/book-content.js
 | Test a public repository | [Benchmark](https://semeai.tech/benchmark/) |
 | Study implementation principles | [Engineering Book](https://semeai.tech/book/) |
 | Review evidence and limitations | [Research](https://semeai.tech/research.html) |
-| Use the API-backed operational surface | [Dashboard](https://semeai.tech/dashboard.html) |
-| Enter the account surface | [`account.html`](https://semeai.tech/account.html) redirects to Dashboard |
+| Enter identity and governed context | [Account](https://semeai.tech/account/) → [Workspace](https://semeai.tech/workspace/) |
+| Use the API-backed operator surface | [Dashboard](https://semeai.tech/dashboard.html) |
+| Inspect skill-candidate evidence | [Skill Forge](https://semeai.tech/skills/) |
 
 ## Repository and deployment
 
@@ -110,12 +128,15 @@ Local static preview:
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000/`. The Benchmark golden suite requires Node.js and Playwright:
+Then open `http://localhost:8000/`. The locked browser contract requires Node.js 20 or later:
 
 ```bash
-node benchmark/tests/golden.browser.mjs
-node book/tests/book.browser.mjs
+npm ci
+npx playwright install chromium
+npm test
 ```
+
+The same suites run through [`.github/workflows/ci.yml`](./.github/workflows/ci.yml). GitHub Pages deployment remains independent in [`.github/workflows/pages.yml`](./.github/workflows/pages.yml).
 
 ## Claim boundary
 
