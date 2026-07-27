@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import crypto from "node:crypto";
 import fs from "node:fs";
 import http from "node:http";
 import os from "node:os";
@@ -17,6 +18,7 @@ const ROUTES = [
   "/benchmark/",
   "/book/",
   "/research.html",
+  "/roadmap/",
   "/dashboard.html",
   "/account/",
   "/workspace/",
@@ -40,6 +42,7 @@ const MIME = {
   ".js": "text/javascript; charset=utf-8",
   ".json": "application/json",
   ".png": "image/png",
+  ".pdf": "application/pdf",
   ".svg": "image/svg+xml",
   ".webp": "image/webp",
   ".xml": "application/xml",
@@ -865,6 +868,74 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
   return results;
 }
 
+async function validateProductRoadmap(browser, origin, tailwindRuntime) {
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    locale: "en-US",
+    reducedMotion: "reduce",
+  });
+  const page = await context.newPage();
+  const errors = [];
+  await wirePage(page, tailwindRuntime, errors);
+  await loadRoute(page, origin, "/roadmap/");
+
+  const state = await page.evaluate(() => ({
+    title: document.title,
+    pdfHref: document.querySelector("[data-roadmap-pdf]")?.getAttribute("href") || "",
+    hash: document.querySelector("[data-roadmap-hash]")?.textContent.trim() || "",
+    phases: document.querySelectorAll(".roadmap-phases > li").length,
+    complete: document.querySelectorAll(".roadmap-phases > .is-complete").length,
+    next: document.querySelectorAll(".roadmap-phases > .is-next").length,
+    held: document.querySelectorAll(".roadmap-phases > .is-held").length,
+    fakeItems: document.querySelectorAll("[data-fake-item]").length,
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    footerLink: document.querySelector('.site-footer a[href="/roadmap/"]')?.textContent.trim() || "",
+  }));
+
+  assert.equal(state.title, "SemeAI Product Roadmap v1.0");
+  assert.equal(state.pdfHref, "/roadmap/SemeAI_Product_Roadmap_v1.0.pdf");
+  assert.equal(state.hash, "ad32c712afd07e9b13f3050737a97e28384620d120cccad07ea303cc9b1dafcb");
+  assert.equal(state.phases, 12, "Roadmap should expose all twelve dependency phases");
+  assert.equal(state.complete, 2, "Only repository-backed phases should be marked implemented");
+  assert.equal(state.next, 1, "Exactly one next dependency gate should be identified");
+  assert.equal(state.held, 9, "Later phases should remain explicitly dependency-held");
+  assert.equal(state.fakeItems, 0, "Roadmap must not simulate future product data");
+  assert.equal(state.overflow, 0);
+  assert.equal(state.footerLink, "Product Roadmap");
+
+  const pdfResponse = await page.request.get(`${origin}${state.pdfHref}`);
+  assert.equal(pdfResponse.status(), 200);
+  assert.equal(pdfResponse.headers()["content-type"], "application/pdf");
+  const pdfBytes = await pdfResponse.body();
+  assert.equal(pdfBytes.subarray(0, 5).toString("ascii"), "%PDF-");
+  assert.equal(
+    crypto.createHash("sha256").update(pdfBytes).digest("hex"),
+    state.hash,
+    "Hosted PDF bytes should match the published integrity value",
+  );
+
+  await page.locator('[data-lang="uk"]:visible').first().click();
+  assert.equal(
+    await page.locator("#roadmap-title").innerText(),
+    "Від evidence runtime\nдо систем агентних навичок.",
+  );
+  await page.locator('[data-lang="ru"]:visible').first().click();
+  assert.equal(
+    await page.locator("#roadmap-title").innerText(),
+    "От evidence runtime\nк системам агентных навыков.",
+  );
+
+  assert.deepEqual(errors, [], "Roadmap should remain free of browser and asset errors");
+  await context.close();
+  return [
+    "12-phase dependency ledger",
+    "only phases 0–1 marked implemented",
+    "phase 2 next + phases 3–11 held",
+    "hosted PDF hash",
+    "EN / UK / RU",
+  ];
+}
+
 async function validateBenchmarkBoundary(browser, origin, tailwindRuntime) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
   const errors = [];
@@ -975,6 +1046,7 @@ async function main() {
     const noJavaScript = await validateNoJavaScript(browser, origin);
     const reducedMotion = await validateReducedMotion(browser, origin, tailwindRuntime);
     const accountWorkspaceFoundation = await validateAccountWorkspaceFoundation(browser, origin);
+    const productRoadmap = await validateProductRoadmap(browser, origin, tailwindRuntime);
     await validateBenchmarkBoundary(browser, origin, tailwindRuntime);
     const motionSemantics = await validateMotionSemantics(browser, origin, tailwindRuntime);
 
@@ -989,6 +1061,7 @@ async function main() {
           noJavaScript,
           reducedMotion,
           accountWorkspaceFoundation,
+          productRoadmap,
           motionSemantics,
           benchmarkBoundary: "CSP, noindex, auth withholding verified",
         },
