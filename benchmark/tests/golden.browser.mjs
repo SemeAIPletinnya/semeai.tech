@@ -409,6 +409,19 @@ test("fixed authority and artifact outputs are deterministic across repeated run
   artifactRuns.forEach((value) => assert.equal(value, artifactRuns[0]));
   assert.equal(Buffer.byteLength(artifactRuns[0]), expectedAuthority.canonical_artifact_bytes);
   assert.equal(sha256(artifactRuns[0]), expectedAuthority.canonical_artifact_sha256);
+
+  const roadmapCandidate = Core.scoreSnapshot(clone(lowEvidenceSnapshot));
+  const candidateBeforeRoadmap = Core.stableStringify(roadmapCandidate);
+  const firstRoadmap = Core.buildEvidenceRoadmap(roadmapCandidate);
+  const secondRoadmap = Core.buildEvidenceRoadmap(clone(roadmapCandidate));
+  assert.equal(firstRoadmap.schema, "semeai.repository-evidence.roadmap.v1");
+  assert.equal(firstRoadmap.policy_version, expectedAuthority.scoring_policy_version);
+  assert.equal(firstRoadmap.prioritized.length, 6);
+  assert.ok(firstRoadmap.prioritized.every((item) => item.status === "OPEN"));
+  assert.ok(firstRoadmap.observed.every((item) => item.status === "OBSERVE"));
+  assert.ok(firstRoadmap.prioritized.every((item) => /not a score guarantee/i.test(item.potential_policy_effect)));
+  assert.equal(Core.stableStringify(firstRoadmap), Core.stableStringify(secondRoadmap));
+  assert.equal(Core.stableStringify(roadmapCandidate), candidateBeforeRoadmap);
 });
 
 test("all 40 rank codes and every ordinary score boundary remain frozen", () => {
@@ -658,6 +671,9 @@ async function browserFallbackGolden(browser, origin) {
       receiptEnabled: !document.querySelector("#download-receipt").disabled,
       saveControlDisabled: document.querySelector(".save-trace-button").disabled,
       saveControlLabel: document.querySelector(".save-trace-button").textContent.trim(),
+      roadmapCount: document.querySelector("#roadmap-count").textContent.trim(),
+      roadmapItems: document.querySelectorAll(".roadmap-item").length,
+      roadmapObserved: document.querySelector("#roadmap-observed").textContent.trim(),
     }));
     assert.equal(result.resultHidden, false);
     assert.equal(result.blockedHidden, true);
@@ -671,6 +687,9 @@ async function browserFallbackGolden(browser, origin) {
     assert.equal(result.receiptEnabled, true);
     assert.equal(result.saveControlDisabled, true);
     assert.equal(result.saveControlLabel, "GITHUB CONNECTION UNAVAILABLE");
+    assert.equal(result.roadmapCount, "0 OF 0 ACTIONABLE GAPS");
+    assert.equal(result.roadmapItems, 0);
+    assert.match(result.roadmapObserved, /^1 external or chronological signal remains observation-only/);
     assert.ok(requestCounter.count >= 1, "fallback must begin with a real collection attempt in the UI");
     assert.deepEqual(unexpectedExternalRequests, []);
   } finally {

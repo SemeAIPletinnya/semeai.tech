@@ -107,6 +107,168 @@
     },
   ]);
 
+  const ROADMAP_ACTIONS = Object.freeze({
+    source_structure: {
+      action: "Expose the real source or application structure already used by the project.",
+      dependency: "An implemented source surface that can be represented without scaffolding for the benchmark.",
+    },
+    package_manifest: {
+      action: "Add or expose the canonical package or installation manifest used by the project.",
+      dependency: "A real dependency or packaging workflow.",
+    },
+    executable_surface: {
+      action: "Document or expose the existing CLI, API, or runtime entry surface at a bounded repository path.",
+      dependency: "A real executable surface with stable invocation semantics.",
+    },
+    examples: {
+      action: "Add a minimal runnable example that exercises existing behavior without inventing a demo-only capability.",
+      dependency: "An implemented behavior that can be invoked safely and reproducibly.",
+    },
+    packaging_runtime: {
+      action: "Expose the existing container or runtime packaging definition used to run the project.",
+      dependency: "A packaging or deployment workflow that is actually maintained.",
+    },
+    configuration: {
+      action: "Document or expose the real configuration surface, defaults, and bounded environment requirements.",
+      dependency: "Configuration consumed by the current implementation.",
+    },
+    tests: {
+      action: "Add focused tests for existing behavior and keep the assertions executable in the repository.",
+      dependency: "Stable behavior and a test runner that can execute locally.",
+    },
+    ci_workflows: {
+      action: "Add a CI workflow around an existing local test or validation command.",
+      dependency: "A passing local command and permission to add repository automation.",
+    },
+    fixtures: {
+      action: "Add deterministic fixtures only for behavior that already has stable inputs and expected outputs.",
+      dependency: "A test or replay surface that consumes the fixtures.",
+    },
+    dependency_manifests: {
+      action: "Expose the dependency manifest and lock strategy used by the implemented runtime.",
+      dependency: "A real dependency resolution workflow.",
+    },
+    reproduction_guides: {
+      action: "Write a bounded reproduction guide with prerequisites, commands, and expected observable outcomes.",
+      dependency: "Commands verified against the current source commit.",
+    },
+    release_checks: {
+      action: "Document or automate the release checks that are already required before publishing an artifact.",
+      dependency: "A real release process with repeatable checks.",
+    },
+    benchmark_artifacts: {
+      action: "Retain a machine-readable benchmark or evaluation artifact produced by a real bounded run.",
+      dependency: "An executable benchmark or evaluation procedure.",
+    },
+    evidence_maps: {
+      action: "Add a structured evidence manifest that links bounded claims to repository paths or retained artifacts.",
+      dependency: "Reviewed claims and stable source paths.",
+    },
+    receipt_artifacts: {
+      action: "Retain the existing decision or execution receipt format with its provenance boundary documented.",
+      dependency: "A runtime or process that actually emits a receipt.",
+    },
+    machine_results: {
+      action: "Retain a deterministic machine-readable result from an existing verification run.",
+      dependency: "A reproducible command and stable result schema.",
+    },
+    replay_results: {
+      action: "Retain a replay result only where the project already supports deterministic replay.",
+      dependency: "Replay tooling and a bounded fixture or trace.",
+    },
+    validation_outputs: {
+      action: "Document current validation commands and retain bounded outputs without presenting them as universal proof.",
+      dependency: "A real validation suite with reviewable output.",
+    },
+    changelog: {
+      action: "Maintain a factual changelog that links releases or meaningful changes to source history.",
+      dependency: "A defined version or release history.",
+    },
+    public_release: {
+      action: "Publish a release only when a real versioned artifact and release process already exist.",
+      dependency: "A release-worthy artifact, version boundary, and completed release checks.",
+    },
+    roadmap_milestones: {
+      action: "Document dependency-ordered milestones and mark completed work separately from future intent.",
+      dependency: "A reviewed product or engineering plan grounded in current repository state.",
+    },
+    replay_tooling: {
+      action: "Expose existing replay tooling with a bounded command, fixture, and expected result.",
+      dependency: "A deterministic replay surface already supported by the project.",
+    },
+    continuity_docs: {
+      action: "Document factual chronology, migrations, or lineage with provenance for each displayed transition.",
+      dependency: "Reviewable repository history or archived public evidence.",
+    },
+    recent_default_commit: {
+      action: "Retain this as a chronological observation; do not create a meaningless commit to change the signal.",
+      dependency: "Real maintenance work.",
+      observeOnly: true,
+    },
+    gate_policy_paths: {
+      action: "Expose the existing release or Gate policy at a stable repository path.",
+      dependency: "An implemented release-control boundary.",
+    },
+    documented_tristate: {
+      action: "Document the implemented PROCEED / NEEDS_REVIEW / SILENCE semantics and the meaning of withholding.",
+      dependency: "Runtime behavior that already implements the three internal states.",
+    },
+    release_mediation: {
+      action: "Expose the existing mediation boundary between candidate generation and user-visible release.",
+      dependency: "A real pre-release decision path with no post-Gate mutation.",
+    },
+    policy_tests: {
+      action: "Add focused policy tests that freeze current release-decision semantics.",
+      dependency: "An implemented policy function or Gate contract.",
+    },
+    decision_evidence: {
+      action: "Link each decision receipt to the bounded evidence and policy version used for that decision.",
+      dependency: "Existing decision receipts and stable evidence identifiers.",
+    },
+    architecture_docs: {
+      action: "Document the implemented architecture, authority boundaries, and data flow with source references.",
+      dependency: "A reviewed current architecture.",
+    },
+    research_paper: {
+      action: "Publish a bounded research or methods surface only for claims supported by the available evidence.",
+      dependency: "Reviewable methods, references, and claim boundaries.",
+    },
+    external_review_docs: {
+      action: "Document external review evidence only when an identifiable review has actually occurred.",
+      dependency: "A real external review artifact and permission to retain it.",
+    },
+    public_visibility: {
+      action: "Retain repository visibility as captured metadata; never broaden access solely for a benchmark signal.",
+      dependency: "An explicit repository access decision.",
+      observeOnly: true,
+    },
+    stars_present: {
+      action: "Retain this as an external observation; do not solicit or manufacture stars for the benchmark.",
+      dependency: "Independent public attention.",
+      observeOnly: true,
+    },
+    stars_100: {
+      action: "Retain this as an external observation; popularity is not an engineering intervention.",
+      dependency: "Independent public adoption.",
+      observeOnly: true,
+    },
+    forks_present: {
+      action: "Retain this as an external observation; do not create artificial forks.",
+      dependency: "Independent public reuse.",
+      observeOnly: true,
+    },
+  });
+
+  const ROADMAP_CATEGORY_PURPOSE = Object.freeze({
+    implementation: "Makes an existing implementation surface inspectable in the bounded repository tree.",
+    tests: "Makes reproducibility signals visible without claiming that presence means tests pass.",
+    evidence: "Creates an inspectable trace for real verification or decision artifacts.",
+    continuity: "Makes chronology, replay, or release history inspectable across snapshots.",
+    release_control: "Makes the existing candidate-to-decision boundary visible without changing its authority.",
+    research: "Makes methods and claim boundaries inspectable without inflating what the evidence proves.",
+    external: "Preserves external public metadata as observation rather than an engineering quality judgment.",
+  });
+
   class BenchmarkError extends Error {
     constructor(code, message, details) {
       super(message);
@@ -704,6 +866,7 @@
     computeIndicators,
     computeVisualPhase,
     buildReceipt,
+    buildEvidenceRoadmap,
   });
   globalScope.SemeAIBenchmarkCore = Core;
   if (typeof module !== "undefined" && module.exports) {
@@ -751,6 +914,9 @@
     missingCount: document.getElementById("missing-count"),
     heuristicWarnings: document.getElementById("heuristic-warnings"),
     heuristicCount: document.getElementById("heuristic-count"),
+    evidenceRoadmap: document.getElementById("evidence-roadmap"),
+    roadmapCount: document.getElementById("roadmap-count"),
+    roadmapObserved: document.getElementById("roadmap-observed"),
     calculationToggle: document.getElementById("calculation-toggle"),
     calculationDetail: document.getElementById("calculation-detail"),
     visualPhase: document.getElementById("visual-phase"),
@@ -1031,6 +1197,61 @@
     return `Repository with ${summary}.`;
   }
 
+  function buildEvidenceRoadmap(candidate) {
+    const policyOrder = new Map();
+    SCORING_POLICY.forEach((category, categoryIndex) => {
+      category.items.forEach((item, itemIndex) => {
+        policyOrder.set(`${category.key}:${item.key}`, categoryIndex * 100 + itemIndex);
+      });
+    });
+
+    const items = candidate.missingSignals.map((criterion) => {
+      const guidance = ROADMAP_ACTIONS[criterion.signal] || {
+        action: `Expose real bounded evidence for "${criterion.label}" only if that surface already exists.`,
+        dependency: "A corresponding implemented engineering surface.",
+      };
+      const observeOnly = Boolean(guidance.observeOnly || criterion.category_key === "external");
+      return {
+        id: `${criterion.category_key}.${criterion.signal}`,
+        category: criterion.category,
+        category_key: criterion.category_key,
+        missing_signal: criterion.label,
+        observed_basis: criterion.basis,
+        recommended_action: guidance.action,
+        why_it_matters: ROADMAP_CATEGORY_PURPOSE[criterion.category_key],
+        potential_policy_effect: `A future compatible snapshot may admit the fixed "${criterion.label}" criterion if its bounded signal is visible. This is not a score guarantee.`,
+        confidence: observeOnly ? "OBSERVATION" : "BOUNDED",
+        dependencies: [guidance.dependency],
+        verification_method: observeOnly
+          ? "Capture a later repository snapshot and compare the public metadata without engineering the signal."
+          : `Re-run the same benchmark policy on the resulting source commit and inspect the "${criterion.label}" criterion evidence path.`,
+        status: observeOnly ? "OBSERVE" : "OPEN",
+        points_available: criterion.points_available,
+        policy_order: policyOrder.get(`${criterion.category_key}:${criterion.signal}`) ?? Number.MAX_SAFE_INTEGER,
+      };
+    });
+
+    const actionable = items
+      .filter((item) => item.status === "OPEN")
+      .sort((left, right) => (
+        right.points_available - left.points_available
+        || left.policy_order - right.policy_order
+        || left.id.localeCompare(right.id)
+      ));
+    const observed = items
+      .filter((item) => item.status === "OBSERVE")
+      .sort((left, right) => left.policy_order - right.policy_order || left.id.localeCompare(right.id));
+
+    return {
+      schema: "semeai.repository-evidence.roadmap.v1",
+      policy_version: SCORING_POLICY_VERSION,
+      source_commit: candidate.snapshot.commit_sha,
+      actionable,
+      prioritized: actionable.slice(0, 6),
+      observed,
+    };
+  }
+
   function clearLists() {
     [
       elements.blockedReasons,
@@ -1039,6 +1260,7 @@
       elements.admittedSignals,
       elements.missingSignals,
       elements.heuristicWarnings,
+      elements.evidenceRoadmap,
     ].forEach((element) => element.replaceChildren());
   }
 
@@ -1208,6 +1430,48 @@
     elements.missingCount.textContent = `${candidate.missingSignals.length} SIGNAL${candidate.missingSignals.length === 1 ? "" : "S"}`;
   }
 
+  function renderEvidenceRoadmap(candidate) {
+    const roadmap = buildEvidenceRoadmap(candidate);
+    elements.roadmapCount.textContent = `${roadmap.prioritized.length} OF ${roadmap.actionable.length} ACTIONABLE GAPS`;
+    elements.roadmapObserved.textContent = roadmap.observed.length
+      ? `${roadmap.observed.length} external or chronological signal${roadmap.observed.length === 1 ? " remains observation-only and is not a recommended intervention." : "s remain observation-only and are not recommended interventions."}`
+      : "No observation-only gaps were present in this snapshot.";
+
+    if (!roadmap.prioritized.length) {
+      const item = makeElement("li", "roadmap-empty");
+      item.appendChild(makeElement("p", "", "No missing actionable fixed criteria were identified in this snapshot."));
+      elements.evidenceRoadmap.appendChild(item);
+      return;
+    }
+
+    roadmap.prioritized.forEach((item, index) => {
+      const row = makeElement("li", "roadmap-item");
+      const header = makeElement("div", "roadmap-item__header");
+      header.appendChild(makeElement("span", "roadmap-item__priority", `PRIORITY ${String(index + 1).padStart(2, "0")}`));
+      header.appendChild(makeElement("span", "roadmap-item__state", `${item.status} / ${item.confidence}`));
+      row.appendChild(header);
+      row.appendChild(makeElement("p", "roadmap-item__category", item.category));
+      row.appendChild(makeElement("h4", "", item.missing_signal));
+
+      const detail = makeElement("dl", "roadmap-item__detail");
+      [
+        ["OBSERVED BASIS", item.observed_basis],
+        ["BOUNDED ACTION", item.recommended_action],
+        ["WHY THIS SIGNAL MATTERS", item.why_it_matters],
+        ["POTENTIAL POLICY EFFECT", item.potential_policy_effect],
+        ["VERIFY", item.verification_method],
+        ["DEPENDENCY", item.dependencies.join(" · ")],
+      ].forEach(([label, value]) => {
+        const group = makeElement("div");
+        group.appendChild(makeElement("dt", "", label));
+        group.appendChild(makeElement("dd", "", value));
+        detail.appendChild(group);
+      });
+      row.appendChild(detail);
+      elements.evidenceRoadmap.appendChild(row);
+    });
+  }
+
   function renderResult(candidate, gate, visual, receipt) {
     clearLists();
     const snapshot = candidate.snapshot;
@@ -1240,6 +1504,7 @@
     renderEvidenceRank(candidate, gate, indicators);
     renderCategoryBreakdown(candidate);
     renderLedger(candidate, gate);
+    renderEvidenceRoadmap(candidate);
     currentReceipt = receipt;
     currentReceiptText = `${JSON.stringify(receipt, null, 2)}\n`;
     elements.downloadReceipt.disabled = false;

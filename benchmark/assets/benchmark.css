@@ -1420,6 +1420,7 @@ form label small {
 
 .category-section,
 .evidence-section,
+.roadmap-section,
 .receipt-section {
   padding-block: clamp(3.5rem, 6vw, 6rem);
 }
@@ -1433,6 +1434,7 @@ form label small {
 }
 
 .section-heading h3,
+.roadmap-section h3,
 .receipt-section h3 {
   margin: 0;
   font-family: var(--serif);
@@ -1745,6 +1747,136 @@ form label small {
   margin-top: 0.55rem;
   color: var(--muted);
   font-size: 0.72rem;
+}
+
+.roadmap-introduction {
+  max-width: 56rem;
+  margin: -1.5rem 0 2.5rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+
+.roadmap-list {
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  list-style: none;
+  counter-reset: roadmap-priority;
+}
+
+.roadmap-item,
+.roadmap-empty {
+  min-width: 0;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background:
+    linear-gradient(145deg, rgba(215, 182, 111, 0.025), transparent 58%),
+    rgba(255, 255, 255, 0.008);
+}
+
+.roadmap-item__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.57rem;
+  letter-spacing: 0.11em;
+}
+
+.roadmap-item__priority {
+  color: var(--gold);
+}
+
+.roadmap-item__state {
+  color: var(--violet);
+  text-align: right;
+}
+
+.roadmap-item__category {
+  margin: 2rem 0 0.45rem;
+  color: var(--faint);
+  font-family: var(--mono);
+  font-size: 0.61rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.roadmap-item h4 {
+  min-height: 2.5em;
+  margin: 0;
+  color: var(--paper);
+  font-family: var(--serif);
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.roadmap-item__detail {
+  margin: 2rem 0 0;
+}
+
+.roadmap-item__detail div {
+  padding: 0.75rem 0;
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.4fr) minmax(0, 1fr);
+  gap: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.roadmap-item__detail dt {
+  color: var(--gold);
+  font-family: var(--mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+}
+
+.roadmap-item__detail dd {
+  min-width: 0;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.roadmap-boundary {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border-left: 1px solid var(--violet);
+  background: linear-gradient(90deg, var(--violet-dim), transparent 75%);
+}
+
+.roadmap-boundary h4 {
+  margin: 0 0 0.8rem;
+  color: var(--violet);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+}
+
+.roadmap-boundary ul {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.roadmap-boundary li,
+.roadmap-boundary p {
+  max-width: 70rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  line-height: 1.65;
+}
+
+.roadmap-boundary p {
+  margin: 0.8rem 0 0;
+  color: var(--faint);
+  font-family: var(--mono);
 }
 
 .receipt-section {
@@ -2320,6 +2452,7 @@ footer {
 
   .category-grid,
   .ledger-grid,
+  .roadmap-list,
   .editorial-note,
   .method-grid {
     grid-template-columns: 1fr;
@@ -2361,6 +2494,15 @@ footer {
 
   .criterion-points {
     grid-column: 2;
+  }
+
+  .roadmap-item h4 {
+    min-height: auto;
+  }
+
+  .roadmap-item__detail div {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
   }
 
   .receipt-card dl {
