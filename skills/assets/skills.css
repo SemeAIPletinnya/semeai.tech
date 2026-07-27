@@ -1,0 +1,351 @@
+:root {
+  --skills-paper: #eee7d8;
+  --skills-muted: #98948a;
+  --skills-gold: #c5aa67;
+  --skills-violet: #8c789f;
+  --skills-line: rgba(238, 231, 216, 0.16);
+}
+
+body.mode-skills {
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(238, 231, 216, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(238, 231, 216, 0.025) 1px, transparent 1px),
+    #050606;
+  background-size: 48px 48px;
+  color: var(--skills-paper);
+}
+
+.skills-main {
+  width: min(1360px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 64px 0 110px;
+}
+
+.skills-hero {
+  min-height: 620px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  gap: clamp(48px, 8vw, 120px);
+  align-items: center;
+  border-bottom: 1px solid var(--skills-line);
+}
+
+.skills-kicker,
+.registry-counts {
+  margin: 0 0 22px;
+  color: var(--skills-gold);
+  font: 600 0.72rem/1.4 var(--font-mono, monospace);
+  letter-spacing: 0.16em;
+}
+
+.skills-hero h1 {
+  margin: 0;
+  max-width: 900px;
+  font: 500 clamp(3.6rem, 7vw, 7.5rem)/0.86 var(--font-display, sans-serif);
+  letter-spacing: -0.07em;
+}
+
+.skills-hero h1 em {
+  color: var(--skills-gold);
+  font-style: normal;
+}
+
+.skills-lede {
+  max-width: 720px;
+  margin: 36px 0 0;
+  color: #b9b3a6;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.65;
+}
+
+.skills-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 34px;
+}
+
+.skills-action {
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 20px;
+  border: 1px solid var(--skills-line);
+  font: 600 0.72rem/1 var(--font-mono, monospace);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.skills-action--primary {
+  border-color: var(--skills-gold);
+  color: var(--skills-gold);
+}
+
+.forge-trace {
+  border-left: 1px solid var(--skills-line);
+  padding-left: 42px;
+}
+
+.forge-trace ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.forge-trace li {
+  min-height: 104px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid var(--skills-line);
+}
+
+.forge-trace li::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  bottom: -52px;
+  width: 1px;
+  height: 52px;
+  background: linear-gradient(var(--skills-gold), transparent);
+}
+
+.forge-trace li:last-child::before {
+  display: none;
+}
+
+.forge-trace span,
+.forge-trace strong {
+  font: 600 0.72rem/1.4 var(--font-mono, monospace);
+  letter-spacing: 0.11em;
+}
+
+.forge-trace span {
+  color: var(--skills-gold);
+}
+
+.skills-boundary,
+.marketplace-boundary {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr);
+  gap: 42px;
+  padding: 86px 0;
+  border-bottom: 1px solid var(--skills-line);
+}
+
+.skills-boundary h2,
+.marketplace-boundary h2,
+.skills-heading h2 {
+  margin: 0;
+  font: 500 clamp(2rem, 4vw, 4rem)/1 var(--font-display, sans-serif);
+  letter-spacing: -0.05em;
+}
+
+.skills-boundary p,
+.marketplace-boundary p {
+  max-width: 760px;
+  color: #b9b3a6;
+  line-height: 1.7;
+}
+
+.registry-section,
+.case-section {
+  padding: 86px 0;
+  border-bottom: 1px solid var(--skills-line);
+}
+
+.skills-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  align-items: end;
+  margin-bottom: 42px;
+}
+
+.skill-record,
+.case-record {
+  border: 1px solid var(--skills-line);
+  background: rgba(4, 5, 5, 0.7);
+  padding: clamp(24px, 4vw, 48px);
+}
+
+.skill-record__status,
+.case-record__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--skills-line);
+  font: 600 0.72rem/1.4 var(--font-mono, monospace);
+  letter-spacing: 0.13em;
+}
+
+.skill-record__status strong,
+.case-record__head strong {
+  color: var(--skills-violet);
+}
+
+.skill-record h3 {
+  margin: 42px 0 18px;
+  font: 500 clamp(2.3rem, 5vw, 5rem)/0.95 var(--font-display, sans-serif);
+  letter-spacing: -0.055em;
+}
+
+.skill-record > p,
+.case-record > p {
+  max-width: 860px;
+  color: #b9b3a6;
+  line-height: 1.65;
+}
+
+.skill-facts,
+.case-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 34px 0;
+  background: var(--skills-line);
+}
+
+.skill-facts div,
+.case-facts div {
+  min-width: 0;
+  padding: 18px;
+  background: #070808;
+}
+
+.skill-facts dt,
+.case-facts dt {
+  color: var(--skills-muted);
+  font: 600 0.66rem/1.4 var(--font-mono, monospace);
+  letter-spacing: 0.11em;
+}
+
+.skill-facts dd,
+.case-facts dd {
+  overflow-wrap: anywhere;
+  margin: 9px 0 0;
+  font: 500 0.78rem/1.5 var(--font-mono, monospace);
+}
+
+.capability-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.capability-list li {
+  padding: 8px 11px;
+  border: 1px solid var(--skills-line);
+  color: var(--skills-muted);
+  font: 500 0.7rem/1 var(--font-mono, monospace);
+}
+
+.case-ledger {
+  display: grid;
+  gap: 18px;
+}
+
+.artifact-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.artifact-list li {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.34fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.artifact-list strong,
+.artifact-list code,
+.case-tests {
+  overflow-wrap: anywhere;
+  font: 500 0.72rem/1.5 var(--font-mono, monospace);
+}
+
+.artifact-list code {
+  color: var(--skills-muted);
+}
+
+.case-tests {
+  color: var(--skills-gold);
+}
+
+.skills-status,
+.skills-noscript {
+  margin: 28px 0 0;
+  color: var(--skills-muted);
+  font: 500 0.7rem/1.5 var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--skills-gold);
+  outline-offset: 4px;
+}
+
+@media (max-width: 820px) {
+  .skills-main {
+    width: min(100% - 28px, 680px);
+    padding-top: 36px;
+  }
+
+  .skills-hero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    padding: 58px 0 72px;
+  }
+
+  .skills-hero h1 {
+    overflow-wrap: anywhere;
+    font-size: clamp(2.7rem, 11vw, 4.3rem);
+    line-height: 0.9;
+  }
+
+  .forge-trace {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .skills-boundary,
+  .marketplace-boundary {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 62px 0;
+  }
+
+  .skills-heading {
+    display: block;
+  }
+
+  .registry-counts {
+    margin-top: 22px;
+  }
+
+  .skill-facts,
+  .case-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .artifact-list li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+@media print, (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

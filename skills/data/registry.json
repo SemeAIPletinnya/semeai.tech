@@ -1,0 +1,44 @@
+{
+  "schema_version": "semeai.skill-registry.v0.1",
+  "captured_at": "2026-07-27T00:00:00Z",
+  "authority_boundary": "Registry presence is not admission. Generated candidates require an explicit admission decision.",
+  "counts": {
+    "candidates": 1,
+    "in_review": 1,
+    "admitted": 0,
+    "rejected": 0,
+    "deprecated": 0
+  },
+  "skills": [
+    {
+      "skill_id": "get-job",
+      "name": "GET JOB",
+      "version": "0.1-candidate",
+      "status": "REVIEW",
+      "author_provenance": "User-authored operating method preserved in local GET JOB case folders",
+      "source_skill_sha256": "3b030d109ad876294cc6fe57525dfd5c190cbd61134ab0715f261de46db35c59",
+      "candidate_artifact": null,
+      "compatibility": {
+        "environment": "Codex repository execution",
+        "evidence": "Observed in SemeAI implementation and one cross-domain local transfer case",
+        "statistical_claim": "NOT ESTABLISHED"
+      },
+      "capabilities": [
+        "authority discovery",
+        "dependency-valid sequencing",
+        "implementation continuation",
+        "verification and blocker reporting"
+      ],
+      "permissions": {
+        "declared": [],
+        "note": "No installable admitted artifact or runtime permission contract exists."
+      },
+      "evaluation_reference": "/skills/data/get-job-evidence.json",
+      "admission_decision": null,
+      "distribution": {
+        "available": false,
+        "marketplace_ready": false
+      }
+    }
+  ]
+}

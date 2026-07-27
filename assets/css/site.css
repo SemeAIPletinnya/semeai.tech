@@ -874,3 +874,43 @@ code { font-family: var(--mono); font-size: 0.9em; color: var(--accent-soft); }
 .mt-8 { margin-top: 2rem; }
 .mt-10 { margin-top: 2.5rem; }
 .mb-4 { margin-bottom: 1rem; }
+
+.claim-ledger {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.claim-ledger > div {
+  min-width: 0;
+  padding: 1.25rem;
+  background: rgba(7, 8, 9, 0.94);
+}
+
+.claim-ledger dt {
+  color: var(--gold);
+  font: 600 0.68rem/1.35 var(--font-mono);
+  letter-spacing: 0.1em;
+}
+
+.claim-ledger dd {
+  margin: 0.85rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 980px) {
+  .claim-ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .claim-ledger {
+    grid-template-columns: 1fr;
+  }
+}

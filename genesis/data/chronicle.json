@@ -1,0 +1,72 @@
+{
+  "schema": "semeai.genesis.chronicle.v1",
+  "policy": {
+    "calendar_requires_entry": false,
+    "significant_change_requires_public_evidence": true,
+    "private_material_auto_admitted": false,
+    "commit_is_idea_origin_proof": false
+  },
+  "entries": [
+    {
+      "id": "2026-07-account-workspace",
+      "date_range": "2026-07-26",
+      "theme": "Account and governed workspace",
+      "what_changed": "Account and Workspace became distinct first-class product routes while Dashboard remained the operator Gate console.",
+      "evidence": "Three public commits implement the surfaces, route public entry, and add browser coverage.",
+      "verification": "Cross-route tests cover signed-out, mocked authenticated, responsive, keyboard, reduced-motion, and no-JS states.",
+      "remaining_blocker": "Conversations, sources, memory, and evidence persistence remain explicitly unconnected where the current account API has no endpoint.",
+      "why_it_matters": "Identity, governed context, and release operation are now separate product roles.",
+      "status": "ADMITTED PUBLIC COMMIT EVIDENCE",
+      "source_references": [
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/92f5be8b5e16883566c9e03c6499524e659ac83a",
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/9f9a880f45abbfa5b81303c9eaf8a086282c0f4a",
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/2e1b625e19926a9fe58777d96d04e4dace844d7b"
+      ]
+    },
+    {
+      "id": "2026-07-roadmap",
+      "date_range": "2026-07-27",
+      "theme": "Dependency-gated product roadmap",
+      "what_changed": "The 35-page product roadmap was published with a byte-level source hash and an implementation-status ledger.",
+      "evidence": "The hosted PDF and public route are retained in repository history.",
+      "verification": "Browser assertions verify the route, document hash, responsive layout, and declared phase states.",
+      "remaining_blocker": "A published roadmap does not implement later phases; each remains bounded by its own exit evidence.",
+      "why_it_matters": "Future product direction is distinguishable from current implementation.",
+      "status": "ADMITTED PUBLIC COMMIT EVIDENCE",
+      "source_references": [
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/c893c0ee0195078a2aabf5d12e080e058b870559",
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/29a34152fbe91b277954f51924feae6e87ed13a5"
+      ]
+    },
+    {
+      "id": "2026-07-genesis-v03",
+      "date_range": "2026-07-27",
+      "theme": "Documentary Genesis v03",
+      "what_changed": "Genesis was rebuilt from structured historical artifacts, captured repository facts, curated conceptual lineage, twelve eras, and admitted milestones.",
+      "evidence": "Archive records, media hashes, repository snapshot, classifications, and generated manifests are present in the public repository.",
+      "verification": "The manifest builder verifies source paths, artifact hashes, admission states, classifications, and deterministic generated output.",
+      "remaining_blocker": "Historical public language remains historical framing and must not be promoted into current technical claims.",
+      "why_it_matters": "Genesis now distinguishes formation evidence from mythology and release authority.",
+      "status": "ADMITTED PUBLIC COMMIT EVIDENCE",
+      "source_references": [
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/c39ef534cfe400d00cb122c5d32bab5b2b7766b4",
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/54a579d6f32af347c182aa36fb1bd5d071d5bb6b"
+      ]
+    },
+    {
+      "id": "2026-07-benchmark-roadmap",
+      "date_range": "2026-07-27",
+      "theme": "Benchmark audit to evidence roadmap",
+      "what_changed": "Missing fixed criteria now produce a deterministic bounded evidence roadmap after a repository run.",
+      "evidence": "The public analyzer derives actions only from the existing fixed policy and admitted snapshot.",
+      "verification": "The ten-test golden suite preserves score, categories, indicators, Gate, rank, visual state, serialized fallback receipt, and hash.",
+      "remaining_blocker": "Workspace retention requires real GitHub App configuration and the exact canonical analyzer in the backend environment.",
+      "why_it_matters": "The instrument can explain observable gaps without promising quality or guaranteed points.",
+      "status": "ADMITTED PUBLIC COMMIT EVIDENCE",
+      "source_references": [
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/97f6d45b89522ba569ab191b6f04bb8670083b50",
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/db5f37477eae1f25cb2c9c6199dd79c3020873ca"
+      ]
+    }
+  ]
+}

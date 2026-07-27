@@ -10,6 +10,7 @@
     artifacts: "/genesis/data/artifacts.json",
     repositories: "/genesis/data/repositories.json",
     lineage: "/genesis/data/lineage.json",
+    chronicle: "/genesis/data/chronicle.json",
   };
 
   function element(name, attributes = {}, text = "") {
@@ -258,6 +259,49 @@
     });
   }
 
+  function renderChronicle(data) {
+    const ledger = document.querySelector("[data-chronicle-ledger]");
+    if (!ledger || !Array.isArray(data.chronicle.entries)) return;
+    ledger.replaceChildren();
+    data.chronicle.entries
+      .slice()
+      .reverse()
+      .forEach((entry) => {
+        const item = element("li");
+        const article = element("article", { class: "chronicle-entry" });
+        article.append(
+          element("p", { class: "chronicle-entry__date" }, `${entry.date_range} · ${entry.status}`),
+          element("h3", {}, entry.theme),
+          element("p", { class: "chronicle-entry__change" }, entry.what_changed),
+        );
+        const detail = element("dl", { class: "chronicle-entry__detail" });
+        [
+          ["EVIDENCE", entry.evidence],
+          ["VERIFICATION", entry.verification],
+          ["REMAINING BLOCKER", entry.remaining_blocker],
+          ["WHY IT MATTERS", entry.why_it_matters],
+        ].forEach(([term, description]) => {
+          const row = element("div");
+          row.append(element("dt", {}, term), element("dd", {}, description));
+          detail.append(row);
+        });
+        article.append(detail);
+        const sources = element("div", { class: "chronicle-entry__sources" });
+        (entry.source_references || []).forEach((value, index) => {
+          const url = safeExternalUrl(value);
+          if (!url) return;
+          sources.append(element("a", {
+            href: url,
+            target: "_blank",
+            rel: "noopener noreferrer",
+          }, `SOURCE ${String(index + 1).padStart(2, "0")} ↗`));
+        });
+        article.append(sources);
+        item.append(article);
+        ledger.append(item);
+      });
+  }
+
   function bindEraNavigation() {
     const controls = Array.from(document.querySelectorAll("[data-era-control]"));
     const eras = Array.from(document.querySelectorAll("[data-era]"));
@@ -329,15 +373,16 @@
     bindLifecycle();
     bindEraNavigation();
     try {
-      const [eras, milestones, artifacts, repositories, lineage] = await Promise.all(
+      const [eras, milestones, artifacts, repositories, lineage, chronicle] = await Promise.all(
         Object.values(paths).map(fetchJson),
       );
-      const data = { eras, milestones, artifacts, repositories, lineage };
+      const data = { eras, milestones, artifacts, repositories, lineage, chronicle };
       renderEras(data);
       renderLineage(data);
+      renderChronicle(data);
       bindLineageVisibility();
       setStatus(
-        `STRUCTURED PROVENANCE LOADED · ${artifacts.artifacts.length} ADMITTED PUBLIC ARTIFACTS · SNAPSHOT ${repositories.captured_at}`,
+        `STRUCTURED PROVENANCE LOADED · ${artifacts.artifacts.length} ADMITTED PUBLIC ARTIFACTS · ${chronicle.entries.length} CHRONICLE ENTRIES · SNAPSHOT ${repositories.captured_at}`,
         "ready",
       );
     } catch (error) {

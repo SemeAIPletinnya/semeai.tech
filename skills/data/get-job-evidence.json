@@ -1,0 +1,110 @@
+{
+  "schema_version": "semeai.skill-evidence.v0.1",
+  "skill_id": "get-job",
+  "status": "REVIEW",
+  "method_sha256": "3b030d109ad876294cc6fe57525dfd5c190cbd61134ab0715f261de46db35c59",
+  "method_summary": [
+    "audit current state",
+    "freeze completed dependency-valid achievements",
+    "select the earliest executable phase",
+    "implement and verify it",
+    "re-evaluate the dependency graph",
+    "continue until a real blocker or completed dependency-valid boundary"
+  ],
+  "claim_boundary": "The available cases support qualitative observations only. They do not establish statistical improvement, universal transfer, or admission.",
+  "cases": [
+    {
+      "case_id": "case-001",
+      "mode": "BASELINE / NO RECORDED SKILL",
+      "source_artifacts": [
+        {
+          "name": "SemeAI_Full_Product1.0.pdf",
+          "sha256": "ad32c712afd07e9b13f3050737a97e28384620d120cccad07ea303cc9b1dafcb"
+        },
+        {
+          "name": "sha.txt",
+          "sha256": null,
+          "note": "Available file is empty."
+        }
+      ],
+      "job_sha256": null,
+      "starting_head": null,
+      "final_head": null,
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": null,
+      "commits": [],
+      "tests": [],
+      "deployment": null,
+      "observation": "The available folder preserves the roadmap source but no execution report or measurements. No baseline performance claim is possible."
+    },
+    {
+      "case_id": "case-002",
+      "mode": "SKILL-ASSISTED / SAME SYSTEM",
+      "source_artifacts": [
+        {
+          "name": "GET JOB.txt",
+          "sha256": "3b030d109ad876294cc6fe57525dfd5c190cbd61134ab0715f261de46db35c59"
+        },
+        {
+          "name": "SemeAI_Full_Product1.0.pdf",
+          "sha256": "ad32c712afd07e9b13f3050737a97e28384620d120cccad07ea303cc9b1dafcb"
+        }
+      ],
+      "job_sha256": null,
+      "starting_head": null,
+      "final_head": null,
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": null,
+      "commits": [],
+      "tests": [],
+      "deployment": null,
+      "observation": "The method and shared roadmap source are preserved. The available case folder contains no job artifact or machine-readable final report, so result metrics remain unavailable."
+    },
+    {
+      "case_id": "case-003",
+      "mode": "SKILL-ASSISTED / CROSS-DOMAIN TRANSFER",
+      "source_artifacts": [
+        {
+          "name": "GET JOB.txt",
+          "sha256": "3b030d109ad876294cc6fe57525dfd5c190cbd61134ab0715f261de46db35c59"
+        },
+        {
+          "name": "JOB.md",
+          "sha256": "a1a1d964f08d0029b05f6f40d272a8c8b60729c1030a7a4bfac3584aa78e4dfe"
+        }
+      ],
+      "repository": "SemeAIPletinnya/semeai-gate-basic",
+      "worktree_branch": "case-003-moderation-shadow",
+      "starting_head": "e8947960f3de2d1f7a3ab4727bb3762729e01065",
+      "final_head": "4db2f36266229afa416aa369c441345d0c9a3af8",
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": null,
+      "commits": [
+        {
+          "sha": "4db2f36266229afa416aa369c441345d0c9a3af8",
+          "state": "LOCAL VERIFIED CANDIDATE / NOT ON ORIGIN MASTER"
+        }
+      ],
+      "tests": [
+        {
+          "command": "python -m pytest -q",
+          "result": "79 passed",
+          "captured_at": "2026-07-27"
+        }
+      ],
+      "deployment": false,
+      "observation": "The method supported decomposition and a verified local transfer implementation. The result remains isolated from backend master and is not an admitted skill or deployed product claim."
+    }
+  ],
+  "observed_dimensions": {
+    "authority_discovery": "demonstrated qualitatively in the recorded Case 003 repository boundary",
+    "dependency_reasoning": "demonstrated qualitatively by the isolated worktree and local-only outcome",
+    "scope_continuation": "observed, not measured",
+    "invariant_preservation": "supported by the recorded test result; no universal claim",
+    "resource_use": "not measured",
+    "statistical_improvement": "not established"
+  }
+}
