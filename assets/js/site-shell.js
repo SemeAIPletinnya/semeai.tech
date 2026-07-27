@@ -18,6 +18,7 @@
   function currentRoute() {
     if (path === "/workspace/" || path.endsWith("/workspace/index.html")) return "workspace";
     if (path === "/account/" || path.endsWith("/account/index.html") || path.endsWith("/account.html")) return "account";
+    if (path.includes("/skills/")) return "skills";
     if (path.includes("/roadmap/")) return "roadmap";
     if (path === "/" || (path.endsWith("/index.html") && !path.includes("/book/") && !path.includes("/genesis/") && !path.includes("/benchmark/"))) return "home";
     if (path.includes("/benchmark/")) return "benchmark";
@@ -193,6 +194,7 @@
       footerColumn("shell.footer.method", "Method", [
         { label: "Engineering Book", i18n: "shell.footer.book", href: "/book/" },
         { label: "Research", i18n: "shell.footer.research", href: "/research.html" },
+        { label: "Skill Forge", i18n: "shell.footer.skills", href: "/skills/" },
         { label: "Product Roadmap", i18n: "shell.footer.roadmap", href: "/roadmap/" },
       ]),
       footerColumn("shell.footer.use", "Use", [

@@ -15,6 +15,7 @@
   }
 
   const state = {
+    configuration: null,
     overview: null,
     installations: [],
     repositories: [],
@@ -87,10 +88,53 @@
     return payload;
   }
 
-  function setAuthLinks() {
-    elements.signIn.href = `${API_ORIGIN}/v0/oauth/github/start?return_path=%2Fbenchmark%2Fworkspace%2F`;
-    elements.connectRepositories.href = `${API_ORIGIN}/v0/github/install/start`;
-    elements.accountConnect.href = `${API_ORIGIN}/v0/github/install/start`;
+  function setActionLink(element, enabled, href, enabledText, disabledText) {
+    if (enabled) {
+      element.href = href;
+      element.removeAttribute("aria-disabled");
+      element.textContent = enabledText;
+      const marker = createElement("span", "", "↗");
+      marker.setAttribute("aria-hidden", "true");
+      element.append(document.createTextNode(" "), marker);
+      return;
+    }
+    element.removeAttribute("href");
+    element.setAttribute("aria-disabled", "true");
+    element.textContent = disabledText;
+  }
+
+  function applyConfiguration(configuration) {
+    state.configuration = configuration;
+    const github = configuration?.github || {};
+    const analyzer = configuration?.analyzer || {};
+    setActionLink(
+      elements.signIn,
+      github.enabled === true,
+      `${API_ORIGIN}${github.start_path || "/v0/oauth/github/start"}?return_path=%2Fbenchmark%2Fworkspace%2F`,
+      "SIGN IN WITH GITHUB",
+      "GITHUB CONNECTION UNAVAILABLE",
+    );
+    setActionLink(
+      elements.connectRepositories,
+      github.app_configured === true,
+      `${API_ORIGIN}${github.install_start_path || "/v0/github/install/start"}`,
+      "CONNECT REPOSITORIES",
+      "REPOSITORY CONNECTION UNAVAILABLE",
+    );
+    setActionLink(
+      elements.accountConnect,
+      github.app_configured === true,
+      `${API_ORIGIN}${github.install_start_path || "/v0/github/install/start"}`,
+      "ADD OR SELECT REPOSITORIES",
+      "REPOSITORY CONNECTION UNAVAILABLE",
+    );
+    if (!github.enabled) {
+      setNotice("GitHub identity authorization is not configured for this environment.");
+    } else if (!github.app_configured) {
+      setNotice("GitHub identity is available; repository installation is not configured.");
+    } else if (!analyzer.configured) {
+      setNotice("GitHub access is configured; retained benchmark execution awaits the canonical analyzer.");
+    }
   }
 
   function safeAvatarUrl(value) {
@@ -148,6 +192,12 @@
     const numeric = Number(value);
     if (numeric === 0) return "NO SCORE DELTA";
     return `${numeric > 0 ? "+" : ""}${numeric} SCORE DELTA`;
+  }
+
+  function scoreLabel(run) {
+    return run?.presentation_gate_decision === "BLOCK"
+      ? "SCORE WITHHELD"
+      : `${Number(run?.total_score || 0)} / 100`;
   }
 
   function latestRunFor(repositoryId) {
@@ -249,7 +299,11 @@
       createElement("h2", "", latest.repository),
     );
     const scoreLine = createElement("div", "latest-score-line");
-    scoreLine.append(createElement("strong", "", latest.total_score), createElement("span", "", "/ 100 REPOSITORY PROGRESSION INDEX"));
+    if (latest.presentation_gate_decision === "BLOCK") {
+      scoreLine.append(createElement("strong", "", "SCORE WITHHELD"));
+    } else {
+      scoreLine.append(createElement("strong", "", latest.total_score), createElement("span", "", "/ 100 REPOSITORY PROGRESSION INDEX"));
+    }
     copy.append(scoreLine, createElement("span", "gate-label", latest.presentation_gate_decision));
     const facts = createElement("dl", "source-facts");
     appendDefinition(facts, "SOURCE COMMIT", shortCommit(latest.source_commit));
@@ -264,6 +318,10 @@
   }
 
   async function runRepository(repository, button, status) {
+    if (state.configuration?.analyzer?.configured !== true) {
+      status.textContent = "CANONICAL ANALYZER NOT CONFIGURED";
+      return;
+    }
     setError("");
     button.disabled = true;
     status.textContent = "CAPTURING AUTHORIZED EVIDENCE";
@@ -311,7 +369,7 @@
       identity.appendChild(labels);
 
       const metadata = createElement("dl", "repository-meta");
-      appendDefinition(metadata, "LATEST SCORE", latest ? `${latest.total_score} / 100` : "NO TRACE");
+      appendDefinition(metadata, "LATEST SCORE", latest ? scoreLabel(latest) : "NO TRACE");
       appendDefinition(metadata, "SCORE DELTA", latest ? deltaLabel(latest.score_delta) : "NOT AVAILABLE");
       appendDefinition(metadata, "GATE", latest ? latest.presentation_gate_decision : "NOT RUN");
       appendDefinition(metadata, "SOURCE COMMIT", latest ? shortCommit(latest.source_commit) : "NOT CAPTURED");
@@ -320,6 +378,10 @@
       const actions = createElement("div", "repository-actions");
       const runButton = createElement("button", "", "RUN BENCHMARK");
       runButton.type = "button";
+      if (state.configuration?.analyzer?.configured !== true) {
+        runButton.disabled = true;
+        runButton.title = "Canonical benchmark execution is not configured in this environment.";
+      }
       const historyButton = createElement("button", "", "VIEW HISTORY");
       historyButton.type = "button";
       historyButton.disabled = !latest;
@@ -380,7 +442,11 @@
           createElement("h2", "", run.repository),
         );
         const score = createElement("p", "timeline-score");
-        score.append(document.createTextNode(`${run.total_score} `), createElement("span", "", `/ 100 · ${deltaLabel(run.score_delta)}`));
+        if (run.presentation_gate_decision === "BLOCK") {
+          score.append(document.createTextNode("SCORE WITHHELD "), createElement("span", "", `· ${deltaLabel(run.score_delta)}`));
+        } else {
+          score.append(document.createTextNode(`${run.total_score} `), createElement("span", "", `/ 100 · ${deltaLabel(run.score_delta)}`));
+        }
         identity.append(score, createElement("span", "gate-label", run.presentation_gate_decision));
 
         const evidence = createElement("div");
@@ -512,7 +578,7 @@
       const details = createElement("div");
       const metadata = createElement("dl", "receipt-meta");
       appendDefinition(metadata, "SOURCE COMMIT", shortCommit(run.source_commit));
-      appendDefinition(metadata, "SCORE", `${run.total_score} / 100`);
+      appendDefinition(metadata, "SCORE", scoreLabel(run));
       appendDefinition(metadata, "INTEGRITY HASH", run.receipt_hash, "hash-value");
       const inspect = createElement("button", "", "INSPECT RECEIPT");
       inspect.type = "button";
@@ -597,9 +663,15 @@
 
   async function reloadData(refresh) {
     state.overview = await apiRequest("/v0/me");
+    if (refresh) {
+      await apiRequest("/v0/github/repositories/refresh", {
+        method: "POST",
+        body: {},
+      });
+    }
     const [installations, repositories, runs] = await Promise.all([
       apiRequest("/v0/github/installations"),
-      apiRequest(`/v0/github/repositories${refresh ? "?refresh=1" : ""}`),
+      apiRequest("/v0/github/repositories"),
       apiRequest("/v0/benchmark/runs"),
     ]);
     state.installations = installations.installations || [];
@@ -612,9 +684,15 @@
   }
 
   async function initialize() {
-    setAuthLinks();
     if (callbackNotice) setNotice(callbackNotice);
     try {
+      const configuration = await apiRequest("/v0/benchmark/configuration");
+      applyConfiguration(configuration);
+      if (configuration?.github?.enabled !== true) {
+        elements.signedOut.hidden = false;
+        elements.authenticated.hidden = true;
+        return;
+      }
       try {
         await reloadData(refreshRepositories);
       } catch (refreshError) {

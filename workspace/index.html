@@ -64,6 +64,7 @@
             <button type="button" data-workspace-view="memory" data-i18n="workspace.nav.memory">Memory</button>
             <button type="button" data-workspace-view="evidence" data-i18n="workspace.nav.evidence">Evidence</button>
             <button type="button" data-workspace-view="decisions" data-i18n="workspace.nav.decisions">Decisions</button>
+            <button type="button" data-workspace-view="skills" data-i18n="workspace.nav.skills">Skills</button>
             <button type="button" data-workspace-view="receipts" data-i18n="workspace.nav.receipts">Receipts</button>
             <button type="button" data-workspace-view="settings" data-i18n="workspace.nav.settings">Settings</button>
           </nav>
@@ -130,6 +131,10 @@
                 <span data-i18n="workspace.link.dashboard.index">OPERATION</span>
                 <strong data-i18n="workspace.link.dashboard">Operator dashboard</strong>
               </a>
+              <a href="/skills/">
+                <span data-i18n="workspace.link.skills.index">METHOD EVIDENCE</span>
+                <strong data-i18n="workspace.link.skills">Skill Forge review</strong>
+              </a>
             </div>
           </section>
 
@@ -193,6 +198,18 @@
             <p class="authority-note" data-i18n="workspace.decisions.boundary">SILENCE means release withheld while the audit trace remains. It does not mean deletion.</p>
           </section>
 
+          <section class="workspace-view" data-workspace-section="skills" aria-labelledby="workspace-skills-title" hidden>
+            <header class="workspace-view-heading">
+              <div><p class="section-index" data-i18n="workspace.surface.index">ARCHITECTURE SURFACE / v0.1</p><h2 id="workspace-skills-title" data-i18n="workspace.skills.title">Skills</h2></div>
+            </header>
+            <div class="unconnected-surface">
+              <strong data-i18n="workspace.unconnected">Persistence not connected in v0.1.</strong>
+              <p data-i18n="workspace.skills.body">Admitted skill records will belong here when a backend persistence and admission contract exists. The public registry currently contains review evidence only.</p>
+              <a class="product-action product-action--secondary" href="/skills/" data-i18n="workspace.skills.open">Inspect public Skill Forge evidence</a>
+              <span data-i18n="workspace.empty.real">No fabricated items are shown.</span>
+            </div>
+          </section>
+
           <section class="workspace-view" data-workspace-section="receipts" aria-labelledby="workspace-receipts-title" hidden>
             <header class="workspace-view-heading">
               <div>
@@ -226,6 +243,7 @@
             <div><dt data-i18n="workspace.context.sources">Sources</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
             <div><dt data-i18n="workspace.context.memory">Memory</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
             <div><dt data-i18n="workspace.context.evidence">Evidence</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
+            <div><dt data-i18n="workspace.context.skills">Skills</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
             <div><dt data-i18n="workspace.context.receipts">Receipts</dt><dd class="connected" id="workspace-context-receipts">—</dd></div>
           </dl>
           <section class="latest-decision" aria-labelledby="workspace-latest-title">
@@ -248,6 +266,7 @@
 
     <script src="/assets/js/i18n.js?v=20260726b"></script>
     <script src="/assets/js/i18n-arch.js?v=20260726b"></script>
+    <script src="/assets/js/workspace-skills-i18n.js?v=20260727a"></script>
     <script src="/assets/js/api.js?v=20260726b"></script>
     <script src="/assets/js/workspace-foundation.js?v=20260726b"></script>
   </body>

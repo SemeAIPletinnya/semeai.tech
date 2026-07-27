@@ -46,8 +46,8 @@
             Sign in with GitHub to select repositories, run the same evidence benchmark, preserve
             presentation receipts, and inspect progression over time.
           </p>
-          <a id="sign-in-button" class="primary-action" href="https://api.semeai.tech/v0/oauth/github/start?return_path=%2Fbenchmark%2Fworkspace%2F">
-            <span>SIGN IN WITH GITHUB</span><span aria-hidden="true">↗</span>
+          <a id="sign-in-button" class="primary-action" aria-disabled="true">
+            <span>GITHUB CONNECTION UNAVAILABLE</span>
           </a>
           <p class="auth-boundary">
             Identity authorization is separate from repository installation. Private repositories
@@ -92,8 +92,8 @@
                 <p class="section-index">02 / REPOSITORIES</p>
                 <h1 id="repositories-title">Connected evidence surfaces.</h1>
               </div>
-              <a id="connect-repositories" class="primary-action compact-action" href="https://api.semeai.tech/v0/github/install/start">
-                CONNECT REPOSITORIES <span aria-hidden="true">↗</span>
+              <a id="connect-repositories" class="primary-action compact-action" aria-disabled="true">
+                REPOSITORY CONNECTION UNAVAILABLE
               </a>
             </div>
             <p class="view-boundary">Only repositories explicitly selected during GitHub App installation appear here.</p>
@@ -135,7 +135,7 @@
             <div class="account-section">
               <div class="account-section-heading">
                 <h2>CONNECTED INSTALLATIONS</h2>
-                <a id="account-connect" class="text-action" href="https://api.semeai.tech/v0/github/install/start">ADD OR SELECT REPOSITORIES</a>
+                <a id="account-connect" class="text-action" aria-disabled="true">REPOSITORY CONNECTION UNAVAILABLE</a>
               </div>
               <div id="installation-list"></div>
               <p>Disconnecting an installation preserves retained benchmark history.</p>
@@ -155,7 +155,11 @@
     </main>
 
     <footer>
-      <span>SEMEAI / REPOSITORY WORKSPACE</span>
+      <nav aria-label="Repository workspace boundaries">
+        <a href="../">PUBLIC BENCHMARK</a>
+        <a href="/">SEMEAI.TECH</a>
+        <a href="/docs/system-architecture.md">ARCHITECTURE</a>
+      </nav>
       <span>PRIVATE TRACE SURFACE · NOINDEX</span>
     </footer>
 
