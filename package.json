@@ -1,0 +1,19 @@
+{
+  "name": "semeai-tech",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static SemeAI public, product, and evidence surfaces.",
+  "scripts": {
+    "test:benchmark": "node benchmark/tests/golden.browser.mjs",
+    "test:book": "node book/tests/book.browser.mjs",
+    "test:genesis": "node genesis/tests/manifest.test.mjs",
+    "test:site": "node tests/site.browser.mjs",
+    "test": "npm run test:benchmark && npm run test:book && npm run test:genesis && npm run test:site"
+  },
+  "devDependencies": {
+    "playwright": "1.62.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

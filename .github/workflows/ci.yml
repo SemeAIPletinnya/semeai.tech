@@ -1,0 +1,43 @@
+name: Verify semeai.tech
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  browser-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Benchmark golden authority
+        run: npm run test:benchmark
+
+      - name: Engineering Book browser contract
+        run: npm run test:book
+
+      - name: Genesis provenance manifest
+        run: npm run test:genesis
+
+      - name: Cross-route browser contract
+        run: npm run test:site
