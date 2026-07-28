@@ -276,6 +276,25 @@
   };
   ["en", "uk", "ru"].forEach((lang) => Object.assign(roadmap[lang], archaeologyPhaseUpdate[lang]));
 
+  const closurePhaseUpdate = {
+    en: {
+      "roadmap.release.notyet.body": "Production GitHub repository retention, an admitted installable skill, marketplace operation, and market evidence still require later exit gates.",
+      "roadmap.phase.7.body": "GET JOB and GET VIS have bounded public evidence and remain REVIEW candidates with no admission decision.",
+      "roadmap.phase.8.body": "Workspace retention and a separate disabled-by-default admission authority are deployed; zero skills are admitted or installable."
+    },
+    uk: {
+      "roadmap.release.notyet.body": "Production-збереження GitHub-репозиторіїв, допущена встановлювана навичка, робота маркетплейсу та ринкові докази все ще потребують наступних exit gate.",
+      "roadmap.phase.7.body": "GET JOB і GET VIS мають обмежені публічні докази та залишаються кандидатами REVIEW без рішення про допуск.",
+      "roadmap.phase.8.body": "Збереження у Workspace й окрему, вимкнену за замовчуванням владу допуску розгорнуто; нуль навичок допущено чи доступно для встановлення."
+    },
+    ru: {
+      "roadmap.release.notyet.body": "Production-хранение GitHub-репозиториев, допущенный устанавливаемый навык, работа маркетплейса и рыночные доказательства всё ещё требуют следующих exit gate.",
+      "roadmap.phase.7.body": "GET JOB и GET VIS имеют ограниченные публичные доказательства и остаются кандидатами REVIEW без решения о допуске.",
+      "roadmap.phase.8.body": "Хранение в Workspace и отдельное, отключённое по умолчанию полномочие допуска развёрнуты; ноль навыков допущено или доступно для установки."
+    }
+  };
+  ["en", "uk", "ru"].forEach((lang) => Object.assign(roadmap[lang], closurePhaseUpdate[lang]));
+
   function merge() {
     const api = window.SemeAI_I18n;
     if (!api || !api.dict) return false;

@@ -102,6 +102,36 @@ const PRODUCT_FIXTURE = {
       },
     ],
   },
+  skills: {
+    count: 1,
+    records: [
+      {
+        schema_version: "semeai.workspace-skill-record.v0.1",
+        record_id: "skillrec_111111111111111111111111",
+        workspace_id: "ws_evidence_lab",
+        identity: {
+          skill_id: "get-job",
+          name: "GET JOB <img src=x onerror=window.__unsafeSkill=1>",
+          version: "0.1-candidate",
+          skill_hash: "3b030d109ad876294cc6fe57525dfd5c190cbd61134ab0715f261de46db35c59",
+        },
+        evidence: { cases: [{ case_id: "case-003" }, { case_id: "case-005" }] },
+        admission: {
+          state: "REVIEW",
+          decision: null,
+          receipt_id: null,
+          receipt_integrity_hash: null,
+        },
+        availability: { available: false, installable: false, marketplace_ready: false },
+        boundaries: {
+          candidate_retention_is_admission: false,
+          skill_admission_is_runtime_release_authority: false,
+          distribution_authorized: false,
+        },
+        raw_skill_content_stored: false,
+      },
+    ],
+  },
 };
 
 function loadPlaywright() {
@@ -227,6 +257,7 @@ async function wirePage(page, tailwindRuntime, errors) {
 }
 
 async function wireProductPage(page, errors, requests) {
+  const workspaceSkills = structuredClone(PRODUCT_FIXTURE.skills.records);
   await page.route("https://api.semeai.tech/**", async (route) => {
     const request = route.request();
     const url = new URL(request.url());
@@ -261,6 +292,43 @@ async function wireProductPage(page, errors, requests) {
       body = PRODUCT_FIXTURE.receipts;
     } else if (url.pathname === "/v0/billing/status") {
       body = PRODUCT_FIXTURE.billing;
+    } else if (url.pathname === "/v0/workspace/skills" && request.method() === "GET") {
+      body = { count: workspaceSkills.length, records: workspaceSkills };
+    } else if (url.pathname === "/v0/workspace/skills" && request.method() === "POST") {
+      const payload = entry.body || {};
+      let record = workspaceSkills.find((item) => item.identity?.skill_id === payload.skill_id);
+      const created = !record;
+      if (!record) {
+        record = {
+          schema_version: "semeai.workspace-skill-record.v0.1",
+          record_id: "skillrec_222222222222222222222222",
+          workspace_id: PRODUCT_FIXTURE.account.workspace_id,
+          identity: {
+            skill_id: payload.skill_id,
+            name: payload.name,
+            version: payload.version,
+            skill_hash: payload.skill_hash,
+          },
+          provenance: payload.provenance,
+          evidence: {
+            cases: payload.evidence_cases,
+            evaluated_domains: payload.evaluated_domains,
+            failures: payload.failures,
+            limitations: payload.limitations,
+          },
+          evaluation_context: payload.evaluation_context,
+          admission: {
+            state: "REVIEW",
+            decision: null,
+            receipt_id: null,
+            receipt_integrity_hash: null,
+          },
+          availability: { available: false, installable: false, marketplace_ready: false },
+          raw_skill_content_stored: false,
+        };
+        workspaceSkills.push(record);
+      }
+      body = { created, record };
     } else if (url.pathname === "/v0/logout") {
       body = { status: "logged_out" };
     } else {
@@ -273,7 +341,7 @@ async function wireProductPage(page, errors, requests) {
     }
 
     await route.fulfill({
-      status: 200,
+      status: request.method() === "POST" && url.pathname === "/v0/workspace/skills" ? 201 : 200,
       contentType: "application/json",
       body: JSON.stringify(body),
     });
@@ -966,15 +1034,37 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
     );
 
     await page.locator('[data-workspace-view="skills"]').click();
+    await page.locator(".workspace-skill-candidate").first().waitFor();
+    assert.equal(await page.locator(".workspace-skill-record").count(), 1);
+    assert.equal(await page.locator(".workspace-skill-candidate").count(), 2);
+    assert.equal(await page.locator("#workspace-context-skills").textContent(), "1 retained");
     assert.equal(
-      await page.locator('[data-workspace-section="skills"] .unconnected-surface strong').textContent(),
-      "Persistence not connected in v0.1.",
-    );
-    assert.equal(
-      await page.locator('[data-workspace-section="skills"] .unconnected-surface').locator("li,[data-item]").count(),
+      await page.locator(".workspace-skill-record img").count(),
       0,
-      "Skills must remain an honest structural surface until persistence and admission exist",
+      "Retained skill identity must render through textContent",
     );
+    assert.equal(await page.evaluate(() => Boolean(window.__unsafeSkill)), false);
+    assert.equal(
+      await page.locator('[data-workspace-section="skills"] button').filter({ hasText: /admit|install/i }).count(),
+      0,
+      "Workspace retention must not expose admission or installation authority",
+    );
+
+    const getVisCandidate = page.locator(".workspace-skill-candidate").filter({ hasText: "GET VIS" });
+    await getVisCandidate.getByRole("button", { name: "Retain evidence" }).click();
+    await page.waitForFunction(() => document.querySelectorAll(".workspace-skill-record").length === 2);
+    const retainRequest = requests.find(
+      (request) => request.path.startsWith("/v0/workspace/skills") && request.method === "POST",
+    );
+    assert.equal(retainRequest?.body?.skill_id, "get-vis");
+    assert.equal(retainRequest?.body?.evidence_cases?.length, 5);
+    assert.equal(retainRequest?.body?.evaluation_context?.independent_evaluation, false);
+    assert.equal(retainRequest?.body?.admission, undefined);
+    assert.equal(retainRequest?.body?.decision, undefined);
+    assert.equal(retainRequest?.body?.availability, undefined);
+    assert.equal(retainRequest?.body?.raw_skill, undefined);
+    assert.equal(await page.locator("#workspace-context-skills").textContent(), "2 retained");
+    assert.match(await page.locator("#workspace-skills-status").textContent(), /Retention is not admission/);
 
     await page.locator('[data-workspace-view="memory"]').focus();
     await page.keyboard.press("Tab");
@@ -1438,34 +1528,43 @@ async function validateSkillForge(browser, origin, tailwindRuntime) {
     caseFactRows: document.querySelectorAll(".case-facts > div").length,
     artifactRows: document.querySelectorAll(".artifact-list > li").length,
     testEvidenceRows: document.querySelectorAll(".case-tests").length,
+    knownBoundaries: document.querySelectorAll(".evaluation-boundaries__item li").length,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     unsafe: window.__unsafe,
   }));
-  assert.equal(state.skills, 1);
-  assert.equal(state.cases, 4);
-  assert.equal(state.counts, "1 REVIEW · 0 ADMITTED");
-  assert.ok(state.admission.includes("NO DECISION"));
+  assert.equal(state.skills, 2);
+  assert.equal(state.cases, 9);
+  assert.equal(state.counts, "2 REVIEW · 0 ADMITTED");
+  assert.equal(state.admission.filter((value) => value === "NO DECISION").length, 2);
   assert.deepEqual(state.forgeStates, [
-    "4 CASES RETAINED",
-    "1 CANDIDATE · 1 REVIEW",
-    "NO DECISION",
+    "9 CASES RETAINED",
+    "2 CANDIDATES · 2 REVIEW",
+    "NO ADMISSION DECISIONS",
     "0 ADMITTED · NOT AVAILABLE",
   ]);
   assert.deepEqual(
     state.imprintLevels,
-    [..."3b030d109ad876294cc6fe57525dfd5c"].map((character) => String(Number.parseInt(character, 16))),
+    [..."3b030d109ad876294cc6fe57525dfd5ca0ed0f0a2e6522729aadce18b891f0ae"].map(
+      (character) => String(Number.parseInt(character, 16)),
+    ),
   );
   assert.deepEqual(state.caseSignals, [
     ["2 RETAINED", "NOT CAPTURED", "NOT RETAINED", "NOT CAPTURED"],
     ["2 RETAINED", "NOT CAPTURED", "NOT RETAINED", "NOT CAPTURED"],
     ["2 RETAINED", "HEAD CAPTURED", "1 RETAINED", "NOT DEPLOYED"],
     ["2 RETAINED", "HEAD CAPTURED", "2 RETAINED", "LIVE VERIFIED"],
+    ["2 RETAINED", "HEAD CAPTURED", "3 RETAINED", "LIVE VERIFIED"],
+    ["2 RETAINED", "HEAD CAPTURED", "3 RETAINED", "LIVE VERIFIED"],
+    ["2 RETAINED", "HEAD CAPTURED", "3 RETAINED", "LIVE VERIFIED"],
+    ["2 RETAINED", "HEAD CAPTURED", "3 RETAINED", "LIVE VERIFIED"],
+    ["2 RETAINED", "HEAD CAPTURED", "3 RETAINED", "LIVE VERIFIED"],
   ]);
-  assert.equal(state.caseToggles, 4);
-  assert.equal(state.closedPanels, 4);
-  assert.equal(state.caseFactRows, 24);
-  assert.equal(state.artifactRows, 8);
-  assert.equal(state.testEvidenceRows, 2);
+  assert.equal(state.caseToggles, 9);
+  assert.equal(state.closedPanels, 9);
+  assert.equal(state.caseFactRows, 54);
+  assert.equal(state.artifactRows, 18);
+  assert.equal(state.testEvidenceRows, 7);
+  assert.equal(state.knownBoundaries, 15);
   assert.equal(state.overflow, 0);
   assert.equal(state.unsafe, undefined);
 
@@ -1480,9 +1579,12 @@ async function validateSkillForge(browser, origin, tailwindRuntime) {
     closedPanels: document.querySelectorAll(".case-record__panel[hidden]").length,
     firstPanelLabelledBy: document.querySelector(".case-record__panel")?.getAttribute("aria-labelledby"),
   }));
-  assert.deepEqual(disclosure.expanded, ["true", "true", "false", "false"]);
-  assert.equal(disclosure.closedPanels, 2);
-  assert.equal(disclosure.firstPanelLabelledBy, "case-001-label case-001-toggle");
+  assert.deepEqual(
+    disclosure.expanded,
+    ["true", "true", "false", "false", "false", "false", "false", "false", "false"],
+  );
+  assert.equal(disclosure.closedPanels, 7);
+  assert.equal(disclosure.firstPanelLabelledBy, "get-job-case-001-label get-job-case-001-toggle");
 
   await page.locator('[data-lang="uk"]:visible').first().click();
   assert.equal(await page.locator("#skills-title").innerText(), "МЕТОД СТАЄ КАНДИДАТОМ.\nПЕРЕГЛЯД ВИРІШУЄ ДОПУСК.");
@@ -1504,7 +1606,7 @@ async function validateSkillForge(browser, origin, tailwindRuntime) {
     "Skill evidence must not use unsafe innerHTML",
   );
   await context.close();
-  return { candidates: 1, admitted: 0, cases: 4, languages: ["en", "uk", "ru"] };
+  return { candidates: 2, admitted: 0, cases: 9, languages: ["en", "uk", "ru"] };
 }
 
 async function validateRepositoryWorkspaceBoundary(browser, origin) {

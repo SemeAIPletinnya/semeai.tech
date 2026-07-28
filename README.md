@@ -83,9 +83,9 @@ The isolated Repository Workspace surface exists at [`/benchmark/workspace/`](ht
 
 ## Product and evidence spine
 
-Account answers who the current user is and which single governed workspace the current API returns. Workspace presents real account, usage, billing, decision, and receipt data; conversations, sources, memory, evidence, and skills remain explicitly unconnected when no persistence endpoint exists. Dashboard remains the operator Gate console.
+Account answers who the current user is and which single governed workspace the current API returns. Workspace presents real account, usage, billing, decision, receipt, and bounded skill-candidate evidence data; conversations, sources, memory, and general evidence remain explicitly unconnected when no persistence endpoint exists. Dashboard remains the operator Gate console.
 
-Genesis includes a data-driven Chronicle for significant public, verified system changes. Skill Forge exposes one GET JOB candidate in `REVIEW`, three bounded case records, and zero admitted skills. No installable skill or operating marketplace is claimed.
+Genesis includes a data-driven Chronicle for significant public, verified system changes. Skill Forge exposes GET JOB and GET VIS as `REVIEW` candidates with nine bounded case records in total and zero admitted skills. Authenticated workspaces may retain immutable candidate-evidence snapshots, but retention is not admission. No installable skill or operating marketplace is claimed.
 
 Implementation and authority boundaries are documented in:
 

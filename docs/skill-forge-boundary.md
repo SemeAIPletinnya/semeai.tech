@@ -26,8 +26,12 @@ A candidate record may retain:
 - compatibility and capability declarations;
 - a review state.
 
+Authenticated workspaces can retain the bounded public candidate-evidence snapshot through the deployed API. Retention stores metadata and evidence, not raw skill content. It cannot set admission, availability, installation, or a decision receipt.
+
 ## Registry state
 
-The initial public registry may contain `CANDIDATE` or `REVIEW` entries while containing zero admitted skills. Distribution and commerce remain dependency-held until multiple useful admitted skills, installation, versioning, evaluation, provenance, permissions, demand, payment, legal, and operator contracts exist.
+The public registry currently contains the GET JOB and GET VIS candidates in `REVIEW` with zero admitted skills. A separate operator-only admission endpoint exists, but its authority is independently configured and admission is disabled by default. An admission decision creates a distinct append-only decision receipt; it does not create runtime release authority.
+
+Distribution and commerce remain dependency-held until useful admitted skills, installation, versioning, evaluation, provenance, permissions, demand, payment, legal, and operator contracts exist.
 
 Skill admission does not itself create marketplace readiness or runtime release authority.

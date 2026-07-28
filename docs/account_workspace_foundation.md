@@ -22,7 +22,8 @@ Connected through the existing `assets/js/api.js` contract:
 - account and workspace identity;
 - usage and remaining checks;
 - subscription and billing state;
-- retained decision receipts.
+- retained decision receipts;
+- immutable bounded skill-candidate evidence snapshots.
 
 Structurally present but explicitly not connected in v0.1:
 
@@ -53,5 +54,6 @@ Both private routes declare `noindex,nofollow,noarchive` and restrict their page
 - multi-workspace simulation;
 - social authentication;
 - local conversation/source/memory/evidence persistence;
-- new backend endpoints;
 - Gate, Benchmark, receipt, or SaC/PoR changes.
+
+Skill candidate retention uses the workspace session and stores no raw skill source. Admission is a separate, operator-authorized contract, disabled by default, and never becomes SaC/PoR release authority.
