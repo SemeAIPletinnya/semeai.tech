@@ -897,6 +897,17 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
       unsafeImageCount: document.querySelectorAll("#workspace-receipts-list img").length,
       unsafeExecuted: Boolean(window.__unsafe),
       receiptText: document.querySelector("#workspace-receipts-list")?.textContent || "",
+      workAreaTop: document.querySelector(".workspace-work-area")?.getBoundingClientRect().top,
+      navigationCount: document.querySelectorAll(".workspace-nav [data-workspace-view]").length,
+      navigationControlsValid: [...document.querySelectorAll(".workspace-nav [data-workspace-view]")].every(
+        (button) => {
+          const controlled = document.getElementById(button.getAttribute("aria-controls") || "");
+          return controlled?.dataset.workspaceSection === button.dataset.workspaceView;
+        },
+      ),
+      receiptColumns: [...document.querySelectorAll(".workspace-receipt-columns span")].map(
+        (element) => element.textContent.trim(),
+      ),
       maximumAnimationMs: [...document.querySelectorAll("*")].reduce((maximum, element) => {
         const durations = getComputedStyle(element)
           .animationDuration.split(",")
@@ -912,14 +923,29 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
     assert.equal(state.unsafeImageCount, 0, "Receipt fields must render through textContent");
     assert.equal(state.unsafeExecuted, false, "Receipt fields must not execute markup");
     assert.equal(state.receiptText.includes("D:\\private\\"), false, "Receipt server paths must not render");
+    assert.equal(state.navigationCount, 9, "Workspace should retain all nine truthful product surfaces");
+    assert.equal(state.navigationControlsValid, true, "Workspace navigation should identify its controlled sections");
+    assert.deepEqual(
+      state.receiptColumns,
+      ["Action", "Receipt ID", "Internal decision", "Captured"],
+      "Receipt columns should expose their scanning hierarchy",
+    );
     assert.ok(state.maximumAnimationMs <= 10, "Workspace should collapse motion under reduced motion");
     assert.ok(state.rafCount <= 2, "Workspace should not install a permanent animation frame loop");
+    if (viewport.width === 390) {
+      assert.ok(state.workAreaTop <= 340, "Mobile workspace content should enter the first viewport promptly");
+    }
 
     assert.equal(await page.locator("#workspace-sidebar-name").textContent(), "Evidence Lab");
     assert.equal(await page.locator("#workspace-usage").textContent(), "7 / 43");
     assert.equal(await page.locator("#workspace-receipt-count").textContent(), "4");
 
     await page.locator('[data-workspace-view="decisions"]').click();
+    assert.equal(
+      await page.evaluate(() => document.activeElement?.id),
+      "workspace-work-area",
+      "Workspace view changes should move focus to the controlled work area",
+    );
     assert.equal(await page.locator("#workspace-show-count").textContent(), "1");
     assert.equal(await page.locator("#workspace-review-count").textContent(), "1");
     assert.equal(await page.locator("#workspace-block-count").textContent(), "1");
@@ -966,13 +992,38 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
         }),
       );
       assert.ok(targets.every(({ width, height }) => width >= 44 && height >= 44), "Workspace mobile navigation should expose usable touch targets");
+      await page.locator('[data-workspace-view="settings"]').click();
+      const rail = await page.locator(".workspace-nav").evaluate((navigation) => {
+        const selected = navigation.querySelector('[aria-current="page"]');
+        const navigationRect = navigation.getBoundingClientRect();
+        const selectedRect = selected.getBoundingClientRect();
+        return {
+          scrollLeft: navigation.scrollLeft,
+          contained:
+            selectedRect.left >= navigationRect.left &&
+            selectedRect.right <= navigationRect.right,
+          scrollWidth: navigation.scrollWidth,
+          clientWidth: navigation.clientWidth,
+        };
+      });
+      assert.ok(rail.scrollWidth > rail.clientWidth, "Mobile workspace navigation should form a contained operational rail");
+      assert.ok(rail.scrollLeft > 0, "A later hash destination should move into the mobile rail viewport");
+      assert.equal(rail.contained, true, "The active mobile workspace destination should remain visible");
 
       await page.locator('[data-lang="uk"]').click();
       assert.equal(await page.getAttribute("html", "lang"), "uk");
       assert.equal(await page.locator('[data-workspace-view="sources"]').textContent(), "Джерела");
+      assert.deepEqual(
+        await page.locator(".workspace-receipt-columns span").allTextContents(),
+        ["Дія", "ID receipt", "Внутрішнє рішення", "Зафіксовано"],
+      );
       await page.locator('[data-lang="ru"]').click();
       assert.equal(await page.getAttribute("html", "lang"), "ru");
       assert.equal(await page.locator('[data-workspace-view="sources"]').textContent(), "Источники");
+      assert.deepEqual(
+        await page.locator(".workspace-receipt-columns span").allTextContents(),
+        ["Действие", "ID receipt", "Внутреннее решение", "Зафиксировано"],
+      );
       await page.locator('[data-lang="en"]').click();
     }
 

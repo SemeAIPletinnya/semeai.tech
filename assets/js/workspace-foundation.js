@@ -370,16 +370,24 @@
     function setView(view, updateHash = true) {
       const valid = [...document.querySelectorAll("[data-workspace-view]")].some((button) => button.dataset.workspaceView === view);
       currentView = valid ? view : "overview";
+      let selectedButton = null;
       document.querySelectorAll("[data-workspace-view]").forEach((button) => {
         const selected = button.dataset.workspaceView === currentView;
-        if (selected) button.setAttribute("aria-current", "page");
+        if (selected) {
+          button.setAttribute("aria-current", "page");
+          selectedButton = button;
+        }
         else button.removeAttribute("aria-current");
       });
       document.querySelectorAll("[data-workspace-section]").forEach((section) => {
         section.hidden = section.dataset.workspaceSection !== currentView;
       });
       if (updateHash) history.replaceState(null, "", currentView === "overview" ? location.pathname : `${location.pathname}#${currentView}`);
-      byId("workspace-work-area")?.focus?.({ preventScroll: true });
+      const nav = selectedButton?.closest(".workspace-nav");
+      if (nav && nav.scrollWidth > nav.clientWidth) {
+        nav.scrollLeft = Math.max(0, selectedButton.offsetLeft - nav.offsetLeft - 12);
+      }
+      if (updateHash) byId("workspace-work-area")?.focus?.({ preventScroll: true });
     }
 
     document.querySelectorAll("[data-workspace-view]").forEach((button) => {
@@ -472,6 +480,7 @@
         renderWorkspace(bundle);
         loading.hidden = true;
         app.hidden = false;
+        setView(currentView, false);
       })
       .catch(handleWorkspaceError);
   }
