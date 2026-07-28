@@ -226,6 +226,11 @@ body.mode-skills {
   margin-bottom: 42px;
 }
 
+.skill-registry {
+  display: grid;
+  gap: 18px;
+}
+
 .skill-record,
 .case-record {
   border: 1px solid var(--skills-line);
@@ -393,7 +398,69 @@ body.mode-skills {
 
 .case-ledger {
   display: grid;
+  gap: clamp(54px, 8vw, 96px);
+}
+
+.case-group {
+  min-width: 0;
+}
+
+.case-group__heading {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.42fr) minmax(0, 0.78fr);
+  gap: clamp(28px, 6vw, 80px);
+  align-items: end;
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--skills-line);
+}
+
+.case-group__heading h3 {
+  margin: 0;
+  font: 500 clamp(1.8rem, 3vw, 3rem)/1 var(--font-display, sans-serif);
+  letter-spacing: -0.04em;
+}
+
+.case-group__heading > p {
+  max-width: 760px;
+  margin: 0;
+  color: #b9b3a6;
+  line-height: 1.65;
+}
+
+.case-group__ledger {
+  display: grid;
   gap: 18px;
+}
+
+.evaluation-boundaries {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0 0 28px;
+  background: var(--skills-line);
+  border: 1px solid var(--skills-line);
+}
+
+.evaluation-boundaries__item {
+  padding: clamp(20px, 3vw, 32px);
+  background: #070808;
+}
+
+.evaluation-boundaries__item h4 {
+  margin: 0 0 18px;
+  color: var(--skills-violet);
+  font: 600 0.66rem/1.4 var(--font-mono, monospace);
+  letter-spacing: 0.12em;
+}
+
+.evaluation-boundaries__item ul {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-left: 1.15rem;
+  color: #b9b3a6;
+  line-height: 1.55;
 }
 
 .case-record__observation {
@@ -597,6 +664,11 @@ body.mode-skills {
   .artifact-list li {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .case-group__heading,
+  .evaluation-boundaries {
+    grid-template-columns: 1fr;
   }
 }
 

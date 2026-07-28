@@ -12,6 +12,18 @@
     "continue until a real blocker or completed dependency-valid boundary"
   ],
   "claim_boundary": "The available cases support qualitative observations only. They do not establish statistical improvement, universal transfer, or admission.",
+  "known_failures": [
+    "Case 001 retains no execution report, skill record, or measurements, so no baseline comparison is possible.",
+    "Case 002 retains the method and roadmap source but no JOB artifact or machine-readable execution report.",
+    "Case 003 remains an isolated local candidate commit and was not merged to backend master or deployed.",
+    "Duration, token use, and human-intervention measurements were not captured consistently across the series."
+  ],
+  "limitations": [
+    "No controlled no-skill baseline was retained.",
+    "No independent evaluator agreement or user outcome study was captured.",
+    "Transfer is observed only across bounded SemeAI-related cases; unrelated products and teams are not established.",
+    "Statistical improvement, universal transfer, and admission are not established."
+  ],
   "cases": [
     {
       "case_id": "case-001",

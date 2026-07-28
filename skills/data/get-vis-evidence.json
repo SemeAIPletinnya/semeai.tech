@@ -1,0 +1,296 @@
+{
+  "schema_version": "semeai.skill-evidence.v0.1",
+  "skill_id": "get-vis",
+  "status": "REVIEW",
+  "method_sha256": "a0ed0f0a2e6522729aadce18b891f0aed1c8acc18b424253ff165aabcb6bddbd",
+  "method_summary": [
+    "audit the rendered product before choosing a visual intervention",
+    "preserve product truth and authority boundaries",
+    "prioritize semantic structure, hierarchy, and usability",
+    "implement a small number of high-impact changes",
+    "verify responsive, accessible, reduced-motion, and production states"
+  ],
+  "claim_boundary": "The five cases support qualitative observations inside one product and repository. They do not establish statistical improvement, independent evaluator agreement, universal transfer, or admission.",
+  "known_failures": [
+    "One accumulated browser-context run exhausted local Chromium socket resources; closing obsolete contexts restored the existing test suites.",
+    "The method did not define a repository-level strategy for Windows CRLF conversion of byte-frozen evidence.",
+    "Dynamic operational labels and horizontal-rail discovery still require explicit localization and comprehension review."
+  ],
+  "limitations": [
+    "No no-skill experimental baseline was retained.",
+    "No independent evaluator agreement or user task-completion study was captured.",
+    "Transfer across unrelated repositories, brands, teams, and technology stacks is not established.",
+    "Long-term maintainability after later product changes is not established."
+  ],
+  "cases": [
+    {
+      "case_id": "vis-001",
+      "mode": "PUBLIC ROUTE COHERENCE",
+      "domain": "public information architecture",
+      "source_artifacts": [
+        {
+          "name": "GET VIS.txt",
+          "sha256": "a0ed0f0a2e6522729aadce18b891f0aed1c8acc18b424253ff165aabcb6bddbd"
+        },
+        {
+          "name": "RESULT.md",
+          "sha256": "89cdeb779a98831cdccf5d0d8663242f23c82d0b7577e15c6dd61bb52b5c875a"
+        }
+      ],
+      "repository": "SemeAIPletinnya/semeai.tech",
+      "starting_head": "b8c3417fd6396e1fb9f565df63fde24ed068ecb2",
+      "final_head": "e00720406f81210db87862dcae3936f64751f7df",
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": "No user steering between cases; route-order judgment remained part of execution.",
+      "commits": [
+        {
+          "sha": "e00720406f81210db87862dcae3936f64751f7df",
+          "state": "DEPLOYED IMPLEMENTATION EVIDENCE"
+        }
+      ],
+      "tests": [
+        {
+          "command": "node benchmark/tests/golden.browser.mjs",
+          "result": "10/10 passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node book/tests/book.browser.mjs",
+          "result": "51/51 passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node tests/site.browser.mjs",
+          "result": "98 route/viewport states plus 12 focused public-context assertions passed",
+          "captured_at": "2026-07-28"
+        }
+      ],
+      "deployment": {
+        "status": "DEPLOYED AND LIVE VERIFIED",
+        "verify_run_id": 30336193292,
+        "pages_run_id": 30336193275,
+        "verified_url": "https://semeai.tech/",
+        "captured_at": "2026-07-28"
+      },
+      "observation": "Six routes gained a coherent orientation layer with EN/UK/RU context and zero overflow. The evidence is qualitative and product-specific."
+    },
+    {
+      "case_id": "vis-002",
+      "mode": "WORKSPACE PRODUCT POLISH",
+      "domain": "authenticated operational workspace",
+      "source_artifacts": [
+        {
+          "name": "GET VIS.txt",
+          "sha256": "a0ed0f0a2e6522729aadce18b891f0aed1c8acc18b424253ff165aabcb6bddbd"
+        },
+        {
+          "name": "RESULT.md",
+          "sha256": "d5c4ebce754070f332fbe395c26650720e252dc17427a2bb05c37a768ecc0fe5"
+        }
+      ],
+      "repository": "SemeAIPletinnya/semeai.tech",
+      "starting_head": "e00720406f81210db87862dcae3936f64751f7df",
+      "final_head": "ed07bb629b78fe64a57497ee57d6880d82caaa9f",
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": "No user steering between cases; the contained mobile rail was an execution judgment.",
+      "commits": [
+        {
+          "sha": "ed07bb629b78fe64a57497ee57d6880d82caaa9f",
+          "state": "DEPLOYED IMPLEMENTATION EVIDENCE"
+        }
+      ],
+      "tests": [
+        {
+          "command": "node tests/site.browser.mjs",
+          "result": "98 route/viewport states and authenticated Workspace fixtures passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node benchmark/tests/golden.browser.mjs",
+          "result": "10/10 passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node book/tests/book.browser.mjs",
+          "result": "51/51 passed",
+          "captured_at": "2026-07-28"
+        }
+      ],
+      "deployment": {
+        "status": "DEPLOYED AND LIVE VERIFIED",
+        "verify_run_id": 30337906205,
+        "pages_run_id": 30337905701,
+        "verified_url": "https://semeai.tech/workspace/",
+        "captured_at": "2026-07-28"
+      },
+      "observation": "Mobile work-area entry and overview distance were reduced while authentication and persistence truth remained unchanged."
+    },
+    {
+      "case_id": "vis-003",
+      "mode": "GENESIS NARRATIVE UPGRADE",
+      "domain": "long-form historical evidence",
+      "source_artifacts": [
+        {
+          "name": "GET VIS.txt",
+          "sha256": "a0ed0f0a2e6522729aadce18b891f0aed1c8acc18b424253ff165aabcb6bddbd"
+        },
+        {
+          "name": "RESULT.md",
+          "sha256": "5399697ac9d6dee9d63f94b7bcb081a2855d573d77ae6e676c01602c35bc0d1c"
+        }
+      ],
+      "repository": "SemeAIPletinnya/semeai.tech",
+      "starting_head": "ed07bb629b78fe64a57497ee57d6880d82caaa9f",
+      "final_head": "45ae6f785fa4822e6179604a2e37567b11c63605",
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": "No user steering between cases; deterministic observer precedence required rendered inspection.",
+      "commits": [
+        {
+          "sha": "45ae6f785fa4822e6179604a2e37567b11c63605",
+          "state": "DEPLOYED IMPLEMENTATION EVIDENCE"
+        }
+      ],
+      "tests": [
+        {
+          "command": "node --test genesis/tests/*.mjs",
+          "result": "25 historical assertions and provenance manifest passed in canonical Linux verification",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node tests/site.browser.mjs",
+          "result": "98 route/viewport states passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node benchmark/tests/golden.browser.mjs && node book/tests/book.browser.mjs",
+          "result": "Benchmark 10/10 and Book 51/51 passed",
+          "captured_at": "2026-07-28"
+        }
+      ],
+      "deployment": {
+        "status": "DEPLOYED AND LIVE VERIFIED",
+        "verify_run_id": 30340256713,
+        "pages_run_id": 30340256676,
+        "verified_url": "https://semeai.tech/genesis/",
+        "captured_at": "2026-07-28"
+      },
+      "observation": "A six-stage semantic spine connected the long archaeology without changing chronology, provenance, admission decisions, or imagery."
+    },
+    {
+      "case_id": "vis-004",
+      "mode": "BENCHMARK READABILITY",
+      "domain": "deterministic evidence instrument",
+      "source_artifacts": [
+        {
+          "name": "GET VIS.txt",
+          "sha256": "a0ed0f0a2e6522729aadce18b891f0aed1c8acc18b424253ff165aabcb6bddbd"
+        },
+        {
+          "name": "RESULT.md",
+          "sha256": "fae2cf7ac6d0ab4f6ec2c412143e485a2a1bb751f6e9e030f0afee8c32eb6964"
+        }
+      ],
+      "repository": "SemeAIPletinnya/semeai.tech",
+      "starting_head": "45ae6f785fa4822e6179604a2e37567b11c63605",
+      "final_head": "360e59a2241b1f803785371324ced608597fee5d",
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": "No user steering between cases; progressive-disclosure defaults were an execution judgment.",
+      "commits": [
+        {
+          "sha": "360e59a2241b1f803785371324ced608597fee5d",
+          "state": "DEPLOYED IMPLEMENTATION EVIDENCE"
+        }
+      ],
+      "tests": [
+        {
+          "command": "node benchmark/tests/golden.browser.mjs",
+          "result": "10/10 passed with canonical receipt hash unchanged",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node tests/site.browser.mjs",
+          "result": "98 route/viewport states plus focused index/disclosure assertions passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node book/tests/book.browser.mjs",
+          "result": "51/51 passed",
+          "captured_at": "2026-07-28"
+        }
+      ],
+      "deployment": {
+        "status": "DEPLOYED AND LIVE VERIFIED",
+        "verify_run_id": 30342816054,
+        "pages_run_id": 30342814007,
+        "verified_url": "https://semeai.tech/benchmark/",
+        "captured_at": "2026-07-28"
+      },
+      "observation": "Source and Gate became visible on result entry while all 36 roadmap details and every frozen analytical output remained available."
+    },
+    {
+      "case_id": "vis-005",
+      "mode": "SKILL FORGE VISUAL SYSTEM",
+      "domain": "candidate evidence and admission boundary",
+      "source_artifacts": [
+        {
+          "name": "GET VIS.txt",
+          "sha256": "a0ed0f0a2e6522729aadce18b891f0aed1c8acc18b424253ff165aabcb6bddbd"
+        },
+        {
+          "name": "RESULT.md",
+          "sha256": "00642fe752147cdcb605ab7b196813169a4b17e5969b1bcb93d59f4fdab713fb"
+        }
+      ],
+      "repository": "SemeAIPletinnya/semeai.tech",
+      "starting_head": "360e59a2241b1f803785371324ced608597fee5d",
+      "final_head": "f75c30f5323723415be24d6e97e21b36399a0acb",
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": "No user steering between cases; fingerprint height and evidence disclosure were execution judgments.",
+      "commits": [
+        {
+          "sha": "f75c30f5323723415be24d6e97e21b36399a0acb",
+          "state": "DEPLOYED IMPLEMENTATION EVIDENCE"
+        }
+      ],
+      "tests": [
+        {
+          "command": "node tests/site.browser.mjs",
+          "result": "98 route/viewport states plus deterministic imprint and case-disclosure assertions passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node benchmark/tests/golden.browser.mjs",
+          "result": "10/10 passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "node book/tests/book.browser.mjs",
+          "result": "51/51 passed",
+          "captured_at": "2026-07-28"
+        }
+      ],
+      "deployment": {
+        "status": "DEPLOYED AND LIVE VERIFIED",
+        "verify_run_id": 30343996140,
+        "pages_run_id": 30343996169,
+        "verified_url": "https://semeai.tech/skills/",
+        "captured_at": "2026-07-28"
+      },
+      "observation": "The public dossier exposed candidate identity and bounded case detail while retaining REVIEW, no decision, zero admitted skills, and unavailable distribution."
+    }
+  ],
+  "observed_dimensions": {
+    "rendered_first_diagnosis": "observed across five sequential rendered audits in one product",
+    "semantic_hierarchy": "qualitatively supported across public IA, Workspace, Genesis, Benchmark, and Skill Forge",
+    "authority_preservation": "supported by frozen Benchmark, Genesis, receipt, authentication, and admission assertions",
+    "responsive_accessibility": "supported by the repeated seven-viewport browser matrix, keyboard, reduced-motion, and no-JS checks",
+    "cross_domain_transfer": "observed within five web-product surface types in one repository; unrelated repositories are not established",
+    "resource_hygiene": "one browser-context accumulation failure was identified and corrected operationally",
+    "statistical_improvement": "not established"
+  }
+}

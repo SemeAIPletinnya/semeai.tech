@@ -3,8 +3,8 @@
   "captured_at": "2026-07-28T00:00:00Z",
   "authority_boundary": "Registry presence is not admission. Generated candidates require an explicit admission decision.",
   "counts": {
-    "candidates": 1,
-    "in_review": 1,
+    "candidates": 2,
+    "in_review": 2,
     "admitted": 0,
     "rejected": 0,
     "deprecated": 0
@@ -20,7 +20,7 @@
       "candidate_artifact": null,
       "compatibility": {
         "environment": "Codex repository execution",
-        "evidence": "Observed qualitatively in SemeAI implementation, one cross-domain local transfer case, and one historical-archaeology case",
+        "evidence": "Four bounded case records; two retain implementation and verification evidence across distinct problem domains",
         "statistical_claim": "NOT ESTABLISHED"
       },
       "capabilities": [
@@ -34,6 +34,36 @@
         "note": "No installable admitted artifact or runtime permission contract exists."
       },
       "evaluation_reference": "/skills/data/get-job-evidence.json",
+      "admission_decision": null,
+      "distribution": {
+        "available": false,
+        "marketplace_ready": false
+      }
+    },
+    {
+      "skill_id": "get-vis",
+      "name": "GET VIS",
+      "version": "0.1-candidate",
+      "status": "REVIEW",
+      "author_provenance": "User-authored visual operating method preserved unchanged through five sequential SemeAI cases",
+      "source_skill_sha256": "a0ed0f0a2e6522729aadce18b891f0aed1c8acc18b424253ff165aabcb6bddbd",
+      "candidate_artifact": null,
+      "compatibility": {
+        "environment": "Rendered web-product audit and implementation",
+        "evidence": "Five bounded production-deployed cases across public IA, Workspace, Genesis, Benchmark, and Skill Forge",
+        "statistical_claim": "NOT ESTABLISHED"
+      },
+      "capabilities": [
+        "rendered-first visual diagnosis",
+        "semantic hierarchy refinement",
+        "responsive and accessibility verification",
+        "product-truth preservation"
+      ],
+      "permissions": {
+        "declared": [],
+        "note": "No installable admitted artifact or runtime permission contract exists."
+      },
+      "evaluation_reference": "/skills/data/get-vis-evidence.json",
       "admission_decision": null,
       "distribution": {
         "available": false,

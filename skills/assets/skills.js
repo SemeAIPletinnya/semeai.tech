@@ -10,15 +10,19 @@
   const forgeCandidateState = document.getElementById("forge-candidate-state");
   const forgeReviewState = document.getElementById("forge-review-state");
   const forgeRegistryState = document.getElementById("forge-registry-state");
+  const evidencePathPattern = /^\/skills\/data\/[a-z0-9-]+-evidence\.json$/;
 
-  function element(name, className, text) {
+  function element(name, className, value) {
     const node = document.createElement(name);
     if (className) node.className = className;
-    if (text !== undefined) node.textContent = String(text);
+    if (value !== undefined) node.textContent = String(value);
     return node;
   }
 
   async function load(path) {
+    if (path !== "/skills/data/registry.json" && !evidencePathPattern.test(path)) {
+      throw new Error("Skill evidence reference is outside the public registry boundary.");
+    }
     const response = await fetch(path, {
       credentials: "same-origin",
       headers: { Accept: "application/json" },
@@ -44,8 +48,7 @@
 
     const bars = element("div", "method-imprint__bars");
     bars.setAttribute("aria-hidden", "true");
-    const sourceHash = String(skill.source_skill_sha256 || "").toLowerCase();
-    [...sourceHash.slice(0, 32)].forEach((character) => {
+    [...String(skill.source_skill_sha256 || "").toLowerCase().slice(0, 32)].forEach((character) => {
       const level = Number.parseInt(character, 16);
       const bar = element("span", "method-imprint__bar");
       bar.dataset.level = Number.isFinite(level) ? String(level) : "0";
@@ -62,8 +65,9 @@
     return figure;
   }
 
-  function renderSkill(skill) {
+  function renderSkill(skill, evidence) {
     const article = element("article", "skill-record");
+    article.dataset.skillId = skill.skill_id;
     const status = element("div", "skill-record__status");
     status.append(element("span", "", skill.name), element("strong", "", skill.status));
 
@@ -78,9 +82,15 @@
 
     const facts = element("dl", "skill-facts");
     definition(facts, "METHOD SHA-256", skill.source_skill_sha256);
-    definition(facts, "ADMISSION", skill.admission_decision ? skill.admission_decision.decision : "NO DECISION");
+    definition(facts, "ADMISSION", skill.admission_decision?.decision || "NO DECISION");
     definition(facts, "DISTRIBUTION", skill.distribution?.available ? "AVAILABLE" : "NOT AVAILABLE");
     definition(facts, "STATISTICAL CLAIM", skill.compatibility?.statistical_claim);
+    definition(facts, "EVIDENCE CASES", evidence.cases?.length || 0);
+    definition(
+      facts,
+      "KNOWN LIMITATIONS",
+      (evidence.known_failures?.length || 0) + (evidence.limitations?.length || 0),
+    );
     article.append(facts);
 
     const capabilityList = element("ul", "capability-list");
@@ -95,21 +105,38 @@
     return signal;
   }
 
-  function renderCase(item, index) {
+  function deploymentState(deployment) {
+    if (deployment === null || deployment === undefined) {
+      return { label: "NOT CAPTURED", state: "missing", detail: "NOT CAPTURED" };
+    }
+    if (typeof deployment === "object") {
+      return {
+        label: String(deployment.status || "").includes("LIVE VERIFIED") ? "LIVE VERIFIED" : "CAPTURED",
+        state: "captured",
+        detail: deployment.status || "CAPTURED",
+      };
+    }
+    return deployment
+      ? { label: "LIVE VERIFIED", state: "captured", detail: "YES" }
+      : { label: "NOT DEPLOYED", state: "held", detail: "NO" };
+  }
+
+  function renderCase(item, index, skill) {
     const article = element("article", "case-record");
+    article.dataset.skillId = skill.skill_id;
     const head = element("div", "case-record__head");
-    const caseLabel = element("span", "", item.case_id.toUpperCase());
-    const caseKey = String(item.case_id || `case-${index + 1}`).replace(/[^a-z0-9_-]/gi, "-");
+    const caseKey = `${skill.skill_id}-${item.case_id || `case-${index + 1}`}`.replace(/[^a-z0-9_-]/gi, "-");
     const labelId = `${caseKey}-label`;
     const toggleId = `${caseKey}-toggle`;
     const panelId = `${caseKey}-panel`;
+    const caseLabel = element("span", "", `${skill.name} / ${String(item.case_id).toUpperCase()}`);
     caseLabel.id = labelId;
     head.append(caseLabel, element("strong", "", item.mode));
     article.append(head, element("p", "case-record__observation", item.observation));
 
     const artifacts = item.source_artifacts || [];
     const tests = item.tests || [];
-    const deployment = item.deployment;
+    const deployment = deploymentState(item.deployment);
     const signals = element("div", "case-record__signals");
     signals.append(
       caseSignal("ARTIFACTS", `${artifacts.length} RETAINED`, artifacts.length ? "captured" : "missing"),
@@ -123,11 +150,7 @@
         tests.length ? `${tests.length} RETAINED` : "NOT RETAINED",
         tests.length ? "captured" : "missing",
       ),
-      caseSignal(
-        "DEPLOYMENT",
-        deployment === null ? "NOT CAPTURED" : deployment ? "LIVE VERIFIED" : "NOT DEPLOYED",
-        deployment === null ? "missing" : deployment ? "captured" : "held",
-      ),
+      caseSignal("DEPLOYMENT", deployment.label, deployment.state),
     );
     article.append(signals);
 
@@ -153,7 +176,7 @@
     definition(facts, "DURATION", item.duration);
     definition(facts, "TOKEN OBSERVATION", item.token_observation);
     definition(facts, "HUMAN INTERVENTION", item.human_intervention);
-    definition(facts, "DEPLOYMENT", item.deployment === null ? null : item.deployment ? "YES" : "NO");
+    definition(facts, "DEPLOYMENT", deployment.detail);
     panel.append(facts);
 
     const artifactList = element("ul", "artifact-list");
@@ -183,35 +206,79 @@
     return article;
   }
 
-  function renderForgeState(registry, evidence) {
-    const candidate = registry.skills[0] || {};
-    const decision = candidate.admission_decision?.decision || "NO DECISION";
-    forgeEvidenceState.textContent = `${evidence.cases.length} CASES RETAINED`;
-    forgeCandidateState.textContent =
-      `${registry.counts.candidates} CANDIDATE · ${registry.counts.in_review} REVIEW`;
-    forgeReviewState.textContent = decision;
-    forgeRegistryState.textContent =
-      `${registry.counts.admitted} ADMITTED · ${candidate.distribution?.available ? "AVAILABLE" : "NOT AVAILABLE"}`;
-    forgeTrace.dataset.state = "ready";
-    forgeTrace.querySelector('[data-forge-stage="review"]')?.classList.toggle("is-current", decision === "NO DECISION");
-    forgeTrace.querySelector('[data-forge-stage="registry"]')?.classList.toggle(
-      "is-held",
-      !candidate.distribution?.available,
+  function renderBoundaryList(title, values) {
+    const section = element("section", "evaluation-boundaries__item");
+    section.append(element("h4", "", title));
+    const list = element("ul");
+    values.forEach((value) => list.append(element("li", "", value)));
+    section.append(list);
+    return section;
+  }
+
+  function renderEvidenceGroup(skill, evidence) {
+    const group = element("section", "case-group");
+    group.dataset.skillId = skill.skill_id;
+    const heading = element("header", "case-group__heading");
+    const copy = element("div");
+    copy.append(
+      element("p", "skills-kicker", `${skill.name} / EVALUATION SET`),
+      element("h3", "", `${evidence.cases?.length || 0} BOUNDED CASES`),
     );
+    heading.append(copy, element("p", "", evidence.claim_boundary));
+    group.append(heading);
+
+    const boundaries = element("div", "evaluation-boundaries");
+    if (evidence.known_failures?.length) {
+      boundaries.append(renderBoundaryList("KNOWN FAILURES", evidence.known_failures));
+    }
+    if (evidence.limitations?.length) {
+      boundaries.append(renderBoundaryList("LIMITATIONS", evidence.limitations));
+    }
+    if (boundaries.childElementCount) group.append(boundaries);
+
+    const ledger = element("div", "case-group__ledger");
+    ledger.append(...(evidence.cases || []).map((item, index) => renderCase(item, index, skill)));
+    group.append(ledger);
+    return group;
+  }
+
+  function renderForgeState(registry, evidenceEntries) {
+    const totalCases = evidenceEntries.reduce((total, entry) => total + (entry.evidence.cases?.length || 0), 0);
+    const allUnavailable = registry.skills.every((skill) => !skill.distribution?.available);
+    forgeEvidenceState.textContent = `${totalCases} CASES RETAINED`;
+    forgeCandidateState.textContent =
+      `${registry.counts.candidates} CANDIDATES · ${registry.counts.in_review} REVIEW`;
+    forgeReviewState.textContent = "NO ADMISSION DECISIONS";
+    forgeRegistryState.textContent =
+      `${registry.counts.admitted} ADMITTED · ${allUnavailable ? "NOT AVAILABLE" : "AVAILABILITY RECORDED"}`;
+    forgeTrace.dataset.state = "ready";
+    forgeTrace.querySelector('[data-forge-stage="review"]')?.classList.add("is-current");
+    forgeTrace.querySelector('[data-forge-stage="registry"]')?.classList.toggle("is-held", allUnavailable);
   }
 
   async function boot() {
     try {
-      const [registry, evidence] = await Promise.all([
-        load("/skills/data/registry.json"),
-        load("/skills/data/get-job-evidence.json"),
-      ]);
-      registryNode.replaceChildren(...registry.skills.map(renderSkill));
-      casesNode.replaceChildren(...evidence.cases.map(renderCase));
+      const registry = await load("/skills/data/registry.json");
+      const evidenceEntries = await Promise.all(
+        registry.skills.map(async (skill) => ({
+          skill,
+          evidence: await load(skill.evaluation_reference),
+        })),
+      );
+      registryNode.replaceChildren(
+        ...evidenceEntries.map(({ skill, evidence }) => renderSkill(skill, evidence)),
+      );
+      casesNode.replaceChildren(
+        ...evidenceEntries.map(({ skill, evidence }) => renderEvidenceGroup(skill, evidence)),
+      );
       countsNode.textContent = `${registry.counts.in_review} REVIEW · ${registry.counts.admitted} ADMITTED`;
-      renderForgeState(registry, evidence);
+      renderForgeState(registry, evidenceEntries);
+      const totalCases = evidenceEntries.reduce(
+        (total, entry) => total + (entry.evidence.cases?.length || 0),
+        0,
+      );
       statusNode.textContent =
-        `STRUCTURED SKILL EVIDENCE LOADED · ${evidence.cases.length} CASES · ADMISSION UNDECIDED`;
+        `STRUCTURED SKILL EVIDENCE LOADED · ${totalCases} CASES · ADMISSION UNDECIDED`;
       statusNode.dataset.state = "ready";
     } catch (error) {
       console.error(error);
