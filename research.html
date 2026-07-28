@@ -12,7 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/brand.css?v=20260723b" />
-    <link rel="stylesheet" href="assets/css/site.css?v=20260728b" />
+    <link rel="stylesheet" href="assets/css/site.css?v=20260728e" />
   </head>
   <body class="mode-research">
     <a class="skip-link" href="#research-main" data-i18n="research.skip">Skip to research boundaries</a>
@@ -21,64 +21,68 @@
     <div class="content">
       <div data-semeai-nav></div>
       <main class="site-main" id="research-main">
-        <span class="eyebrow" data-i18n="research.eyebrow">Research · validation and boundaries</span>
-        <h1 class="page-title editorial-title">
-          <span data-i18n="research.h1">What is being tested.</span><br />
-          <span class="authority-text" data-i18n="research.h1.span">What is not claimed.</span>
-        </h1>
-        <p class="lead" data-i18n="research.lead">
-          Research collects papers, deterministic experiments, public artifacts, methodology, and limitations.
-          The Engineering Book explains how the system is built; this page defines what observations can support.
-        </p>
-        <div class="btn-row mt-6">
-          <a class="btn-primary" href="/book/" data-i18n="research.cta.book">Inspect the implementation</a>
-          <a class="btn-ghost" href="/benchmark/" data-i18n="research.cta.bench">Run the public instrument</a>
-          <a class="btn-ghost" href="/gate.html" data-i18n="research.cta.gate">Understand the product Gate</a>
-        </div>
-
-        <section class="mt-10 research-artifact-section">
-          <h2 class="section-title mb-4" data-i18n="research.artifacts">Public research artifacts</h2>
-          <div class="emblems">
-            <a class="emblem" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">
-              <span class="badge ssrn">SSRN</span>
-              <span class="meta"><b>SSRN paper</b><small>abstract_id=6613718</small></span>
-            </a>
-            <a class="emblem" href="https://zenodo.org/records/20525820" target="_blank" rel="noopener">
-              <span class="badge zenodo">ZENO</span>
-              <span class="meta"><b>Zenodo archive</b><small>record 20525820</small></span>
-            </a>
-            <a class="emblem" href="https://github.com/SemeAIPletinnya" target="_blank" rel="noopener">
-              <span class="badge gh">GH</span>
-              <span class="meta"><b>GitHub org</b><small>SemeAIPletinnya</small></span>
-            </a>
-            <a class="emblem" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">
-              <span class="badge gh">GT</span>
-              <span class="meta"><b>semeai-gate-basic</b><small>runtime / API</small></span>
-            </a>
-            <a class="emblem" href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener">
-              <span class="badge gh">SaC</span>
-              <span class="meta"><b>silence-as-control</b><small>governance</small></span>
-            </a>
-            <a class="emblem" href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener">
-              <span class="badge gh">WEB</span>
-              <span class="meta"><b>semeai.tech</b><small>product site</small></span>
-            </a>
-            <a class="emblem" href="https://x.com/adelayida210519" target="_blank" rel="noopener">
-              <span class="badge x">𝕏</span>
-              <span class="meta"><b>X / Twitter</b><small>@adelayida210519</small></span>
-            </a>
+        <header class="research-opening">
+          <div class="research-opening-copy">
+            <span class="eyebrow" data-i18n="research.eyebrow">Research · validation and boundaries</span>
+            <h1 class="page-title editorial-title">
+              <span data-i18n="research.h1">What is being tested.</span><br />
+              <span class="authority-text" data-i18n="research.h1.span">What is not claimed.</span>
+            </h1>
+            <p class="lead" data-i18n="research.lead">
+              Research collects papers, deterministic experiments, public artifacts, methodology, and limitations.
+              The Engineering Book explains how the system is built; this page defines what observations can support.
+            </p>
+            <div class="btn-row mt-6">
+              <a class="btn-primary" href="/book/" data-i18n="research.cta.book">Inspect the implementation</a>
+              <a class="btn-ghost" href="/benchmark/" data-i18n="research.cta.bench">Run the public instrument</a>
+              <a class="btn-ghost" href="/gate.html" data-i18n="research.cta.gate">Understand the product Gate</a>
+            </div>
           </div>
-          <svg class="research-provenance-line" viewBox="0 0 960 42" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M6 22C118 22 130 10 226 10C330 10 340 31 444 31C548 31 564 16 658 16C772 16 798 25 954 25" />
-            <circle cx="226" cy="10" r="2.5" />
-            <circle cx="444" cy="31" r="2.5" />
-            <circle cx="658" cy="16" r="2.5" />
-          </svg>
-        </section>
+
+          <section class="research-artifact-section" aria-labelledby="research-artifacts-title">
+            <h2 class="section-title" id="research-artifacts-title" data-i18n="research.artifacts">Public research artifacts</h2>
+            <div class="emblems">
+              <a class="emblem" href="https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6613718" target="_blank" rel="noopener">
+                <span class="badge ssrn">SSRN</span>
+                <span class="meta"><b>SSRN paper</b><small>abstract_id=6613718</small></span>
+              </a>
+              <a class="emblem" href="https://zenodo.org/records/20525820" target="_blank" rel="noopener">
+                <span class="badge zenodo">ZENO</span>
+                <span class="meta"><b>Zenodo archive</b><small>record 20525820</small></span>
+              </a>
+              <a class="emblem" href="https://github.com/SemeAIPletinnya" target="_blank" rel="noopener">
+                <span class="badge gh">GH</span>
+                <span class="meta"><b>GitHub org</b><small>SemeAIPletinnya</small></span>
+              </a>
+              <a class="emblem" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">
+                <span class="badge gh">GT</span>
+                <span class="meta"><b>semeai-gate-basic</b><small>runtime / API</small></span>
+              </a>
+              <a class="emblem" href="https://github.com/SemeAIPletinnya/silence-as-control" target="_blank" rel="noopener">
+                <span class="badge gh">SaC</span>
+                <span class="meta"><b>silence-as-control</b><small>governance</small></span>
+              </a>
+              <a class="emblem" href="https://github.com/SemeAIPletinnya/semeai.tech" target="_blank" rel="noopener">
+                <span class="badge gh">WEB</span>
+                <span class="meta"><b>semeai.tech</b><small>product site</small></span>
+              </a>
+              <a class="emblem" href="https://x.com/adelayida210519" target="_blank" rel="noopener">
+                <span class="badge x">𝕏</span>
+                <span class="meta"><b>X / Twitter</b><small>@adelayida210519</small></span>
+              </a>
+            </div>
+            <svg class="research-provenance-line" viewBox="0 0 960 42" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M6 22C118 22 130 10 226 10C330 10 340 31 444 31C548 31 564 16 658 16C772 16 798 25 954 25" />
+              <circle cx="226" cy="10" r="2.5" />
+              <circle cx="444" cy="31" r="2.5" />
+              <circle cx="658" cy="16" r="2.5" />
+            </svg>
+          </section>
+        </header>
 
         <section class="mt-10 stack-md" aria-labelledby="research-posture-title">
           <h2 class="section-title" id="research-posture-title" data-i18n="research.posture">Evidence posture</h2>
-          <div class="grid-3">
+          <div class="grid-3 research-posture-grid">
             <article class="card evidence-card evidence-card--supported"><h3 data-i18n="research.posture.1.t">Implementation artifacts</h3><p data-i18n="research.posture.1.d">Versioned software, schemas, tests, receipts, public repository history, and running product surfaces can be inspected.</p></article>
             <article class="card evidence-card evidence-card--inquiry"><h3 data-i18n="research.posture.2.t">Active inquiry</h3><p data-i18n="research.posture.2.d">Release authority, continuity, replay, bounded repository evidence, and deterministic decision traces remain subjects of engineering and research.</p></article>
             <article class="card evidence-card evidence-card--boundary"><h3 data-i18n="research.posture.3.t">Unsupported claims</h3><p data-i18n="research.posture.3.d">No universal AI-safety proof, AGI measure, hallucination guarantee, security certification, or compliance certification is claimed.</p></article>
@@ -109,7 +113,7 @@
       <div data-semeai-footer></div>
     </div>
     <script src="assets/js/i18n.js?v=20260724a"></script>
-    <script src="assets/js/i18n-arch.js?v=20260728b"></script>
+    <script src="assets/js/i18n-arch.js?v=20260728e"></script>
     <script src="assets/js/research-claims-i18n.js?v=20260727a"></script>
     <script src="assets/js/semeai-motion.js?v=20260726a"></script>
     <script src="assets/js/site-shell.js?v=20260728b"></script>

@@ -539,10 +539,11 @@
     loading.hidden = false;
 
     function setView(view, updateHash = true) {
-      const valid = [...document.querySelectorAll("[data-workspace-view]")].some((button) => button.dataset.workspaceView === view);
+      const viewButtons = [...document.querySelectorAll("[data-workspace-view]")];
+      const valid = viewButtons.some((button) => button.dataset.workspaceView === view);
       currentView = valid ? view : "overview";
       let selectedButton = null;
-      document.querySelectorAll("[data-workspace-view]").forEach((button) => {
+      viewButtons.forEach((button) => {
         const selected = button.dataset.workspaceView === currentView;
         if (selected) {
           button.setAttribute("aria-current", "page");
@@ -557,6 +558,11 @@
       const nav = selectedButton?.closest(".workspace-nav");
       if (nav && nav.scrollWidth > nav.clientWidth) {
         nav.scrollLeft = Math.max(0, selectedButton.offsetLeft - nav.offsetLeft - 12);
+      }
+      const selectedIndex = viewButtons.indexOf(selectedButton);
+      const navPosition = byId("workspace-nav-position");
+      if (navPosition) {
+        navPosition.textContent = `${String(Math.max(0, selectedIndex) + 1).padStart(2, "0")} / ${String(viewButtons.length).padStart(2, "0")}`;
       }
       if (updateHash) byId("workspace-work-area")?.focus?.({ preventScroll: true });
     }

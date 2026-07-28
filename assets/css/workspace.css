@@ -569,6 +569,10 @@
   border-top: 1px solid var(--workspace-line);
 }
 
+.workspace-nav-hint {
+  display: none;
+}
+
 .workspace-nav button {
   display: flex;
   min-height: 2.75rem;
@@ -1208,7 +1212,7 @@
   .workspace-sidebar {
     border-right: 0;
     border-bottom: 1px solid var(--workspace-line);
-    padding: 1rem 0 0.65rem;
+    padding: 1rem 0 0.35rem;
   }
 
   .workspace-identity {
@@ -1265,9 +1269,29 @@
     box-shadow: inset 0 -1px var(--workspace-gold);
   }
 
+  .workspace-nav-hint {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0.35rem 1.25rem 0;
+    border-top: 1px solid rgba(226, 239, 242, 0.06);
+    color: var(--semeai-faint);
+    font-family: var(--semeai-font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .workspace-nav-hint span:first-child {
+    flex: 0 0 auto;
+    color: var(--workspace-gold);
+  }
+
   .workspace-operator {
     display: block;
-    margin: 0.55rem 1.25rem 0;
+    margin: 0.25rem 1.25rem 0;
     border-top: 0;
     padding-top: 0;
   }
@@ -1278,7 +1302,7 @@
 
   .workspace-operator a {
     display: inline-flex;
-    min-height: 2.75rem;
+    min-height: 2.5rem;
     align-items: center;
     margin-top: 0;
   }
@@ -1317,11 +1341,15 @@
 @media (max-width: 540px) {
   .account-main {
     width: min(100% - 1.25rem, 76rem);
-    padding-top: 2.75rem;
+    padding-top: 2rem;
   }
 
   .account-hero h1 {
-    font-size: clamp(2.75rem, 16vw, 4.5rem);
+    font-size: clamp(2.65rem, 14vw, 4.1rem);
+  }
+
+  .account-hero {
+    padding-bottom: 1.6rem;
   }
 
   .account-access-panel,
@@ -1427,6 +1455,10 @@
     font-size: 0.68rem;
   }
 
+  .workspace-nav-hint {
+    padding-inline: 1rem;
+  }
+
   .workspace-operator {
     margin-inline: 1rem;
   }
@@ -1514,6 +1546,51 @@
 
   .settings-list div {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 821px) {
+  .account-main {
+    padding-top: clamp(2.2rem, 4vw, 3.6rem);
+  }
+
+  .account-hero {
+    display: grid;
+    grid-template:
+      "kicker lead" auto
+      "title lead" 1fr
+      "title sequence" auto
+      / minmax(0, 1.22fr) minmax(18rem, 0.78fr);
+    gap: 0.8rem clamp(2.5rem, 5vw, 5rem);
+    max-width: none;
+    padding-bottom: clamp(1.8rem, 3vw, 2.6rem);
+  }
+
+  .account-hero .product-kicker {
+    grid-area: kicker;
+    align-self: end;
+  }
+
+  .account-hero h1 {
+    grid-area: title;
+    align-self: start;
+    max-width: 10ch;
+    margin-bottom: 0;
+    font-size: clamp(3.6rem, 6vw, 5.8rem);
+  }
+
+  .account-lead {
+    grid-area: lead;
+    align-self: end;
+    max-width: 28rem;
+    padding-left: clamp(1.5rem, 3vw, 2.5rem);
+    border-left: 1px solid rgba(217, 189, 120, 0.24);
+  }
+
+  .account-hero .boundary-sequence {
+    grid-area: sequence;
+    margin-top: 0.5rem;
+    padding-left: clamp(1.5rem, 3vw, 2.5rem);
   }
 }
 
