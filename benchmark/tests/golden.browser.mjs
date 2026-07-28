@@ -324,7 +324,8 @@ test("production policy and analytical function surfaces match the v1 authority 
 
   for (const [name, expectedHash] of Object.entries(expectedAuthority.protected_function_sha256)) {
     assert.equal(typeof Core[name], "function", `${name} must remain part of the production Core surface`);
-    assert.equal(sha256(Core[name].toString()), expectedHash, `${name} source changed`);
+    const portableSource = Core[name].toString().replace(/\r\n/g, "\n");
+    assert.equal(sha256(portableSource), expectedHash, `${name} source changed`);
   }
 });
 
