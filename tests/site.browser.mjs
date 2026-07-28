@@ -1428,6 +1428,16 @@ async function validateSkillForge(browser, origin, tailwindRuntime) {
     cases: document.querySelectorAll(".case-record").length,
     counts: document.querySelector("#registry-counts")?.textContent.trim(),
     admission: [...document.querySelectorAll(".skill-facts dd")].map((node) => node.textContent),
+    forgeStates: [...document.querySelectorAll(".forge-trace small")].map((node) => node.textContent.trim()),
+    imprintLevels: [...document.querySelectorAll(".method-imprint__bar")].map((node) => node.dataset.level),
+    caseSignals: [...document.querySelectorAll(".case-record")].map((record) =>
+      [...record.querySelectorAll(".case-record__signal strong")].map((node) => node.textContent.trim()),
+    ),
+    caseToggles: document.querySelectorAll(".case-record__toggle").length,
+    closedPanels: document.querySelectorAll(".case-record__panel[hidden]").length,
+    caseFactRows: document.querySelectorAll(".case-facts > div").length,
+    artifactRows: document.querySelectorAll(".artifact-list > li").length,
+    testEvidenceRows: document.querySelectorAll(".case-tests").length,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     unsafe: window.__unsafe,
   }));
@@ -1435,8 +1445,44 @@ async function validateSkillForge(browser, origin, tailwindRuntime) {
   assert.equal(state.cases, 4);
   assert.equal(state.counts, "1 REVIEW · 0 ADMITTED");
   assert.ok(state.admission.includes("NO DECISION"));
+  assert.deepEqual(state.forgeStates, [
+    "4 CASES RETAINED",
+    "1 CANDIDATE · 1 REVIEW",
+    "NO DECISION",
+    "0 ADMITTED · NOT AVAILABLE",
+  ]);
+  assert.deepEqual(
+    state.imprintLevels,
+    [..."3b030d109ad876294cc6fe57525dfd5c"].map((character) => String(Number.parseInt(character, 16))),
+  );
+  assert.deepEqual(state.caseSignals, [
+    ["2 RETAINED", "NOT CAPTURED", "NOT RETAINED", "NOT CAPTURED"],
+    ["2 RETAINED", "NOT CAPTURED", "NOT RETAINED", "NOT CAPTURED"],
+    ["2 RETAINED", "HEAD CAPTURED", "1 RETAINED", "NOT DEPLOYED"],
+    ["2 RETAINED", "HEAD CAPTURED", "2 RETAINED", "LIVE VERIFIED"],
+  ]);
+  assert.equal(state.caseToggles, 4);
+  assert.equal(state.closedPanels, 4);
+  assert.equal(state.caseFactRows, 24);
+  assert.equal(state.artifactRows, 8);
+  assert.equal(state.testEvidenceRows, 2);
   assert.equal(state.overflow, 0);
   assert.equal(state.unsafe, undefined);
+
+  const caseToggles = page.locator(".case-record__toggle");
+  await caseToggles.nth(0).focus();
+  await page.keyboard.press("Enter");
+  await caseToggles.nth(1).click();
+  const disclosure = await page.evaluate(() => ({
+    expanded: [...document.querySelectorAll(".case-record__toggle")].map((toggle) =>
+      toggle.getAttribute("aria-expanded"),
+    ),
+    closedPanels: document.querySelectorAll(".case-record__panel[hidden]").length,
+    firstPanelLabelledBy: document.querySelector(".case-record__panel")?.getAttribute("aria-labelledby"),
+  }));
+  assert.deepEqual(disclosure.expanded, ["true", "true", "false", "false"]);
+  assert.equal(disclosure.closedPanels, 2);
+  assert.equal(disclosure.firstPanelLabelledBy, "case-001-label case-001-toggle");
 
   await page.locator('[data-lang="uk"]:visible').first().click();
   assert.equal(await page.locator("#skills-title").innerText(), "МЕТОД СТАЄ КАНДИДАТОМ.\nПЕРЕГЛЯД ВИРІШУЄ ДОПУСК.");

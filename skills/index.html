@@ -9,7 +9,7 @@
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260726b" />
-    <link rel="stylesheet" href="/skills/assets/skills.css?v=20260727a" />
+    <link rel="stylesheet" href="/skills/assets/skills.css?v=20260728a" />
     <title data-i18n-page="skills.page.title">Skill Forge evidence | SemeAI</title>
   </head>
   <body class="mode-skills" data-semeai-custom-bg>
@@ -31,10 +31,38 @@
         </div>
         <aside class="forge-trace" aria-label="Skill candidate sequence" data-i18n-aria="skills.trace.aria">
           <ol>
-            <li><span>01</span><strong data-i18n="skills.trace.evidence">WORKFLOW EVIDENCE</strong></li>
-            <li><span>02</span><strong data-i18n="skills.trace.candidate">SKILL CANDIDATE</strong></li>
-            <li><span>03</span><strong data-i18n="skills.trace.review">REVIEW / ADMISSION</strong></li>
-            <li><span>04</span><strong data-i18n="skills.trace.registry">REGISTRY TRACE</strong></li>
+            <li data-forge-stage="evidence">
+              <span>01</span>
+              <div>
+                <strong data-i18n="skills.trace.evidence">WORKFLOW EVIDENCE</strong>
+                <small id="forge-evidence-state">STRUCTURED CASES</small>
+              </div>
+              <i aria-hidden="true"></i>
+            </li>
+            <li data-forge-stage="candidate">
+              <span>02</span>
+              <div>
+                <strong data-i18n="skills.trace.candidate">SKILL CANDIDATE</strong>
+                <small id="forge-candidate-state">REVIEW</small>
+              </div>
+              <i aria-hidden="true"></i>
+            </li>
+            <li data-forge-stage="review">
+              <span>03</span>
+              <div>
+                <strong data-i18n="skills.trace.review">REVIEW / ADMISSION</strong>
+                <small id="forge-review-state">NO DECISION</small>
+              </div>
+              <i aria-hidden="true"></i>
+            </li>
+            <li data-forge-stage="registry">
+              <span>04</span>
+              <div>
+                <strong data-i18n="skills.trace.registry">REGISTRY TRACE</strong>
+                <small id="forge-registry-state">0 ADMITTED · NOT AVAILABLE</small>
+              </div>
+              <i aria-hidden="true"></i>
+            </li>
           </ol>
         </aside>
       </section>
@@ -99,6 +127,6 @@
     <script src="/assets/js/i18n-arch.js?v=20260724a"></script>
     <script src="/skills/assets/skills-i18n.js?v=20260727a"></script>
     <script src="/assets/js/site-shell.js?v=20260726a"></script>
-    <script src="/skills/assets/skills.js?v=20260727a" defer></script>
+    <script src="/skills/assets/skills.js?v=20260728a" defer></script>
   </body>
 </html>
