@@ -1,0 +1,4 @@
+# Genesis source records, generated manifests, and metadata participate in
+# byte-level SHA-256 or exact generated-output checks. Keep their canonical LF
+# bytes even when a Windows Git installation enables autocrlf.
+genesis/**/*.json text eol=lf
