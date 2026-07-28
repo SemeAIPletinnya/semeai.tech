@@ -1,0 +1,26 @@
+{
+  "schema": "semeai.genesis.archive-period.v1",
+  "period": "2026-03",
+  "archive_id": "x-public-export-2026-05-30",
+  "source_boundary": "Curated public X records only; private archive data is excluded.",
+  "artifacts": [
+    {
+      "id": "x-2036546250762571919",
+      "state": "ADMITTED",
+      "published_at": "2026-03-24T20:50:38.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2036546250762571919",
+      "record_path": "genesis/archive/2026-03/originals/x-2036546250762571919.json",
+      "record_sha256": "259fc3a9e18f3ad8cc35f222c1ff5134f25d0a27344017d7f77877124a88130c",
+      "media": [],
+      "era_ids": [
+        "06-convergence",
+        "07-release-authority"
+      ],
+      "claims_supported": [
+        "Public project language distinguished generation behavior from release-control behavior by 2026-03-24."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted for release-control vocabulary. Numerical performance language is not admitted here; the public repository and bounded experiment artifacts remain authority."
+    }
+  ]
+}

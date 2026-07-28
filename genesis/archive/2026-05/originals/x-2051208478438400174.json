@@ -1,0 +1,32 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-2051208478438400174",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "2051208478438400174",
+    "published_at": "2026-05-04T07:53:05.000Z",
+    "public_url": "https://x.com/adelayida210519/status/2051208478438400174",
+    "archive_id": "x-public-export-2026-05-30"
+  },
+  "record": {
+    "text": "@crystalwizard Implemented and merged as PR #144:\n\nhttps://t.co/rA7mBFZmM2\n\nI added your sanitized config repro as a v0.3 Baseline vs PoR demo case:\nsmooth_wrong_config_advice\nLocal result:\n\nBaseline: RELEASED\nPoR core: PROCEED\nDemo release layer: NEEDS_REVIEW\nConfig risk detected: True…",
+    "language": "en",
+    "expanded_urls": [
+      "https://github.com/SemeAIPletinnya/silence-as-control/pull/144"
+    ]
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "07-release-authority",
+      "08-productization"
+    ],
+    "claims_supported": [
+      "NEEDS_REVIEW appeared in a public release-layer trace by 2026-05-04."
+    ],
+    "historical_framing": false,
+    "curation_note": "The public repository commit and pull request remain implementation authority; the post establishes publication history."
+  },
+  "media": []
+}

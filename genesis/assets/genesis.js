@@ -11,6 +11,12 @@
     repositories: "/genesis/data/repositories.json",
     lineage: "/genesis/data/lineage.json",
     chronicle: "/genesis/data/chronicle.json",
+    historicalEvidence: "/genesis/data/historical-evidence.json",
+    admissionDecisions: "/genesis/data/admission-decisions.json",
+    timelines: "/genesis/data/timelines.json",
+    conceptLineage: "/genesis/data/concept-lineage.json",
+    evidenceQuality: "/genesis/data/evidence-quality.json",
+    duplicates: "/genesis/data/duplicate-representations.json",
   };
 
   function element(name, attributes = {}, text = "") {
@@ -302,6 +308,150 @@
       });
   }
 
+  function labelFromKey(value) {
+    return String(value || "")
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (letter) => letter.toUpperCase());
+  }
+
+  function renderHistoricalTimelines(data) {
+    const target = document.querySelector("[data-historical-timelines]");
+    if (!target) return;
+    target.replaceChildren();
+    Object.entries(data.timelines.timelines || {}).forEach(([key, entries]) => {
+      const section = element("section", { class: "historical-timeline" });
+      section.append(
+        element("p", { class: "historical-timeline__index" }, labelFromKey(key)),
+      );
+      const list = element("ol");
+      (entries || []).forEach((entry) => {
+        const item = element("li");
+        item.append(
+          element("time", { datetime: entry.date }, entry.date),
+          element("h3", {}, entry.title),
+          element("p", {}, entry.summary),
+          element(
+            "p",
+            { class: "historical-timeline__refs" },
+            `${entry.evidence_refs.length} ADMITTED EVIDENCE REFERENCE${entry.evidence_refs.length === 1 ? "" : "S"}`,
+          ),
+        );
+        list.append(item);
+      });
+      section.append(list);
+      target.append(section);
+    });
+  }
+
+  function renderEvidenceQuality(data) {
+    const target = document.querySelector("[data-evidence-quality]");
+    if (!target) return;
+    target.replaceChildren();
+    (data.evidenceQuality.eras || []).forEach((era, index) => {
+      const item = element("li");
+      item.append(
+        element("p", { class: "evidence-quality__period" }, era.period),
+        element("h4", {}, era.label),
+        element("p", {}, era.evidence_types.join(" · ").replace(/_/g, " ")),
+        element("p", { class: "evidence-quality__limits" }, era.limitations),
+      );
+      item.style.setProperty("--quality-index", String(index));
+      target.append(item);
+    });
+  }
+
+  function renderConceptLineage(data) {
+    const target = document.querySelector("[data-concept-lineage]");
+    if (!target) return;
+    target.replaceChildren();
+    (data.conceptLineage.edges || []).forEach((edge) => {
+      const item = element("li");
+      item.append(
+        element("span", { class: "concept-lineage__path" }, `${labelFromKey(edge.from)} → ${labelFromKey(edge.to)}`),
+        element("span", { class: "concept-lineage__relation" }, edge.relation),
+        element(
+          "span",
+          { class: "concept-lineage__basis" },
+          `${edge.evidence_refs.length} EVIDENCE REFERENCE${edge.evidence_refs.length === 1 ? "" : "S"} · ${edge.causality_supported ? "CAUSAL SUPPORT RECORDED" : "NO CAUSALITY CLAIM"}`,
+        ),
+      );
+      target.append(item);
+    });
+  }
+
+  function renderHistoricalEvidence(data) {
+    const target = document.querySelector("[data-historical-evidence]");
+    if (!target) return;
+    target.replaceChildren();
+    (data.historicalEvidence.artifacts || []).forEach((artifact) => {
+      const detail = element("details", { class: "historical-claim" });
+      const summary = element("summary");
+      const label = artifact.supports?.[0] || artifact.artifact_id;
+      summary.append(
+        element("span", { class: "historical-claim__date" }, artifact.timestamp?.slice(0, 10) || "DATE REVIEW"),
+        element("span", { class: "historical-claim__title" }, label),
+        element("span", { class: "historical-claim__class" }, artifact.claim_type.replace(/_/g, " ")),
+      );
+      detail.append(summary);
+      const body = element("div", { class: "historical-claim__body" });
+      body.append(
+        element("p", {}, `PROVENANCE · ${artifact.provenance_class.replace(/_/g, " ")}`),
+        element("p", {}, `SUPPORTS · ${(artifact.supports || []).join(" · ")}`),
+        element("p", {}, `DOES NOT SUPPORT · ${(artifact.does_not_support || []).join(" · ")}`),
+      );
+      const url = safeExternalUrl(artifact.source_url);
+      if (url) {
+        body.append(
+          element(
+            "a",
+            {
+              class: "evidence-link",
+              href: url,
+              target: "_blank",
+              rel: "noopener noreferrer",
+            },
+            "OPEN PUBLIC SOURCE →",
+          ),
+        );
+      }
+      detail.append(body);
+      target.append(detail);
+    });
+  }
+
+  function renderAdmissionDecisions(data) {
+    const target = document.querySelector("[data-admission-ledger]");
+    if (!target) return;
+    target.replaceChildren();
+    const held = (data.admissionDecisions.decisions || []).filter(
+      (decision) => decision.state !== "ADMIT",
+    );
+    held.forEach((decision) => {
+      const item = element("li");
+      item.append(
+        element("span", { class: `admission-state admission-state--${decision.state.toLowerCase()}` }, decision.state),
+        element("span", {}, decision.artifact_id),
+        element("span", {}, decision.reasons.map(labelFromKey).join(" · ")),
+      );
+      target.append(item);
+    });
+    const counts = data.admissionDecisions.summary || {};
+    ["admit", "review", "withhold"].forEach((key) => {
+      const output = document.querySelector(`[data-historical-count="${key}"]`);
+      if (output) output.textContent = String(counts[key] || 0);
+    });
+    const duplicateOutput = document.querySelector('[data-historical-count="duplicates"]');
+    if (duplicateOutput) duplicateOutput.textContent = String(data.duplicates.groups?.length || 0);
+  }
+
+  function renderHistoricalFoundation(data) {
+    renderHistoricalTimelines(data);
+    renderEvidenceQuality(data);
+    renderConceptLineage(data);
+    renderHistoricalEvidence(data);
+    renderAdmissionDecisions(data);
+  }
+
   function bindEraNavigation() {
     const controls = Array.from(document.querySelectorAll("[data-era-control]"));
     const eras = Array.from(document.querySelectorAll("[data-era]"));
@@ -373,16 +523,43 @@
     bindLifecycle();
     bindEraNavigation();
     try {
-      const [eras, milestones, artifacts, repositories, lineage, chronicle] = await Promise.all(
+      const [
+        eras,
+        milestones,
+        artifacts,
+        repositories,
+        lineage,
+        chronicle,
+        historicalEvidence,
+        admissionDecisions,
+        timelines,
+        conceptLineage,
+        evidenceQuality,
+        duplicates,
+      ] = await Promise.all(
         Object.values(paths).map(fetchJson),
       );
-      const data = { eras, milestones, artifacts, repositories, lineage, chronicle };
+      const data = {
+        eras,
+        milestones,
+        artifacts,
+        repositories,
+        lineage,
+        chronicle,
+        historicalEvidence,
+        admissionDecisions,
+        timelines,
+        conceptLineage,
+        evidenceQuality,
+        duplicates,
+      };
       renderEras(data);
       renderLineage(data);
       renderChronicle(data);
+      renderHistoricalFoundation(data);
       bindLineageVisibility();
       setStatus(
-        `STRUCTURED PROVENANCE LOADED · ${artifacts.artifacts.length} ADMITTED PUBLIC ARTIFACTS · ${chronicle.entries.length} CHRONICLE ENTRIES · SNAPSHOT ${repositories.captured_at}`,
+        `STRUCTURED PROVENANCE LOADED · ${historicalEvidence.artifacts.length} ADMITTED CLAIM BOUNDARIES · ${admissionDecisions.summary.review} REVIEW · ${admissionDecisions.summary.withhold} WITHHOLD · ${chronicle.entries.length} CHRONICLE ENTRIES`,
         "ready",
       );
     } catch (error) {

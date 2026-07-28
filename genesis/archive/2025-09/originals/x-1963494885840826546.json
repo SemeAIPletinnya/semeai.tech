@@ -1,0 +1,35 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-1963494885840826546",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "1963494885840826546",
+    "published_at": "2025-09-04T06:50:35.000Z",
+    "public_url": "https://x.com/adelayida210519/status/1963494885840826546",
+    "archive_id": "x-public-export-2026-05-30"
+  },
+  "record": {
+    "text": "@LarryPixel @sama @EdDiberd We built our own architecture based on the principle of Proof-of-Resonance.\nInstead of classical file access (like in Codex or VS Code integrations), we created a living archive, where all materials — lore, documents, CSV, NFTs — are permanently stored and can be pulled up at any… https://t.co/ywIf1RMVSZ",
+    "language": "en",
+    "expanded_urls": []
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "03-structure"
+    ],
+    "claims_supported": [
+      "Public project language described a living archive of lore, documents, CSV files, and other project materials by 2025-09-04."
+    ],
+    "historical_framing": true,
+    "curation_note": "Admitted as memory/archive vocabulary only. The post does not establish durable storage, retrieval correctness, or the later Workspace implementation."
+  },
+  "media": [
+    {
+      "path": "genesis/archive/2025-09/originals/x-1963494885840826546-Gz-8MFAXEAEZdKK.jpg",
+      "sha256": "ad33aeb29dd6c17b6eb8292d896f77dc52692b7db31696a303f7095147f05158",
+      "bytes": 73271
+    }
+  ]
+}

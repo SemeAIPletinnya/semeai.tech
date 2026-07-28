@@ -1,7 +1,7 @@
 {
   "schema": "semeai.genesis.archive-period.v1",
   "period": "2026-04",
-  "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+  "archive_id": "x-public-export-2026-05-30",
   "source_boundary": "Curated public X records only; private archive data is excluded.",
   "artifacts": [
     {
@@ -10,7 +10,7 @@
       "published_at": "2026-04-24T06:10:33.000Z",
       "source_url": "https://x.com/adelayida210519/status/2047558794402521132",
       "record_path": "genesis/archive/2026-04/originals/x-2047558794402521132.json",
-      "record_sha256": "7d07cde2d2a16dcb6b21e75c25a1d3a3b4c750dce9d9578f7c4a8b7ee4d89b10",
+      "record_sha256": "77678cb156b9878a9ae6652da15472065ce3ffcd2602a3019e28304f535ef95d",
       "media": [],
       "era_ids": [
         "06-convergence"
@@ -27,7 +27,7 @@
       "published_at": "2026-04-30T18:25:44.000Z",
       "source_url": "https://x.com/adelayida210519/status/2049918139735974213",
       "record_path": "genesis/archive/2026-04/originals/x-2049918139735974213.json",
-      "record_sha256": "67a11179efc639910e46415eda612b5ef4e7efe9a388dd633eda88fa3788cafa",
+      "record_sha256": "165e082ae76f7098512c4908e2108cf1f729cc4512e757d242bc6603252c8a0a",
       "media": [],
       "era_ids": [
         "07-release-authority"

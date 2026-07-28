@@ -8,13 +8,13 @@
   "artifacts": [
     {
       "period": "2025-07",
-      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "archive_id": "x-public-export-2026-05-30",
       "id": "x-1942448943687778407",
       "state": "ADMITTED",
       "published_at": "2025-07-08T05:01:31.000Z",
       "source_url": "https://x.com/adelayida210519/status/1942448943687778407",
       "record_path": "genesis/archive/2025-07/originals/x-1942448943687778407.json",
-      "record_sha256": "6d521b2986d06e0f9ee9194d5baa9466fdb7cbac445549dfe8fc31f459427509",
+      "record_sha256": "bf4cf7c5a32f6fad5ed2c3b7f22c020af11cd9b52bc5146f40ca13d429a62c61",
       "media": [],
       "era_ids": [
         "00-before-code",
@@ -28,13 +28,13 @@
     },
     {
       "period": "2025-07",
-      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "archive_id": "x-public-export-2026-05-30",
       "id": "x-1942621613838782908",
       "state": "ADMITTED",
       "published_at": "2025-07-08T16:27:39.000Z",
       "source_url": "https://x.com/adelayida210519/status/1942621613838782908",
       "record_path": "genesis/archive/2025-07/originals/x-1942621613838782908.json",
-      "record_sha256": "9429a857557e2678d7f9cfaef996b6978dea9466bc74c61e08ffd898692c66c8",
+      "record_sha256": "b98438df7403d8d8246ef3287729ff46a65dc7463149bc523433bf4a8046c342",
       "media": [
         {
           "path": "genesis/archive/2025-07/originals/x-1942621613838782908-GvWUD6aXQAY6baO.jpg",
@@ -54,13 +54,13 @@
     },
     {
       "period": "2025-07",
-      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "archive_id": "x-public-export-2026-05-30",
       "id": "x-1943213832886788261",
       "state": "ADMITTED",
       "published_at": "2025-07-10T07:40:55.000Z",
       "source_url": "https://x.com/adelayida210519/status/1943213832886788261",
       "record_path": "genesis/archive/2025-07/originals/x-1943213832886788261.json",
-      "record_sha256": "6476e5e9c82459235b6fa33dc79d4e604d6191ba74e671209cb9d34f2d334991",
+      "record_sha256": "2ad37714c334f32715bad91058a82aeaa0a7b554ab038c52bf2a6ce561e769d3",
       "media": [
         {
           "path": "genesis/archive/2025-07/originals/x-1943213832886788261-Gveuq56WEAANDpD.jpg",
@@ -79,13 +79,38 @@
     },
     {
       "period": "2025-09",
-      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "archive_id": "x-public-export-2026-05-30",
+      "id": "x-1963494885840826546",
+      "state": "ADMITTED",
+      "published_at": "2025-09-04T06:50:35.000Z",
+      "source_url": "https://x.com/adelayida210519/status/1963494885840826546",
+      "record_path": "genesis/archive/2025-09/originals/x-1963494885840826546.json",
+      "record_sha256": "1be5a21fbca02ad14e1aff0c8f4b46a56cb1b2a867c164af9ce1fe9afcfd2102",
+      "media": [
+        {
+          "path": "genesis/archive/2025-09/originals/x-1963494885840826546-Gz-8MFAXEAEZdKK.jpg",
+          "sha256": "ad33aeb29dd6c17b6eb8292d896f77dc52692b7db31696a303f7095147f05158",
+          "bytes": 73271
+        }
+      ],
+      "era_ids": [
+        "03-structure"
+      ],
+      "claims_supported": [
+        "Public project language described a living archive of lore, documents, CSV files, and other project materials by 2025-09-04."
+      ],
+      "historical_framing": true,
+      "curation_note": "Admitted as memory/archive vocabulary only. The post does not establish durable storage, retrieval correctness, or the later Workspace implementation."
+    },
+    {
+      "period": "2025-09",
+      "archive_id": "x-public-export-2026-05-30",
       "id": "x-1966168916083814707",
       "state": "ADMITTED",
       "published_at": "2025-09-11T15:56:13.000Z",
       "source_url": "https://x.com/adelayida210519/status/1966168916083814707",
       "record_path": "genesis/archive/2025-09/originals/x-1966168916083814707.json",
-      "record_sha256": "c45cfb2c2c6be898315b3b30ab8850b997bfdffcbfd200ae51de686b03987382",
+      "record_sha256": "c2efbce76ea8393946f12a7869575055042a2046947660d007834acde40d2b5a",
       "media": [],
       "era_ids": [
         "03-structure"
@@ -97,14 +122,53 @@
       "curation_note": "Admitted as a dated architecture-language artifact. Repository history remains the implementation authority."
     },
     {
+      "period": "2025-12",
+      "archive_id": "x-public-export-2026-05-30",
+      "id": "x-2004498397496254559",
+      "state": "ADMITTED",
+      "published_at": "2025-12-26T10:23:54.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2004498397496254559",
+      "record_path": "genesis/archive/2025-12/originals/x-2004498397496254559.json",
+      "record_sha256": "a2e8dc99f606a246def6d23fee8c66b41ba9ad4457a9ef05cf8e5739251f15a0",
+      "media": [],
+      "era_ids": [
+        "06-convergence"
+      ],
+      "claims_supported": [
+        "Silence-as-Control was publicly described as a control-layer principle on 2025-12-26."
+      ],
+      "historical_framing": false,
+      "curation_note": "The post is a publication trace. Commits in the public Silence-as-Control repository remain the implementation authority."
+    },
+    {
+      "period": "2026-03",
+      "archive_id": "x-public-export-2026-05-30",
+      "id": "x-2036546250762571919",
+      "state": "ADMITTED",
+      "published_at": "2026-03-24T20:50:38.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2036546250762571919",
+      "record_path": "genesis/archive/2026-03/originals/x-2036546250762571919.json",
+      "record_sha256": "259fc3a9e18f3ad8cc35f222c1ff5134f25d0a27344017d7f77877124a88130c",
+      "media": [],
+      "era_ids": [
+        "06-convergence",
+        "07-release-authority"
+      ],
+      "claims_supported": [
+        "Public project language distinguished generation behavior from release-control behavior by 2026-03-24."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted for release-control vocabulary. Numerical performance language is not admitted here; the public repository and bounded experiment artifacts remain authority."
+    },
+    {
       "period": "2026-04",
-      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "archive_id": "x-public-export-2026-05-30",
       "id": "x-2047558794402521132",
       "state": "ADMITTED",
       "published_at": "2026-04-24T06:10:33.000Z",
       "source_url": "https://x.com/adelayida210519/status/2047558794402521132",
       "record_path": "genesis/archive/2026-04/originals/x-2047558794402521132.json",
-      "record_sha256": "7d07cde2d2a16dcb6b21e75c25a1d3a3b4c750dce9d9578f7c4a8b7ee4d89b10",
+      "record_sha256": "77678cb156b9878a9ae6652da15472065ce3ffcd2602a3019e28304f535ef95d",
       "media": [],
       "era_ids": [
         "06-convergence"
@@ -117,13 +181,13 @@
     },
     {
       "period": "2026-04",
-      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "archive_id": "x-public-export-2026-05-30",
       "id": "x-2049918139735974213",
       "state": "ADMITTED",
       "published_at": "2026-04-30T18:25:44.000Z",
       "source_url": "https://x.com/adelayida210519/status/2049918139735974213",
       "record_path": "genesis/archive/2026-04/originals/x-2049918139735974213.json",
-      "record_sha256": "67a11179efc639910e46415eda612b5ef4e7efe9a388dd633eda88fa3788cafa",
+      "record_sha256": "165e082ae76f7098512c4908e2108cf1f729cc4512e757d242bc6603252c8a0a",
       "media": [],
       "era_ids": [
         "07-release-authority"
@@ -136,13 +200,13 @@
     },
     {
       "period": "2026-05",
-      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "archive_id": "x-public-export-2026-05-30",
       "id": "x-2050625099783405868",
       "state": "ADMITTED",
       "published_at": "2026-05-02T17:14:57.000Z",
       "source_url": "https://x.com/adelayida210519/status/2050625099783405868",
       "record_path": "genesis/archive/2026-05/originals/x-2050625099783405868.json",
-      "record_sha256": "c1b78877a8ec7acd0cb966d8781c85ada6b52cd8e7f33e5c5517cb41d48ff1fe",
+      "record_sha256": "f31f10a59a090d8ba859d929c9bb7332f4f982acc397dfc676541bbb7c9faf30",
       "media": [],
       "era_ids": [
         "08-productization"
@@ -155,13 +219,59 @@
     },
     {
       "period": "2026-05",
-      "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+      "archive_id": "x-public-export-2026-05-30",
+      "id": "x-2051208478438400174",
+      "state": "ADMITTED",
+      "published_at": "2026-05-04T07:53:05.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2051208478438400174",
+      "record_path": "genesis/archive/2026-05/originals/x-2051208478438400174.json",
+      "record_sha256": "0f16bb92dbc17a8e416183cecf6c4bc000d0ce7c9a2be671b41150f577a6ff69",
+      "media": [],
+      "era_ids": [
+        "07-release-authority",
+        "08-productization"
+      ],
+      "claims_supported": [
+        "NEEDS_REVIEW appeared in a public release-layer trace by 2026-05-04."
+      ],
+      "historical_framing": false,
+      "curation_note": "The public repository commit and pull request remain implementation authority; the post establishes publication history."
+    },
+    {
+      "period": "2026-05",
+      "archive_id": "x-public-export-2026-05-30",
+      "id": "x-2058269527356383498",
+      "state": "ADMITTED",
+      "published_at": "2026-05-23T19:31:10.000Z",
+      "source_url": "https://x.com/adelayida210519/status/2058269527356383498",
+      "record_path": "genesis/archive/2026-05/originals/x-2058269527356383498.json",
+      "record_sha256": "3b158acc93a141c2f488b7acf8b183168825b551c18f48a217ee60a322d1165f",
+      "media": [
+        {
+          "path": "genesis/archive/2026-05/originals/x-2058269527356383498-HJBxNW1WsAAf9EV.jpg",
+          "sha256": "71609cd312a45aff468f3601a2696f420f5280d1aa8bcead98c034539de9e6f4",
+          "bytes": 92950
+        }
+      ],
+      "era_ids": [
+        "07-release-authority",
+        "08-productization"
+      ],
+      "claims_supported": [
+        "The PROCEED / NEEDS_REVIEW / SILENCE external release-gate vocabulary was publicly presented by 2026-05-23."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted as a release/publication trace paired with repository history. It is not a universal reliability claim."
+    },
+    {
+      "period": "2026-05",
+      "archive_id": "x-public-export-2026-05-30",
       "id": "x-2058860026161172840",
       "state": "ADMITTED",
       "published_at": "2026-05-25T10:37:36.000Z",
       "source_url": "https://x.com/adelayida210519/status/2058860026161172840",
       "record_path": "genesis/archive/2026-05/originals/x-2058860026161172840.json",
-      "record_sha256": "f251949545cfabaefaf97821ef427d259a7e042fd8f4ba962bfcf6442077560e",
+      "record_sha256": "185724e91e9b92ac4d8cbb2c0f2acf62a06778bbd1ebdcf7ccac477ac42f6ff0",
       "media": [],
       "era_ids": [
         "08-productization"

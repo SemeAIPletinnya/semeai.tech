@@ -531,7 +531,7 @@ async function validateNoJavaScript(browser, origin) {
       assert.ok(state.noscriptLength >= 40, `${route} should explain its private-product no-JS boundary`);
     }
     if (route === "/genesis/") {
-      assert.equal(state.eras, 12, "Genesis v03 should keep all twelve eras without JavaScript");
+      assert.equal(state.eras, 12, "Genesis v04 should keep all twelve eras without JavaScript");
     }
     if (route === "/genesis/archive/v02/") {
       assert.equal(state.scenes, 9, "Genesis v02 archive should keep all nine scenes without JavaScript");
@@ -1098,18 +1098,39 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
     forks: document.querySelector('[data-repository-count="forks"]')?.textContent,
     status: document.querySelector("[data-genesis-status]")?.textContent,
     chronicleEntries: document.querySelectorAll(".chronicle-entry").length,
+    admittedHistoricalClaims: document.querySelectorAll(".historical-claim").length,
+    heldHistoricalClaims: document.querySelectorAll(".admission-ledger li").length,
+    historicalTimelines: document.querySelectorAll(".historical-timeline").length,
+    evidenceQualityEras: document.querySelectorAll("[data-evidence-quality] > li").length,
+    conceptLineageEdges: document.querySelectorAll("[data-concept-lineage] > li").length,
+    genesisVersion: document.body.dataset.genesisVersion,
     unsafeMarker: window.__unsafe,
   }));
-  assert.equal(state.eras, 12, "Genesis v03 should render the twelve curated eras");
+  assert.equal(state.genesisVersion, "v04");
+  assert.equal(state.eras, 12, "Genesis v04 should render the twelve curated eras");
   assert.equal(state.eraControls, 12, "each era should have a keyboard control");
-  assert.equal(state.admittedMilestones, 10, "only the ten admitted milestones should render");
+  assert.equal(state.admittedMilestones, 14, "only the fourteen admitted milestones should render");
   assert.equal(state.lineageEdges, 13, "the curated lineage should render all thirteen relations");
   assert.equal(state.lineageNodes, 14, "forks should remain outside the first-party lineage geometry");
   assert.equal(state.firstParty, "6");
   assert.equal(state.forks, "6");
   assert.equal(state.chronicleEntries, 4, "Genesis should render four verified seed Chronicle entries");
+  assert.equal(state.admittedHistoricalClaims, 18, "the sanitized historical manifest should render eighteen admitted claims");
+  assert.equal(state.heldHistoricalClaims, 5, "review and withheld decisions should remain inspectable");
+  assert.equal(state.historicalTimelines, 4, "concept, publication, implementation, and evidence clocks should remain separate");
+  assert.equal(state.evidenceQualityEras, 4, "evidence quality should render as four descriptive eras");
+  assert.equal(state.conceptLineageEdges, 8, "only evidence-backed conceptual relations should render");
   assert.match(state.status, /STRUCTURED PROVENANCE LOADED/);
   assert.equal(state.unsafeMarker, undefined, "manifest data must not execute as markup");
+
+  const firstHistoricalClaim = page.locator(".historical-claim").first();
+  await firstHistoricalClaim.locator("summary").focus();
+  await page.keyboard.press("Enter");
+  assert.equal(
+    await firstHistoricalClaim.getAttribute("open"),
+    "",
+    "historical claim disclosure should be keyboard operable",
+  );
 
   const controls = page.locator("[data-era-control]");
   await controls.first().focus();
@@ -1127,8 +1148,8 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
       && parsed.origin !== "https://fonts.googleapis.com"
       && parsed.origin !== "https://fonts.gstatic.com";
   });
-  assert.deepEqual(unexpectedExternal, [], "Genesis v03 should not add external requests");
-  assert.deepEqual(errors, [], "Genesis v03 should remain console and request error-free");
+  assert.deepEqual(unexpectedExternal, [], "Genesis v04 should not add external requests");
+  assert.deepEqual(errors, [], "Genesis v04 should remain console and request error-free");
 
   await loadRoute(page, origin, "/genesis/archive/v02/");
   assert.equal(
@@ -1153,6 +1174,8 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
     lineageNodes: state.lineageNodes,
     archivedScenes: 9,
     chronicleEntries: state.chronicleEntries,
+    admittedHistoricalClaims: state.admittedHistoricalClaims,
+    heldHistoricalClaims: state.heldHistoricalClaims,
   };
 }
 

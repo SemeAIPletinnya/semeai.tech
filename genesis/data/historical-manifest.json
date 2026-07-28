@@ -1,0 +1,12 @@
+{
+  "files": {
+    "admission-decisions.json": "481f4f52e9f3c41996c6a03c80c647f11e0ffce4320e34855f5951343ac38846",
+    "concept-lineage.json": "0cf65fc2658350003a3a45826b0e5ae9d27be13752b2e5641fa09932b187c64e",
+    "duplicate-representations.json": "c49bd505ef81cbad587ca1e6269c05b2bcb72438d97812a4b5582c3f4a634c34",
+    "evidence-quality.json": "05abfcff3fe7fd09b6c383dc42ac6e3855e8c1abed46c16a4528c66bc68dc4c4",
+    "historical-evidence.json": "0974f684574a6419b95f7abcbee65aa01c087ff2f3df1d1714c20ba90935860b",
+    "timelines.json": "30aecb937e1630cf135b57f8b96c3909aef92458d5b4b459aacbdd09cfabf9b2"
+  },
+  "policy_version": "semeai.genesis.historical-admission.v1",
+  "schema": "semeai.genesis.historical-manifest.v1"
+}

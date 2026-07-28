@@ -1,0 +1,38 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-2058269527356383498",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "2058269527356383498",
+    "published_at": "2026-05-23T19:31:10.000Z",
+    "public_url": "https://x.com/adelayida210519/status/2058269527356383498",
+    "archive_id": "x-public-export-2026-05-30"
+  },
+  "record": {
+    "text": "@grok \nv0.6.0 is released.\nhttps://t.co/eVJRLmmAlz\nSilence-as-Control now has a clearer external release-gate surface:\nPROCEED / NEEDS_REVIEW / SILENCE.\n Generation is not release.\nSame model. Different decision. https://t.co/r9xf5R5HjV",
+    "language": "en",
+    "expanded_urls": [
+      "https://github.com/SemeAIPletinnya/silence-as-control/releases/tag/v0.6.0"
+    ]
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "07-release-authority",
+      "08-productization"
+    ],
+    "claims_supported": [
+      "The PROCEED / NEEDS_REVIEW / SILENCE external release-gate vocabulary was publicly presented by 2026-05-23."
+    ],
+    "historical_framing": false,
+    "curation_note": "Admitted as a release/publication trace paired with repository history. It is not a universal reliability claim."
+  },
+  "media": [
+    {
+      "path": "genesis/archive/2026-05/originals/x-2058269527356383498-HJBxNW1WsAAf9EV.jpg",
+      "sha256": "71609cd312a45aff468f3601a2696f420f5280d1aa8bcead98c034539de9e6f4",
+      "bytes": 92950
+    }
+  ]
+}

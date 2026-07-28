@@ -1,0 +1,50 @@
+{
+  "boundary": "Evidence density is descriptive. It is not a quality score or release authority.",
+  "eras": [
+    {
+      "evidence_types": [
+        "PUBLIC_FIRST_PARTY_POST"
+      ],
+      "id": "historical-framing",
+      "label": "Language before public implementation evidence",
+      "limitations": "Strong claims remain historical framing; public posts do not establish capabilities.",
+      "period": "2025-07 — 2025-09"
+    },
+    {
+      "evidence_types": [
+        "PUBLIC_REPOSITORY",
+        "PUBLIC_COMMIT",
+        "TEST_EVIDENCE"
+      ],
+      "id": "repository-emergence",
+      "label": "Repositories and initial tests appear",
+      "limitations": "Repository existence does not prove every public description.",
+      "period": "2025-10 — 2026-01"
+    },
+    {
+      "evidence_types": [
+        "PUBLIC_COMMIT",
+        "TEST_EVIDENCE",
+        "PUBLIC_RELEASE",
+        "RECEIPT"
+      ],
+      "id": "release-control-evidence",
+      "label": "Decision states, tests, releases, and receipts become explicit",
+      "limitations": "Bounded evaluations and receipts are not universal safety proof.",
+      "period": "2026-03 — 2026-06"
+    },
+    {
+      "evidence_types": [
+        "PUBLIC_COMMIT",
+        "PRODUCTION_SURFACE",
+        "TEST_EVIDENCE",
+        "RECEIPT"
+      ],
+      "id": "public-evidence-system",
+      "label": "Public product, Benchmark, Workspace, Genesis, and Skill Forge",
+      "limitations": "Workspace historical persistence and marketplace admission remain dependency-held.",
+      "period": "2026-07 — current captured head"
+    }
+  ],
+  "schema": "semeai.genesis.evidence-quality.v1"
+}

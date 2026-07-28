@@ -1,0 +1,38 @@
+{
+  "boundary": "Multiple representations of one event are not independent corroboration.",
+  "groups": [
+    {
+      "artifact_ids": [
+        "claim-x-1942448943687778407-bounded",
+        "claim-x-1942448943687778407-inflated"
+      ],
+      "event_id": "event-2025-07-08-pletinnya-semeai",
+      "representations": 2
+    },
+    {
+      "artifact_ids": [
+        "claim-x-1963494885840826546-implementation",
+        "claim-x-1963494885840826546-language"
+      ],
+      "event_id": "event-2025-09-04-living-archive",
+      "representations": 2
+    },
+    {
+      "artifact_ids": [
+        "claim-x-2036546250762571919",
+        "commit-e5116756361b"
+      ],
+      "event_id": "event-2026-03-24-release-control",
+      "representations": 2
+    },
+    {
+      "artifact_ids": [
+        "claim-x-2051208478438400174",
+        "commit-53dfb43e00b9"
+      ],
+      "event_id": "event-2026-05-04-needs-review",
+      "representations": 2
+    }
+  ],
+  "schema": "semeai.genesis.duplicate-representations.v1"
+}

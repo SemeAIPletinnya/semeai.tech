@@ -1,7 +1,7 @@
 {
   "schema": "semeai.genesis.repository-snapshot.v1",
   "account": "SemeAIPletinnya",
-  "captured_at": "2026-07-27T12:50:00.000Z",
+  "captured_at": "2026-07-28T12:00:00.000Z",
   "source": "GitHub REST API via authenticated gh CLI",
   "repositories": [
     {
@@ -479,8 +479,8 @@
       "full_name": "SemeAIPletinnya/semeai-gate-basic",
       "html_url": "https://github.com/SemeAIPletinnya/semeai-gate-basic",
       "created_at": "2026-06-26T06:59:30Z",
-      "updated_at": "2026-07-20T12:35:28Z",
-      "pushed_at": "2026-07-20T12:34:26Z",
+      "updated_at": "2026-07-27T15:29:20Z",
+      "pushed_at": "2026-07-27T15:28:13Z",
       "default_branch": "master",
       "fork": false,
       "parent_full_name": null,
@@ -489,16 +489,16 @@
       "description": "Release-control gate for AI answers: SHOW / REVIEW / BLOCK before user release",
       "language": "Python",
       "license": "Apache-2.0",
-      "commit_count": 62,
+      "commit_count": 64,
       "first_commit": {
         "sha": "e1979acdc37c83026fbba97e1fa33070ee70e3f7",
         "committed_at": "2026-06-26T06:59:27Z",
         "url": "https://github.com/SemeAIPletinnya/semeai-gate-basic/commit/e1979acdc37c83026fbba97e1fa33070ee70e3f7"
       },
       "current_head": {
-        "sha": "e8947960f3de2d1f7a3ab4727bb3762729e01065",
-        "committed_at": "2026-07-20T12:33:53Z",
-        "url": "https://github.com/SemeAIPletinnya/semeai-gate-basic/commit/e8947960f3de2d1f7a3ab4727bb3762729e01065"
+        "sha": "9f4300031e3222d61a875c30e0a159295bd4c0a3",
+        "committed_at": "2026-07-27T15:28:26Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai-gate-basic/commit/9f4300031e3222d61a875c30e0a159295bd4c0a3"
       }
     },
     {
@@ -507,8 +507,8 @@
       "full_name": "SemeAIPletinnya/semeai.tech",
       "html_url": "https://github.com/SemeAIPletinnya/semeai.tech",
       "created_at": "2026-07-01T12:43:30Z",
-      "updated_at": "2026-07-27T12:24:55Z",
-      "pushed_at": "2026-07-27T12:23:53Z",
+      "updated_at": "2026-07-28T05:06:40Z",
+      "pushed_at": "2026-07-28T05:06:30Z",
       "default_branch": "master",
       "fork": false,
       "parent_full_name": null,
@@ -517,16 +517,16 @@
       "description": "",
       "language": "JavaScript",
       "license": null,
-      "commit_count": 104,
+      "commit_count": 115,
       "first_commit": {
         "sha": "828a343246addc5732e72c6754f41e70a334a5aa",
         "committed_at": "2026-07-01T12:42:45Z",
         "url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/828a343246addc5732e72c6754f41e70a334a5aa"
       },
       "current_head": {
-        "sha": "29a34152fbe91b277954f51924feae6e87ed13a5",
-        "committed_at": "2026-07-27T12:24:02Z",
-        "url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/29a34152fbe91b277954f51924feae6e87ed13a5"
+        "sha": "9f088ec47739f2dca622990c912a74ab42dcd0e9",
+        "committed_at": "2026-07-28T05:06:28Z",
+        "url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/9f088ec47739f2dca622990c912a74ab42dcd0e9"
       }
     },
     {

@@ -29,9 +29,14 @@ function writeJson(file, value) {
 
 const options = parseArguments(process.argv.slice(2));
 const selection = JSON.parse(fs.readFileSync(selectionPath, "utf8"));
-if (path.basename(options.archiveRoot) !== selection.archive_id) {
+if (
+  crypto
+    .createHash("sha256")
+    .update(path.basename(options.archiveRoot), "utf8")
+    .digest("hex") !== selection.source_archive_basename_sha256
+) {
   throw new Error(
-    `Archive identity mismatch: expected ${selection.archive_id}, received ${path.basename(options.archiveRoot)}`
+    "Archive identity mismatch: selected source does not match the curated export snapshot"
   );
 }
 

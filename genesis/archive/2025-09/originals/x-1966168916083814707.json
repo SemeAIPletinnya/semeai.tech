@@ -7,7 +7,7 @@
     "post_id": "1966168916083814707",
     "published_at": "2025-09-11T15:56:13.000Z",
     "public_url": "https://x.com/adelayida210519/status/1966168916083814707",
-    "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463"
+    "archive_id": "x-public-export-2026-05-30"
   },
   "record": {
     "text": "@mark_k 🔧 Our approach at Semeai_tech\n\nInstead of using an LLM as a monolithic “database + reasoning” engine, we separate the layers:\n1.Directive cores — small reasoning modules that define how to interpret, connect, and prioritize inputs.\n2.Path network — a graph of semantic routes…",

@@ -1,0 +1,160 @@
+{
+  "boundary": "Public curated candidates only. Private archive decisions remain in the local index and are not published.",
+  "decisions": [
+    {
+      "artifact_id": "claim-x-1942448943687778407-bounded",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "claim-x-1942448943687778407-inflated",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [
+        "historical_language_exceeds_current_authority"
+      ],
+      "state": "WITHHOLD"
+    },
+    {
+      "artifact_id": "claim-x-1963494885840826546-language",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "claim-x-1963494885840826546-implementation",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [
+        "source_is_not_implementation_authority"
+      ],
+      "state": "WITHHOLD"
+    },
+    {
+      "artifact_id": "claim-x-1966168916083814707",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-4c7ae94a6dbe",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "claim-x-2004498397496254559",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-61092bd27782",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-e5116756361b",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "claim-x-2036546250762571919",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-53dfb43e00b9",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "claim-x-2051208478438400174",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "claim-x-2058269527356383498",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-a0f8103935cd",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-e1979acdc37c",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-828a343246ad",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-d21bb7840eb5",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-92f5be8b5e16",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-c39ef534cfe4",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "commit-63d0cce038f4",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [],
+      "state": "ADMIT"
+    },
+    {
+      "artifact_id": "claim-x-1949586933815943204-architecture",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [
+        "claim_boundary_incomplete"
+      ],
+      "state": "REVIEW"
+    },
+    {
+      "artifact_id": "claim-x-1950874872097255548-current-benchmark",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [
+        "historical_language_exceeds_current_authority"
+      ],
+      "state": "WITHHOLD"
+    },
+    {
+      "artifact_id": "claim-x-1982697170970038359-receipt-false-positive",
+      "policy_version": "semeai.genesis.historical-admission.v1",
+      "reasons": [
+        "not_material"
+      ],
+      "state": "WITHHOLD"
+    }
+  ],
+  "policy_version": "semeai.genesis.historical-admission.v1",
+  "schema": "semeai.genesis.historical-admission-decisions.v1",
+  "summary": {
+    "admit": 18,
+    "review": 1,
+    "withhold": 4
+  }
+}

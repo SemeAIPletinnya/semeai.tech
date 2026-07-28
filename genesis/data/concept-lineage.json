@@ -1,0 +1,86 @@
+{
+  "boundary": "PRECEDED records chronology. PARALLEL records coexistence. No edge implies causality unless causal support is explicit.",
+  "edges": [
+    {
+      "causality_supported": false,
+      "evidence_refs": [
+        "claim-x-1942448943687778407-bounded",
+        "claim-x-1966168916083814707"
+      ],
+      "from": "pletinnya-semeai-public-framing",
+      "relation": "PRECEDED",
+      "to": "structured-architecture-language"
+    },
+    {
+      "causality_supported": false,
+      "evidence_refs": [
+        "claim-x-1963494885840826546-language",
+        "claim-x-1966168916083814707"
+      ],
+      "from": "living-archive-language",
+      "relation": "PRECEDED",
+      "to": "structured-architecture-language"
+    },
+    {
+      "causality_supported": false,
+      "evidence_refs": [
+        "commit-4c7ae94a6dbe",
+        "public-record:x-1943213832886788261"
+      ],
+      "from": "public-silence-language",
+      "relation": "PRECEDED",
+      "to": "silence-as-control-implementation"
+    },
+    {
+      "causality_supported": false,
+      "evidence_refs": [
+        "commit-4c7ae94a6dbe",
+        "commit-e5116756361b"
+      ],
+      "from": "silence-as-control-implementation",
+      "relation": "PRECEDED",
+      "to": "release-control-api"
+    },
+    {
+      "causality_supported": false,
+      "evidence_refs": [
+        "commit-53dfb43e00b9",
+        "commit-e5116756361b"
+      ],
+      "from": "release-control-api",
+      "relation": "PRECEDED",
+      "to": "needs-review-layer"
+    },
+    {
+      "causality_supported": false,
+      "evidence_refs": [
+        "commit-53dfb43e00b9",
+        "commit-e1979acdc37c"
+      ],
+      "from": "needs-review-layer",
+      "relation": "PRECEDED",
+      "to": "gate-product"
+    },
+    {
+      "causality_supported": false,
+      "evidence_refs": [
+        "commit-d21bb7840eb5",
+        "commit-e1979acdc37c"
+      ],
+      "from": "gate-product",
+      "relation": "PARALLEL",
+      "to": "repository-evidence-benchmark"
+    },
+    {
+      "causality_supported": false,
+      "evidence_refs": [
+        "commit-c39ef534cfe4",
+        "commit-d21bb7840eb5"
+      ],
+      "from": "repository-evidence-benchmark",
+      "relation": "PRECEDED",
+      "to": "genesis-evidence-manifest"
+    }
+  ],
+  "schema": "semeai.genesis.concept-lineage.v1"
+}

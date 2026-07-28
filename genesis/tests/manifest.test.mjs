@@ -14,6 +14,11 @@ execFileSync(
   [path.join(genesisRoot, "tools", "build-genesis-manifest.mjs"), "--check"],
   { stdio: "inherit" }
 );
+execFileSync(
+  process.execPath,
+  [path.join(genesisRoot, "tools", "build-historical-evidence.mjs"), "--check"],
+  { stdio: "inherit" }
+);
 
 const read = (name) => JSON.parse(fs.readFileSync(path.join(dataRoot, name), "utf8"));
 const hash = (name) =>
@@ -29,7 +34,7 @@ const eras = read("eras.json");
 const milestones = read("milestones.json");
 const manifest = read("manifest.json");
 
-assert.equal(artifacts.artifacts.length, 8);
+assert.equal(artifacts.artifacts.length, 13);
 assert.ok(artifacts.artifacts.every((artifact) => artifact.record_sha256.length === 64));
 assert.ok(
   artifacts.artifacts

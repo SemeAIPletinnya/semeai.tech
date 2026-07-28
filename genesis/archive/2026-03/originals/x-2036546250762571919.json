@@ -1,0 +1,30 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-2036546250762571919",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "2036546250762571919",
+    "published_at": "2026-03-24T20:50:38.000Z",
+    "public_url": "https://x.com/adelayida210519/status/2036546250762571919",
+    "archive_id": "x-public-export-2026-05-30"
+  },
+  "record": {
+    "text": "@Grok this is the key point:\nbaseline always speaks\n\"PoR earns the right to speak?PoR now shows a clean baseline vs control split.\nBaseline:\n 3/3 outputs\n 1 failure\nPoR:\n 2 proceeded\n 1 silenced\n 0 accepted failures\nNot better generation.\nBetter release control.\n\n(Wrong output is…",
+    "language": "en",
+    "expanded_urls": []
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "06-convergence",
+      "07-release-authority"
+    ],
+    "claims_supported": [
+      "Public project language distinguished generation behavior from release-control behavior by 2026-03-24."
+    ],
+    "historical_framing": false,
+    "curation_note": "Admitted for release-control vocabulary. Numerical performance language is not admitted here; the public repository and bounded experiment artifacts remain authority."
+  },
+  "media": []
+}

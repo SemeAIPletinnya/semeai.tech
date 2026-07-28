@@ -30,7 +30,7 @@
       "index": 3,
       "title": "Structure",
       "principle": "Narrative language begins becoming architecture.",
-      "artifact_ids": ["x-1966168916083814707"],
+      "artifact_ids": ["x-1963494885840826546", "x-1966168916083814707"],
       "repository_ids": []
     },
     {
@@ -64,7 +64,11 @@
       "index": 6,
       "title": "Convergence",
       "principle": "Experiments converge toward a release-control thesis.",
-      "artifact_ids": ["x-2047558794402521132"],
+      "artifact_ids": [
+        "x-2004498397496254559",
+        "x-2036546250762571919",
+        "x-2047558794402521132"
+      ],
       "repository_ids": ["proof-of-resonance", "silence-as-control"]
     },
     {
@@ -72,7 +76,12 @@
       "index": 7,
       "title": "Release Authority",
       "principle": "Candidate, Gate, decision, and retained trace become explicit.",
-      "artifact_ids": ["x-2049918139735974213"],
+      "artifact_ids": [
+        "x-2036546250762571919",
+        "x-2049918139735974213",
+        "x-2051208478438400174",
+        "x-2058269527356383498"
+      ],
       "repository_ids": ["silence-as-control"]
     },
     {
@@ -80,7 +89,12 @@
       "index": 8,
       "title": "Productization",
       "principle": "Runtime and Gate surfaces become products without changing authority.",
-      "artifact_ids": ["x-2050625099783405868", "x-2058860026161172840"],
+      "artifact_ids": [
+        "x-2050625099783405868",
+        "x-2051208478438400174",
+        "x-2058269527356383498",
+        "x-2058860026161172840"
+      ],
       "repository_ids": ["semeai-local-runtime", "semeai-gate-basic"]
     },
     {

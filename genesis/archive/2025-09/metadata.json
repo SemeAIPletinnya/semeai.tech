@@ -1,16 +1,39 @@
 {
   "schema": "semeai.genesis.archive-period.v1",
   "period": "2025-09",
-  "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+  "archive_id": "x-public-export-2026-05-30",
   "source_boundary": "Curated public X records only; private archive data is excluded.",
   "artifacts": [
+    {
+      "id": "x-1963494885840826546",
+      "state": "ADMITTED",
+      "published_at": "2025-09-04T06:50:35.000Z",
+      "source_url": "https://x.com/adelayida210519/status/1963494885840826546",
+      "record_path": "genesis/archive/2025-09/originals/x-1963494885840826546.json",
+      "record_sha256": "1be5a21fbca02ad14e1aff0c8f4b46a56cb1b2a867c164af9ce1fe9afcfd2102",
+      "media": [
+        {
+          "path": "genesis/archive/2025-09/originals/x-1963494885840826546-Gz-8MFAXEAEZdKK.jpg",
+          "sha256": "ad33aeb29dd6c17b6eb8292d896f77dc52692b7db31696a303f7095147f05158",
+          "bytes": 73271
+        }
+      ],
+      "era_ids": [
+        "03-structure"
+      ],
+      "claims_supported": [
+        "Public project language described a living archive of lore, documents, CSV files, and other project materials by 2025-09-04."
+      ],
+      "historical_framing": true,
+      "curation_note": "Admitted as memory/archive vocabulary only. The post does not establish durable storage, retrieval correctness, or the later Workspace implementation."
+    },
     {
       "id": "x-1966168916083814707",
       "state": "ADMITTED",
       "published_at": "2025-09-11T15:56:13.000Z",
       "source_url": "https://x.com/adelayida210519/status/1966168916083814707",
       "record_path": "genesis/archive/2025-09/originals/x-1966168916083814707.json",
-      "record_sha256": "c45cfb2c2c6be898315b3b30ab8850b997bfdffcbfd200ae51de686b03987382",
+      "record_sha256": "c2efbce76ea8393946f12a7869575055042a2046947660d007834acde40d2b5a",
       "media": [],
       "era_ids": [
         "03-structure"

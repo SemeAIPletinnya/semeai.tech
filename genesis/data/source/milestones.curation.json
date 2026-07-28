@@ -11,6 +11,15 @@
       "state": "ADMITTED"
     },
     {
+      "id": "living-archive-language-visible",
+      "date": "2025-09-04",
+      "era_id": "03-structure",
+      "title": "Living archive language",
+      "claim": "A public project post described a living archive for project materials; this is historical architecture language, not storage verification.",
+      "evidence": [{"type": "artifact", "id": "x-1963494885840826546"}],
+      "state": "ADMITTED"
+    },
+    {
       "id": "structured-language-visible",
       "date": "2025-09-11",
       "era_id": "03-structure",
@@ -33,8 +42,23 @@
       "date": "2025-12-26",
       "era_id": "06-convergence",
       "title": "Silence-as-Control repository",
-      "claim": "The public Silence-as-Control repository made intentional withholding a first-party implementation surface.",
-      "evidence": [{"type": "repository", "id": "silence-as-control"}],
+      "claim": "A public post and first-party repository trace made Silence-as-Control visible as a control-layer principle.",
+      "evidence": [
+        {"type": "artifact", "id": "x-2004498397496254559"},
+        {"type": "repository", "id": "silence-as-control"}
+      ],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "release-control-experiment-visible",
+      "date": "2026-03-24",
+      "era_id": "07-release-authority",
+      "title": "Release-control experiment",
+      "claim": "Public project language distinguished generation behavior from release-control behavior; repository history remains experiment authority.",
+      "evidence": [
+        {"type": "artifact", "id": "x-2036546250762571919"},
+        {"type": "repository", "id": "silence-as-control"}
+      ],
       "state": "ADMITTED"
     },
     {
@@ -69,6 +93,30 @@
       "claim": "A local Qwen/Ollama demonstration with repository context and a PoR release gate was publicly described.",
       "evidence": [
         {"type": "artifact", "id": "x-2050625099783405868"},
+        {"type": "repository", "id": "silence-as-control"}
+      ],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "needs-review-public-trace",
+      "date": "2026-05-04",
+      "era_id": "07-release-authority",
+      "title": "NEEDS_REVIEW becomes explicit",
+      "claim": "A public implementation trace used NEEDS_REVIEW as a separate release-layer state.",
+      "evidence": [
+        {"type": "artifact", "id": "x-2051208478438400174"},
+        {"type": "repository", "id": "silence-as-control"}
+      ],
+      "state": "ADMITTED"
+    },
+    {
+      "id": "tri-state-release-vocabulary",
+      "date": "2026-05-23",
+      "era_id": "07-release-authority",
+      "title": "Tri-state release vocabulary",
+      "claim": "PROCEED / NEEDS_REVIEW / SILENCE was publicly presented as an external release-gate surface.",
+      "evidence": [
+        {"type": "artifact", "id": "x-2058269527356383498"},
         {"type": "repository", "id": "silence-as-control"}
       ],
       "state": "ADMITTED"

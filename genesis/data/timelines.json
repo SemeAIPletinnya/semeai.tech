@@ -1,0 +1,166 @@
+{
+  "boundary": "Concept, publication, implementation, and evidence dates remain separate authorities.",
+  "schema": "semeai.genesis.timelines.v1",
+  "timelines": {
+    "concept": [
+      {
+        "date": "2025-07-08",
+        "evidence_refs": [
+          "claim-x-1942448943687778407-bounded"
+        ],
+        "summary": "The earliest currently identified public artifact uses both names and strong emergence language retained only as historical framing.",
+        "title": "Pletinnya + SemeAI public framing"
+      },
+      {
+        "date": "2025-09-04",
+        "evidence_refs": [
+          "claim-x-1963494885840826546-language"
+        ],
+        "summary": "Public language describes a living archive; implementation remains unestablished at this date.",
+        "title": "Living archive language"
+      },
+      {
+        "date": "2025-09-11",
+        "evidence_refs": [
+          "claim-x-1966168916083814707"
+        ],
+        "summary": "Directive-core and path-network layers become explicit in public project language.",
+        "title": "Structured layers"
+      },
+      {
+        "date": "2025-12-26",
+        "evidence_refs": [
+          "claim-x-2004498397496254559"
+        ],
+        "summary": "Intentional withholding becomes a named public control-layer principle.",
+        "title": "Silence-as-Control principle"
+      },
+      {
+        "date": "2026-03-24",
+        "evidence_refs": [
+          "claim-x-2036546250762571919"
+        ],
+        "summary": "A public experiment trace distinguishes generation behavior from the release decision.",
+        "title": "Generation and release-control behavior diverge"
+      },
+      {
+        "date": "2026-05-04",
+        "evidence_refs": [
+          "claim-x-2051208478438400174"
+        ],
+        "summary": "The review state becomes an explicit release-layer outcome.",
+        "title": "NEEDS_REVIEW appears"
+      }
+    ],
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "evidence_refs": [
+          "commit-a0f8103935cd"
+        ],
+        "summary": "Decision and execution/result receipts are separated as linked retained artifacts.",
+        "title": "Receipt layer documented"
+      },
+      {
+        "date": "2026-07-22",
+        "evidence_refs": [
+          "commit-d21bb7840eb5"
+        ],
+        "summary": "A deterministic public instrument for bounded visible repository evidence appears.",
+        "title": "Repository Evidence Benchmark"
+      },
+      {
+        "date": "2026-07-27",
+        "evidence_refs": [
+          "commit-c39ef534cfe4"
+        ],
+        "summary": "Historical artifacts, repositories, eras, and lineage become an inspectable manifest.",
+        "title": "Genesis evidence manifest"
+      },
+      {
+        "date": "2026-07-27",
+        "evidence_refs": [
+          "commit-63d0cce038f4"
+        ],
+        "summary": "Reusable method candidates become inspectable without implying universal admission.",
+        "title": "Skill Forge evidence surface"
+      }
+    ],
+    "implementation": [
+      {
+        "date": "2025-12-26",
+        "evidence_refs": [
+          "commit-4c7ae94a6dbe"
+        ],
+        "summary": "The earliest currently identified public repository tests for silence enforcement appear.",
+        "title": "SaC test artifacts"
+      },
+      {
+        "date": "2026-01-02",
+        "evidence_refs": [
+          "commit-61092bd27782"
+        ],
+        "summary": "RESPOND / MINIMAL / SILENCE policy behavior is covered by repository tests.",
+        "title": "Tested decision policy"
+      },
+      {
+        "date": "2026-03-24",
+        "evidence_refs": [
+          "commit-e5116756361b"
+        ],
+        "summary": "A public commit introduces a PoR API demo with release-control decisions.",
+        "title": "Release-control API demo"
+      },
+      {
+        "date": "2026-05-04",
+        "evidence_refs": [
+          "commit-53dfb43e00b9"
+        ],
+        "summary": "A bounded demo adds NEEDS_REVIEW behavior for a configuration-risk case.",
+        "title": "Review-layer implementation"
+      },
+      {
+        "date": "2026-06-26",
+        "evidence_refs": [
+          "commit-e1979acdc37c"
+        ],
+        "summary": "A separate Gate package exposes schemas, tests, fixtures, receipts, and SHOW / REVIEW / BLOCK presentation behavior.",
+        "title": "Gate product package"
+      },
+      {
+        "date": "2026-07-26",
+        "evidence_refs": [
+          "commit-92f5be8b5e16"
+        ],
+        "summary": "Account-backed Workspace architecture is implemented without claiming unsupported secondary persistence.",
+        "title": "Governed Workspace foundation"
+      }
+    ],
+    "publication": [
+      {
+        "date": "2025-07-08",
+        "evidence_refs": [
+          "claim-x-1942448943687778407-bounded"
+        ],
+        "summary": "A reply records project names and historical AGI/self-awareness framing without endorsement or implementation authority.",
+        "title": "First currently identified public SemeAI + Pletinnya trace"
+      },
+      {
+        "date": "2025-12-26",
+        "evidence_refs": [
+          "claim-x-2004498397496254559"
+        ],
+        "summary": "The control-layer principle is publicly named and linked to a repository.",
+        "title": "SaC public trace"
+      },
+      {
+        "date": "2026-05-23",
+        "evidence_refs": [
+          "claim-x-2058269527356383498"
+        ],
+        "summary": "PROCEED / NEEDS_REVIEW / SILENCE is presented as the external release-gate vocabulary.",
+        "title": "Tri-state release surface published"
+      }
+    ]
+  }
+}

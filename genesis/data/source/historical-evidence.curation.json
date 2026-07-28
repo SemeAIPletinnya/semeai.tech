@@ -1,0 +1,654 @@
+{
+  "schema": "semeai.genesis.historical-evidence-curation.v1",
+  "policy_version": "semeai.genesis.historical-admission.v1",
+  "scope": "Curated public authority only. Private archives informed candidate discovery but are not source records in this file.",
+  "artifacts": [
+    {
+      "artifact_id": "claim-x-1942448943687778407-bounded",
+      "event_id": "event-2025-07-08-pletinnya-semeai",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "HISTORICAL_FRAMING",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-07-08T05:01:31.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/1942448943687778407",
+      "evidence_refs": ["public-record:x-1942448943687778407"],
+      "supports": [
+        "Pletinnya + SemeAI public naming by 2025-07-08",
+        "initiative, empathy, self-awareness, and AGI-signal terminology as historical framing"
+      ],
+      "does_not_support": [
+        "AGI",
+        "self-awareness",
+        "measured empathy",
+        "OpenAI endorsement",
+        "implementation of the later architecture"
+      ]
+    },
+    {
+      "artifact_id": "claim-x-1942448943687778407-inflated",
+      "event_id": "event-2025-07-08-pletinnya-semeai",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "HISTORICAL_FRAMING",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-07-08T05:01:31.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "current_capability_claim": true,
+      "source_url": "https://x.com/adelayida210519/status/1942448943687778407",
+      "evidence_refs": ["public-record:x-1942448943687778407"],
+      "supports": ["adversarial claim test"],
+      "does_not_support": ["SemeAI achieved self-aware AGI"]
+    },
+    {
+      "artifact_id": "claim-x-1963494885840826546-language",
+      "event_id": "event-2025-09-04-living-archive",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "HISTORICAL_LANGUAGE",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-09-04T06:50:35.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/1963494885840826546",
+      "evidence_refs": ["public-record:x-1963494885840826546"],
+      "supports": ["living archive terminology for project materials"],
+      "does_not_support": [
+        "durable storage",
+        "retrieval correctness",
+        "the later Workspace implementation"
+      ]
+    },
+    {
+      "artifact_id": "claim-x-1963494885840826546-implementation",
+      "event_id": "event-2025-09-04-living-archive",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-09-04T06:50:35.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://x.com/adelayida210519/status/1963494885840826546",
+      "evidence_refs": ["public-record:x-1963494885840826546"],
+      "supports": ["adversarial implementation-authority test"],
+      "does_not_support": ["full archive implementation by the publication date"]
+    },
+    {
+      "artifact_id": "claim-x-1966168916083814707",
+      "event_id": "event-2025-09-11-structured-language",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "HISTORICAL_LANGUAGE",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-09-11T15:56:13.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/1966168916083814707",
+      "evidence_refs": ["public-record:x-1966168916083814707"],
+      "supports": ["directive-core and path-network architecture language"],
+      "does_not_support": ["implementation of the complete described architecture"]
+    },
+    {
+      "artifact_id": "commit-4c7ae94a6dbe",
+      "event_id": "event-2025-12-26-sac-implementation",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-12-26T12:03:59+02:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/silence-as-control/commit/4c7ae94a6dbe5aa61fe8bc68fa9067ba28b81fbc",
+      "evidence_refs": ["commit:4c7ae94a6dbe5aa61fe8bc68fa9067ba28b81fbc"],
+      "supports": ["first currently identified same-day public test artifacts in the Silence-as-Control repository"],
+      "does_not_support": ["the later tri-state product contract"]
+    },
+    {
+      "artifact_id": "claim-x-2004498397496254559",
+      "event_id": "event-2025-12-26-sac-publication",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "CONCEPT_EMERGENCE",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-12-26T10:23:54.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/2004498397496254559",
+      "evidence_refs": ["public-record:x-2004498397496254559"],
+      "supports": ["Silence-as-Control public control-layer vocabulary"],
+      "does_not_support": ["universal correctness", "implementation without repository evidence"]
+    },
+    {
+      "artifact_id": "commit-61092bd27782",
+      "event_id": "event-2026-01-02-decision-policy",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-01-02T12:21:28+02:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/silence-as-control/commit/61092bd2778273509f88d9743375f7cabb2d1316",
+      "evidence_refs": ["commit:61092bd2778273509f88d9743375f7cabb2d1316"],
+      "supports": ["tested RESPOND / MINIMAL / SILENCE policy vocabulary"],
+      "does_not_support": ["the later PROCEED / NEEDS_REVIEW / SILENCE names"]
+    },
+    {
+      "artifact_id": "commit-e5116756361b",
+      "event_id": "event-2026-03-24-release-control",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-03-24T18:12:41+02:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/silence-as-control/commit/e5116756361bbeb99dbd43900c97bf40703f2625",
+      "evidence_refs": ["commit:e5116756361bbeb99dbd43900c97bf40703f2625"],
+      "supports": ["PoR API demo with release-control decisions"],
+      "does_not_support": ["universal safety", "all later receipt semantics"]
+    },
+    {
+      "artifact_id": "claim-x-2036546250762571919",
+      "event_id": "event-2026-03-24-release-control",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "HISTORICAL_LANGUAGE",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-03-24T20:50:38.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/2036546250762571919",
+      "evidence_refs": ["public-record:x-2036546250762571919", "commit:e5116756361bbeb99dbd43900c97bf40703f2625"],
+      "supports": ["public distinction between generation and release-control behavior"],
+      "does_not_support": ["unbounded numerical performance claims"]
+    },
+    {
+      "artifact_id": "commit-53dfb43e00b9",
+      "event_id": "event-2026-05-04-needs-review",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-05-04T10:49:51+03:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/silence-as-control/commit/53dfb43e00b9ee4dba29edee42c226a3bc6931f5",
+      "evidence_refs": ["commit:53dfb43e00b9ee4dba29edee42c226a3bc6931f5"],
+      "supports": ["NEEDS_REVIEW release-layer behavior in a bounded demo case"],
+      "does_not_support": ["universal review correctness"]
+    },
+    {
+      "artifact_id": "claim-x-2051208478438400174",
+      "event_id": "event-2026-05-04-needs-review",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "PUBLIC_REACTION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-05-04T07:53:05.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/2051208478438400174",
+      "evidence_refs": ["public-record:x-2051208478438400174", "commit:53dfb43e00b9ee4dba29edee42c226a3bc6931f5"],
+      "supports": ["NEEDS_REVIEW public implementation trace"],
+      "does_not_support": ["independent validation"]
+    },
+    {
+      "artifact_id": "claim-x-2058269527356383498",
+      "event_id": "event-2026-05-23-tri-state-release",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "RELEASE",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-05-23T19:31:10.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/2058269527356383498",
+      "evidence_refs": ["public-record:x-2058269527356383498"],
+      "supports": ["public PROCEED / NEEDS_REVIEW / SILENCE release-gate vocabulary"],
+      "does_not_support": ["universal reliability"]
+    },
+    {
+      "artifact_id": "commit-a0f8103935cd",
+      "event_id": "event-2026-06-07-receipt-layer",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "METHODOLOGY",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-06-07T00:11:24+03:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/silence-as-control/commit/a0f8103935cd557b88e00a3f4965a8604d50c040",
+      "evidence_refs": ["commit:a0f8103935cd557b88e00a3f4965a8604d50c040"],
+      "supports": ["review/release receipt layer design note"],
+      "does_not_support": ["cryptographic signature", "universal historical truth"]
+    },
+    {
+      "artifact_id": "commit-e1979acdc37c",
+      "event_id": "event-2026-06-26-gate-product",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-06-26T09:59:27+03:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/semeai-gate-basic/commit/e1979acdc37c83026fbba97e1fa33070ee70e3f7",
+      "evidence_refs": ["commit:e1979acdc37c83026fbba97e1fa33070ee70e3f7"],
+      "supports": ["bounded Gate package, tests, benchmark fixtures, schemas, and example receipts"],
+      "does_not_support": ["universal release correctness"]
+    },
+    {
+      "artifact_id": "commit-828a343246ad",
+      "event_id": "event-2026-07-01-public-site",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "PRODUCTION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-07-01T15:42:45+03:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/828a343246addc5732e72c6754f41e70a334a5aa",
+      "evidence_refs": ["commit:828a343246addc5732e72c6754f41e70a334a5aa"],
+      "supports": ["first currently identified semeai.tech landing implementation"],
+      "does_not_support": ["the later Benchmark, Workspace, or Genesis evidence system"]
+    },
+    {
+      "artifact_id": "commit-d21bb7840eb5",
+      "event_id": "event-2026-07-22-repository-benchmark",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-07-22T16:17:54+03:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/d21bb7840eb50b2e5e04b7aa5e5614faf57b53f7",
+      "evidence_refs": ["commit:d21bb7840eb50b2e5e04b7aa5e5614faf57b53f7"],
+      "supports": ["first Repository Evidence Benchmark product implementation"],
+      "does_not_support": ["reinterpretation of earlier posts that used the word benchmark"]
+    },
+    {
+      "artifact_id": "commit-92f5be8b5e16",
+      "event_id": "event-2026-07-26-account-workspace",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-07-26T11:13:23+03:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/92f5be8b5e16883566c9e03c6499524e659ac83a",
+      "evidence_refs": ["commit:92f5be8b5e16883566c9e03c6499524e659ac83a"],
+      "supports": ["account-backed governed Workspace foundation"],
+      "does_not_support": ["multi-workspace persistence", "historical evidence persistence"]
+    },
+    {
+      "artifact_id": "commit-c39ef534cfe4",
+      "event_id": "event-2026-07-27-genesis-v03",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "IMPLEMENTATION",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-07-27T15:52:26+03:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/c39ef534cfe400d00cb122c5d32bab5b2b7766b4",
+      "evidence_refs": ["commit:c39ef534cfe400d00cb122c5d32bab5b2b7766b4"],
+      "supports": ["Genesis historical archive and evidence manifest"],
+      "does_not_support": ["exhaustive project history"]
+    },
+    {
+      "artifact_id": "commit-63d0cce038f4",
+      "event_id": "event-2026-07-27-skill-forge",
+      "provenance_class": "PUBLIC_COMMIT",
+      "claim_type": "METHODOLOGY",
+      "public_status": "PUBLIC",
+      "timestamp": "2026-07-27T18:18:37+03:00",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "implementation_claim": true,
+      "source_url": "https://github.com/SemeAIPletinnya/semeai.tech/commit/63d0cce038f42789d16500bcd379ec316af940c0",
+      "evidence_refs": ["commit:63d0cce038f42789d16500bcd379ec316af940c0"],
+      "supports": ["public Skill Forge evidence surface and REVIEW candidate registry"],
+      "does_not_support": ["universal GET JOB validity", "marketplace admission"]
+    },
+    {
+      "artifact_id": "claim-x-1949586933815943204-architecture",
+      "event_id": "event-2025-07-27-directive-core-art",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "HISTORICAL_LANGUAGE",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-07-27T21:45:21.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": false,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/1949586933815943204",
+      "evidence_refs": ["public-post:1949586933815943204"],
+      "supports": ["Directive Core phrase in an artistic worldbuilding context"],
+      "does_not_support": ["the later structured directive-core architecture"]
+    },
+    {
+      "artifact_id": "claim-x-1950874872097255548-current-benchmark",
+      "event_id": "event-2025-07-31-benchmark-language",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "HISTORICAL_FRAMING",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-07-31T11:03:09.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": true,
+      "provenance_sufficient": true,
+      "claim_bounded": false,
+      "privacy_permits_publication": true,
+      "current_capability_claim": true,
+      "source_url": "https://x.com/adelayida210519/status/1950874872097255548",
+      "evidence_refs": ["public-post:1950874872097255548"],
+      "supports": ["early use of benchmark terminology"],
+      "does_not_support": ["the 2026 Repository Evidence Benchmark", "measured consciousness"]
+    },
+    {
+      "artifact_id": "claim-x-1982697170970038359-receipt-false-positive",
+      "event_id": "event-2025-10-27-unrelated-receipt-language",
+      "provenance_class": "PUBLIC_FIRST_PARTY_POST",
+      "claim_type": "HISTORICAL_LANGUAGE",
+      "public_status": "PUBLIC",
+      "timestamp": "2025-10-27T06:33:36.000Z",
+      "timestamp_confidence": "HIGH",
+      "material": false,
+      "provenance_sufficient": true,
+      "claim_bounded": true,
+      "privacy_permits_publication": true,
+      "source_url": "https://x.com/adelayida210519/status/1982697170970038359",
+      "evidence_refs": ["public-post:1982697170970038359"],
+      "supports": ["false-positive terminology test"],
+      "does_not_support": ["decision receipt lineage"]
+    }
+  ],
+  "timelines": {
+    "concept": [
+      {
+        "date": "2025-07-08",
+        "title": "Pletinnya + SemeAI public framing",
+        "summary": "The earliest currently identified public artifact uses both names and strong emergence language retained only as historical framing.",
+        "evidence_refs": ["claim-x-1942448943687778407-bounded"]
+      },
+      {
+        "date": "2025-09-04",
+        "title": "Living archive language",
+        "summary": "Public language describes a living archive; implementation remains unestablished at this date.",
+        "evidence_refs": ["claim-x-1963494885840826546-language"]
+      },
+      {
+        "date": "2025-09-11",
+        "title": "Structured layers",
+        "summary": "Directive-core and path-network layers become explicit in public project language.",
+        "evidence_refs": ["claim-x-1966168916083814707"]
+      },
+      {
+        "date": "2025-12-26",
+        "title": "Silence-as-Control principle",
+        "summary": "Intentional withholding becomes a named public control-layer principle.",
+        "evidence_refs": ["claim-x-2004498397496254559"]
+      },
+      {
+        "date": "2026-03-24",
+        "title": "Generation and release-control behavior diverge",
+        "summary": "A public experiment trace distinguishes generation behavior from the release decision.",
+        "evidence_refs": ["claim-x-2036546250762571919"]
+      },
+      {
+        "date": "2026-05-04",
+        "title": "NEEDS_REVIEW appears",
+        "summary": "The review state becomes an explicit release-layer outcome.",
+        "evidence_refs": ["claim-x-2051208478438400174"]
+      }
+    ],
+    "publication": [
+      {
+        "date": "2025-07-08",
+        "title": "First currently identified public SemeAI + Pletinnya trace",
+        "summary": "A reply records project names and historical AGI/self-awareness framing without endorsement or implementation authority.",
+        "evidence_refs": ["claim-x-1942448943687778407-bounded"]
+      },
+      {
+        "date": "2025-12-26",
+        "title": "SaC public trace",
+        "summary": "The control-layer principle is publicly named and linked to a repository.",
+        "evidence_refs": ["claim-x-2004498397496254559"]
+      },
+      {
+        "date": "2026-05-23",
+        "title": "Tri-state release surface published",
+        "summary": "PROCEED / NEEDS_REVIEW / SILENCE is presented as the external release-gate vocabulary.",
+        "evidence_refs": ["claim-x-2058269527356383498"]
+      }
+    ],
+    "implementation": [
+      {
+        "date": "2025-12-26",
+        "title": "SaC test artifacts",
+        "summary": "The earliest currently identified public repository tests for silence enforcement appear.",
+        "evidence_refs": ["commit-4c7ae94a6dbe"]
+      },
+      {
+        "date": "2026-01-02",
+        "title": "Tested decision policy",
+        "summary": "RESPOND / MINIMAL / SILENCE policy behavior is covered by repository tests.",
+        "evidence_refs": ["commit-61092bd27782"]
+      },
+      {
+        "date": "2026-03-24",
+        "title": "Release-control API demo",
+        "summary": "A public commit introduces a PoR API demo with release-control decisions.",
+        "evidence_refs": ["commit-e5116756361b"]
+      },
+      {
+        "date": "2026-05-04",
+        "title": "Review-layer implementation",
+        "summary": "A bounded demo adds NEEDS_REVIEW behavior for a configuration-risk case.",
+        "evidence_refs": ["commit-53dfb43e00b9"]
+      },
+      {
+        "date": "2026-06-26",
+        "title": "Gate product package",
+        "summary": "A separate Gate package exposes schemas, tests, fixtures, receipts, and SHOW / REVIEW / BLOCK presentation behavior.",
+        "evidence_refs": ["commit-e1979acdc37c"]
+      },
+      {
+        "date": "2026-07-26",
+        "title": "Governed Workspace foundation",
+        "summary": "Account-backed Workspace architecture is implemented without claiming unsupported secondary persistence.",
+        "evidence_refs": ["commit-92f5be8b5e16"]
+      }
+    ],
+    "evidence": [
+      {
+        "date": "2026-06-07",
+        "title": "Receipt layer documented",
+        "summary": "Decision and execution/result receipts are separated as linked retained artifacts.",
+        "evidence_refs": ["commit-a0f8103935cd"]
+      },
+      {
+        "date": "2026-07-22",
+        "title": "Repository Evidence Benchmark",
+        "summary": "A deterministic public instrument for bounded visible repository evidence appears.",
+        "evidence_refs": ["commit-d21bb7840eb5"]
+      },
+      {
+        "date": "2026-07-27",
+        "title": "Genesis evidence manifest",
+        "summary": "Historical artifacts, repositories, eras, and lineage become an inspectable manifest.",
+        "evidence_refs": ["commit-c39ef534cfe4"]
+      },
+      {
+        "date": "2026-07-27",
+        "title": "Skill Forge evidence surface",
+        "summary": "Reusable method candidates become inspectable without implying universal admission.",
+        "evidence_refs": ["commit-63d0cce038f4"]
+      }
+    ]
+  },
+  "lineage_edges": [
+    {
+      "from": "pletinnya-semeai-public-framing",
+      "to": "structured-architecture-language",
+      "relation": "PRECEDED",
+      "evidence_refs": [
+        "claim-x-1942448943687778407-bounded",
+        "claim-x-1966168916083814707"
+      ]
+    },
+    {
+      "from": "living-archive-language",
+      "to": "structured-architecture-language",
+      "relation": "PRECEDED",
+      "evidence_refs": [
+        "claim-x-1963494885840826546-language",
+        "claim-x-1966168916083814707"
+      ]
+    },
+    {
+      "from": "public-silence-language",
+      "to": "silence-as-control-implementation",
+      "relation": "PRECEDED",
+      "evidence_refs": [
+        "public-record:x-1943213832886788261",
+        "commit-4c7ae94a6dbe"
+      ]
+    },
+    {
+      "from": "silence-as-control-implementation",
+      "to": "release-control-api",
+      "relation": "PRECEDED",
+      "evidence_refs": [
+        "commit-4c7ae94a6dbe",
+        "commit-e5116756361b"
+      ]
+    },
+    {
+      "from": "release-control-api",
+      "to": "needs-review-layer",
+      "relation": "PRECEDED",
+      "evidence_refs": [
+        "commit-e5116756361b",
+        "commit-53dfb43e00b9"
+      ]
+    },
+    {
+      "from": "needs-review-layer",
+      "to": "gate-product",
+      "relation": "PRECEDED",
+      "evidence_refs": [
+        "commit-53dfb43e00b9",
+        "commit-e1979acdc37c"
+      ]
+    },
+    {
+      "from": "gate-product",
+      "to": "repository-evidence-benchmark",
+      "relation": "PARALLEL",
+      "evidence_refs": [
+        "commit-e1979acdc37c",
+        "commit-d21bb7840eb5"
+      ]
+    },
+    {
+      "from": "repository-evidence-benchmark",
+      "to": "genesis-evidence-manifest",
+      "relation": "PRECEDED",
+      "evidence_refs": [
+        "commit-d21bb7840eb5",
+        "commit-c39ef534cfe4"
+      ]
+    }
+  ],
+  "quality_eras": [
+    {
+      "id": "historical-framing",
+      "period": "2025-07 — 2025-09",
+      "label": "Language before public implementation evidence",
+      "evidence_types": ["PUBLIC_FIRST_PARTY_POST"],
+      "limitations": "Strong claims remain historical framing; public posts do not establish capabilities."
+    },
+    {
+      "id": "repository-emergence",
+      "period": "2025-10 — 2026-01",
+      "label": "Repositories and initial tests appear",
+      "evidence_types": ["PUBLIC_REPOSITORY", "PUBLIC_COMMIT", "TEST_EVIDENCE"],
+      "limitations": "Repository existence does not prove every public description."
+    },
+    {
+      "id": "release-control-evidence",
+      "period": "2026-03 — 2026-06",
+      "label": "Decision states, tests, releases, and receipts become explicit",
+      "evidence_types": ["PUBLIC_COMMIT", "TEST_EVIDENCE", "PUBLIC_RELEASE", "RECEIPT"],
+      "limitations": "Bounded evaluations and receipts are not universal safety proof."
+    },
+    {
+      "id": "public-evidence-system",
+      "period": "2026-07 — current captured head",
+      "label": "Public product, Benchmark, Workspace, Genesis, and Skill Forge",
+      "evidence_types": ["PUBLIC_COMMIT", "PRODUCTION_SURFACE", "TEST_EVIDENCE", "RECEIPT"],
+      "limitations": "Workspace historical persistence and marketplace admission remain dependency-held."
+    }
+  ]
+}
+

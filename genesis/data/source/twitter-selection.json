@@ -1,6 +1,7 @@
 {
   "schema": "semeai.genesis.twitter-selection.v1",
-  "archive_id": "twitter-2026-05-30-ea9407df8d1783c316a7f5915bca37e42e6295dd282f42581a9bdab667781463",
+  "archive_id": "x-public-export-2026-05-30",
+  "source_archive_basename_sha256": "7b01ebf82baf73de1d0f1394789d720a5c42b973578e3a5f9be092eb1b465691",
   "account_login": "adelayida210519",
   "policy": {
     "archive_is_admission": false,
@@ -49,6 +50,36 @@
       "curation_note": "Admitted as a dated architecture-language artifact. Repository history remains the implementation authority."
     },
     {
+      "tweet_id": "1963494885840826546",
+      "state": "ADMITTED",
+      "era_ids": ["03-structure"],
+      "claims_supported": [
+        "Public project language described a living archive of lore, documents, CSV files, and other project materials by 2025-09-04."
+      ],
+      "historical_framing": true,
+      "curation_note": "Admitted as memory/archive vocabulary only. The post does not establish durable storage, retrieval correctness, or the later Workspace implementation."
+    },
+    {
+      "tweet_id": "2004498397496254559",
+      "state": "ADMITTED",
+      "era_ids": ["06-convergence"],
+      "claims_supported": [
+        "Silence-as-Control was publicly described as a control-layer principle on 2025-12-26."
+      ],
+      "historical_framing": false,
+      "curation_note": "The post is a publication trace. Commits in the public Silence-as-Control repository remain the implementation authority."
+    },
+    {
+      "tweet_id": "2036546250762571919",
+      "state": "ADMITTED",
+      "era_ids": ["06-convergence", "07-release-authority"],
+      "claims_supported": [
+        "Public project language distinguished generation behavior from release-control behavior by 2026-03-24."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted for release-control vocabulary. Numerical performance language is not admitted here; the public repository and bounded experiment artifacts remain authority."
+    },
+    {
       "tweet_id": "2047558794402521132",
       "state": "ADMITTED",
       "era_ids": ["06-convergence"],
@@ -77,6 +108,26 @@
       ],
       "historical_framing": false,
       "curation_note": "The linked pull request and repository remain the implementation evidence."
+    },
+    {
+      "tweet_id": "2051208478438400174",
+      "state": "ADMITTED",
+      "era_ids": ["07-release-authority", "08-productization"],
+      "claims_supported": [
+        "NEEDS_REVIEW appeared in a public release-layer trace by 2026-05-04."
+      ],
+      "historical_framing": false,
+      "curation_note": "The public repository commit and pull request remain implementation authority; the post establishes publication history."
+    },
+    {
+      "tweet_id": "2058269527356383498",
+      "state": "ADMITTED",
+      "era_ids": ["07-release-authority", "08-productization"],
+      "claims_supported": [
+        "The PROCEED / NEEDS_REVIEW / SILENCE external release-gate vocabulary was publicly presented by 2026-05-23."
+      ],
+      "historical_framing": false,
+      "curation_note": "Admitted as a release/publication trace paired with repository history. It is not a universal reliability claim."
     },
     {
       "tweet_id": "2058860026161172840",

@@ -1,0 +1,32 @@
+{
+  "schema": "semeai.genesis.public-x-record.v1",
+  "id": "x-2004498397496254559",
+  "source": {
+    "type": "PUBLIC_X_POST",
+    "account_login": "adelayida210519",
+    "post_id": "2004498397496254559",
+    "published_at": "2025-12-26T10:23:54.000Z",
+    "public_url": "https://x.com/adelayida210519/status/2004498397496254559",
+    "archive_id": "x-public-export-2026-05-30"
+  },
+  "record": {
+    "text": "@grok .talk \n\n📌 Silence-as-Control - a control-layer principle.\nIf continuity cannot be guaranteed, no output is preferable to a wrong one.\n\nLive proof: https://t.co/kWOXdBu48p\nRepo: https://t.co/z4UIWIiTfk\n\nNot a chatbot. Not a demo. A control primitive.",
+    "language": "en",
+    "expanded_urls": [
+      "https://poe.com/s/DO9ZiXWFwdzWAUiI0wNy",
+      "https://github.com/SemeAIPletinnya/silence-as-control"
+    ]
+  },
+  "admission": {
+    "state": "ADMITTED",
+    "era_ids": [
+      "06-convergence"
+    ],
+    "claims_supported": [
+      "Silence-as-Control was publicly described as a control-layer principle on 2025-12-26."
+    ],
+    "historical_framing": false,
+    "curation_note": "The post is a publication trace. Commits in the public Silence-as-Control repository remain the implementation authority."
+  },
+  "media": []
+}
