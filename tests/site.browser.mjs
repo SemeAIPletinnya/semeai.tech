@@ -835,6 +835,10 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
       route: "/account/?lang=en",
     });
     await page.locator("#account-signed-out:not([hidden])").waitFor();
+    assert.ok(
+      (await page.locator(".account-layout").boundingBox()).y < 700,
+      "Account access should begin within the common desktop viewport",
+    );
 
     assert.equal(
       await page.locator('meta[name="robots"]').getAttribute("content"),
@@ -973,6 +977,9 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
           return controlled?.dataset.workspaceSection === button.dataset.workspaceView;
         },
       ),
+      navigationHintDisplay: getComputedStyle(document.querySelector(".workspace-nav-hint")).display,
+      navigationHintText: document.querySelector(".workspace-nav-hint")?.textContent.trim() || "",
+      navigationPosition: document.querySelector("#workspace-nav-position")?.textContent || "",
       receiptColumns: [...document.querySelectorAll(".workspace-receipt-columns span")].map(
         (element) => element.textContent.trim(),
       ),
@@ -1002,6 +1009,11 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
     assert.ok(state.rafCount <= 2, "Workspace should not install a permanent animation frame loop");
     if (viewport.width === 390) {
       assert.ok(state.workAreaTop <= 340, "Mobile workspace content should enter the first viewport promptly");
+      assert.equal(state.navigationHintDisplay, "flex", "Mobile workspace should expose rail discoverability");
+      assert.match(state.navigationHintText, /Swipe to inspect all workspace surfaces/);
+      assert.equal(state.navigationPosition, "01 / 09");
+    } else {
+      assert.equal(state.navigationHintDisplay, "none", "Desktop workspace does not need a swipe hint");
     }
 
     assert.equal(await page.locator("#workspace-sidebar-name").textContent(), "Evidence Lab");
@@ -1099,10 +1111,20 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
       assert.ok(rail.scrollWidth > rail.clientWidth, "Mobile workspace navigation should form a contained operational rail");
       assert.ok(rail.scrollLeft > 0, "A later hash destination should move into the mobile rail viewport");
       assert.equal(rail.contained, true, "The active mobile workspace destination should remain visible");
+      assert.equal(
+        await page.locator("#workspace-nav-position").textContent(),
+        "09 / 09",
+        "The mobile rail should expose the current destination position",
+      );
 
       await page.locator('[data-lang="uk"]').click();
       assert.equal(await page.getAttribute("html", "lang"), "uk");
       assert.equal(await page.locator('[data-workspace-view="sources"]').textContent(), "Джерела");
+      assert.notEqual(
+        await page.locator(".workspace-nav-hint span").last().textContent(),
+        "Swipe to inspect all workspace surfaces",
+        "The mobile rail hint should localize to Ukrainian",
+      );
       assert.deepEqual(
         await page.locator(".workspace-receipt-columns span").allTextContents(),
         ["Дія", "ID receipt", "Внутрішнє рішення", "Зафіксовано"],
@@ -1277,6 +1299,15 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
 
   await loadRoute(page, origin, "/gate.html");
   assert.equal(await page.locator(".gate-state-visual").getAttribute("aria-hidden"), "true");
+  assert.equal(
+    await page.locator(".gate-opening .gate-state-visual").count(),
+    1,
+    "Gate authority geometry should be part of the opening composition",
+  );
+  assert.ok(
+    (await page.locator(".gate-authority-instrument").boundingBox()).y < 900,
+    "Gate authority geometry should enter the first desktop viewport",
+  );
   for (const state of ["show", "review", "block"]) {
     await page.locator(`[data-gate-state="${state}"]`).focus();
     assert.equal(
@@ -1287,6 +1318,17 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
   }
 
   await loadRoute(page, origin, "/research.html");
+  assert.equal(
+    await page.locator(".research-opening .research-artifact-section").count(),
+    1,
+    "Research provenance should be part of the opening composition",
+  );
+  assert.equal(await page.locator(".research-artifact-section .emblem").count(), 7);
+  assert.equal(
+    await page.locator(".research-artifact-section .emblem").first().evaluate((element) => getComputedStyle(element).borderRadius),
+    "0px",
+    "Research sources should render as an evidence ledger rather than rounded badges",
+  );
   await page.locator(".research-artifact-section").scrollIntoViewIfNeeded();
   await page.waitForFunction(
     () => document.querySelector(".research-artifact-section")?.dataset.evidenceAdmitted === "true",
