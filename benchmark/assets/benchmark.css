@@ -697,6 +697,7 @@ form label small {
 
 .result {
   position: relative;
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 3.35rem);
   animation: result-enter 700ms cubic-bezier(0.22, 1, 0.36, 1) 1 both;
 }
 
@@ -927,6 +928,62 @@ form label small {
   box-shadow: 0 0 1rem rgba(215, 182, 111, 0.42);
   transform: scaleX(0);
   transform-origin: center;
+}
+
+.result-evidence-index {
+  position: sticky;
+  z-index: 9;
+  top: calc(var(--semeai-nav-height, 4rem) + 2.35rem);
+  margin-inline: var(--edge);
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  background:
+    linear-gradient(90deg, rgba(215, 182, 111, 0.045), transparent 34%),
+    rgba(3, 5, 6, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+.result-evidence-index a {
+  min-width: 0;
+  min-height: 4.25rem;
+  padding: 0.78rem 0.9rem;
+  display: grid;
+  align-content: center;
+  gap: 0.4rem;
+  border-right: 1px solid var(--line);
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+
+.result-evidence-index a:hover,
+.result-evidence-index a:focus-visible {
+  color: var(--paper);
+  background: rgba(215, 182, 111, 0.04);
+}
+
+.result-evidence-index span,
+.result-evidence-index strong {
+  overflow: hidden;
+  font-family: var(--mono);
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.result-evidence-index span {
+  color: var(--faint);
+  font-size: 0.52rem;
+  letter-spacing: 0.11em;
+}
+
+.result-evidence-index strong {
+  color: var(--gold-bright);
+  font-size: 0.63rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
 }
 
 .result[data-gate="SHOW"] .gate-light-trace span {
@@ -1423,6 +1480,12 @@ form label small {
 .roadmap-section,
 .receipt-section {
   padding-block: clamp(3.5rem, 6vw, 6rem);
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 7.6rem);
+}
+
+.result-header,
+.score-stage {
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 7.6rem);
 }
 
 .section-heading {
@@ -1817,8 +1880,44 @@ form label small {
   line-height: 1.1;
 }
 
+.roadmap-item__toggle {
+  width: 100%;
+  min-height: 2.9rem;
+  margin-top: 1.45rem;
+  padding: 0.8rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  color: var(--muted);
+  background: transparent;
+  font-family: var(--mono);
+  font-size: 0.57rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-align: left;
+}
+
+.roadmap-item__toggle:hover,
+.roadmap-item__toggle[aria-expanded="true"] {
+  color: var(--gold-bright);
+}
+
+.roadmap-item__toggle-mark {
+  color: var(--gold);
+  font-size: 0.85rem;
+}
+
+.roadmap-item__panel {
+  padding-top: 0.6rem;
+}
+
 .roadmap-item__detail {
-  margin: 2rem 0 0;
+  margin: 0;
 }
 
 .roadmap-item__detail div {
@@ -2397,6 +2496,32 @@ footer {
     grid-template-columns: 1fr;
   }
 
+  .result {
+    scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 3.15rem);
+  }
+
+  .result-evidence-index {
+    top: calc(var(--semeai-nav-height, 4rem) + 2.125rem);
+    overflow-x: auto;
+    overflow-y: hidden;
+    grid-template-columns: repeat(6, minmax(7.25rem, 1fr));
+    scrollbar-width: thin;
+  }
+
+  .result-evidence-index a {
+    min-height: 3.75rem;
+    padding: 0.65rem 0.75rem;
+  }
+
+  .result-header,
+  .score-stage,
+  .category-section,
+  .evidence-section,
+  .roadmap-section,
+  .receipt-section {
+    scroll-margin-top: 10.75rem;
+  }
+
   .blocked-panel {
     grid-template-columns: 1fr;
   }
@@ -2498,6 +2623,10 @@ footer {
 
   .roadmap-item h4 {
     min-height: auto;
+  }
+
+  .roadmap-item__category {
+    margin-top: 1.25rem;
   }
 
   .roadmap-item__detail div {

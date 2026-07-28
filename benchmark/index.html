@@ -17,9 +17,9 @@
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260728b" />
-    <link rel="stylesheet" href="./assets/benchmark.css?v=20260726b" />
+    <link rel="stylesheet" href="./assets/benchmark.css?v=20260728a" />
     <script src="./assets/sigil.js?v=20260726b" defer></script>
-    <script src="./assets/benchmark.js?v=20260726b" defer></script>
+    <script src="./assets/benchmark.js?v=20260728a" defer></script>
   </head>
   <body class="mode-evidence" data-semeai-custom-bg>
     <a class="skip-link" href="#benchmark-input" data-i18n="bench.skip">Skip to benchmark input</a>
@@ -150,7 +150,7 @@
         </section>
 
         <article id="benchmark-result" class="result" aria-labelledby="result-title" hidden>
-          <header class="result-header">
+          <header class="result-header" id="result-header">
             <div>
               <p class="section-index" data-i18n="bench.result.index">02 / ADMITTED REPOSITORY TRACE</p>
               <p id="source-mode" class="source-mode"></p>
@@ -179,7 +179,34 @@
 
           <div class="gate-light-trace" aria-hidden="true"><span></span></div>
 
-          <section class="score-stage" aria-labelledby="score-title">
+          <nav class="result-evidence-index" aria-label="Benchmark result sections">
+            <a href="#result-header">
+              <span>01 / GATE</span>
+              <strong id="result-index-gate">—</strong>
+            </a>
+            <a href="#score-stage">
+              <span>02 / SCORE</span>
+              <strong id="result-index-score">— / 100</strong>
+            </a>
+            <a href="#category-breakdown">
+              <span>03 / CATEGORIES</span>
+              <strong id="result-index-categories">7</strong>
+            </a>
+            <a href="#evidence-ledger">
+              <span>04 / LEDGER</span>
+              <strong id="result-index-ledger">—</strong>
+            </a>
+            <a href="#evidence-roadmap-section">
+              <span>05 / NEXT</span>
+              <strong id="result-index-roadmap">—</strong>
+            </a>
+            <a href="#local-receipt">
+              <span>06 / RECEIPT</span>
+              <strong>LOCAL HASH</strong>
+            </a>
+          </nav>
+
+          <section class="score-stage" id="score-stage" aria-labelledby="score-title">
             <div class="score-primary">
               <p id="score-title" data-i18n="bench.score.title">REPOSITORY PROGRESSION INDEX</p>
               <p class="score-number"><span id="total-score"></span><small>/ 100</small></p>
@@ -225,7 +252,7 @@
             </div>
           </section>
 
-          <section class="category-section" aria-labelledby="category-title">
+          <section class="category-section" id="category-breakdown" aria-labelledby="category-title">
             <div class="section-heading">
               <div>
                 <p class="section-index" data-i18n="bench.cat.index">03 / CATEGORY BREAKDOWN</p>
@@ -245,7 +272,7 @@
             </div>
           </section>
 
-          <section class="evidence-section" aria-labelledby="evidence-title">
+          <section class="evidence-section" id="evidence-ledger" aria-labelledby="evidence-title">
             <div class="section-heading">
               <div>
                 <p class="section-index" data-i18n="bench.ev.index">04 / EVIDENCE LEDGER</p>
@@ -269,7 +296,7 @@
             </div>
           </section>
 
-          <section class="roadmap-section" aria-labelledby="roadmap-title">
+          <section class="roadmap-section" id="evidence-roadmap-section" aria-labelledby="roadmap-title">
             <div class="section-heading">
               <div>
                 <p class="section-index">05 / EVIDENCE ROADMAP</p>
@@ -293,7 +320,7 @@
             </aside>
           </section>
 
-          <section class="receipt-section" aria-labelledby="receipt-title">
+          <section class="receipt-section" id="local-receipt" aria-labelledby="receipt-title">
             <div>
               <p class="section-index">06 / LOCAL RECEIPT</p>
               <h3 id="receipt-title" data-i18n="bench.receipt.title">Decision trace, ready to retain.</h3>

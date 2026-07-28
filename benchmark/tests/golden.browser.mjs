@@ -313,6 +313,68 @@ function lowEvidenceGitHubRoute(counter) {
   };
 }
 
+function roadmapEvidenceGitHubRoute(counter) {
+  const sha = "1234567890abcdef1234567890abcdef12345678";
+  const paths = [
+    "src/index.js",
+    "package.json",
+    "tests/test_release_gate.js",
+    ".github/workflows/ci.yml",
+    "tests/fixtures/golden.json",
+    "docs/architecture.md",
+    "gate/release_gate.js",
+  ];
+  return async (route) => {
+    counter.count += 1;
+    const pathname = new URL(route.request().url()).pathname;
+    if (pathname === "/repos/FixtureOrg/roadmap-evidence") {
+      return fulfillJson(route, 200, {
+        full_name: "FixtureOrg/roadmap-evidence",
+        owner: { login: "FixtureOrg" },
+        default_branch: "master",
+        visibility: "public",
+        private: false,
+        description: null,
+        html_url: "https://github.com/FixtureOrg/roadmap-evidence",
+        fork: false,
+        archived: false,
+        disabled: false,
+        stargazers_count: 0,
+        forks_count: 0,
+        open_issues_count: 0,
+        size: 7,
+        created_at: FIXED_BROWSER_TIME,
+        updated_at: FIXED_BROWSER_TIME,
+        pushed_at: FIXED_BROWSER_TIME,
+        license: null,
+        topics: [],
+      });
+    }
+    if (pathname === "/repos/FixtureOrg/roadmap-evidence/commits/master") {
+      return fulfillJson(route, 200, {
+        sha,
+        commit: { committer: { date: FIXED_BROWSER_TIME } },
+      });
+    }
+    if (pathname === "/repos/FixtureOrg/roadmap-evidence/languages") {
+      return fulfillJson(route, 200, { JavaScript: 1 });
+    }
+    if (pathname === "/repos/FixtureOrg/roadmap-evidence/releases") {
+      return fulfillJson(route, 200, []);
+    }
+    if (pathname === "/repos/FixtureOrg/roadmap-evidence/readme") {
+      return fulfillJson(route, 404, { message: "Not Found" });
+    }
+    if (pathname === `/repos/FixtureOrg/roadmap-evidence/git/trees/${sha}`) {
+      return fulfillJson(route, 200, {
+        truncated: false,
+        tree: paths.map((path) => ({ path, type: "blob", size: 1 })),
+      });
+    }
+    return fulfillJson(route, 404, { message: "Unexpected test URL" });
+  };
+}
+
 test("production policy and analytical function surfaces match the v1 authority baseline", () => {
   assert.equal(Core.ANALYZER_VERSION, expectedAuthority.analyzer_version);
   assert.equal(Core.SCORING_POLICY_VERSION, expectedAuthority.scoring_policy_version);
@@ -545,6 +607,7 @@ async function runBrowserBoundaryTests() {
 
   try {
     await browserFallbackGolden(browser, origin);
+    await browserRoadmapDisclosure(browser, origin);
     await browserBlockWithholding(browser, origin);
     await browserCollectionFailure(browser, origin);
     await browserMalformedInputs(browser, origin);
@@ -553,6 +616,55 @@ async function runBrowserBoundaryTests() {
   } finally {
     await browser.close();
     await closeServer(server);
+  }
+}
+
+async function browserRoadmapDisclosure(browser, origin) {
+  const requestCounter = { count: 0 };
+  const { context, page, unexpectedExternalRequests } = await newBenchmarkPage(browser, origin, {
+    routeGitHub: roadmapEvidenceGitHubRoute(requestCounter),
+  });
+  try {
+    await submitRepository(page, "FixtureOrg/roadmap-evidence");
+    const initial = await page.evaluate(() => ({
+      resultHidden: document.querySelector("#benchmark-result").hidden,
+      gate: document.querySelector("#gate-decision").textContent.trim(),
+      indexLinks: document.querySelectorAll(".result-evidence-index a").length,
+      roadmapItems: document.querySelectorAll(".roadmap-item").length,
+      toggles: document.querySelectorAll(".roadmap-item__toggle").length,
+      closedPanels: document.querySelectorAll(".roadmap-item__panel[hidden]").length,
+      detailRows: document.querySelectorAll(".roadmap-item__detail > div").length,
+    }));
+    assert.equal(initial.resultHidden, false);
+    assert.equal(initial.gate, "SHOW");
+    assert.equal(initial.indexLinks, 6);
+    assert.equal(initial.roadmapItems, 6);
+    assert.equal(initial.toggles, 6);
+    assert.equal(initial.closedPanels, 6);
+    assert.equal(initial.detailRows, 36);
+
+    const toggles = page.locator(".roadmap-item__toggle");
+    await toggles.nth(0).focus();
+    await page.keyboard.press("Enter");
+    await toggles.nth(1).click();
+    const disclosed = await page.evaluate(() => ({
+      expanded: [...document.querySelectorAll(".roadmap-item__toggle")].map((toggle) =>
+        toggle.getAttribute("aria-expanded"),
+      ),
+      closedPanels: document.querySelectorAll(".roadmap-item__panel[hidden]").length,
+      firstLabel: document.querySelector(".roadmap-item__toggle-label").textContent.trim(),
+      firstPanelLabelledBy: document.querySelector(".roadmap-item__panel").getAttribute("aria-labelledby"),
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }));
+    assert.deepEqual(disclosed.expanded, ["true", "true", "false", "false", "false", "false"]);
+    assert.equal(disclosed.closedPanels, 4);
+    assert.equal(disclosed.firstLabel, "CLOSE DETAILS");
+    assert.equal(disclosed.firstPanelLabelledBy, "roadmap-title-1 roadmap-toggle-1");
+    assert.equal(disclosed.overflow, 0);
+    assert.ok(requestCounter.count >= 6);
+    assert.deepEqual(unexpectedExternalRequests, []);
+  } finally {
+    await context.close();
   }
 }
 
@@ -675,6 +787,10 @@ async function browserFallbackGolden(browser, origin) {
       roadmapCount: document.querySelector("#roadmap-count").textContent.trim(),
       roadmapItems: document.querySelectorAll(".roadmap-item").length,
       roadmapObserved: document.querySelector("#roadmap-observed").textContent.trim(),
+      resultIndex: [...document.querySelectorAll(".result-evidence-index a")].map((link) => ({
+        href: link.getAttribute("href"),
+        value: link.querySelector("strong")?.textContent.trim(),
+      })),
     }));
     assert.equal(result.resultHidden, false);
     assert.equal(result.blockedHidden, true);
@@ -691,6 +807,14 @@ async function browserFallbackGolden(browser, origin) {
     assert.equal(result.roadmapCount, "0 OF 0 ACTIONABLE GAPS");
     assert.equal(result.roadmapItems, 0);
     assert.match(result.roadmapObserved, /^1 external or chronological signal remains observation-only/);
+    assert.deepEqual(result.resultIndex, [
+      { href: "#result-header", value: "REVIEW" },
+      { href: "#score-stage", value: "99 / 100" },
+      { href: "#category-breakdown", value: "7" },
+      { href: "#evidence-ledger", value: "36 + / 1 −" },
+      { href: "#evidence-roadmap-section", value: "0 / 0" },
+      { href: "#local-receipt", value: "LOCAL HASH" },
+    ]);
     assert.ok(requestCounter.count >= 1, "fallback must begin with a real collection attempt in the UI");
     assert.deepEqual(unexpectedExternalRequests, []);
   } finally {

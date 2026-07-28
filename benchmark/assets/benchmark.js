@@ -898,6 +898,11 @@
     gateBadge: document.getElementById("gate-badge"),
     gateDecision: document.getElementById("gate-decision"),
     gateExplanation: document.getElementById("gate-explanation"),
+    resultIndexGate: document.getElementById("result-index-gate"),
+    resultIndexScore: document.getElementById("result-index-score"),
+    resultIndexCategories: document.getElementById("result-index-categories"),
+    resultIndexLedger: document.getElementById("result-index-ledger"),
+    resultIndexRoadmap: document.getElementById("result-index-roadmap"),
     totalScore: document.getElementById("total-score"),
     repositoryProfile: document.getElementById("repository-profile"),
     repositorySignal: document.getElementById("repository-signal"),
@@ -1436,6 +1441,9 @@
     elements.roadmapObserved.textContent = roadmap.observed.length
       ? `${roadmap.observed.length} external or chronological signal${roadmap.observed.length === 1 ? " remains observation-only and is not a recommended intervention." : "s remain observation-only and are not recommended interventions."}`
       : "No observation-only gaps were present in this snapshot.";
+    if (elements.resultIndexRoadmap) {
+      elements.resultIndexRoadmap.textContent = `${roadmap.prioritized.length} / ${roadmap.actionable.length}`;
+    }
 
     if (!roadmap.prioritized.length) {
       const item = makeElement("li", "roadmap-empty");
@@ -1451,8 +1459,26 @@
       header.appendChild(makeElement("span", "roadmap-item__state", `${item.status} / ${item.confidence}`));
       row.appendChild(header);
       row.appendChild(makeElement("p", "roadmap-item__category", item.category));
-      row.appendChild(makeElement("h4", "", item.missing_signal));
+      const title = makeElement("h4", "", item.missing_signal);
+      const titleId = `roadmap-title-${index + 1}`;
+      const toggleId = `roadmap-toggle-${index + 1}`;
+      const panelId = `roadmap-panel-${index + 1}`;
+      title.id = titleId;
+      row.appendChild(title);
 
+      const toggle = makeElement("button", "roadmap-item__toggle");
+      toggle.type = "button";
+      toggle.id = toggleId;
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.setAttribute("aria-controls", panelId);
+      toggle.appendChild(makeElement("span", "roadmap-item__toggle-label", "INSPECT BOUNDED DETAILS"));
+      toggle.appendChild(makeElement("span", "roadmap-item__toggle-mark", "+"));
+      row.appendChild(toggle);
+
+      const panel = makeElement("div", "roadmap-item__panel");
+      panel.id = panelId;
+      panel.hidden = true;
+      panel.setAttribute("aria-labelledby", `${titleId} ${toggleId}`);
       const detail = makeElement("dl", "roadmap-item__detail");
       [
         ["OBSERVED BASIS", item.observed_basis],
@@ -1467,7 +1493,16 @@
         group.appendChild(makeElement("dd", "", value));
         detail.appendChild(group);
       });
-      row.appendChild(detail);
+      panel.appendChild(detail);
+      row.appendChild(panel);
+      toggle.addEventListener("click", () => {
+        const expanded = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!expanded));
+        toggle.querySelector(".roadmap-item__toggle-label").textContent =
+          expanded ? "INSPECT BOUNDED DETAILS" : "CLOSE DETAILS";
+        toggle.querySelector(".roadmap-item__toggle-mark").textContent = expanded ? "+" : "−";
+        panel.hidden = expanded;
+      });
       elements.evidenceRoadmap.appendChild(row);
     });
   }
@@ -1493,6 +1528,15 @@
     }[gate.decision] || "Presentation decision recorded";
     elements.gateBadge.className = `gate-badge ${gate.decision.toLowerCase()}`;
     elements.totalScore.textContent = candidate.totalScore;
+    if (elements.resultIndexGate) elements.resultIndexGate.textContent = gate.decision;
+    if (elements.resultIndexScore) elements.resultIndexScore.textContent = `${candidate.totalScore} / 100`;
+    if (elements.resultIndexCategories) {
+      elements.resultIndexCategories.textContent = String(candidate.categoryScores.length);
+    }
+    if (elements.resultIndexLedger) {
+      elements.resultIndexLedger.textContent =
+        `${candidate.admittedSignals.length} + / ${candidate.missingSignals.length} −`;
+    }
     elements.repositoryProfile.textContent = buildRepositoryProfile(candidate.categoryScores);
     elements.repositorySignal.textContent = `${indicators.repositorySignal} / 100`;
     elements.evidenceDepth.textContent = `${indicators.evidenceDepth} / 100`;
