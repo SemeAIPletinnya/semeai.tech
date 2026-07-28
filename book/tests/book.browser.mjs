@@ -11,6 +11,12 @@ const ROOT = path.resolve(TEST_DIR, "..", "..");
 const requireFromTest = createRequire(import.meta.url);
 
 function loadPlaywright() {
+  try {
+    return requireFromTest("playwright");
+  } catch (_) {
+    // Continue through environment-provided runtime roots.
+  }
+
   const roots = [
     process.env.PLAYWRIGHT_NODE_MODULES,
     ...(process.env.NODE_PATH ? process.env.NODE_PATH.split(path.delimiter) : []),
