@@ -29,7 +29,7 @@
       ],
       "job_sha256": null,
       "starting_head": null,
-      "final_head": null,
+      "final_head": "3d15adccac6ecf23f37646ccda95958c6eef66b4",
       "duration": null,
       "token_observation": null,
       "human_intervention": null,
@@ -121,7 +121,7 @@
       "commits": [
         {
           "sha": "18ae84a59d085e1d922734cf682a973a3b6bfbe5",
-          "state": "LOCAL VERIFIED CANDIDATE / PENDING MASTER"
+          "state": "DEPLOYED IMPLEMENTATION EVIDENCE"
         }
       ],
       "tests": [
@@ -136,7 +136,14 @@
           "captured_at": "2026-07-28"
         }
       ],
-      "deployment": null,
+      "deployment": {
+        "status": "DEPLOYED AND LIVE VERIFIED",
+        "implementation_head": "3d15adccac6ecf23f37646ccda95958c6eef66b4",
+        "verify_run_id": 30332830145,
+        "pages_run_id": 30332830107,
+        "verified_url": "https://semeai.tech/genesis/",
+        "captured_at": "2026-07-28"
+      },
       "observation": "The method supported authority discovery, resumable local indexing, privacy separation, bounded provenance decisions, implementation, and cross-route verification. This is qualitative Case 005 evidence only; no statistical or universal transfer claim is established."
     }
   ],
