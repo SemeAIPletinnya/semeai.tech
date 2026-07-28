@@ -1271,6 +1271,12 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
     historicalTimelines: document.querySelectorAll(".historical-timeline").length,
     evidenceQualityEras: document.querySelectorAll("[data-evidence-quality] > li").length,
     conceptLineageEdges: document.querySelectorAll("[data-concept-lineage] > li").length,
+    traceStages: [...document.querySelectorAll("[data-trace-stage]")].map((control) => ({
+      id: control.dataset.traceStage,
+      label: control.textContent.replace(/\s+/g, " ").trim(),
+    })),
+    traceCurrent: document.querySelector("[data-trace-current]")?.textContent,
+    traceActive: document.querySelector('[data-trace-stage][aria-current="step"]')?.dataset.traceStage,
     genesisVersion: document.body.dataset.genesisVersion,
     unsafeMarker: window.__unsafe,
   }));
@@ -1288,6 +1294,20 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
   assert.equal(state.historicalTimelines, 4, "concept, publication, implementation, and evidence clocks should remain separate");
   assert.equal(state.evidenceQualityEras, 4, "evidence quality should render as four descriptive eras");
   assert.equal(state.conceptLineageEdges, 8, "only evidence-backed conceptual relations should render");
+  assert.deepEqual(
+    state.traceStages,
+    [
+      { id: "chronology", label: "01ERAS" },
+      { id: "lineage", label: "02FORMATION" },
+      { id: "historical-provenance", label: "03EVIDENCE GATE" },
+      { id: "claim-boundaries", label: "04CLAIMS" },
+      { id: "chronicle", label: "05CHRONICLE" },
+      { id: "current-boundary", label: "06BOUNDARY" },
+    ],
+    "the trace spine should name the six existing Genesis stages without creating product state",
+  );
+  assert.equal(state.traceActive, "chronology");
+  assert.match(state.traceCurrent, /^EVOLUTION TRACE · /);
   assert.match(state.status, /STRUCTURED PROVENANCE LOADED/);
   assert.equal(state.unsafeMarker, undefined, "manifest data must not execute as markup");
 
@@ -1308,6 +1328,49 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
     "01-signal",
     "era navigation should support arrow keys",
   );
+
+  const traceControls = page.locator("[data-trace-stage]");
+  await traceControls.first().focus();
+  await page.keyboard.press("ArrowRight");
+  assert.equal(
+    await page.evaluate(() => document.activeElement?.getAttribute("data-trace-stage")),
+    "lineage",
+    "trace-stage navigation should support arrow keys",
+  );
+
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, document.getElementById("current-boundary").offsetTop);
+  });
+  await page.waitForTimeout(250);
+  const completedTrace = await page.evaluate(() => ({
+    active: document.querySelector('[data-trace-stage][aria-current="step"]')?.dataset.traceStage,
+    current: document.querySelector("[data-trace-current]")?.textContent,
+    progress: getComputedStyle(document.querySelector("[data-trace-spine]"))
+      .getPropertyValue("--trace-progress")
+      .trim(),
+  }));
+  assert.deepEqual(
+    completedTrace,
+    { active: "current-boundary", current: "CURRENT BOUNDARY", progress: "100%" },
+    "the visible trace should persist through the current boundary",
+  );
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await traceControls.nth(1).click();
+  await page.waitForTimeout(100);
+  const reducedTrace = await page.evaluate(() => ({
+    active: document.querySelector('[data-trace-stage][aria-current="step"]')?.dataset.traceStage,
+    focus: document.activeElement?.id,
+    hash: window.location.hash,
+    motionEnabled: document.documentElement.classList.contains("motion-enabled"),
+    transition: getComputedStyle(document.querySelector("[data-trace-progress]")).transitionDuration,
+  }));
+  assert.equal(reducedTrace.active, "lineage");
+  assert.equal(reducedTrace.focus, "lineage");
+  assert.equal(reducedTrace.hash, "#lineage");
+  assert.equal(reducedTrace.motionEnabled, false);
+  assert.match(reducedTrace.transition, /0\.001ms|0s/);
 
   const unexpectedExternal = requests.filter((url) => {
     const parsed = new URL(url);

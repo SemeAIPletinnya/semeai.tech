@@ -462,6 +462,12 @@
         else control.removeAttribute("aria-current");
       });
       eras.forEach((era) => era.classList.toggle("is-active", era.dataset.era === id));
+      document.dispatchEvent(new CustomEvent("genesis:era-change", {
+        detail: {
+          id,
+          label: controls.find((control) => control.dataset.eraControl === id)?.textContent.trim() || "",
+        },
+      }));
     }
 
     controls.forEach((control, index) => {
@@ -498,6 +504,116 @@
     eras.forEach((era) => observer.observe(era));
   }
 
+  function bindTraceSpine() {
+    const spine = document.querySelector("[data-trace-spine]");
+    if (!spine) return;
+    const controls = Array.from(spine.querySelectorAll("[data-trace-stage]"));
+    const current = spine.querySelector("[data-trace-current]");
+    const sequence = spine.querySelector(".trace-spine__sequence");
+    const stages = controls
+      .map((control) => ({
+        control,
+        target: document.getElementById(control.dataset.traceStage),
+      }))
+      .filter((stage) => stage.target);
+    const labels = {
+      chronology: "EVOLUTION TRACE",
+      lineage: "REPOSITORY FORMATION",
+      "historical-provenance": "HISTORICAL EVIDENCE GATE",
+      "claim-boundaries": "ADMITTED CLAIM BOUNDARIES",
+      chronicle: "CONTINUING PUBLIC MEMORY",
+      "current-boundary": "CURRENT BOUNDARY",
+    };
+    let activeEra = "Before Code";
+
+    function activate(id) {
+      const index = stages.findIndex((stage) => stage.target.id === id);
+      if (index < 0) return;
+      controls.forEach((control) => {
+        if (control.dataset.traceStage === id) control.setAttribute("aria-current", "step");
+        else control.removeAttribute("aria-current");
+      });
+      const denominator = Math.max(1, stages.length - 1);
+      spine.style.setProperty("--trace-progress", `${(index / denominator) * 100}%`);
+      spine.dataset.activeTraceStage = id;
+      if (current) {
+        if (id === "chronology") {
+          const railEdge = (Number.parseFloat(getComputedStyle(spine).top) || 0) + spine.offsetHeight;
+          const nearestEra = Array.from(document.querySelectorAll("[data-era]"))
+            .find((era) => era.getBoundingClientRect().bottom >= railEdge);
+          activeEra = nearestEra?.querySelector("h3")?.textContent.trim() || activeEra;
+        }
+        current.textContent = id === "chronology"
+          ? `${labels[id]} · ${activeEra}`
+          : labels[id];
+      }
+      const control = controls[index];
+      if (sequence && control && sequence.scrollWidth > sequence.clientWidth) {
+        const left = control.offsetLeft - ((sequence.clientWidth - control.offsetWidth) / 2);
+        sequence.scrollTo({
+          left: Math.max(0, left),
+          behavior: reducedMotion.matches ? "auto" : "smooth",
+        });
+      }
+    }
+
+    controls.forEach((control) => {
+      control.addEventListener("click", (event) => {
+        const target = document.getElementById(control.dataset.traceStage);
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({
+          behavior: reducedMotion.matches ? "auto" : "smooth",
+          block: "start",
+        });
+        if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+        window.history.replaceState(null, "", `#${target.id}`);
+        activate(target.id);
+      });
+    });
+
+    sequence?.addEventListener("keydown", (event) => {
+      if (!["ArrowRight", "ArrowLeft", "Home", "End"].includes(event.key)) return;
+      const index = controls.indexOf(document.activeElement);
+      if (index < 0) return;
+      event.preventDefault();
+      let next = index;
+      if (event.key === "ArrowRight") next = Math.min(controls.length - 1, index + 1);
+      if (event.key === "ArrowLeft") next = Math.max(0, index - 1);
+      if (event.key === "Home") next = 0;
+      if (event.key === "End") next = controls.length - 1;
+      controls[next].focus();
+    });
+
+    document.addEventListener("genesis:era-change", (event) => {
+      const era = document.getElementById(String(event.detail?.id || ""));
+      const bounds = era?.getBoundingClientRect();
+      const railEdge = (Number.parseFloat(getComputedStyle(spine).top) || 0) + spine.offsetHeight;
+      if (!bounds || bounds.bottom < railEdge || bounds.top > window.innerHeight * 0.75) return;
+      activeEra = String(event.detail?.label || "Before Code").replace(/^\d{2}\s*/, "");
+      if (spine.dataset.activeTraceStage === "chronology" && current) {
+        current.textContent = `${labels.chronology} · ${activeEra}`;
+      }
+    });
+
+    activate(stages[0]?.target.id || "");
+    if (!("IntersectionObserver" in window)) return;
+    const stickyTop = Number.parseFloat(getComputedStyle(spine).top) || 0;
+    const probe = Math.min(window.innerHeight - 2, Math.ceil(stickyTop + spine.offsetHeight + 18));
+    const observer = new IntersectionObserver(() => {
+      const visible = stages.filter((stage) => {
+        const bounds = stage.target.getBoundingClientRect();
+        return bounds.top <= probe + 2 && bounds.bottom >= probe - 2;
+      });
+      if (visible.length) activate(visible[visible.length - 1].target.id);
+    }, {
+      rootMargin: `-${probe}px 0px -${Math.max(0, window.innerHeight - probe - 2)}px 0px`,
+      threshold: 0,
+    });
+    stages.forEach((stage) => observer.observe(stage.target));
+  }
+
   function bindLineageVisibility() {
     const figure = document.querySelector(".lineage-figure");
     if (!figure || reducedMotion.matches || !("IntersectionObserver" in window)) return;
@@ -522,6 +638,7 @@
   async function boot() {
     bindLifecycle();
     bindEraNavigation();
+    bindTraceSpine();
     try {
       const [
         eras,

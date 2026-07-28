@@ -13,7 +13,7 @@
     <link rel="canonical" href="https://semeai.tech/genesis/" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260728b" />
-    <link rel="stylesheet" href="./assets/genesis.css?v=20260728a" />
+    <link rel="stylesheet" href="./assets/genesis.css?v=20260728b" />
     <title>Genesis — Evolution Trace | SemeAI</title>
   </head>
   <body class="genesis-v04 mode-editorial" data-semeai-custom-bg data-genesis-version="v04">
@@ -88,6 +88,26 @@
         <p><strong>LINEAGE IS CURATED.</strong> Conceptual relations do not assert shared Git ancestry.</p>
         <p><strong>THE CURRENT HEAD IS A SNAPSHOT.</strong> It is not an ending, rank, or release decision.</p>
       </section>
+
+      <nav class="genesis-trace-spine" aria-label="Genesis trace stages" data-trace-spine>
+        <div class="trace-spine__position">
+          <span>TRACE POSITION</span>
+          <strong data-trace-current>Evolution Trace · Before Code</strong>
+        </div>
+        <div class="trace-spine__sequence">
+          <div class="trace-spine__track" aria-hidden="true">
+            <span data-trace-progress></span>
+          </div>
+          <ol>
+            <li><a href="#chronology" data-trace-stage="chronology"><span>01</span>ERAS</a></li>
+            <li><a href="#lineage" data-trace-stage="lineage"><span>02</span>FORMATION</a></li>
+            <li><a href="#historical-provenance" data-trace-stage="historical-provenance"><span>03</span>EVIDENCE GATE</a></li>
+            <li><a href="#claim-boundaries" data-trace-stage="claim-boundaries"><span>04</span>CLAIMS</a></li>
+            <li><a href="#chronicle" data-trace-stage="chronicle"><span>05</span>CHRONICLE</a></li>
+            <li><a href="#current-boundary" data-trace-stage="current-boundary"><span>06</span>BOUNDARY</a></li>
+          </ol>
+        </div>
+      </nav>
 
       <div class="genesis-foundation" id="historical-foundation">
       <section class="genesis-chronology" id="chronology" aria-labelledby="chronology-title">
@@ -266,7 +286,7 @@
           <ol data-concept-lineage></ol>
         </div>
 
-        <div class="historical-ledgers">
+        <div class="historical-ledgers" id="claim-boundaries" tabindex="-1">
           <section aria-labelledby="admitted-claims-title">
             <p class="genesis-kicker">SANITIZED PUBLIC MANIFEST</p>
             <h3 id="admitted-claims-title">ADMITTED CLAIM BOUNDARIES</h3>
@@ -304,7 +324,7 @@
         </ol>
       </section>
 
-      <section class="genesis-boundary" aria-labelledby="boundary-title">
+      <section class="genesis-boundary" id="current-boundary" aria-labelledby="boundary-title" tabindex="-1">
         <p class="genesis-kicker">CURRENT BOUNDARY</p>
         <h2 id="boundary-title">THE TRACE EXPLAINS FORMATION. <span>IT DOES NOT GRANT RELEASE.</span></h2>
         <p>
@@ -334,6 +354,6 @@
     <script src="/assets/js/i18n-arch.js?v=20260728b"></script>
     <script src="/assets/js/semeai-motion.js?v=20260726a"></script>
     <script src="/assets/js/site-shell.js?v=20260728b"></script>
-    <script src="./assets/genesis.js?v=20260728a" defer></script>
+    <script src="./assets/genesis.js?v=20260728b" defer></script>
   </body>
 </html>

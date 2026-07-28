@@ -56,6 +56,18 @@ body.genesis-v04 {
   outline-offset: 4px;
 }
 
+.genesis-v04 :is(
+  .genesis-chronology,
+  .genesis-lineage,
+  .genesis-archaeology,
+  .historical-ledgers,
+  .genesis-chronicle,
+  .genesis-boundary
+):focus-visible {
+  outline: 1px solid var(--genesis-gold);
+  outline-offset: 8px;
+}
+
 .genesis-hero {
   width: var(--genesis-column);
   min-height: min(82vh, 58rem);
@@ -259,6 +271,136 @@ body.genesis-v04 {
   letter-spacing: 0.08em;
 }
 
+.genesis-trace-spine {
+  position: sticky;
+  z-index: 12;
+  top: calc(var(--semeai-nav-height, 4rem) + 2.35rem);
+  width: var(--genesis-column);
+  min-height: 4.15rem;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(13rem, 0.7fr) minmax(0, 3.3fr);
+  align-items: stretch;
+  border-top: 1px solid rgba(216, 189, 121, 0.34);
+  border-bottom: 1px solid var(--genesis-line);
+  background:
+    linear-gradient(90deg, rgba(216, 189, 121, 0.055), transparent 32%),
+    rgba(5, 6, 6, 0.96);
+  backdrop-filter: blur(12px);
+}
+
+.trace-spine__position {
+  min-width: 0;
+  padding: 0.7rem 1rem 0.65rem 0;
+  display: grid;
+  align-content: center;
+  gap: 0.22rem;
+  border-right: 1px solid var(--genesis-line);
+}
+
+.trace-spine__position span,
+.trace-spine__position strong,
+.trace-spine__sequence a {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  text-transform: uppercase;
+}
+
+.trace-spine__position span {
+  color: var(--genesis-faint);
+  font-size: 0.56rem;
+  line-height: 1;
+  letter-spacing: 0.15em;
+}
+
+.trace-spine__position strong {
+  overflow: hidden;
+  color: var(--genesis-paper);
+  font-size: 0.66rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.07em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.trace-spine__sequence {
+  position: relative;
+  min-width: 0;
+}
+
+.trace-spine__track {
+  position: absolute;
+  z-index: 0;
+  top: 1.15rem;
+  right: 1rem;
+  left: 1rem;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(241, 237, 227, 0.13);
+}
+
+.trace-spine__track span {
+  width: var(--trace-progress, 0%);
+  height: 100%;
+  display: block;
+  background: linear-gradient(90deg, var(--genesis-gold), rgba(155, 131, 186, 0.72));
+  transform-origin: left center;
+  transition: width 420ms cubic-bezier(0.2, 0.65, 0.25, 1);
+}
+
+.motion-paused .trace-spine__track span {
+  transition: none;
+}
+
+.trace-spine__sequence ol {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  margin: 0;
+  padding: 0 0.55rem;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  list-style: none;
+}
+
+.trace-spine__sequence li {
+  min-width: 0;
+}
+
+.trace-spine__sequence a {
+  min-width: 0;
+  height: 100%;
+  min-height: 4.1rem;
+  padding: 0.7rem 0.45rem 0.55rem;
+  display: grid;
+  align-content: space-between;
+  gap: 0.4rem;
+  color: var(--genesis-faint);
+  font-size: 0.57rem;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  transition: color 180ms ease, background-color 180ms ease;
+}
+
+.trace-spine__sequence a span {
+  width: max-content;
+  padding-right: 0.25rem;
+  color: var(--genesis-gold);
+  background: var(--genesis-black);
+}
+
+.trace-spine__sequence a:hover,
+.trace-spine__sequence a[aria-current="step"] {
+  color: var(--genesis-paper);
+  background: linear-gradient(180deg, rgba(216, 189, 121, 0.035), transparent);
+}
+
+.trace-spine__sequence a[aria-current="step"] span {
+  text-shadow: 0 0 14px rgba(216, 189, 121, 0.42);
+}
+
 .genesis-chronology,
 .genesis-lineage,
 .genesis-archaeology,
@@ -266,6 +408,7 @@ body.genesis-v04 {
   width: var(--genesis-column);
   margin: 0 auto;
   padding: clamp(5rem, 11vh, 9rem) 0;
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 7.35rem);
 }
 
 .genesis-section-heading {
@@ -299,8 +442,8 @@ body.genesis-v04 {
 
 .era-index {
   position: sticky;
-  top: 5.5rem;
-  max-height: calc(100vh - 7rem);
+  top: calc(var(--semeai-nav-height, 4rem) + 7.35rem);
+  max-height: calc(100vh - var(--semeai-nav-height, 4rem) - 8.35rem);
   overflow: auto;
   scrollbar-width: thin;
 }
@@ -351,7 +494,7 @@ body.genesis-v04 {
   min-height: clamp(35rem, 75vh, 51rem);
   padding: clamp(2rem, 4vw, 4rem) 0 clamp(5rem, 10vh, 9rem);
   border-top: 1px solid var(--genesis-line);
-  scroll-margin-top: 6rem;
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 7.35rem);
 }
 
 .era:first-child {
@@ -599,7 +742,7 @@ body.genesis-v04 {
 .genesis-foundation,
 .genesis-archaeology,
 .genesis-chronicle {
-  scroll-margin-top: 5.5rem;
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 7.35rem);
 }
 
 .historical-census {
@@ -852,6 +995,7 @@ body.genesis-v04 {
   grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
   gap: clamp(2rem, 5vw, 5rem);
   align-items: start;
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 7.35rem);
 }
 
 .historical-ledgers section {
@@ -1034,6 +1178,7 @@ body.genesis-v04 {
 .genesis-boundary {
   margin-bottom: clamp(3rem, 8vh, 7rem);
   border-top: 1px solid var(--genesis-gold);
+  scroll-margin-top: calc(var(--semeai-nav-height, 4rem) + 7.35rem);
 }
 
 .genesis-boundary h2 {
@@ -1131,6 +1276,54 @@ body.genesis-v04 {
     grid-template-columns: minmax(0, 1fr);
   }
 
+  .genesis-trace-spine {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .genesis-foundation,
+  .genesis-chronology,
+  .genesis-lineage,
+  .genesis-archaeology,
+  .historical-ledgers,
+  .genesis-chronicle,
+  .genesis-boundary,
+  .era {
+    scroll-margin-top: 13.25rem;
+  }
+
+  .trace-spine__position {
+    min-height: 2.45rem;
+    padding: 0.45rem 0.7rem;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.7rem;
+    border-right: 0;
+    border-bottom: 1px solid var(--genesis-line);
+  }
+
+  .trace-spine__position strong {
+    text-align: right;
+  }
+
+  .trace-spine__sequence {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: thin;
+  }
+
+  .trace-spine__track {
+    right: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .trace-spine__sequence ol {
+    min-width: 42rem;
+  }
+
+  .trace-spine__sequence a {
+    min-height: 3.55rem;
+  }
+
   .historical-timelines,
   .historical-ledgers {
     grid-template-columns: minmax(0, 1fr);
@@ -1141,8 +1334,9 @@ body.genesis-v04 {
   }
 
   .era-index {
+    position: relative;
     z-index: 4;
-    top: 4.25rem;
+    top: auto;
     max-width: 100%;
     max-height: none;
     overflow-x: auto;
@@ -1182,6 +1376,15 @@ body.genesis-v04 {
   .genesis-hero {
     gap: 2rem;
     padding-top: 3.25rem;
+  }
+
+  .genesis-trace-spine {
+    top: calc(var(--semeai-nav-height, 4rem) + 2.125rem);
+    width: 100%;
+  }
+
+  .trace-spine__position {
+    padding-inline: var(--genesis-edge);
   }
 
   .genesis-hero h1 {
@@ -1312,6 +1515,44 @@ body.genesis-v04 {
     max-width: 23rem;
   }
 
+  .genesis-trace-spine {
+    grid-template-columns: 14rem minmax(0, 1fr);
+  }
+
+  .trace-spine__position {
+    min-height: 3.55rem;
+    border-right: 1px solid var(--genesis-line);
+    border-bottom: 0;
+  }
+
+  .trace-spine__position span {
+    display: none;
+  }
+
+  .trace-spine__position strong {
+    text-align: left;
+  }
+
+  .trace-spine__sequence ol {
+    min-width: 0;
+  }
+
+  .trace-spine__sequence a {
+    padding-inline: 0.3rem;
+    font-size: 0.52rem;
+  }
+
+  .genesis-foundation,
+  .genesis-chronology,
+  .genesis-lineage,
+  .genesis-archaeology,
+  .historical-ledgers,
+  .genesis-chronicle,
+  .genesis-boundary,
+  .era {
+    scroll-margin-top: 10.75rem;
+  }
+
   .era {
     min-height: auto;
   }
@@ -1339,12 +1580,17 @@ body.genesis-v04 {
     opacity: 1 !important;
     transform: none !important;
   }
+
+  .trace-spine__track span {
+    transition: none !important;
+  }
 }
 
 @media print {
   .site-header,
   .site-footer,
   .era-index,
+  .genesis-trace-spine,
   .genesis-hero__actions,
   .genesis-boundary nav,
   .genesis-status {
