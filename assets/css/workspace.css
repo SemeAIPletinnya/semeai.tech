@@ -788,6 +788,166 @@
   font-size: 0.75rem;
 }
 
+.skill-authority-note {
+  margin: 1.7rem 0 0;
+  border-left: 2px solid var(--workspace-violet);
+  padding: 0.8rem 1rem;
+  color: var(--semeai-muted);
+  background: rgba(151, 134, 171, 0.045);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.workspace-inline-status {
+  min-height: 1.3rem;
+  margin: 1rem 0 0;
+  color: var(--semeai-faint);
+  font-family: var(--semeai-font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.workspace-skill-block {
+  margin-top: clamp(2rem, 4vw, 3.5rem);
+}
+
+.workspace-skill-block > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.25rem;
+  align-items: end;
+  border-bottom: 1px solid var(--workspace-line);
+  padding-bottom: 0.85rem;
+}
+
+.workspace-skill-block h3 {
+  margin: 0;
+  color: var(--workspace-paper);
+  font-family: var(--semeai-font-editorial);
+  font-size: clamp(1.45rem, 2.5vw, 2.15rem);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+}
+
+.workspace-skill-block header small,
+.workspace-skill-block header a {
+  color: var(--semeai-faint);
+  font-family: var(--semeai-font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.workspace-skill-block header a {
+  color: var(--workspace-gold);
+}
+
+.workspace-skill-block > p {
+  max-width: 48rem;
+  margin: 1rem 0 1.25rem;
+  color: var(--semeai-muted);
+  line-height: 1.6;
+}
+
+.workspace-skills-list,
+.workspace-skill-catalog {
+  display: grid;
+  border-top: 1px solid var(--workspace-line);
+}
+
+.workspace-skill-record,
+.workspace-skill-candidate {
+  min-width: 0;
+  border-bottom: 1px solid var(--workspace-line);
+  padding: 1.25rem 0;
+}
+
+.workspace-skill-record__head,
+.workspace-skill-candidate {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.25rem;
+  align-items: center;
+}
+
+.workspace-skill-record__head strong,
+.workspace-skill-candidate strong {
+  overflow-wrap: anywhere;
+  color: var(--workspace-paper);
+  font-family: var(--semeai-font-editorial);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.workspace-skill-record__head span {
+  color: var(--workspace-violet);
+  font-family: var(--semeai-font-mono);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.workspace-skill-record__facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1rem 0 0;
+  border-top: 1px solid var(--workspace-line);
+  border-left: 1px solid var(--workspace-line);
+}
+
+.workspace-skill-record__facts div {
+  min-width: 0;
+  border-right: 1px solid var(--workspace-line);
+  border-bottom: 1px solid var(--workspace-line);
+  padding: 0.85rem;
+  background: var(--workspace-panel);
+}
+
+.workspace-skill-record__facts dt {
+  color: var(--semeai-faint);
+  font-family: var(--semeai-font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.workspace-skill-record__facts dd {
+  overflow-wrap: anywhere;
+  margin: 0.4rem 0 0;
+  color: var(--semeai-muted);
+  font-family: var(--semeai-font-mono);
+  font-size: 0.66rem;
+  line-height: 1.5;
+}
+
+.workspace-skill-candidate > div {
+  min-width: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.workspace-skill-candidate p {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--semeai-muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.workspace-skill-candidate small {
+  color: var(--semeai-faint);
+  font-family: var(--semeai-font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.workspace-skill-candidate .product-action {
+  min-width: 9.5rem;
+  justify-content: center;
+}
+
 .decision-counts {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1191,6 +1351,22 @@
 
   .account-actions {
     display: grid;
+  }
+
+  .workspace-skill-block > header,
+  .workspace-skill-record__head,
+  .workspace-skill-candidate,
+  .workspace-skill-record__facts {
+    grid-template-columns: 1fr;
+  }
+
+  .workspace-skill-block > header {
+    display: grid;
+    align-items: start;
+  }
+
+  .workspace-skill-candidate .product-action {
+    width: 100%;
   }
 
   .workspace-brand b {

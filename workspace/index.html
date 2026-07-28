@@ -19,7 +19,7 @@
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260726b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260726b" />
-    <link rel="stylesheet" href="/assets/css/workspace.css?v=20260728c" />
+    <link rel="stylesheet" href="/assets/css/workspace.css?v=20260728d" />
   </head>
   <body class="mode-evidence product-private workspace-route" data-product-route="workspace" data-semeai-custom-bg>
     <a class="skip-link" href="#workspace-work-area" data-i18n="workspace.skip">Skip to workspace</a>
@@ -200,14 +200,26 @@
 
           <section class="workspace-view" id="workspace-view-skills" data-workspace-section="skills" aria-labelledby="workspace-skills-title" hidden>
             <header class="workspace-view-heading">
-              <div><p class="section-index" data-i18n="workspace.surface.index">ARCHITECTURE SURFACE / v0.1</p><h2 id="workspace-skills-title" data-i18n="workspace.skills.title">Skills</h2></div>
+              <div><p class="section-index" data-i18n="workspace.skills.index">GOVERNED EVIDENCE / API-BACKED</p><h2 id="workspace-skills-title" data-i18n="workspace.skills.title">Skills</h2></div>
+              <p data-i18n="workspace.skills.lead">Retain bounded candidate evidence in this workspace. Retention is not admission, installation, or release authority.</p>
             </header>
-            <div class="unconnected-surface">
-              <strong data-i18n="workspace.unconnected">Persistence not connected in v0.1.</strong>
-              <p data-i18n="workspace.skills.body">Admitted skill records will belong here when a backend persistence and admission contract exists. The public registry currently contains review evidence only.</p>
-              <a class="product-action product-action--secondary" href="/skills/" data-i18n="workspace.skills.open">Inspect public Skill Forge evidence</a>
-              <span data-i18n="workspace.empty.real">No fabricated items are shown.</span>
-            </div>
+            <p class="skill-authority-note" data-i18n="workspace.skills.boundary">Candidate evidence is stored separately from an admission decision. Skill admission remains separate from SaC/PoR release authority.</p>
+            <p id="workspace-skills-status" class="workspace-inline-status" role="status" aria-live="polite" data-i18n="workspace.skills.loading">Connecting to workspace skill evidence…</p>
+            <section class="workspace-skill-block" aria-labelledby="workspace-retained-skills-title">
+              <header>
+                <h3 id="workspace-retained-skills-title" data-i18n="workspace.skills.retainedTitle">Retained candidate evidence</h3>
+                <small data-i18n="workspace.skills.retainedMeta">WORKSPACE-SCOPED · IMMUTABLE SNAPSHOTS</small>
+              </header>
+              <div id="workspace-skills-list" class="workspace-skills-list"></div>
+            </section>
+            <section class="workspace-skill-block" aria-labelledby="workspace-skill-catalog-title">
+              <header>
+                <h3 id="workspace-skill-catalog-title" data-i18n="workspace.skills.catalogTitle">Public review candidates</h3>
+                <a href="/skills/" data-i18n="workspace.skills.open">Inspect full Skill Forge evidence</a>
+              </header>
+              <p data-i18n="workspace.skills.catalogLead">Retain the current bounded evidence snapshot. This action cannot set admission, availability, or a decision receipt.</p>
+              <div id="workspace-skill-catalog" class="workspace-skill-catalog"></div>
+            </section>
           </section>
 
           <section class="workspace-view" id="workspace-view-receipts" data-workspace-section="receipts" aria-labelledby="workspace-receipts-title" hidden>
@@ -249,7 +261,7 @@
             <div><dt data-i18n="workspace.context.sources">Sources</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
             <div><dt data-i18n="workspace.context.memory">Memory</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
             <div><dt data-i18n="workspace.context.evidence">Evidence</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
-            <div><dt data-i18n="workspace.context.skills">Skills</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
+            <div><dt data-i18n="workspace.context.skills">Skills</dt><dd class="connected" id="workspace-context-skills">—</dd></div>
             <div><dt data-i18n="workspace.context.receipts">Receipts</dt><dd class="connected" id="workspace-context-receipts">—</dd></div>
           </dl>
           <section class="latest-decision" aria-labelledby="workspace-latest-title">
@@ -272,8 +284,8 @@
 
     <script src="/assets/js/i18n.js?v=20260726b"></script>
     <script src="/assets/js/i18n-arch.js?v=20260728c"></script>
-    <script src="/assets/js/workspace-skills-i18n.js?v=20260727a"></script>
-    <script src="/assets/js/api.js?v=20260726b"></script>
-    <script src="/assets/js/workspace-foundation.js?v=20260728c"></script>
+    <script src="/assets/js/workspace-skills-i18n.js?v=20260728b"></script>
+    <script src="/assets/js/api.js?v=20260728d"></script>
+    <script src="/assets/js/workspace-foundation.js?v=20260728d"></script>
   </body>
 </html>

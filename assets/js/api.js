@@ -87,6 +87,16 @@
       request(`/v0/receipts?limit=${limit}`, { token: apiKey || getStoredToken() }),
     receipt: (apiKey, id) =>
       request(`/v0/receipts/${encodeURIComponent(id)}`, { token: apiKey || getStoredToken() }),
+    workspaceSkills: (apiKey, limit = 100) =>
+      request(`/v0/workspace/skills?limit=${limit}`, { token: apiKey || getStoredToken() }),
+    workspaceSkill: (apiKey, id) =>
+      request(`/v0/workspace/skills/${encodeURIComponent(id)}`, { token: apiKey || getStoredToken() }),
+    retainWorkspaceSkill: (payload, apiKey) =>
+      request("/v0/workspace/skills", {
+        method: "POST",
+        token: apiKey || getStoredToken(),
+        body: payload,
+      }),
     billingStatus: (apiKey) => request("/v0/billing/status", { token: apiKey || getStoredToken() }),
     billingIntent: (apiKey, payload) =>
       request("/v0/billing/manual-crypto-intent", {

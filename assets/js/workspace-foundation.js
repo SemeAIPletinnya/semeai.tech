@@ -78,13 +78,21 @@
       error.status = 401;
       throw error;
     }
-    const [account, usage, receipts, billing] = await Promise.all([
+    const [account, usage, receipts, billing, skills] = await Promise.all([
       SemeAI.account(token),
       SemeAI.usage(token).catch(() => null),
       SemeAI.receipts(token, 100).catch(() => ({ receipts: [] })),
       SemeAI.billingStatus(token).catch(() => null),
+      SemeAI.workspaceSkills(token, 100)
+        .then((result) => ({ ...result, connection: "connected" }))
+        .catch((error) => ({
+          records: [],
+          count: 0,
+          connection: "unavailable",
+          error_status: error?.status || null,
+        })),
     ]);
-    return { token, profile: profile || {}, account, usage, receipts, billing };
+    return { token, profile: profile || {}, account, usage, receipts, billing, skills };
   }
 
   function bindSignOut(button, statusNode, redirect = "/account/") {
@@ -353,6 +361,167 @@
     return row;
   }
 
+  const publicSkillEvidencePath = /^\/skills\/data\/[a-z0-9-]+-evidence\.json$/;
+
+  function recordsFrom(payload) {
+    return Array.isArray(payload?.records) ? payload.records : [];
+  }
+
+  function createNode(name, className, value) {
+    const node = document.createElement(name);
+    if (className) node.className = className;
+    if (value !== undefined) node.textContent = String(value);
+    return node;
+  }
+
+  async function loadPublicSkillCatalog() {
+    const registryResponse = await fetch("/skills/data/registry.json", {
+      credentials: "same-origin",
+      headers: { Accept: "application/json" },
+    });
+    if (!registryResponse.ok) throw new Error("The public skill registry could not be loaded.");
+    const registry = await registryResponse.json();
+    const skills = Array.isArray(registry?.skills) ? registry.skills : [];
+    return Promise.all(
+      skills.map(async (skill) => {
+        if (!publicSkillEvidencePath.test(skill?.evaluation_reference || "")) {
+          throw new Error("A public skill evidence reference was outside the bounded catalog.");
+        }
+        const evidenceResponse = await fetch(skill.evaluation_reference, {
+          credentials: "same-origin",
+          headers: { Accept: "application/json" },
+        });
+        if (!evidenceResponse.ok) throw new Error("Public skill evidence could not be loaded.");
+        return { skill, evidence: await evidenceResponse.json() };
+      }),
+    );
+  }
+
+  function publicSkillPayload(skill, evidence) {
+    const evidenceCases = (evidence.cases || []).slice(0, 32).map((item) => {
+      const deployment =
+        typeof item.deployment === "object"
+          ? item.deployment.status
+          : item.deployment === true
+            ? "LIVE VERIFIED"
+            : item.deployment === false
+              ? "NOT DEPLOYED"
+              : "NOT CAPTURED";
+      const evidenceRefs = (item.source_artifacts || []).slice(0, 24).map((artifact) =>
+        `${artifact.name}: ${artifact.sha256 ? `sha256:${artifact.sha256}` : "HASH NOT CAPTURED"}`,
+      );
+      return {
+        case_id: item.case_id,
+        domain: item.domain || item.mode || "",
+        status: deployment || "EVIDENCE RETAINED",
+        outcome: item.observation || "",
+        summary: item.mode || "",
+        evidence_refs: evidenceRefs,
+        tests: (item.tests || []).slice(0, 24).map((test) => `${test.command}: ${test.result}`),
+        commit: item.final_head || "",
+        deployment,
+      };
+    });
+    const domains = [...new Set(evidenceCases.map((item) => item.domain).filter(Boolean))].slice(0, 32);
+    return {
+      skill_id: skill.skill_id,
+      name: skill.name,
+      version: skill.version,
+      skill_hash: skill.source_skill_sha256,
+      evidence_cases: evidenceCases,
+      evaluated_domains: domains,
+      failures: (evidence.known_failures || []).slice(0, 32),
+      limitations: [evidence.claim_boundary, ...(evidence.limitations || [])].filter(Boolean).slice(0, 32),
+      evaluation_context: {
+        evaluator: "bounded public Case evidence",
+        authority: "evidence review only",
+        scope: evidence.claim_boundary || "qualitative candidate evidence",
+        independent_evaluation: false,
+      },
+      provenance: {
+        type: "public Skill Forge candidate evidence",
+        summary: skill.compatibility?.evidence || "Bounded candidate evidence.",
+        public_reference: `https://semeai.tech${skill.evaluation_reference}`,
+      },
+    };
+  }
+
+  function createWorkspaceSkillRow(record) {
+    const row = createNode("article", "workspace-skill-record");
+    const identity = record?.identity || {};
+    const admission = record?.admission || {};
+    const head = createNode("div", "workspace-skill-record__head");
+    head.append(
+      createNode("strong", "", `${identity.name || identity.skill_id || "UNNAMED"} / ${identity.version || "VERSION NOT RETURNED"}`),
+      createNode("span", "", admission.state || "REVIEW"),
+    );
+    const facts = createNode("dl", "workspace-skill-record__facts");
+    [
+      [t("workspace.skills.fact.cases", "Evidence cases"), record?.evidence?.cases?.length || 0],
+      [t("workspace.skills.fact.decision", "Admission decision"), admission.decision || t("workspace.skills.noDecision", "No decision")],
+      [t("workspace.skills.fact.availability", "Distribution"), record?.availability?.available ? "AVAILABLE" : "NOT AVAILABLE"],
+      [t("workspace.skills.fact.hash", "Method SHA-256"), identity.skill_hash || "NOT RETURNED"],
+      [t("workspace.skills.fact.receipt", "Decision receipt"), admission.receipt_id || t("workspace.skills.noReceipt", "No receipt")],
+    ].forEach(([term, value]) => {
+      const item = createNode("div");
+      item.append(createNode("dt", "", term), createNode("dd", "", value));
+      facts.append(item);
+    });
+    row.append(head, facts);
+    return row;
+  }
+
+  function createCatalogSkillRow(entry, retainedIds, bundle, rerender) {
+    const { skill, evidence } = entry;
+    const row = createNode("article", "workspace-skill-candidate");
+    const copy = createNode("div");
+    copy.append(
+      createNode("strong", "", `${skill.name} / ${skill.version}`),
+      createNode("p", "", skill.compatibility?.evidence || evidence.claim_boundary),
+      createNode(
+        "small",
+        "",
+        t("workspace.skills.candidateMeta", "{count} bounded cases · public state {state}", {
+          count: evidence.cases?.length || 0,
+          state: skill.status || "REVIEW",
+        }),
+      ),
+    );
+    const button = createNode(
+      "button",
+      "product-action product-action--secondary",
+      retainedIds.has(skill.skill_id)
+        ? t("workspace.skills.retained", "Retained")
+        : t("workspace.skills.retain", "Retain evidence"),
+    );
+    button.type = "button";
+    button.disabled = retainedIds.has(skill.skill_id);
+    button.addEventListener("click", async () => {
+      setBusy(button, true);
+      text(byId("workspace-skills-status"), t("workspace.skills.retaining", "Retaining the bounded evidence snapshot…"));
+      try {
+        const result = await SemeAI.retainWorkspaceSkill(publicSkillPayload(skill, evidence), bundle.token);
+        const records = recordsFrom(bundle.skills);
+        if (result?.record && !records.some((record) => record.record_id === result.record.record_id)) {
+          records.push(result.record);
+        }
+        bundle.skills = { ...bundle.skills, records, count: records.length, connection: "connected" };
+        rerender();
+        text(
+          byId("workspace-skills-status"),
+          result?.created
+            ? t("workspace.skills.retainedStatus", "Evidence retained. Retention is not admission.")
+            : t("workspace.skills.alreadyRetained", "The same immutable evidence snapshot was already retained."),
+        );
+      } catch (error) {
+        setBusy(button, false);
+        text(byId("workspace-skills-status"), errorMessage(error));
+      }
+    });
+    row.append(copy, button);
+    return row;
+  }
+
   function initWorkspace() {
     const token = SemeAI.getStoredToken();
     if (!token) {
@@ -364,6 +533,8 @@
     const app = byId("workspace-app");
     const alert = byId("workspace-alert");
     let currentBundle = null;
+    let publicSkillCatalog = [];
+    let publicSkillCatalogError = "";
     let currentView = "overview";
     loading.hidden = false;
 
@@ -406,6 +577,52 @@
         return;
       }
       receipts.forEach((receipt) => list.append(createReceiptRow(receipt)));
+    }
+
+    function renderWorkspaceSkills(bundle) {
+      const payload = bundle.skills || {};
+      const records = recordsFrom(payload);
+      const list = byId("workspace-skills-list");
+      const catalog = byId("workspace-skill-catalog");
+      list?.replaceChildren();
+      catalog?.replaceChildren();
+
+      if (payload.connection !== "connected") {
+        text(byId("workspace-skills-status"), t("workspace.skills.unavailable", "Skill persistence is unavailable from the current API deployment."));
+      } else {
+        text(
+          byId("workspace-skills-status"),
+          t("workspace.skills.connected", "{count} retained candidate records returned.", { count: records.length }),
+        );
+      }
+
+      if (list) {
+        if (records.length) records.forEach((record) => list.append(createWorkspaceSkillRow(record)));
+        else list.append(createNode("p", "workspace-empty", t("workspace.skills.empty", "No skill candidate evidence has been retained in this workspace.")));
+      }
+
+      const retainedIds = new Set(records.map((record) => record?.identity?.skill_id).filter(Boolean));
+      if (catalog) {
+        if (publicSkillCatalog.length) {
+          publicSkillCatalog.forEach((entry) =>
+            catalog.append(createCatalogSkillRow(entry, retainedIds, bundle, () => renderWorkspaceSkills(bundle))),
+          );
+        } else {
+          catalog.append(
+            createNode(
+              "p",
+              "workspace-empty",
+              publicSkillCatalogError || t("workspace.skills.catalogLoading", "Loading bounded public candidates…"),
+            ),
+          );
+        }
+      }
+      text(
+        byId("workspace-context-skills"),
+        payload.connection === "connected"
+          ? t("workspace.context.skillCount", "{count} retained", { count: records.length })
+          : t("workspace.skills.unavailableShort", "Unavailable"),
+      );
     }
 
     function renderWorkspace(bundle) {
@@ -453,6 +670,7 @@
       }
 
       renderReceipts(receipts);
+      renderWorkspaceSkills(bundle);
     }
 
     function handleWorkspaceError(error) {
@@ -475,6 +693,15 @@
 
     const initialView = location.hash.replace(/^#/, "") || "overview";
     setView(initialView, false);
+    loadPublicSkillCatalog()
+      .then((catalog) => {
+        publicSkillCatalog = catalog;
+        if (currentBundle) renderWorkspaceSkills(currentBundle);
+      })
+      .catch((error) => {
+        publicSkillCatalogError = error.message;
+        if (currentBundle) renderWorkspaceSkills(currentBundle);
+      });
     loadAccountBundle()
       .then((bundle) => {
         renderWorkspace(bundle);
