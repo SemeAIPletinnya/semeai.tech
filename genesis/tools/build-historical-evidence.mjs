@@ -133,4 +133,3 @@ if (!checkOnly) {
 console.log(
   `${checkOnly ? "Verified" : "Built"} ${built.manifest.artifacts.length} admitted public claims, ${decisions.summary.review} review decisions, ${decisions.summary.withhold} withheld decisions, ${lineage.edges.length} lineage edges, and ${duplicates.groups.length} duplicate groups`
 );
-

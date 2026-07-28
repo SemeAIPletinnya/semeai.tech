@@ -47,7 +47,6 @@ const IMPLEMENTATION_AUTHORITIES = new Set([
 function compareKeys(left, right) {
   return String(left).localeCompare(String(right), "en");
 }
-
 export function canonicalize(value) {
   if (Array.isArray(value)) return value.map(canonicalize);
   if (value && typeof value === "object") {
@@ -281,4 +280,3 @@ export function buildSanitizedManifest(inputs, options = {}) {
     decisions,
   };
 }
-

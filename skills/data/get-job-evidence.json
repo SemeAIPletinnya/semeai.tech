@@ -97,13 +97,56 @@
       ],
       "deployment": false,
       "observation": "The method supported decomposition and a verified local transfer implementation. The result remains isolated from backend master and is not an admitted skill or deployed product claim."
+    },
+    {
+      "case_id": "case-005",
+      "mode": "SKILL-ASSISTED / HISTORICAL ARCHAEOLOGY",
+      "source_artifacts": [
+        {
+          "name": "GET JOB.txt",
+          "sha256": "3b030d109ad876294cc6fe57525dfd5c190cbd61134ab0715f261de46db35c59"
+        },
+        {
+          "name": "JOB.md",
+          "sha256": "9129d318a7d887f72cfed741fa60afc9f5c73ba1b6524561508956995a905300"
+        }
+      ],
+      "repository": "SemeAIPletinnya/semeai.tech",
+      "worktree_branch": "case-005-genesis-archaeology",
+      "starting_head": "9f088ec47739f2dca622990c912a74ab42dcd0e9",
+      "final_head": null,
+      "duration": null,
+      "token_observation": null,
+      "human_intervention": null,
+      "commits": [
+        {
+          "sha": "18ae84a59d085e1d922734cf682a973a3b6bfbe5",
+          "state": "LOCAL VERIFIED CANDIDATE / PENDING MASTER"
+        }
+      ],
+      "tests": [
+        {
+          "command": "npm run test:genesis",
+          "result": "25 historical-admission assertions plus deterministic v03/v04 manifest verification passed",
+          "captured_at": "2026-07-28"
+        },
+        {
+          "command": "npm run test:site",
+          "result": "98 route/viewport states passed",
+          "captured_at": "2026-07-28"
+        }
+      ],
+      "deployment": null,
+      "observation": "The method supported authority discovery, resumable local indexing, privacy separation, bounded provenance decisions, implementation, and cross-route verification. This is qualitative Case 005 evidence only; no statistical or universal transfer claim is established."
     }
   ],
   "observed_dimensions": {
-    "authority_discovery": "demonstrated qualitatively in the recorded Case 003 repository boundary",
-    "dependency_reasoning": "demonstrated qualitatively by the isolated worktree and local-only outcome",
-    "scope_continuation": "observed, not measured",
+    "authority_discovery": "demonstrated qualitatively in the recorded Case 003 repository boundary and Case 005 archive/repository boundary",
+    "dependency_reasoning": "demonstrated qualitatively by isolated worktrees, frozen authorities, and dependency-valid continuation",
+    "scope_continuation": "observed across implementation, evidence, privacy, UI, and verification phases; not statistically measured",
     "invariant_preservation": "supported by the recorded test result; no universal claim",
+    "privacy_discipline": "qualitatively supported by Case 005 local/public separation and synthetic admission tests",
+    "provenance_reasoning": "qualitatively supported by Case 005 ADMIT / REVIEW / WITHHOLD decisions",
     "resource_use": "not measured",
     "statistical_improvement": "not established"
   }

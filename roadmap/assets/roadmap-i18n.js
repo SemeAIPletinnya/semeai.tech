@@ -254,6 +254,28 @@
   };
   ["en", "uk", "ru"].forEach((lang) => Object.assign(roadmap[lang], integrationPhaseUpdate[lang]));
 
+  const archaeologyPhaseUpdate = {
+    en: {
+      "roadmap.release.available.body": "Account and Workspace remain available. The historical evidence archive, Genesis v04, and the bounded Benchmark evidence roadmap have repository-backed implementation evidence.",
+      "roadmap.phase.2.body": "Structured manifests retain admitted public artifacts, repository facts, deterministic historical admission, provenance, and explicit privacy boundaries.",
+      "roadmap.phase.3": "Genesis v04 Historical Evidence System",
+      "roadmap.phase.3.body": "Twelve evidence-backed eras now include separate concept, publication, implementation, and evidence timelines plus inspectable claim boundaries; cinematic v02 remains archived.",
+    },
+    uk: {
+      "roadmap.release.available.body": "Account і Workspace залишаються доступними. Історичний доказовий архів, Genesis v04 та обмежена доказова дорожня карта Benchmark мають репозиторні докази реалізації.",
+      "roadmap.phase.2.body": "Структуровані маніфести зберігають допущені публічні артефакти, факти репозиторіїв, детермінований історичний допуск, походження та явні межі приватності.",
+      "roadmap.phase.3": "Genesis v04 — система історичних доказів",
+      "roadmap.phase.3.body": "Дванадцять доказово підкріплених епох тепер мають окремі часові лінії концептів, публікацій, реалізації та доказів із доступними для перевірки межами тверджень; кінематографічний v02 збережено в архіві.",
+    },
+    ru: {
+      "roadmap.release.available.body": "Account и Workspace остаются доступными. Исторический архив доказательств, Genesis v04 и ограниченная доказательная дорожная карта Benchmark имеют репозиторные доказательства реализации.",
+      "roadmap.phase.2.body": "Структурированные манифесты сохраняют допущенные публичные артефакты, факты репозиториев, детерминированный исторический допуск, происхождение и явные границы приватности.",
+      "roadmap.phase.3": "Genesis v04 — система исторических доказательств",
+      "roadmap.phase.3.body": "Двенадцать подкреплённых доказательствами эпох теперь имеют отдельные временные линии концептов, публикаций, реализации и доказательств с доступными для проверки границами утверждений; кинематографический v02 сохранён в архиве.",
+    },
+  };
+  ["en", "uk", "ru"].forEach((lang) => Object.assign(roadmap[lang], archaeologyPhaseUpdate[lang]));
+
   function merge() {
     const api = window.SemeAI_I18n;
     if (!api || !api.dict) return false;

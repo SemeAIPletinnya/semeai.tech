@@ -1,6 +1,6 @@
 {
   "schema_version": "semeai.skill-registry.v0.1",
-  "captured_at": "2026-07-27T00:00:00Z",
+  "captured_at": "2026-07-28T00:00:00Z",
   "authority_boundary": "Registry presence is not admission. Generated candidates require an explicit admission decision.",
   "counts": {
     "candidates": 1,
@@ -20,7 +20,7 @@
       "candidate_artifact": null,
       "compatibility": {
         "environment": "Codex repository execution",
-        "evidence": "Observed in SemeAI implementation and one cross-domain local transfer case",
+        "evidence": "Observed qualitatively in SemeAI implementation, one cross-domain local transfer case, and one historical-archaeology case",
         "statistical_claim": "NOT ESTABLISHED"
       },
       "capabilities": [

@@ -1114,7 +1114,7 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
   assert.equal(state.lineageNodes, 14, "forks should remain outside the first-party lineage geometry");
   assert.equal(state.firstParty, "6");
   assert.equal(state.forks, "6");
-  assert.equal(state.chronicleEntries, 4, "Genesis should render four verified seed Chronicle entries");
+  assert.equal(state.chronicleEntries, 5, "Genesis should render five admitted Chronicle entries");
   assert.equal(state.admittedHistoricalClaims, 18, "the sanitized historical manifest should render eighteen admitted claims");
   assert.equal(state.heldHistoricalClaims, 5, "review and withheld decisions should remain inspectable");
   assert.equal(state.historicalTimelines, 4, "concept, publication, implementation, and evidence clocks should remain separate");
@@ -1201,7 +1201,7 @@ async function validateSkillForge(browser, origin, tailwindRuntime) {
     unsafe: window.__unsafe,
   }));
   assert.equal(state.skills, 1);
-  assert.equal(state.cases, 3);
+  assert.equal(state.cases, 4);
   assert.equal(state.counts, "1 REVIEW · 0 ADMITTED");
   assert.ok(state.admission.includes("NO DECISION"));
   assert.equal(state.overflow, 0);
@@ -1227,7 +1227,7 @@ async function validateSkillForge(browser, origin, tailwindRuntime) {
     "Skill evidence must not use unsafe innerHTML",
   );
   await context.close();
-  return { candidates: 1, admitted: 0, cases: 3, languages: ["en", "uk", "ru"] };
+  return { candidates: 1, admitted: 0, cases: 4, languages: ["en", "uk", "ru"] };
 }
 
 async function validateRepositoryWorkspaceBoundary(browser, origin) {

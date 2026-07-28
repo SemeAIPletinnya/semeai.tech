@@ -67,6 +67,20 @@
         "https://github.com/SemeAIPletinnya/semeai.tech/commit/97f6d45b89522ba569ab191b6f04bb8670083b50",
         "https://github.com/SemeAIPletinnya/semeai.tech/commit/db5f37477eae1f25cb2c9c6199dd79c3020873ca"
       ]
+    },
+    {
+      "id": "2026-07-genesis-v04",
+      "date_range": "2026-07-28",
+      "theme": "Genesis historical archaeology and admission",
+      "what_changed": "Genesis v04 added a deterministic historical-admission policy, separate concept/publication/implementation/evidence timelines, evidence-backed conceptual lineage, deduplication, and a sanitized public manifest.",
+      "evidence": "The implementation commit contains the admission engine, generated manifests, synthetic privacy tests, public repository inventory, and the v04 presentation surface.",
+      "verification": "Genesis tests verify 25 policy and rendering assertions; cross-route browser coverage verifies the public surface, keyboard disclosure, no-JS, reduced motion, responsive layouts, and request boundaries.",
+      "remaining_blocker": "Private archive candidates remain local and withheld. Historical evidence persistence into Workspace remains structural until a real backend contract exists.",
+      "why_it_matters": "What was said, built, measured, observed, or retained as historical framing now has explicit public claim boundaries.",
+      "status": "ADMITTED PUBLIC COMMIT EVIDENCE",
+      "source_references": [
+        "https://github.com/SemeAIPletinnya/semeai.tech/commit/18ae84a59d085e1d922734cf682a973a3b6bfbe5"
+      ]
     }
   ]
 }
