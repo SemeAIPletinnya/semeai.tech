@@ -7,6 +7,74 @@
     { key: "book", i18n: "shell.nav.book", href: "/book/" },
     { key: "research", i18n: "shell.nav.research", href: "/research.html" },
   ];
+  const publicRouteContexts = [
+    {
+      key: "home",
+      href: "/",
+      number: "01",
+      title: "Home",
+      titleI18n: "shell.route.home",
+      role: "System",
+      roleI18n: "shell.route.home.role",
+      summary: "Release-control overview",
+      summaryI18n: "shell.route.home.summary",
+    },
+    {
+      key: "gate",
+      href: "/gate.html",
+      number: "02",
+      title: "Gate",
+      titleI18n: "shell.nav.gate",
+      role: "Authority",
+      roleI18n: "shell.route.gate.role",
+      summary: "Release-decision contract",
+      summaryI18n: "shell.route.gate.summary",
+    },
+    {
+      key: "benchmark",
+      href: "/benchmark/",
+      number: "03",
+      title: "Benchmark",
+      titleI18n: "shell.nav.benchmark",
+      role: "Instrument",
+      roleI18n: "shell.route.benchmark.role",
+      summary: "Visible repository evidence",
+      summaryI18n: "shell.route.benchmark.summary",
+    },
+    {
+      key: "genesis",
+      href: "/genesis/",
+      number: "04",
+      title: "Genesis",
+      titleI18n: "shell.nav.genesis",
+      role: "Trace",
+      roleI18n: "shell.route.genesis.role",
+      summary: "Admitted historical chronology",
+      summaryI18n: "shell.route.genesis.summary",
+    },
+    {
+      key: "book",
+      href: "/book/",
+      number: "05",
+      title: "Book",
+      titleI18n: "shell.nav.book",
+      role: "Method",
+      roleI18n: "shell.route.book.role",
+      summary: "Engineering rationale",
+      summaryI18n: "shell.route.book.summary",
+    },
+    {
+      key: "research",
+      href: "/research.html",
+      number: "06",
+      title: "Research",
+      titleI18n: "shell.nav.research",
+      role: "Boundary",
+      roleI18n: "shell.route.research.role",
+      summary: "Public evidence and claim limits",
+      summaryI18n: "shell.route.research.summary",
+    },
+  ];
 
   function t(key, fallback) {
     const api = window.SemeAI_I18n;
@@ -79,6 +147,100 @@
     return link;
   }
 
+  function routeContext(routeKey) {
+    return publicRouteContexts.find((route) => route.key === routeKey) || null;
+  }
+
+  function applyCurrentRoute(link, routeKey) {
+    if (currentRoute() !== routeKey) return;
+    link.classList.add("active");
+    link.setAttribute("aria-current", "page");
+  }
+
+  function mobileRouteLink(route) {
+    const context = routeContext(route.key);
+    if (!context) return routeLink(route, "mobile-link");
+
+    const link = element("a", {
+      class: "mobile-link mobile-link--described",
+      href: route.href,
+    });
+    const label = element(
+      "strong",
+      { "data-i18n": route.i18n },
+      t(route.i18n, route.label || route.key),
+    );
+    const descriptor = element("small", { class: "mobile-link__descriptor" });
+    descriptor.append(
+      element(
+        "span",
+        { "data-i18n": context.roleI18n },
+        t(context.roleI18n, context.role),
+      ),
+      document.createTextNode(" · "),
+      element(
+        "span",
+        { "data-i18n": context.summaryI18n },
+        t(context.summaryI18n, context.summary),
+      ),
+    );
+    link.append(label, descriptor);
+    applyCurrentRoute(link, route.key);
+    return link;
+  }
+
+  function buildRouteContext() {
+    const route = routeContext(currentRoute());
+    if (!route) return null;
+    const routeIndex = publicRouteContexts.indexOf(route);
+    const next = publicRouteContexts[(routeIndex + 1) % publicRouteContexts.length];
+    const context = element("nav", {
+      class: "site-route-context",
+      "aria-label": t("shell.route.aria", "Public route context"),
+      "data-i18n-aria": "shell.route.aria",
+    });
+    const inner = element("div", { class: "site-route-context__inner" });
+    const current = element("div", { class: "site-route-context__current" });
+    current.append(
+      element(
+        "span",
+        { class: "site-route-context__position", "aria-hidden": "true" },
+        `${route.number} / ${String(publicRouteContexts.length).padStart(2, "0")}`,
+      ),
+      element(
+        "strong",
+        { class: "site-route-context__role", "data-i18n": route.roleI18n },
+        t(route.roleI18n, route.role),
+      ),
+      element(
+        "span",
+        { class: "site-route-context__summary", "data-i18n": route.summaryI18n },
+        t(route.summaryI18n, route.summary),
+      ),
+    );
+
+    const nextLink = element("a", {
+      class: "site-route-context__next",
+      href: next.href,
+    });
+    nextLink.append(
+      element(
+        "small",
+        { "data-i18n": "shell.route.next" },
+        t("shell.route.next", "Next lens"),
+      ),
+      element(
+        "strong",
+        { "data-i18n": next.titleI18n },
+        t(next.titleI18n, next.title),
+      ),
+      element("span", { "aria-hidden": "true" }, "→"),
+    );
+    inner.append(current, nextLink);
+    context.append(inner);
+    return context;
+  }
+
   function languageSwitch(className = "") {
     const current = window.SemeAI_I18n?.lang || "en";
     const group = element("div", {
@@ -145,7 +307,15 @@
     });
     const mobileTitle = element("span", { class: "mobile-section-title", "data-i18n": "shell.nav.navigate" }, t("shell.nav.navigate", "Navigate SemeAI"));
     mobileNav.append(mobileTitle);
-    routes.forEach((route) => mobileNav.append(routeLink(route, "mobile-link")));
+    mobileNav.append(
+      mobileRouteLink({
+        key: "home",
+        i18n: "shell.route.home",
+        label: "Home",
+        href: "/",
+      }),
+    );
+    routes.forEach((route) => mobileNav.append(mobileRouteLink(route)));
     mobileNav.append(
       routeLink(privateEntryRoute(), "mobile-link mobile-dashboard")
     );
@@ -153,7 +323,10 @@
     mobile.append(mobileInner);
 
     inner.append(brand, nav, actions);
-    header.append(inner, mobile);
+    header.append(inner);
+    const routeContext = buildRouteContext();
+    if (routeContext) header.append(routeContext);
+    header.append(mobile);
     return header;
   }
 

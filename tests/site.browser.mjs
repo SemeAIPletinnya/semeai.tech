@@ -456,6 +456,123 @@ async function validateInteraction(browser, origin, tailwindRuntime) {
   return results;
 }
 
+async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
+  const expected = [
+    {
+      route: "/",
+      position: "01 / 06",
+      role: "System",
+      summary: "Release-control overview",
+      next: "/gate.html",
+    },
+    {
+      route: "/gate.html",
+      position: "02 / 06",
+      role: "Authority",
+      summary: "Release-decision contract",
+      next: "/benchmark/",
+    },
+    {
+      route: "/benchmark/",
+      position: "03 / 06",
+      role: "Instrument",
+      summary: "Visible repository evidence",
+      next: "/genesis/",
+    },
+    {
+      route: "/genesis/",
+      position: "04 / 06",
+      role: "Trace",
+      summary: "Admitted historical chronology",
+      next: "/book/",
+    },
+    {
+      route: "/book/",
+      position: "05 / 06",
+      role: "Method",
+      summary: "Engineering rationale",
+      next: "/research.html",
+    },
+    {
+      route: "/research.html",
+      position: "06 / 06",
+      role: "Boundary",
+      summary: "Public evidence and claim limits",
+      next: "/",
+    },
+  ];
+  const results = [];
+
+  for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
+    const context = await browser.newContext({ viewport, locale: "en-US" });
+    for (const item of expected) {
+      const page = await context.newPage();
+      const errors = [];
+      await wirePage(page, tailwindRuntime, errors);
+      await loadRoute(page, origin, item.route);
+      const state = await page.locator(".site-route-context").evaluate((element) => ({
+        label: element.getAttribute("aria-label"),
+        position: element.querySelector(".site-route-context__position")?.textContent.trim(),
+        role: element.querySelector(".site-route-context__role")?.textContent.trim(),
+        summary: element.querySelector(".site-route-context__summary")?.textContent.trim(),
+        next: element.querySelector(".site-route-context__next")?.getAttribute("href"),
+      }));
+      assert.deepEqual(
+        state,
+        {
+          label: "Public route context",
+          position: item.position,
+          role: item.role,
+          summary: item.summary,
+          next: item.next,
+        },
+        `${item.route} should expose its stable public-route context`,
+      );
+
+      if (viewport.width === 390) {
+        const burger = page.locator(".nav-burger:visible").first();
+        await burger.click();
+        const mobileRoutes = page.locator(".mobile-link--described:visible");
+        assert.equal(await mobileRoutes.count(), 6, "Mobile navigation should describe all six public routes");
+        const current = page.locator('.mobile-link--described[aria-current="page"]:visible');
+        assert.equal(await current.count(), 1, `${item.route} should identify one current mobile route`);
+        assert.match(
+          await current.locator(".mobile-link__descriptor").textContent(),
+          new RegExp(`${item.role}\\s*·\\s*${item.summary}`),
+          `${item.route} should preserve semantic route context in the mobile menu`,
+        );
+      }
+
+      assert.deepEqual(errors, [], `${item.route} route context should not emit browser errors`);
+      results.push(`${item.route}@${viewport.width}x${viewport.height}`);
+      await page.close();
+    }
+    await context.close();
+  }
+
+  const localeContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const localePage = await localeContext.newPage();
+  const localeErrors = [];
+  await wirePage(localePage, tailwindRuntime, localeErrors);
+  await loadRoute(localePage, origin, "/benchmark/");
+  await localePage.locator('[data-lang="uk"]:visible').first().click();
+  assert.equal(
+    await localePage.locator(".site-route-context__role").textContent(),
+    "Інструмент",
+    "Public route role should localize to Ukrainian",
+  );
+  await localePage.locator('[data-lang="ru"]:visible').first().click();
+  assert.equal(
+    await localePage.locator(".site-route-context__role").textContent(),
+    "Инструмент",
+    "Public route role should localize to Russian",
+  );
+  assert.deepEqual(localeErrors, [], "Localized route context should not emit browser errors");
+  await localeContext.close();
+
+  return results;
+}
+
 async function validateDeepLinks(browser, origin, tailwindRuntime) {
   const cases = [
     ["/gate.html#semantics-title", "#semantics-title"],
@@ -1277,6 +1394,7 @@ async function main() {
     const tailwindRuntime = await loadTailwindRuntime();
     const matrix = await validateMatrix(browser, origin, tailwindRuntime);
     const interactions = await validateInteraction(browser, origin, tailwindRuntime);
+    const publicRouteContext = await validatePublicRouteContext(browser, origin, tailwindRuntime);
     const deepLinks = await validateDeepLinks(browser, origin, tailwindRuntime);
     const noJavaScript = await validateNoJavaScript(browser, origin);
     const reducedMotion = await validateReducedMotion(browser, origin, tailwindRuntime);
@@ -1295,6 +1413,7 @@ async function main() {
           routes: ROUTES.length,
           viewports: VIEWPORTS.map((viewport) => viewport.join("x")),
           keyboardLanguageAndMobileNavigation: interactions,
+          publicRouteContext,
           deepLinks,
           noJavaScript,
           reducedMotion,
