@@ -1795,6 +1795,188 @@ async function validateSkillForge(browser, origin, tailwindRuntime) {
   return { candidates: 2, admitted: 0, cases: 9, languages: ["en", "uk", "ru"] };
 }
 
+async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
+  const manifestPath = path.join(ROOT, "assets", "pets", "axiom", "pet.json");
+  const atlasPath = path.join(ROOT, "assets", "pets", "axiom", "spritesheet.webp");
+  const manifestSource = fs.readFileSync(manifestPath, "utf8");
+  const manifest = JSON.parse(manifestSource);
+  const atlasHash = crypto.createHash("sha256").update(fs.readFileSync(atlasPath)).digest("hex");
+
+  assert.equal(manifest.spriteVersionNumber, 2);
+  assert.deepEqual(manifest.atlas, {
+    columns: 8,
+    rows: 11,
+    cellWidth: 192,
+    cellHeight: 208,
+    width: 1536,
+    height: 2288,
+  });
+  assert.equal(atlasHash, manifest.spritesheetSha256);
+  assert.equal(manifest.authority.animationCreatesAuthority, false);
+  assert.equal(manifest.authority.candidateIsReleasedAnswer, false);
+  assert.equal(manifest.authority.releaseAuthority, "SaC/PoR Gate");
+  assert.equal(/[A-Z]:\\|file:\/\/|session_token|api[_-]?key/i.test(manifestSource), false);
+
+  const selectedRoutes = [
+    ["/", "home", "Home"],
+    ["/genesis/", "genesis", "Genesis"],
+    ["/benchmark/", "benchmark", "Benchmark"],
+    ["/gate.html", "gate", "Gate"],
+    ["/skills/", "skills", "Skill Forge"],
+  ];
+  const results = [];
+
+  for (const [route, routeKey, routeLabel] of selectedRoutes) {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" });
+    const page = await context.newPage();
+    const errors = [];
+    await wirePage(page, tailwindRuntime, errors);
+    await loadRoute(page, origin, route);
+    await page.waitForSelector('[data-axiom-agent][data-asset-state="ready"]');
+
+    assert.equal(await page.locator("[data-axiom-agent]").count(), 1);
+    assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "false");
+    assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "idle");
+
+    await page.locator(".axiom-agent__launcher").click();
+    assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "true");
+    assert.equal(await page.locator(".axiom-agent__panel").isVisible(), true);
+    assert.equal(await page.locator(".axiom-agent__mode").innerText(), "PUBLIC EVIDENCE");
+    assert.equal(await page.locator(".axiom-agent__route-identity strong").innerText(), routeLabel);
+    assert.match(
+      await page.locator(".axiom-agent__boundary").innerText(),
+      /Archive question answering is not connected yet/,
+    );
+    assert.equal(await page.locator(".axiom-agent__panel input, .axiom-agent__panel textarea").count(), 0);
+    assert.equal(await page.locator(".axiom-agent__source-list a").count(), 3);
+
+    const geometry = await page.evaluate(() => {
+      const panel = document.querySelector(".axiom-agent__panel").getBoundingClientRect();
+      return {
+        route: window.SemeAI_Axiom.getState().route,
+        viewportWidth: innerWidth,
+        viewportHeight: innerHeight,
+        panelLeft: panel.left,
+        panelRight: panel.right,
+        panelTop: panel.top,
+        panelBottom: panel.bottom,
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+    assert.equal(geometry.route, routeKey);
+    assert.ok(geometry.panelLeft >= 0 && geometry.panelRight <= geometry.viewportWidth);
+    assert.ok(geometry.panelTop >= 0 && geometry.panelBottom <= geometry.viewportHeight);
+    assert.equal(geometry.overflow, 0);
+
+    if (route === "/") {
+      const mappings = await page.evaluate(async () => {
+        const read = () => {
+          const root = document.querySelector("[data-axiom-agent]");
+          return {
+            state: root.dataset.state,
+            row: Number(root.dataset.spriteRow),
+            column: Number(root.dataset.spriteColumn),
+          };
+        };
+        const values = {};
+        for (const state of ["waiting", "running", "review", "failed", "idle"]) {
+          window.SemeAI_Axiom.setState(state, "browser-contract-test");
+          values[state] = read();
+        }
+        window.SemeAI_Axiom.lookAtAngle(90);
+        values.lookRight = read();
+        window.SemeAI_Axiom.lookAtAngle(270);
+        values.lookLeft = read();
+        return values;
+      });
+      assert.equal(mappings.waiting.row, 6);
+      assert.equal(mappings.running.row, 7);
+      assert.equal(mappings.review.row, 8);
+      assert.equal(mappings.failed.row, 5);
+      assert.equal(mappings.idle.row, 0);
+      assert.deepEqual([mappings.lookRight.row, mappings.lookRight.column], [9, 4]);
+      assert.deepEqual([mappings.lookLeft.row, mappings.lookLeft.column], [10, 4]);
+
+      const retrieval = await page.evaluate(async () => {
+        const gate = await window.SemeAI_AxiomArchive.search("release authority gate", {
+          routeContext: "gate",
+        });
+        const skills = await window.SemeAI_AxiomArchive.search("skill admission review", {
+          routeContext: "skills",
+        });
+        const absent = await window.SemeAI_AxiomArchive.search("cicada-739-unrepresented");
+        return { gate, skills, absent };
+      });
+      assert.equal(retrieval.gate.schemaVersion, "semeai.axiom-evidence-bundle.v0.1");
+      assert.equal(retrieval.gate.noEvidence, false);
+      assert.equal(retrieval.gate.evidence[0].sourceId, "public:gate:runtime-decision-contract:v0.1");
+      assert.equal(retrieval.gate.evidence.every((item) => item.visibility === "PUBLIC"), true);
+      assert.equal(retrieval.gate.evidence.every((item) => item.contentTrust === "UNTRUSTED_DATA"), true);
+      assert.deepEqual(retrieval.gate.authority, {
+        retrievalIsTruth: false,
+        retrievalIsReleaseAuthority: false,
+        candidateAnswerProduced: false,
+        releaseAuthority: "SaC/PoR Gate",
+      });
+      assert.equal(retrieval.skills.evidence[0].sourceId, "public:skills:registry:v0.1");
+      assert.equal(retrieval.absent.noEvidence, true);
+      assert.deepEqual(retrieval.absent.evidence, []);
+      assert.equal(Object.hasOwn(retrieval.gate, "answer"), false);
+      assert.equal(Object.hasOwn(retrieval.gate, "receipt"), false);
+
+      await page.evaluate(() => window.SemeAI_I18n.setLang("uk"));
+      assert.equal(await page.locator(".axiom-agent__mode").innerText(), "ПУБЛІЧНІ ДОКАЗИ");
+      await page.evaluate(() => window.SemeAI_I18n.setLang("ru"));
+      assert.equal(await page.locator(".axiom-agent__mode").innerText(), "ПУБЛИЧНЫЕ ДОКАЗАТЕЛЬСТВА");
+    }
+
+    await page.keyboard.press("Escape");
+    assert.equal(await page.locator(".axiom-agent__panel").isHidden(), true);
+    assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "false");
+    assert.equal(await page.locator(".axiom-agent__launcher").evaluate((node) => node === document.activeElement), true);
+    assert.deepEqual(errors, [], `${route} Axiom shell should remain error-free`);
+    results.push(routeKey);
+    await context.close();
+  }
+
+  const reducedContext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: "reduce",
+  });
+  const reducedPage = await reducedContext.newPage();
+  const reducedErrors = [];
+  await wirePage(reducedPage, tailwindRuntime, reducedErrors);
+  await loadRoute(reducedPage, origin, "/gate.html");
+  await reducedPage.waitForSelector('[data-axiom-agent][data-asset-state="ready"]');
+  const before = await reducedPage.locator("[data-axiom-agent]").evaluate((node) => ({
+    row: node.dataset.spriteRow,
+    column: node.dataset.spriteColumn,
+  }));
+  await reducedPage.waitForTimeout(420);
+  const after = await reducedPage.locator("[data-axiom-agent]").evaluate((node) => ({
+    row: node.dataset.spriteRow,
+    column: node.dataset.spriteColumn,
+  }));
+  assert.deepEqual(after, before, "reduced motion should keep one meaningful static Axiom frame");
+  assert.equal(
+    await reducedPage.evaluate(() => window.SemeAI_Axiom.lookAtAngle(90)),
+    false,
+    "reduced motion should suppress pointer-driven gaze animation",
+  );
+  assert.deepEqual(reducedErrors, []);
+  await reducedContext.close();
+
+  return {
+    routes: results,
+    spriteVersionNumber: manifest.spriteVersionNumber,
+    atlasHash,
+    publicEvidenceEntries: 9,
+    retrievalContract: "typed evidence bundle or truthful no-evidence result; no candidate answer",
+    reducedMotion: "static frame",
+    chatBackend: "not connected or simulated",
+  };
+}
+
 async function validateRepositoryWorkspaceBoundary(browser, origin) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await context.newPage();
@@ -1853,6 +2035,7 @@ async function main() {
     const motionSemantics = await validateMotionSemantics(browser, origin, tailwindRuntime);
     const genesisEvolutionTrace = await validateGenesisEvolutionTrace(browser, origin, tailwindRuntime);
     const skillForge = await validateSkillForge(browser, origin, tailwindRuntime);
+    const axiomArchiveShell = await validateAxiomArchiveShell(browser, origin, tailwindRuntime);
     const repositoryWorkspaceBoundary = await validateRepositoryWorkspaceBoundary(browser, origin);
 
     console.log(
@@ -1872,6 +2055,7 @@ async function main() {
           motionSemantics,
           genesisEvolutionTrace,
           skillForge,
+          axiomArchiveShell,
           repositoryWorkspaceBoundary,
           benchmarkBoundary: "CSP, noindex, auth withholding verified",
         },
