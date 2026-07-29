@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "semeai.public-pet.v0.1",
+  "id": "axiom",
+  "displayName": "Axiom",
+  "description": "A living humanoid SemeAI audit intelligence: observer, reviewer, release guardian, and receipt keeper.",
+  "spriteVersionNumber": 2,
+  "spritesheetPath": "/assets/pets/axiom/spritesheet.webp",
+  "spritesheetSha256": "26b0f128ab3f37463e12620bdcd582e87e2218229c1de7ab330bb9256076fcd1",
+  "atlas": {
+    "columns": 8,
+    "rows": 11,
+    "cellWidth": 192,
+    "cellHeight": 208,
+    "width": 1536,
+    "height": 2288
+  },
+  "states": {
+    "idle": { "row": 0, "frames": 6 },
+    "running-right": { "row": 1, "frames": 8 },
+    "running-left": { "row": 2, "frames": 8 },
+    "waving": { "row": 3, "frames": 4 },
+    "jumping": { "row": 4, "frames": 5 },
+    "failed": { "row": 5, "frames": 8 },
+    "waiting": { "row": 6, "frames": 6 },
+    "running": { "row": 7, "frames": 6 },
+    "review": { "row": 8, "frames": 6 },
+    "look-000-to-157.5": { "row": 9, "frames": 8 },
+    "look-180-to-337.5": { "row": 10, "frames": 8 }
+  },
+  "authority": {
+    "animationReflectsSystemState": true,
+    "animationCreatesAuthority": false,
+    "candidateIsReleasedAnswer": false,
+    "releaseAuthority": "SaC/PoR Gate"
+  },
+  "validation": {
+    "contract": "hatch-pet-v2",
+    "validatedAt": "2026-07-29",
+    "requireV2": true,
+    "result": "pass"
+  }
+}
