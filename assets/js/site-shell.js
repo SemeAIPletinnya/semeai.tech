@@ -75,6 +75,7 @@
       summaryI18n: "shell.route.research.summary",
     },
   ];
+  let shellNavigationController = null;
 
   function t(key, fallback) {
     const api = window.SemeAI_I18n;
@@ -111,6 +112,97 @@
     return token.trim()
       ? { key: "workspace", i18n: "shell.nav.workspace", label: "Workspace", href: "/workspace/" }
       : { key: "account", i18n: "shell.nav.workspace", label: "Workspace", href: "/account/" };
+  }
+
+  function systemMapGroups() {
+    const publicRoute = (key, i18n, label, href) => {
+      const context = routeContext(key);
+      return {
+        key,
+        i18n,
+        label,
+        href,
+        role: context?.role || "",
+        roleI18n: context?.roleI18n || "",
+        summary: context?.summary || "",
+        summaryI18n: context?.summaryI18n || "",
+      };
+    };
+    const privateRoute = {
+      ...privateEntryRoute(),
+      role: "Product",
+      roleI18n: "shell.system.workspace.role",
+      summary: "Governed account context",
+      summaryI18n: "shell.system.workspace.summary",
+    };
+
+    return [
+      {
+        key: "public",
+        label: "Public",
+        i18n: "shell.system.public",
+        routes: [
+          publicRoute("home", "shell.route.home", "Home", "/"),
+          publicRoute("gate", "shell.nav.gate", "Gate", "/gate.html"),
+          publicRoute("book", "shell.nav.book", "Book", "/book/"),
+          {
+            key: "roadmap",
+            i18n: "shell.footer.roadmap",
+            label: "Product Roadmap",
+            href: "/roadmap/",
+            role: "Plan",
+            roleI18n: "shell.system.roadmap.role",
+            summary: "Working, held, and future phases",
+            summaryI18n: "shell.system.roadmap.summary",
+          },
+        ],
+      },
+      {
+        key: "evidence",
+        label: "Evidence",
+        i18n: "shell.system.evidence",
+        routes: [
+          publicRoute("benchmark", "shell.nav.benchmark", "Benchmark", "/benchmark/"),
+          publicRoute("genesis", "shell.nav.genesis", "Genesis", "/genesis/"),
+          publicRoute("research", "shell.nav.research", "Research", "/research.html"),
+        ],
+      },
+      {
+        key: "method",
+        label: "Method",
+        i18n: "shell.system.method",
+        routes: [
+          {
+            key: "skills",
+            i18n: "shell.footer.skills",
+            label: "Skill Forge",
+            href: "/skills/",
+            role: "Evaluation",
+            roleI18n: "shell.system.skills.role",
+            summary: "Candidate evidence and admission boundary",
+            summaryI18n: "shell.system.skills.summary",
+          },
+        ],
+      },
+      {
+        key: "product",
+        label: "Product",
+        i18n: "shell.system.product",
+        routes: [
+          privateRoute,
+          {
+            key: "dashboard",
+            i18n: "shell.system.dashboard.label",
+            label: "Operator dashboard",
+            href: "/dashboard.html",
+            role: "Operation",
+            roleI18n: "shell.system.dashboard.role",
+            summary: "Gate operator console",
+            summaryI18n: "shell.system.dashboard.summary",
+          },
+        ],
+      },
+    ];
   }
 
   function element(name, attributes = {}, textValue = "") {
@@ -158,7 +250,9 @@
   }
 
   function mobileRouteLink(route) {
-    const context = routeContext(route.key);
+    const context =
+      routeContext(route.key) ||
+      (route.roleI18n && route.summaryI18n ? route : null);
     if (!context) return routeLink(route, "mobile-link");
 
     const link = element("a", {
@@ -187,6 +281,82 @@
     link.append(label, descriptor);
     applyCurrentRoute(link, route.key);
     return link;
+  }
+
+  function systemMapLink(route) {
+    const link = element("a", {
+      class: "system-map-link",
+      href: route.href,
+      "data-system-route": route.key,
+    });
+    const heading = element("span", { class: "system-map-link__heading" });
+    const label = element(
+      "strong",
+      route.i18n ? { "data-i18n": route.i18n } : {},
+      t(route.i18n, route.label),
+    );
+    const role = element(
+      "small",
+      route.roleI18n ? { "data-i18n": route.roleI18n } : {},
+      t(route.roleI18n, route.role),
+    );
+    heading.append(label, role);
+    const summary = element(
+      "span",
+      route.summaryI18n ? { "data-i18n": route.summaryI18n } : {},
+      t(route.summaryI18n, route.summary),
+    );
+    link.append(heading, summary);
+    applyCurrentRoute(link, route.key);
+    return link;
+  }
+
+  function buildSystemMap() {
+    const item = element("div", { class: "nav-item system-map" });
+    const trigger = element("button", {
+      type: "button",
+      class: "nav-link system-map-trigger",
+      "aria-expanded": "false",
+      "aria-controls": "site-system-map",
+      "aria-label": t("shell.system.aria", "Open SemeAI system map"),
+      "data-i18n-aria": "shell.system.aria",
+    });
+    trigger.append(
+      element(
+        "span",
+        { "data-i18n": "shell.nav.system" },
+        t("shell.nav.system", "System"),
+      ),
+      element("span", { class: "nav-chevron", "aria-hidden": "true" }, "⌄"),
+    );
+
+    const panel = element("div", {
+      class: "system-map-panel",
+      id: "site-system-map",
+      role: "group",
+      hidden: "",
+      "aria-label": t("shell.system.aria", "SemeAI system map"),
+      "data-i18n-aria": "shell.system.aria",
+    });
+    systemMapGroups().forEach((group) => {
+      const titleId = `system-map-${group.key}-title`;
+      const section = element("div", {
+        class: `system-map-group system-map-group--${group.key}`,
+        role: "group",
+        "aria-labelledby": titleId,
+      });
+      section.append(
+        element(
+          "p",
+          { id: titleId, class: "system-map-group__title", "data-i18n": group.i18n },
+          t(group.i18n, group.label),
+        ),
+      );
+      group.routes.forEach((route) => section.append(systemMapLink(route)));
+      panel.append(section);
+    });
+    item.append(trigger, panel);
+    return item;
   }
 
   function buildRouteContext() {
@@ -282,6 +452,7 @@
       "data-i18n-aria": "shell.nav.primary",
     });
     routes.forEach((route) => nav.append(routeLink(route, "nav-link")));
+    nav.append(buildSystemMap());
 
     const actions = element("div", { class: "header-actions" });
     const dashboard = routeLink(privateEntryRoute(), "btn-ghost header-dashboard");
@@ -316,10 +487,32 @@
       }),
     );
     routes.forEach((route) => mobileNav.append(mobileRouteLink(route)));
-    mobileNav.append(
-      routeLink(privateEntryRoute(), "mobile-link mobile-dashboard")
+
+    const mobileSystem = element("nav", {
+      class: "mobile-section mobile-section--system",
+      "aria-label": t("shell.system.aria", "SemeAI system map"),
+      "data-i18n-aria": "shell.system.aria",
+    });
+    mobileSystem.append(
+      element(
+        "span",
+        {
+          class: "mobile-section-title",
+          "data-i18n": "shell.system.more",
+        },
+        t("shell.system.more", "Method + product"),
+      ),
     );
-    mobileInner.append(mobileLanguage, mobileNav);
+    const supplementalKeys = new Set(["roadmap", "skills", "account", "workspace", "dashboard"]);
+    systemMapGroups()
+      .flatMap((group) => group.routes)
+      .filter((route) => supplementalKeys.has(route.key))
+      .forEach((route) => {
+        const link = mobileRouteLink(route);
+        link.classList.add("mobile-system-link");
+        mobileSystem.append(link);
+      });
+    mobileInner.append(mobileLanguage, mobileNav, mobileSystem);
     mobile.append(mobileInner);
 
     inner.append(brand, nav, actions);
@@ -381,40 +574,92 @@
 
   function bindNav(header) {
     if (!header || header.dataset.navigationBound === "true") return;
+    shellNavigationController?.abort();
+    const controller = new AbortController();
+    shellNavigationController = controller;
+    const { signal } = controller;
     header.dataset.navigationBound = "true";
     const burger = header.querySelector(".nav-burger");
     const panel = header.querySelector(".mobile-nav");
+    const systemMap = header.querySelector(".system-map");
+    const systemTrigger = header.querySelector(".system-map-trigger");
+    const systemPanel = header.querySelector(".system-map-panel");
 
     burger?.addEventListener("click", () => {
       if (panel?.hasAttribute("hidden")) openMobile(header);
       else closeMobile(header);
-    });
-    panel?.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => closeMobile(header)));
+    }, { signal });
+    panel?.querySelectorAll("a").forEach((link) =>
+      link.addEventListener("click", () => closeMobile(header), { signal }),
+    );
     header.querySelectorAll("[data-lang]").forEach((button) => {
       button.addEventListener("click", () => {
         window.SemeAI_I18n?.setLang(button.getAttribute("data-lang"));
-      });
+      }, { signal });
     });
 
+    systemTrigger?.addEventListener("click", () => {
+      setSystemMap(header, systemPanel?.hasAttribute("hidden") === true);
+    }, { signal });
+    systemTrigger?.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowDown") return;
+      event.preventDefault();
+      setSystemMap(header, true);
+      systemPanel?.querySelector("a")?.focus();
+    }, { signal });
+    systemPanel?.querySelectorAll("a").forEach((link) =>
+      link.addEventListener("click", () => setSystemMap(header, false), { signal }),
+    );
+    systemMap?.addEventListener("focusout", () => {
+      window.requestAnimationFrame(() => {
+        if (systemMap.isConnected && !systemMap.contains(document.activeElement)) {
+          setSystemMap(header, false);
+        }
+      });
+    }, { signal });
+    document.addEventListener("pointerdown", (event) => {
+      if (systemMap?.classList.contains("open") && !systemMap.contains(event.target)) {
+        setSystemMap(header, false);
+      }
+    }, { signal });
+
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && header.isConnected && header.classList.contains("mobile-open")) {
+      if (event.key !== "Escape" || !header.isConnected) return;
+      if (systemMap?.classList.contains("open")) {
+        event.preventDefault();
+        setSystemMap(header, false, true);
+      } else if (header.classList.contains("mobile-open")) {
         event.preventDefault();
         closeMobile(header, true);
       }
-    });
+    }, { signal });
     window.addEventListener(
       "resize",
       () => {
         if (window.innerWidth >= 1060 && header.classList.contains("mobile-open")) closeMobile(header);
+        if (window.innerWidth < 1060 && systemMap?.classList.contains("open")) setSystemMap(header, false);
       },
-      { passive: true }
+      { passive: true, signal }
     );
+  }
+
+  function setSystemMap(header, open, restoreFocus = false) {
+    const item = header?.querySelector(".system-map");
+    const trigger = header?.querySelector(".system-map-trigger");
+    const panel = header?.querySelector(".system-map-panel");
+    if (!item || !trigger || !panel) return;
+    item.classList.toggle("open", open);
+    trigger.setAttribute("aria-expanded", String(open));
+    if (open) panel.removeAttribute("hidden");
+    else panel.setAttribute("hidden", "");
+    if (!open && restoreFocus) trigger.focus();
   }
 
   function openMobile(header) {
     const burger = header.querySelector(".nav-burger");
     const panel = header.querySelector(".mobile-nav");
     if (!panel) return;
+    setSystemMap(header, false);
     panel.removeAttribute("hidden");
     header.classList.add("mobile-open");
     if (burger) {
