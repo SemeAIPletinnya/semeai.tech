@@ -601,7 +601,17 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
         const burger = page.locator(".nav-burger:visible").first();
         await burger.click();
         const mobileRoutes = page.locator(".mobile-link--described:visible");
-        assert.equal(await mobileRoutes.count(), 6, "Mobile navigation should describe all six public routes");
+        assert.equal(
+          await mobileRoutes.count(),
+          10,
+          "Mobile navigation should describe six public routes plus four complete-system destinations",
+        );
+        const mobileHrefs = await mobileRoutes.evaluateAll((links) =>
+          links.map((link) => link.getAttribute("href")),
+        );
+        for (const href of ["/roadmap/", "/skills/", "/account/", "/dashboard.html"]) {
+          assert.ok(mobileHrefs.includes(href), `Mobile navigation should expose ${href}`);
+        }
         const current = page.locator('.mobile-link--described[aria-current="page"]:visible');
         assert.equal(await current.count(), 1, `${item.route} should identify one current mobile route`);
         assert.match(
@@ -639,6 +649,140 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
   await localeContext.close();
 
   return results;
+}
+
+async function validateSystemMap(browser, origin, tailwindRuntime) {
+  const desktopContext = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+    locale: "en-US",
+  });
+  const desktopPage = await desktopContext.newPage();
+  const desktopErrors = [];
+  await wirePage(desktopPage, tailwindRuntime, desktopErrors);
+  await loadRoute(desktopPage, origin, "/skills/");
+
+  let trigger = desktopPage.locator(".system-map-trigger:visible");
+  assert.equal(await trigger.count(), 1, "Desktop shell should expose one System map trigger");
+  assert.equal(await trigger.getAttribute("aria-expanded"), "false");
+  await trigger.focus();
+  await desktopPage.keyboard.press("ArrowDown");
+  assert.equal(await trigger.getAttribute("aria-expanded"), "true");
+
+  let panel = desktopPage.locator(".system-map-panel:visible");
+  assert.equal(await panel.count(), 1, "ArrowDown should reveal the System map");
+  assert.equal(
+    await desktopPage.evaluate(() => document.activeElement?.matches(".system-map-link")),
+    true,
+    "ArrowDown should move focus into the System map",
+  );
+
+  const expectedHrefs = [
+    "/",
+    "/gate.html",
+    "/book/",
+    "/roadmap/",
+    "/benchmark/",
+    "/genesis/",
+    "/research.html",
+    "/skills/",
+    "/account/",
+    "/dashboard.html",
+  ];
+  const systemLinks = panel.locator(".system-map-link");
+  assert.equal(await systemLinks.count(), expectedHrefs.length);
+  const systemHrefs = await systemLinks.evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  );
+  assert.deepEqual(systemHrefs, expectedHrefs, "System map should preserve the complete route architecture");
+  assert.equal(
+    await panel.locator('.system-map-link[aria-current="page"]').count(),
+    1,
+    "System map should expose one current route",
+  );
+
+  await desktopPage.keyboard.press("Escape");
+  trigger = desktopPage.locator(".system-map-trigger:visible");
+  assert.equal(await trigger.getAttribute("aria-expanded"), "false");
+  assert.equal(
+    await desktopPage.evaluate(() => document.activeElement?.matches(".system-map-trigger")),
+    true,
+    "Escape should close the map and restore trigger focus",
+  );
+
+  await desktopPage.locator('[data-lang="uk"]:visible').first().click();
+  trigger = desktopPage.locator(".system-map-trigger:visible");
+  assert.equal((await trigger.textContent()).trim().startsWith("Система"), true);
+  assert.equal(await trigger.getAttribute("aria-label"), "Відкрити мапу системи SemeAI");
+  await trigger.click();
+  assert.equal(await trigger.getAttribute("aria-expanded"), "true");
+  await desktopPage.keyboard.press("Escape");
+
+  await desktopPage.locator('[data-lang="ru"]:visible').first().click();
+  trigger = desktopPage.locator(".system-map-trigger:visible");
+  assert.equal((await trigger.textContent()).trim().startsWith("Система"), true);
+  assert.equal(await trigger.getAttribute("aria-label"), "Открыть карту системы SemeAI");
+  await desktopPage.locator('[data-lang="en"]:visible').first().click();
+  trigger = desktopPage.locator(".system-map-trigger:visible");
+  await trigger.click();
+  assert.equal(
+    await trigger.getAttribute("aria-expanded"),
+    "true",
+    "Language remounts should leave exactly one working System map listener",
+  );
+
+  const desktopOverflow = await desktopPage.evaluate(
+    () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+  );
+  assert.equal(desktopOverflow, 0);
+  assert.deepEqual(desktopErrors, [], "Desktop System map should not emit browser errors");
+  await desktopContext.close();
+
+  const mobileContext = await browser.newContext({
+    viewport: { width: 390, height: 844 },
+    locale: "en-US",
+  });
+  const mobilePage = await mobileContext.newPage();
+  const mobileErrors = [];
+  await wirePage(mobilePage, tailwindRuntime, mobileErrors);
+  await loadRoute(mobilePage, origin, "/skills/");
+  await mobilePage.locator(".nav-burger:visible").click();
+
+  const supplemental = mobilePage.locator(".mobile-system-link:visible");
+  assert.equal(await supplemental.count(), 4, "Mobile shell should expose four supplemental destinations");
+  const mobileHrefs = await supplemental.evaluateAll((links) =>
+    links.map((link) => link.getAttribute("href")),
+  );
+  assert.deepEqual(mobileHrefs, ["/roadmap/", "/skills/", "/account/", "/dashboard.html"]);
+  assert.equal(
+    await mobilePage.locator('.mobile-system-link[aria-current="page"]:visible').count(),
+    1,
+    "Supplemental mobile destinations should retain current-route orientation",
+  );
+  const mobileTargets = await supplemental.evaluateAll((links) =>
+    links.map((link) => {
+      const rectangle = link.getBoundingClientRect();
+      return { width: rectangle.width, height: rectangle.height };
+    }),
+  );
+  assert.ok(
+    mobileTargets.every(({ width, height }) => width >= 44 && height >= 44),
+    "Supplemental mobile destinations should meet the 44px target boundary",
+  );
+  assert.equal(
+    await mobilePage.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    ),
+    0,
+  );
+  assert.deepEqual(mobileErrors, [], "Mobile System map should not emit browser errors");
+  await mobileContext.close();
+
+  return {
+    desktopRoutes: expectedHrefs.length,
+    mobileSupplementalRoutes: mobileHrefs.length,
+    localized: ["en", "uk", "ru"],
+    keyboard: ["ArrowDown", "Escape"],
+  };
 }
 
 async function validateDeepLinks(browser, origin, tailwindRuntime) {
@@ -1699,6 +1843,7 @@ async function main() {
     const matrix = await validateMatrix(browser, origin, tailwindRuntime);
     const interactions = await validateInteraction(browser, origin, tailwindRuntime);
     const publicRouteContext = await validatePublicRouteContext(browser, origin, tailwindRuntime);
+    const systemMap = await validateSystemMap(browser, origin, tailwindRuntime);
     const deepLinks = await validateDeepLinks(browser, origin, tailwindRuntime);
     const noJavaScript = await validateNoJavaScript(browser, origin);
     const reducedMotion = await validateReducedMotion(browser, origin, tailwindRuntime);
@@ -1718,6 +1863,7 @@ async function main() {
           viewports: VIEWPORTS.map((viewport) => viewport.join("x")),
           keyboardLanguageAndMobileNavigation: interactions,
           publicRouteContext,
+          systemMap,
           deepLinks,
           noJavaScript,
           reducedMotion,
