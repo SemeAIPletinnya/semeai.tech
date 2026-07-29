@@ -8,7 +8,7 @@
 
 SemeAI separates an AI-generated candidate from the decision to release it. The public site presents one connected system: Genesis establishes the premise, the Gate holds release authority, the Repository Evidence Benchmark inspects bounded visible evidence, and the Engineering Book records the architecture and its limits.
 
-[Open SemeAI](https://semeai.tech/) · [Enter Workspace](https://semeai.tech/account/) · [Run the Repository Benchmark](https://semeai.tech/benchmark/) · [Enter Genesis](https://semeai.tech/genesis/) · [Inspect the Gate](https://semeai.tech/gate.html) · [Read the Engineering Book](https://semeai.tech/book/) · [Review Skill Forge evidence](https://semeai.tech/skills/)
+[Open SemeAI](https://semeai.tech/) · [Enter Workspace](https://semeai.tech/account/) · [Run the Repository Benchmark](https://semeai.tech/benchmark/) · [Enter Genesis](https://semeai.tech/genesis/) · [Inspect the Gate](https://semeai.tech/gate.html) · [Read the Engineering Book](https://semeai.tech/book/) · [Review Skill Forge evidence](https://semeai.tech/skills/) · [Inspect the Product Roadmap](https://semeai.tech/roadmap/)
 
 ## One system, distinct authorities
 
@@ -23,6 +23,7 @@ SemeAI separates an AI-generated candidate from the decision to release it. The 
 | [Repository Evidence Benchmark](https://semeai.tech/benchmark/) | Anonymous instrument for bounded visible repository evidence | Its display-only Presentation Gate is not SaC/PoR runtime release authority |
 | [Engineering Book](https://semeai.tech/book/) | Architecture, implementation thinking, evidence, continuity, and limits | A 24-chapter inspectable publication, not a second runtime |
 | [Research](https://semeai.tech/research.html) | Public artifacts, active inquiry, and claim boundaries | Retrieval and repository history are evidence sources, not truth or certification |
+| [Product Roadmap](https://semeai.tech/roadmap/) | Truthful status of working, dependency-held, and future product phases | Roadmap presence is not implementation or release authority |
 | [Account / Workspace](https://semeai.tech/account/) | Identity, access, and one governed context through the current account API | Workspace access is not release authority; unavailable persistence surfaces are labeled |
 | [Skill Forge](https://semeai.tech/skills/) | Candidate-method evidence and registry review | Candidate generation and registry presence are not skill admission |
 | [Dashboard](https://semeai.tech/dashboard.html) | API-backed operational surface | Candidate, release decision, and receipt remain separate artifacts |
@@ -120,7 +121,7 @@ This repository is the public static site. It depends on two distinct neighborin
 - [`SemeAIPletinnya/semeai-gate-basic`](https://github.com/SemeAIPletinnya/semeai-gate-basic) — the adapter and API surface used by the operational site;
 - [`SemeAIPletinnya/silence-as-control`](https://github.com/SemeAIPletinnya/silence-as-control) — governance source context and the canonical public Benchmark fixture.
 
-GitHub Pages deploys `master` through [`.github/workflows/pages.yml`](./.github/workflows/pages.yml). The latest deployment inside the July audit completed successfully for `dff4c0e`.
+GitHub Pages deploys `master` through [`.github/workflows/pages.yml`](./.github/workflows/pages.yml). Each current deployment must be read from the Pages workflow and live site; point-in-time SHAs in the build trace remain historical evidence, not live deployment metadata.
 
 Local static preview:
 
