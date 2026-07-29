@@ -2068,6 +2068,9 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
       );
       assert.equal(await page.locator(".axiom-agent__result-sources a").getAttribute("href"), "/gate.html#semantics-title");
       assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "idle");
+      await page.waitForFunction(
+        () => document.activeElement?.matches(".axiom-agent__result") === true,
+      );
       assert.equal(
         await page.locator(".axiom-agent__result").evaluate((node) => node === document.activeElement),
         true,
