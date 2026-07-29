@@ -2,6 +2,14 @@
   "use strict";
 
   const MANIFEST_URL = "/assets/pets/axiom/pet.json";
+  const API_BASE = String(window.SEMEAI_API_BASE || "https://api.semeai.tech").replace(/\/+$/, "");
+  const ARCHIVE_ENDPOINT = `${API_BASE}/v0/archive/query`;
+  const ARCHIVE_RESPONSE_SCHEMA = "semeai.axiom-public-answer.v0.1";
+  const RELEASE_MAPPINGS = Object.freeze({
+    SHOW: "PROCEED",
+    REVIEW: "NEEDS_REVIEW",
+    BLOCK: "SILENCE",
+  });
   const SUPPORTED_ROUTES = new Set(["home", "genesis", "benchmark", "gate", "skills"]);
   const DEFAULT_STATES = Object.freeze({
     idle: { row: 0, frames: 6 },
@@ -100,14 +108,30 @@
       eyebrow: "AXIOM / ARCHIVE INTERFACE",
       title: "Evidence, with authority visible.",
       boundary:
-        "This first functional slice orients you to admitted public surfaces. Archive question answering is not connected yet.",
+        "Ask about admitted public evidence. An answer appears only when SaC/PoR Gate permits release.",
       route: "Current route context",
+      query: "Ask the public archive",
+      queryLabel: "Question",
+      queryPlaceholder: "What changed here?",
+      ask: "Ask Axiom",
+      queryHint: "256 characters · no private archive",
+      result: "Gate-mediated result",
+      noEvidence: "No matching public evidence; no candidate was generated.",
+      sourcesReturned: "Cited public evidence",
+      decisionReceipt: "Decision receipt",
       sources: "Inspect public sources",
       sourcesAria: "Axiom public evidence sources",
       authority: "Axiom presents and orients. SaC/PoR Gate remains release authority.",
       ready: "IDLE · orientation ready",
       loading: "RUNNING · loading accepted atlas",
       failed: "FAILED · accepted atlas unavailable",
+      queryWaiting: "WAITING · enter a public archive question",
+      queryRunning: "RUNNING · retrieving public evidence",
+      gateShow: "IDLE · SHOW / PROCEED",
+      gateReview: "REVIEW · REVIEW / NEEDS_REVIEW",
+      gateBlock: "REVIEW · BLOCK / SILENCE",
+      queryNoEvidence: "REVIEW · no matching evidence",
+      queryFailed: "FAILED · archive service unavailable",
     },
     uk: {
       launch: "Відкрити архівний інтерфейс Axiom",
@@ -116,14 +140,30 @@
       eyebrow: "AXIOM / АРХІВНИЙ ІНТЕРФЕЙС",
       title: "Докази з видимою владою.",
       boundary:
-        "Цей перший функціональний зріз орієнтує в допущених публічних поверхнях. Відповіді на архівні питання ще не підключені.",
+        "Запитайте про допущені публічні докази. Відповідь з’явиться лише тоді, коли SaC/PoR Gate дозволить реліз.",
       route: "Контекст поточного маршруту",
+      query: "Запитати публічний архів",
+      queryLabel: "Питання",
+      queryPlaceholder: "Що змінилося тут?",
+      ask: "Запитати Axiom",
+      queryHint: "256 символів · без приватного архіву",
+      result: "Результат через Gate",
+      noEvidence: "Відповідних публічних доказів немає; кандидата не створено.",
+      sourcesReturned: "Цитовані публічні докази",
+      decisionReceipt: "Receipt рішення",
       sources: "Переглянути публічні джерела",
       sourcesAria: "Публічні джерела доказів Axiom",
       authority: "Axiom подає й орієнтує. SaC/PoR Gate зберігає владу релізу.",
       ready: "IDLE · орієнтація готова",
       loading: "RUNNING · завантаження прийнятого atlas",
       failed: "FAILED · прийнятий atlas недоступний",
+      queryWaiting: "WAITING · введіть питання до публічного архіву",
+      queryRunning: "RUNNING · пошук публічних доказів",
+      gateShow: "IDLE · SHOW / PROCEED",
+      gateReview: "REVIEW · REVIEW / NEEDS_REVIEW",
+      gateBlock: "REVIEW · BLOCK / SILENCE",
+      queryNoEvidence: "REVIEW · відповідних доказів немає",
+      queryFailed: "FAILED · архівний сервіс недоступний",
     },
     ru: {
       launch: "Открыть архивный интерфейс Axiom",
@@ -132,14 +172,30 @@
       eyebrow: "AXIOM / АРХИВНЫЙ ИНТЕРФЕЙС",
       title: "Доказательства с видимой властью.",
       boundary:
-        "Этот первый функциональный срез ориентирует в допущенных публичных поверхностях. Ответы на архивные вопросы ещё не подключены.",
+        "Спросите о допущенных публичных доказательствах. Ответ появится только тогда, когда SaC/PoR Gate разрешит релиз.",
       route: "Контекст текущего маршрута",
+      query: "Спросить публичный архив",
+      queryLabel: "Вопрос",
+      queryPlaceholder: "Что изменилось здесь?",
+      ask: "Спросить Axiom",
+      queryHint: "256 символов · без приватного архива",
+      result: "Результат через Gate",
+      noEvidence: "Подходящих публичных доказательств нет; кандидат не создан.",
+      sourcesReturned: "Цитируемые публичные доказательства",
+      decisionReceipt: "Receipt решения",
       sources: "Просмотреть публичные источники",
       sourcesAria: "Публичные источники доказательств Axiom",
       authority: "Axiom представляет и ориентирует. SaC/PoR Gate сохраняет власть релиза.",
       ready: "IDLE · ориентация готова",
       loading: "RUNNING · загрузка принятого atlas",
       failed: "FAILED · принятый atlas недоступен",
+      queryWaiting: "WAITING · введите вопрос к публичному архиву",
+      queryRunning: "RUNNING · поиск публичных доказательств",
+      gateShow: "IDLE · SHOW / PROCEED",
+      gateReview: "REVIEW · REVIEW / NEEDS_REVIEW",
+      gateBlock: "REVIEW · BLOCK / SILENCE",
+      queryNoEvidence: "REVIEW · подходящих доказательств нет",
+      queryFailed: "FAILED · архивный сервис недоступен",
     },
   });
 
@@ -165,6 +221,10 @@
   let greetingTimer = 0;
   let orientationTimer = 0;
   let assetStatus = "loading";
+  let statusOverride = "";
+  let activeRequest = null;
+  let requestSequence = 0;
+  let lastResult = null;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const nodes = {};
 
@@ -208,6 +268,7 @@
     const copy = COPY[language()];
     if (assetStatus === "failed") return copy.failed;
     if (assetStatus === "loading") return copy.loading;
+    if (statusOverride && copy[statusOverride]) return copy[statusOverride];
     return `${stateName.toUpperCase()} · ${stateName === "idle" ? copy.ready.split("·")[1].trim() : stateName}`;
   }
 
@@ -267,6 +328,210 @@
     return true;
   }
 
+  function setOperationState(nextState, statusKey, source) {
+    statusOverride = statusKey;
+    setState(nextState, source);
+  }
+
+  function applyResultVisual(result) {
+    const release = result?.release || {};
+    if (release.gateEvaluated !== true) {
+      setOperationState("review", "queryNoEvidence", "retrieval-no-evidence");
+    } else if (release.action === "SHOW") {
+      setOperationState("idle", "gateShow", "gate-show-proceed");
+    } else if (release.action === "REVIEW") {
+      setOperationState("review", "gateReview", "gate-review-needs-review");
+    } else {
+      setOperationState("review", "gateBlock", "gate-block-silence");
+    }
+  }
+
+  function validateArchiveResponse(value) {
+    if (!value || value.schemaVersion !== ARCHIVE_RESPONSE_SCHEMA) {
+      throw new Error("Axiom archive response contract is invalid");
+    }
+    const bundle = value.evidenceBundle;
+    const release = value.release;
+    if (!bundle || !Array.isArray(bundle.evidence) || !release || typeof release !== "object") {
+      throw new Error("Axiom archive response is incomplete");
+    }
+    if (
+      bundle.evidence.some(
+        (item) => item?.visibility !== "PUBLIC" || item?.contentTrust !== "UNTRUSTED_DATA",
+      )
+    ) {
+      throw new Error("Axiom archive response crossed the public evidence boundary");
+    }
+    if (release.gateEvaluated !== true) {
+      if (
+        bundle.noEvidence !== true ||
+        value.candidate !== null ||
+        value.releasedAnswer !== null ||
+        release.action !== null ||
+        release.decisionReceiptId !== null
+      ) {
+        throw new Error("Axiom no-evidence response is inconsistent");
+      }
+      return value;
+    }
+
+    if (RELEASE_MAPPINGS[release.action] !== release.internalDecision) {
+      throw new Error("Axiom Gate action mapping is invalid");
+    }
+    if (release.showToUser !== (release.action === "SHOW")) {
+      throw new Error("Axiom Gate visibility mapping is invalid");
+    }
+    if (
+      !release.decisionReceiptId ||
+      release.receipt_id !== release.decisionReceiptId ||
+      release.executionReceiptId !== null ||
+      release.auditPreserved !== true
+    ) {
+      throw new Error("Axiom decision receipt contract is invalid");
+    }
+    if (
+      !value.candidate ||
+      value.candidate.candidateTextIncluded !== false ||
+      Object.prototype.hasOwnProperty.call(value.candidate, "candidateText")
+    ) {
+      throw new Error("Axiom public response exposed the candidate contract incorrectly");
+    }
+    if (release.action === "SHOW") {
+      if (!String(value.releasedAnswer || "").trim()) {
+        throw new Error("Axiom SHOW response has no released answer");
+      }
+    } else if (value.releasedAnswer !== null) {
+      throw new Error("Axiom held response included user-visible candidate output");
+    }
+    return value;
+  }
+
+  async function sha256(value) {
+    if (!window.crypto?.subtle || typeof TextEncoder !== "function") {
+      throw new Error("Axiom answer integrity check is unavailable");
+    }
+    const digest = await window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+    return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, "0")).join("");
+  }
+
+  function safeEvidenceHref(route) {
+    const raw = String(route || "");
+    if (!raw.startsWith("/") || raw.startsWith("//")) return null;
+    try {
+      const url = new URL(raw, location.origin);
+      return url.origin === location.origin ? `${url.pathname}${url.search}${url.hash}` : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function renderResult(result, { moveFocus = true } = {}) {
+    const copy = COPY[language()];
+    const release = result.release;
+    const evidence = result.evidenceBundle.evidence;
+    nodes.result.hidden = false;
+    nodes.result.dataset.action = String(release.action || "NO_EVIDENCE").toLowerCase();
+    nodes.resultAction.textContent =
+      release.gateEvaluated === true
+        ? `${release.action} / ${release.internalDecision}`
+        : "NO EVIDENCE / NOT EVALUATED";
+    nodes.resultReason.textContent =
+      release.gateEvaluated === true ? String(release.reason || "") : copy.noEvidence;
+
+    if (release.action === "SHOW") {
+      nodes.resultAnswer.hidden = false;
+      nodes.resultAnswer.textContent = result.releasedAnswer;
+    } else {
+      nodes.resultAnswer.hidden = true;
+      nodes.resultAnswer.textContent = "";
+    }
+
+    nodes.resultSourcesHeading.textContent = copy.sourcesReturned;
+    nodes.resultSources.replaceChildren();
+    evidence.forEach((item, index) => {
+      const row = createElement("li");
+      const href = safeEvidenceHref(item.route);
+      const identity = createElement("small", {}, `${String(index + 1).padStart(2, "0")} · ${item.sourceId}`);
+      const label = createElement(href ? "a" : "span", href ? { href } : {}, item.title);
+      row.append(identity, label);
+      nodes.resultSources.append(row);
+    });
+    nodes.resultSourcesWrap.hidden = evidence.length === 0;
+
+    const receiptId = release.decisionReceiptId;
+    nodes.resultReceipt.hidden = !receiptId;
+    nodes.resultReceipt.textContent = receiptId ? `${copy.decisionReceipt}: ${receiptId}` : "";
+    if (moveFocus) window.requestAnimationFrame(() => nodes.result.focus());
+  }
+
+  async function submitArchiveQuestion(event) {
+    event.preventDefault();
+    const question = nodes.queryInput.value.trim();
+    if (!question) {
+      setOperationState("waiting", "queryWaiting", "question-input-required");
+      nodes.queryInput.focus();
+      return;
+    }
+
+    activeRequest?.controller.abort();
+    const sequence = ++requestSequence;
+    const controller = new AbortController();
+    activeRequest = { controller, sequence };
+    lastResult = null;
+    nodes.result.hidden = true;
+    nodes.root.removeAttribute("data-request-error");
+    nodes.queryButton.disabled = true;
+    nodes.queryInput.setAttribute("aria-busy", "true");
+    setOperationState("running", "queryRunning", "public-archive-request");
+    const timeout = window.setTimeout(() => controller.abort(), 15_000);
+
+    try {
+      const endpoint = new URL(ARCHIVE_ENDPOINT, location.origin);
+      if (!["https:", "http:"].includes(endpoint.protocol)) {
+        throw new Error("Axiom archive endpoint protocol is invalid");
+      }
+      const response = await fetch(endpoint, {
+        method: "POST",
+        credentials: "omit",
+        cache: "no-store",
+        referrerPolicy: "no-referrer",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          question,
+          routeContext: routeKey,
+          limit: 5,
+        }),
+        signal: controller.signal,
+      });
+      if (!response.ok) throw new Error(`Axiom archive endpoint returned ${response.status}`);
+      const result = validateArchiveResponse(await response.json());
+      if (sequence !== requestSequence) return;
+      if (result.release.action === "SHOW") {
+        const releasedHash = await sha256(result.releasedAnswer);
+        if (releasedHash !== result.candidate.candidateHash) {
+          throw new Error("Axiom released answer differs from the evaluated candidate");
+        }
+      }
+      lastResult = result;
+      renderResult(result);
+      applyResultVisual(result);
+    } catch (error) {
+      if (sequence !== requestSequence) return;
+      lastResult = null;
+      nodes.result.hidden = true;
+      nodes.root.dataset.requestError =
+        error instanceof Error && error.name !== "AbortError" ? error.message : "archive request unavailable";
+      setOperationState("failed", "queryFailed", "public-archive-request-failure");
+    } finally {
+      window.clearTimeout(timeout);
+      if (sequence === requestSequence) {
+        activeRequest = null;
+        nodes.queryButton.disabled = false;
+        nodes.queryInput.removeAttribute("aria-busy");
+      }
+    }
+  }
+
   function updateCopy() {
     if (!nodes.root) return;
     const copy = COPY[language()];
@@ -281,6 +546,12 @@
     nodes.routeLabel.textContent = translated(route.label);
     nodes.routeRole.textContent = translated(route.role);
     nodes.routeSummary.textContent = translated(route.summary);
+    nodes.queryHeading.textContent = copy.query;
+    nodes.queryLabel.textContent = copy.queryLabel;
+    nodes.queryInput.placeholder = copy.queryPlaceholder;
+    nodes.queryButton.textContent = copy.ask;
+    nodes.queryHint.textContent = copy.queryHint;
+    nodes.resultHeading.textContent = copy.result;
     nodes.sourcesHeading.textContent = copy.sources;
     nodes.sources.setAttribute("aria-label", copy.sourcesAria);
     nodes.authority.textContent = copy.authority;
@@ -289,15 +560,20 @@
       if (link) link.textContent = translated(SOURCE_LINKS[sourceKey].label);
     });
     nodes.status.textContent = stateLabel();
+    if (lastResult) renderResult(lastResult, { moveFocus: false });
   }
 
   function openPanel() {
     nodes.panel.hidden = false;
     nodes.launcher.setAttribute("aria-expanded", "true");
     nodes.root.dataset.open = "true";
-    setState("waving", "panel-open-greeting");
-    window.clearTimeout(greetingTimer);
-    greetingTimer = window.setTimeout(() => setState("idle", "ready-no-active-work"), 900);
+    if (lastResult) {
+      applyResultVisual(lastResult);
+    } else {
+      setState("waving", "panel-open-greeting");
+      window.clearTimeout(greetingTimer);
+      greetingTimer = window.setTimeout(() => setState("idle", "ready-no-active-work"), 900);
+    }
     window.requestAnimationFrame(() => nodes.close.focus());
   }
 
@@ -306,7 +582,8 @@
     nodes.launcher.setAttribute("aria-expanded", "false");
     delete nodes.root.dataset.open;
     window.clearTimeout(greetingTimer);
-    setState("idle", "ready-no-active-work");
+    if (lastResult) applyResultVisual(lastResult);
+    else setState("idle", "ready-no-active-work");
     if (restoreFocus) nodes.launcher.focus();
   }
 
@@ -364,6 +641,50 @@
     routeIdentity.append(routeLabel, routeRole);
     routeCard.append(routeHeading, routeIdentity, routeSummary);
 
+    const queryForm = createElement("form", { class: "axiom-agent__query" });
+    const queryHeading = createElement("h3", { class: "axiom-agent__section-heading" });
+    const queryInputId = `axiom-query-${routeKey}`;
+    const queryLabel = createElement("label", { for: queryInputId });
+    const queryInput = createElement("input", {
+      id: queryInputId,
+      name: "question",
+      type: "search",
+      maxlength: "256",
+      autocomplete: "off",
+      spellcheck: "true",
+      enterkeyhint: "send",
+    });
+    const queryFooter = createElement("div", { class: "axiom-agent__query-footer" });
+    const queryHint = createElement("small");
+    const queryButton = createElement("button", { type: "submit" });
+    queryFooter.append(queryHint, queryButton);
+    queryForm.append(queryHeading, queryLabel, queryInput, queryFooter);
+
+    const result = createElement("section", {
+      class: "axiom-agent__result",
+      tabindex: "-1",
+      "aria-live": "polite",
+      hidden: "",
+    });
+    const resultHeader = createElement("header");
+    const resultHeading = createElement("h3", { class: "axiom-agent__section-heading" });
+    const resultAction = createElement("strong", { class: "axiom-agent__result-action" });
+    resultHeader.append(resultHeading, resultAction);
+    const resultReason = createElement("p", { class: "axiom-agent__result-reason" });
+    const resultAnswer = createElement("pre", { class: "axiom-agent__result-answer", hidden: "" });
+    const resultSourcesWrap = createElement("div", { class: "axiom-agent__result-sources" });
+    const resultSourcesHeading = createElement("h4");
+    const resultSources = createElement("ol");
+    resultSourcesWrap.append(resultSourcesHeading, resultSources);
+    const resultReceipt = createElement("p", { class: "axiom-agent__result-receipt", hidden: "" });
+    result.append(
+      resultHeader,
+      resultReason,
+      resultAnswer,
+      resultSourcesWrap,
+      resultReceipt,
+    );
+
     const sources = createElement("nav", { class: "axiom-agent__sources" });
     const sourcesHeading = createElement("h3", { class: "axiom-agent__section-heading" });
     const sourceList = createElement("div", { class: "axiom-agent__source-list" });
@@ -381,7 +702,7 @@
     sources.append(sourcesHeading, sourceList);
 
     const authority = createElement("p", { class: "axiom-agent__authority" });
-    panel.append(header, title, boundary, status, routeCard, sources, authority);
+    panel.append(header, title, boundary, status, routeCard, queryForm, result, sources, authority);
     root.append(panel, launcher);
     document.body.append(root);
 
@@ -400,12 +721,28 @@
       routeLabel,
       routeRole,
       routeSummary,
+      queryForm,
+      queryHeading,
+      queryLabel,
+      queryInput,
+      queryHint,
+      queryButton,
+      result,
+      resultHeading,
+      resultAction,
+      resultReason,
+      resultAnswer,
+      resultSourcesWrap,
+      resultSourcesHeading,
+      resultSources,
+      resultReceipt,
       sources,
       sourcesHeading,
       sourceLinks,
       authority,
     });
 
+    queryForm.addEventListener("submit", submitArchiveQuestion);
     launcher.addEventListener("click", () => {
       if (panel.hidden) openPanel();
       else closePanel();

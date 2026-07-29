@@ -1,6 +1,6 @@
 # Axiom archive-agent integration
 
-Status: Phase 0 authority audit complete; Phase 1 public sprite runtime and shell implemented locally; Phase 2 deterministic public evidence retrieval implemented locally; Phase 3 deterministic candidate service and Phase 4 Gate boundary implemented and tested on the isolated backend branch.
+Status: Phases 0–5 are implemented and tested on isolated public-site and backend branches. Production release remains held behind the draft PR and deployment authority.
 
 Axiom is a view over system state and admitted evidence. It does not create evidence, authentication, release decisions, receipts, or execution authority. Candidate generation remains upstream of the SaC/PoR Gate.
 
@@ -35,7 +35,10 @@ The runtime:
 - contains itself at mobile viewports;
 - provides an honest no-JavaScript fallback.
 
-The current panel is deliberately not a chat UI. It orients users to the selected route and links to existing public evidence. It states that archive question answering is not connected in this slice.
+The panel is an evidence interface rather than a general support chatbot. It
+accepts one bounded public-archive question, sends the explicit route context,
+and renders an answer only after a valid Gate `SHOW / PROCEED` response. It
+does not retain conversation history or imply private Workspace access.
 
 ## Protected boundaries
 
@@ -79,7 +82,19 @@ passes that candidate through the existing Gate.
 - The execution receipt remains a distinct, uncreated artifact because the
   query endpoint performs no downstream execution.
 
-The public-site question UI remains intentionally unconnected until the backend
-endpoint is committed, deployed, and verified at its production origin. The
-Phase 1 shell therefore continues to describe its current non-chat state
-honestly; it does not simulate a Gate response.
+## Phase 5 route context and frontend release handling
+
+The public shell sends the current bounded route key (`home`, `genesis`,
+`benchmark`, `gate`, or `skills`) with every question. Returned citations
+deep-link to their public evidence objects.
+
+The frontend validates the response schema, PUBLIC visibility, untrusted-data
+marker, canonical action mapping, decision-receipt alias, absent execution
+receipt, and candidate-text exclusion. For `SHOW`, it recomputes SHA-256 over
+`releasedAnswer` and compares it with the Gate-evaluated candidate hash before
+rendering. For `REVIEW` or `BLOCK`, the answer region remains empty; no fallback
+or warning substitutes for the held candidate.
+
+The endpoint is connected in the branch but is not claimed as production-live.
+The site and backend PRs remain draft until independent release authority
+accepts and deploys them.

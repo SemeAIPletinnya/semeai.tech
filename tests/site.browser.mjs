@@ -1825,12 +1825,138 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
     ["/skills/", "skills", "Skill Forge"],
   ];
   const results = [];
+  const releasedFixture =
+    "Gate is the release authority.\n\nSources:\n[1] public:gate:runtime-decision-contract:v0.1";
+  const unsafeMarkupFixture = '<img src=x onerror="window.__axiomUnsafe=1"> remains data.';
+
+  function archiveResponse(payload) {
+    const question = String(payload?.question || "");
+    if (question.includes("no evidence")) {
+      return {
+        schemaVersion: "semeai.axiom-public-answer.v0.1",
+        query: question,
+        routeContext: payload.routeContext,
+        evidenceBundle: {
+          schemaVersion: "semeai.axiom-evidence-bundle.v0.1",
+          query: question,
+          routeContext: payload.routeContext,
+          noEvidence: true,
+          evidence: [],
+          authority: {
+            retrievalIsTruth: false,
+            retrievalIsReleaseAuthority: false,
+            candidateAnswerProduced: false,
+            releaseAuthority: "SaC/PoR Gate",
+          },
+        },
+        candidate: null,
+        release: {
+          gateEvaluated: false,
+          action: null,
+          internalDecision: null,
+          showToUser: false,
+          decisionReceiptId: null,
+          receipt_id: null,
+          executionReceiptId: null,
+          reason: "No matching public evidence; no candidate was generated.",
+          auditPreserved: null,
+        },
+        releasedAnswer: null,
+      };
+    }
+
+    const action = question.includes("block this") ? "BLOCK" : "SHOW";
+    const answer = question.includes("markup") ? unsafeMarkupFixture : releasedFixture;
+    const releasedAnswer = action === "SHOW" ? answer : null;
+    const receiptId = action === "SHOW" ? "decision-show-fixture" : "decision-block-fixture";
+    return {
+      schemaVersion: "semeai.axiom-public-answer.v0.1",
+      query: question,
+      routeContext: payload.routeContext,
+      evidenceBundle: {
+        schemaVersion: "semeai.axiom-evidence-bundle.v0.1",
+        query: question,
+        routeContext: payload.routeContext,
+        noEvidence: false,
+        evidence: [
+          {
+            sourceId: "public:gate:runtime-decision-contract:v0.1",
+            title: "Runtime release-decision contract",
+            summary: "Generation creates a candidate; the Gate separately decides release.",
+            evidenceType: "PUBLIC_CONTRACT",
+            visibility: "PUBLIC",
+            admissionState: "PUBLIC_CONTRACT",
+            date: "2026-07-29",
+            version: "0.1",
+            route: "/gate.html#semantics-title",
+            source: { identity: "semeai.tech:docs/runtime_decision_contract.md@0.1" },
+            facts: {},
+            relevanceScore: 12,
+            contentTrust: "UNTRUSTED_DATA",
+          },
+        ],
+        authority: {
+          retrievalIsTruth: false,
+          retrievalIsReleaseAuthority: false,
+          candidateAnswerProduced: false,
+          releaseAuthority: "SaC/PoR Gate",
+        },
+      },
+      candidate: {
+        candidateId: "axiom-candidate-fixture",
+        candidateHash: question.includes("mutated after gate")
+          ? "0".repeat(64)
+          : crypto.createHash("sha256").update(answer).digest("hex"),
+        candidateTextIncluded: false,
+        state: "CANDIDATE_EVALUATED_BY_GATE",
+      },
+      release: {
+        gateEvaluated: true,
+        action,
+        internalDecision: action === "SHOW" ? "PROCEED" : "SILENCE",
+        showToUser: action === "SHOW",
+        decisionReceiptId: receiptId,
+        receipt_id: receiptId,
+        executionReceiptId: null,
+        reason:
+          action === "SHOW"
+            ? "The candidate is supported by supplied public evidence."
+            : "The candidate is withheld by the Gate.",
+        riskDetails: action === "SHOW" ? [] : ["unsafe_action"],
+        nextStep: action === "SHOW" ? "Show the candidate exactly." : "Do not release.",
+        auditPreserved: true,
+        contextIntegrity: "ok",
+      },
+      releasedAnswer,
+    };
+  }
 
   for (const [route, routeKey, routeLabel] of selectedRoutes) {
     const context = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" });
     const page = await context.newPage();
     const errors = [];
+    const archiveRequests = [];
     await wirePage(page, tailwindRuntime, errors);
+    await page.route("https://api.semeai.tech/v0/archive/query", async (requestRoute) => {
+      const payload = requestRoute.request().postDataJSON();
+      archiveRequests.push(payload);
+      if (String(payload?.question || "").includes("service outage")) {
+        await requestRoute.fulfill({
+          status: 200,
+          contentType: "application/json",
+          body: JSON.stringify({
+            schemaVersion: "semeai.axiom-service-unavailable.v0.1",
+            error: "bounded outage fixture",
+          }),
+        });
+        return;
+      }
+      await requestRoute.fulfill({
+        status: 200,
+        contentType: "application/json",
+        body: JSON.stringify(archiveResponse(payload)),
+      });
+    });
     await loadRoute(page, origin, route);
     await page.waitForSelector('[data-axiom-agent][data-asset-state="ready"]');
 
@@ -1845,9 +1971,10 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
     assert.equal(await page.locator(".axiom-agent__route-identity strong").innerText(), routeLabel);
     assert.match(
       await page.locator(".axiom-agent__boundary").innerText(),
-      /Archive question answering is not connected yet/,
+      /An answer appears only when SaC\/PoR Gate permits release/,
     );
-    assert.equal(await page.locator(".axiom-agent__panel input, .axiom-agent__panel textarea").count(), 0);
+    assert.equal(await page.locator(".axiom-agent__query input").count(), 1);
+    assert.equal(await page.locator(".axiom-agent__query input").getAttribute("maxlength"), "256");
     assert.equal(await page.locator(".axiom-agent__source-list a").count(), 3);
 
     const geometry = await page.evaluate(() => {
@@ -1924,10 +2051,90 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
       assert.equal(Object.hasOwn(retrieval.gate, "answer"), false);
       assert.equal(Object.hasOwn(retrieval.gate, "receipt"), false);
 
+      const queryInput = page.locator(".axiom-agent__query input");
+      await queryInput.fill("Who is the release authority?");
+      await queryInput.press("Enter");
+      await page.locator('.axiom-agent__result[data-action="show"]').waitFor();
+      assert.deepEqual(archiveRequests[0], {
+        question: "Who is the release authority?",
+        routeContext: "home",
+        limit: 5,
+      });
+      assert.equal(await page.locator(".axiom-agent__result-action").innerText(), "SHOW / PROCEED");
+      assert.equal(await page.locator(".axiom-agent__result-answer").innerText(), releasedFixture);
+      assert.equal(
+        await page.locator(".axiom-agent__result-receipt").innerText(),
+        "Decision receipt: decision-show-fixture",
+      );
+      assert.equal(await page.locator(".axiom-agent__result-sources a").getAttribute("href"), "/gate.html#semantics-title");
+      assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "idle");
+      assert.equal(
+        await page.locator(".axiom-agent__result").evaluate((node) => node === document.activeElement),
+        true,
+        "A completed query should move focus to the Gate result",
+      );
+
+      await queryInput.fill("block this candidate");
+      await queryInput.press("Enter");
+      await page.locator('.axiom-agent__result[data-action="block"]').waitFor();
+      assert.equal(await page.locator(".axiom-agent__result-action").innerText(), "BLOCK / SILENCE");
+      assert.equal(await page.locator(".axiom-agent__result-answer").isHidden(), true);
+      assert.equal(await page.locator(".axiom-agent__result-answer").textContent(), "");
+      assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "review");
+      assert.equal(
+        await page.locator(".axiom-agent__result").innerText().then((text) => text.includes(releasedFixture)),
+        false,
+        "A held candidate must not render as an answer or fallback",
+      );
+
+      await queryInput.fill("no evidence for this");
+      await queryInput.press("Enter");
+      await page.locator('.axiom-agent__result[data-action="no_evidence"]').waitFor();
+      assert.equal(
+        await page.locator(".axiom-agent__result-action").innerText(),
+        "NO EVIDENCE / NOT EVALUATED",
+      );
+      assert.match(await page.locator(".axiom-agent__result-reason").innerText(), /no candidate was generated/i);
+
+      await queryInput.fill("show markup as evidence");
+      await queryInput.press("Enter");
+      await page.locator('.axiom-agent__result[data-action="show"]').waitFor();
+      assert.equal(await page.locator(".axiom-agent__result-answer").textContent(), unsafeMarkupFixture);
+      assert.equal(await page.locator(".axiom-agent__result-answer img").count(), 0);
+      assert.equal(await page.evaluate(() => Boolean(window.__axiomUnsafe)), false);
+
+      await queryInput.fill("mutated after gate");
+      await queryInput.press("Enter");
+      await page.waitForFunction(
+        () =>
+          document.querySelector("[data-axiom-agent]")?.dataset.state === "failed" &&
+          document.querySelector(".axiom-agent__result")?.hidden === true,
+      );
+      assert.match(
+        await page.locator("[data-axiom-agent]").getAttribute("data-request-error"),
+        /differs from the evaluated candidate/,
+      );
+
+      await queryInput.fill("service outage");
+      await queryInput.press("Enter");
+      await page.waitForFunction(
+        () =>
+          document.querySelector("[data-axiom-agent]")?.dataset.state === "failed" &&
+          document.querySelector(".axiom-agent__result")?.hidden === true,
+      );
+      assert.match(await page.locator(".axiom-agent__status").innerText(), /archive service unavailable/i);
+
+      await queryInput.fill("");
+      await queryInput.press("Enter");
+      assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "waiting");
+      assert.match(await page.locator(".axiom-agent__status").innerText(), /enter a public archive question/i);
+
       await page.evaluate(() => window.SemeAI_I18n.setLang("uk"));
       assert.equal(await page.locator(".axiom-agent__mode").innerText(), "ПУБЛІЧНІ ДОКАЗИ");
+      assert.equal(await page.locator(".axiom-agent__query button").innerText(), "Запитати Axiom");
       await page.evaluate(() => window.SemeAI_I18n.setLang("ru"));
       assert.equal(await page.locator(".axiom-agent__mode").innerText(), "ПУБЛИЧНЫЕ ДОКАЗАТЕЛЬСТВА");
+      assert.equal(await page.locator(".axiom-agent__query button").innerText(), "Спросить Axiom");
     }
 
     await page.keyboard.press("Escape");
@@ -1971,9 +2178,9 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
     spriteVersionNumber: manifest.spriteVersionNumber,
     atlasHash,
     publicEvidenceEntries: 9,
-    retrievalContract: "typed evidence bundle or truthful no-evidence result; no candidate answer",
+    retrievalContract: "typed evidence bundle or truthful no-evidence result",
     reducedMotion: "static frame",
-    chatBackend: "not connected or simulated",
+    chatBackend: "candidate output is rendered only after a valid Gate SHOW response",
   };
 }
 
