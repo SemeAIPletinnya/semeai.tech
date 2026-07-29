@@ -17,6 +17,11 @@ const allowedAdmissionStates = new Set([
   "PUBLIC_PUBLICATION",
 ]);
 
+function canonicalRepositoryTextHash(filePath) {
+  const canonicalText = fs.readFileSync(filePath, "utf8").replace(/\r\n?/g, "\n");
+  return crypto.createHash("sha256").update(canonicalText, "utf8").digest("hex");
+}
+
 assert.equal(index.schemaVersion, "semeai.axiom-public-evidence-index.v0.1");
 assert.deepEqual(index.visibilityPolicy, {
   allowed: ["PUBLIC"],
@@ -51,7 +56,7 @@ for (const entry of index.entries) {
 
   const evidenceFile = path.join(ROOT, ...entry.source.path.split("/"));
   assert.equal(fs.existsSync(evidenceFile), true, `${entry.sourceId} evidence file should exist`);
-  const evidenceHash = crypto.createHash("sha256").update(fs.readFileSync(evidenceFile)).digest("hex");
+  const evidenceHash = canonicalRepositoryTextHash(evidenceFile);
   assert.equal(evidenceHash, entry.source.sha256, `${entry.sourceId} evidence hash should match`);
 }
 

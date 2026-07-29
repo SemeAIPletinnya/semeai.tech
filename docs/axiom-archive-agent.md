@@ -15,7 +15,7 @@ The integration started from public-site commit `02ee1f2f4110421318672e286224fe4
 | GET VIS method | `a0ed0f0a2e6522729aadce18b891f0aed1c8acc18b424253ff165aabcb6bddbd` | Visual evaluation method, not product authority |
 | Accepted v2 atlas | `26b0f128ab3f37463e12620bdcd582e87e2218229c1de7ab330bb9256076fcd1` | Validated production sprite asset |
 | Public pet manifest | `211b6f4e9c887151e7938e9df659d5669d3b403190cf82c7af26e2ccbc97ac6a` | Runtime metadata; never Gate authority |
-| Public evidence index | `62eb0078bc1cf431daafc2f622336600b5528438bb373b2a87fc45f25c9959cc` | Curated retrieval input; retrieval is not truth |
+| Public evidence index | `b2c681a99141ca69125cf3704f3517a00ef8770575cf7ac69371f0ae7a29b9cf` | Curated retrieval input; retrieval is not truth |
 
 The colocated candidate PNG was not accepted for runtime use because deterministic v2 validation found the required `idle[6]` cell empty. The accepted atlas is the repaired, separately validated hatch-pet package. The rejected candidate remains evidence of an input artifact; it is not silently substituted in place.
 
