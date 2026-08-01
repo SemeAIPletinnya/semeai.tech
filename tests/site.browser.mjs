@@ -526,6 +526,90 @@ async function validateInteraction(browser, origin, tailwindRuntime) {
 }
 
 async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
+  {
+    const pricingSource = fs.readFileSync(path.join(ROOT, "pricing.html"), "utf8");
+    const homeSource = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+    const supportSource = fs.readFileSync(path.join(ROOT, "pilots", "support.html"), "utf8");
+    const dashboardSource = fs.readFileSync(path.join(ROOT, "dashboard.html"), "utf8");
+    const changedCommercialSource = [
+      "index.html",
+      "pricing.html",
+      path.join("assets", "js", "site-shell.js"),
+      path.join("assets", "js", "axiom-agent.js"),
+    ].map((file) => fs.readFileSync(path.join(ROOT, file), "utf8")).join("\n");
+    const commercialTranslationSource = [
+      "index.html", "pricing.html", "dashboard.html", "register.html", "forgot.html", "reset.html", "invite.html", "integrate.html", "self-hosted.html", "gate.html", "article.html", path.join("account", "index.html"), path.join("pilots", "support.html"),
+    ].map((file) => fs.readFileSync(path.join(ROOT, file), "utf8")).join("\n");
+    const commercialKeys = [...new Set([...commercialTranslationSource.matchAll(/data-i18n(?:-aria)?="(commercial\.[^"]+)"/g)].map((match) => match[1]))];
+    assert.equal(/SemeAI\.plans\(|price_usd|Checkout Starter|Checkout Growth/.test(pricingSource), false, "Public Pricing must remain fit-review only");
+    assert.match(homeSource, /class="legacy-home-surface" hidden inert aria-hidden="true"/);
+    assert.match(homeSource, /if \(document\.querySelector\("\.legacy-home-surface:not\(\[hidden\]\)"\)\) \{/);
+    assert.equal(/gate\.safe_fallback|return\s+["']A support operator/.test(supportSource), false, "Support example must not substitute post-Gate text");
+    assert.match(supportSource, /return candidate; \/\/ exact evaluated candidate/);
+    assert.match(supportSource, /routeDecisionOutOfBand\(decision\)/);
+    assert.match(dashboardSource, /id="btn-google"[^>]*hidden/);
+    assert.match(dashboardSource, /id="btn-stripe-starter"[^>]*hidden/);
+    assert.match(dashboardSource, /providers\?\.google\?\.enabled === true/);
+    assert.match(dashboardSource, /providers\?\.stripe\?\.enabled === true/);
+    assert.equal(/\/v0\/pilot-requests|\/v0\/commercial-events|posthog|analytics endpoint/i.test(changedCommercialSource), false, "Held intake and analytics capabilities must remain absent");
+    const routes = ["/", "/gate.html", "/benchmark/", "/genesis/", "/book/", "/research.html"];
+    const expectedPrimary = [
+      ["Product", "/#product"],
+      ["How it works", "/#how-it-works"],
+      ["Use cases", "/#use-cases"],
+      ["Evidence", "/#evidence"],
+    ];
+    const results = [];
+    for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
+      const context = await browser.newContext({ viewport, locale: "en-US" });
+      for (const route of routes) {
+        const page = await context.newPage();
+        const errors = [];
+        await wirePage(page, tailwindRuntime, errors);
+        await loadRoute(page, origin, route);
+        assert.equal(await page.locator(".site-route-context").count(), 0, `${route} should not render the legacy route counter`);
+        if (viewport.width === 1440) {
+          const primary = await page.locator(".site-nav > a.nav-link").evaluateAll((links) =>
+            links.map((link) => [link.textContent.trim(), link.getAttribute("href")]),
+          );
+          assert.deepEqual(primary, expectedPrimary, `${route} should expose the commercial primary IA`);
+          assert.equal(await page.locator(".header-pilot").getAttribute("href"), "/#pilot");
+          assert.equal((await page.locator(".header-pilot").textContent()).trim(), "Request a pilot");
+        } else {
+          await page.locator(".nav-burger:visible").click();
+          const mobilePrimary = await page.locator(".mobile-section:not(.mobile-section--system) .mobile-link:visible").evaluateAll((links) =>
+            links.map((link) => [link.textContent.trim(), link.getAttribute("href")]),
+          );
+          assert.deepEqual(mobilePrimary, [...expectedPrimary, ["Request a pilot", "/#pilot"]]);
+        }
+        assert.deepEqual(errors, [], `${route} commercial navigation should not emit browser errors`);
+        results.push(`${route}@${viewport.width}x${viewport.height}`);
+        await page.close();
+      }
+      await context.close();
+    }
+
+    const localeContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const localePage = await localeContext.newPage();
+    const localeErrors = [];
+    await wirePage(localePage, tailwindRuntime, localeErrors);
+    await loadRoute(localePage, origin, "/");
+    const missingCommercialTranslations = await localePage.evaluate((keys) => {
+      return ["en", "uk", "ru"].flatMap((lang) =>
+        keys.filter((key) => !window.SemeAI_I18n.dict[lang]?.[key]).map((key) => `${lang}:${key}`),
+      );
+    }, commercialKeys);
+    assert.deepEqual(missingCommercialTranslations, [], "Changed commercial copy should be synchronized across EN/UA/RU");
+    await localePage.locator('[data-lang="uk"]:visible').first().click();
+    assert.equal((await localePage.locator(".site-nav > a.nav-link").first().textContent()).trim(), "Продукт");
+    assert.equal((await localePage.locator(".header-pilot").textContent()).trim(), "Запросити пілот");
+    await localePage.locator('[data-lang="ru"]:visible').first().click();
+    assert.equal((await localePage.locator(".site-nav > a.nav-link").first().textContent()).trim(), "Продукт");
+    assert.equal((await localePage.locator(".header-pilot").textContent()).trim(), "Запросить пилот");
+    assert.deepEqual(localeErrors, []);
+    await localeContext.close();
+    return results;
+  }
   const expected = [
     {
       route: "/",
@@ -653,6 +737,59 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
 }
 
 async function validateSystemMap(browser, origin, tailwindRuntime) {
+  {
+    const expectedHrefs = [
+      "/gate.html",
+      "/benchmark/",
+      "/research.html",
+      "/genesis/",
+      "/book/",
+      "/roadmap/",
+      "https://github.com/SemeAIPletinnya",
+      "/account/",
+    ];
+    const desktopContext = await browser.newContext({ viewport: { width: 1440, height: 900 }, locale: "en-US" });
+    const desktopPage = await desktopContext.newPage();
+    const desktopErrors = [];
+    await wirePage(desktopPage, tailwindRuntime, desktopErrors);
+    await loadRoute(desktopPage, origin, "/skills/");
+    let trigger = desktopPage.locator(".system-map-trigger:visible");
+    assert.equal((await trigger.textContent()).trim().startsWith("Resources"), true);
+    await trigger.focus();
+    await desktopPage.keyboard.press("ArrowDown");
+    const panel = desktopPage.locator(".system-map-panel:visible");
+    assert.equal(await panel.count(), 1);
+    assert.deepEqual(
+      await panel.locator(".system-map-link").evaluateAll((links) => links.map((link) => link.getAttribute("href"))),
+      expectedHrefs,
+    );
+    await desktopPage.keyboard.press("Escape");
+    assert.equal(await trigger.getAttribute("aria-expanded"), "false");
+    await desktopPage.locator('[data-lang="uk"]:visible').first().click();
+    trigger = desktopPage.locator(".system-map-trigger:visible");
+    assert.equal((await trigger.textContent()).trim().startsWith("Ресурси"), true);
+    assert.equal(await trigger.getAttribute("aria-label"), "Відкрити ресурси SemeAI");
+    await desktopPage.locator('[data-lang="ru"]:visible').first().click();
+    trigger = desktopPage.locator(".system-map-trigger:visible");
+    assert.equal((await trigger.textContent()).trim().startsWith("Ресурсы"), true);
+    assert.equal(await trigger.getAttribute("aria-label"), "Открыть ресурсы SemeAI");
+    assert.deepEqual(desktopErrors, []);
+    await desktopContext.close();
+
+    const mobileContext = await browser.newContext({ viewport: { width: 390, height: 844 }, locale: "en-US" });
+    const mobilePage = await mobileContext.newPage();
+    const mobileErrors = [];
+    await wirePage(mobilePage, tailwindRuntime, mobileErrors);
+    await loadRoute(mobilePage, origin, "/skills/");
+    await mobilePage.locator(".nav-burger:visible").click();
+    const supplemental = mobilePage.locator(".mobile-system-link:visible");
+    assert.equal(await supplemental.count(), expectedHrefs.length);
+    assert.deepEqual(await supplemental.evaluateAll((links) => links.map((link) => link.getAttribute("href"))), expectedHrefs);
+    assert.equal(await mobilePage.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth), 0);
+    assert.deepEqual(mobileErrors, []);
+    await mobileContext.close();
+    return { desktopRoutes: expectedHrefs.length, mobileSupplementalRoutes: expectedHrefs.length, localized: ["en", "uk", "ru"], keyboard: ["ArrowDown", "Escape"] };
+  }
   const desktopContext = await browser.newContext({
     viewport: { width: 1440, height: 900 },
     locale: "en-US",
@@ -996,9 +1133,9 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
       "Account should not render unverified social sign-in",
     );
     assert.equal(
-      await page.locator(".header-dashboard").getAttribute("href"),
-      "/account/",
-      "Signed-out public shell should route Workspace through Account",
+      await page.locator(".header-pilot").getAttribute("href"),
+      "/#pilot",
+      "Signed-out public shell should route the primary action to pilot fit review",
     );
     assert.equal(requests.length, 0, "Signed-out Account should not speculate against the API");
 
@@ -1301,9 +1438,9 @@ async function validateAccountWorkspaceFoundation(browser, origin) {
     });
     await page.locator("#account-signed-in:not([hidden])").waitFor();
     assert.equal(
-      await page.locator(".header-dashboard").getAttribute("href"),
+      await page.locator('.system-map-link[href="/workspace/"]').getAttribute("href"),
       "/workspace/",
-      "A locally known session should route the public Workspace action directly",
+      "A locally known session should expose approved Workspace access inside Resources",
     );
     await page.locator("#account-sign-out").click();
     await page.waitForURL(/\/account\/$/, { timeout: 3_000 });
@@ -1498,9 +1635,27 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
   assert.ok(dashboard.canvasWidth > 0, "Dashboard should retain its deterministic operational field");
 
   await loadRoute(page, origin, "/");
+  assert.equal(await page.locator(".commercial-stage [data-home-outcome]").count(), 3);
+  const governedPaths = await page.locator(".commercial-stage").evaluate((stage) => {
+    stage.querySelectorAll(".commercial-candidate,.commercial-release-path").forEach((element) => {
+      element.style.transition = "none";
+    });
+    stage.dataset.motionPhase = "decision";
+    stage.dataset.motionOutcome = "show";
+    void stage.offsetWidth;
+    const showTransform = getComputedStyle(stage.querySelector(".commercial-candidate")).transform;
+    const showPath = getComputedStyle(stage.querySelector(".commercial-release-path")).strokeDashoffset;
+    stage.dataset.motionOutcome = "review";
+    void stage.offsetWidth;
+    const reviewTransform = getComputedStyle(stage.querySelector(".commercial-candidate")).transform;
+    const reviewPath = getComputedStyle(stage.querySelector(".commercial-release-path")).strokeDashoffset;
+    return { showTransform, showPath, reviewTransform, reviewPath };
+  });
+  assert.notEqual(governedPaths.showTransform, governedPaths.reviewTransform, "Only SHOW should move the candidate across the boundary");
+  assert.notEqual(governedPaths.showPath, governedPaths.reviewPath, "Only SHOW should reveal the release path");
   await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
   await page.waitForFunction(
-    () => document.querySelector(".hero")?.dataset.motionState === "paused",
+    () => document.querySelector(".commercial-stage")?.dataset.motionState === "paused",
   );
   await page.evaluate(() => {
     window.__semeaiRouteRafCount = 0;
@@ -1514,7 +1669,7 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
 
   assert.deepEqual(errors, [], "semantic motion states should remain error-free");
   await context.close();
-  return "Gate focus, Research admission, Dashboard calm state, Home offscreen pause verified";
+  return "Gate focus, Research admission, Dashboard calm state, Home SHOW-only crossing and offscreen pause verified";
 }
 
 async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
@@ -1964,6 +2119,7 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
     assert.equal(await page.locator("[data-axiom-agent]").count(), 1);
     assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "false");
     assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "idle");
+    assert.equal(await page.locator(".axiom-agent__cue").isVisible(), true);
 
     await page.locator(".axiom-agent__launcher").click();
     assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "true");
@@ -1976,6 +2132,9 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
     );
     assert.equal(await page.locator(".axiom-agent__query input").count(), 1);
     assert.equal(await page.locator(".axiom-agent__query input").getAttribute("maxlength"), "256");
+    assert.equal(await page.locator(".axiom-agent__prompts button:visible").count(), 3);
+    assert.equal(await page.locator(".axiom-agent__pilot-link").getAttribute("href"), "/#pilot");
+    assert.equal(await page.locator(".axiom-agent__cue").isHidden(), true);
     assert.equal(await page.locator(".axiom-agent__source-list a").count(), 3);
 
     const geometry = await page.evaluate(() => {
@@ -2143,10 +2302,12 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
 
       await page.evaluate(() => window.SemeAI_I18n.setLang("uk"));
       assert.equal(await page.locator(".axiom-agent__mode").innerText(), "Публічно");
-      assert.equal(await page.locator(".axiom-agent__query button").innerText(), "Запитати");
+      assert.equal(await page.locator(".axiom-agent__query-footer button").innerText(), "Запитати");
+      assert.match(await page.locator(".axiom-agent__pilot-link").innerText(), /Запросити пілот Gate/);
       await page.evaluate(() => window.SemeAI_I18n.setLang("ru"));
       assert.equal(await page.locator(".axiom-agent__mode").innerText(), "Публично");
-      assert.equal(await page.locator(".axiom-agent__query button").innerText(), "Спросить");
+      assert.equal(await page.locator(".axiom-agent__query-footer button").innerText(), "Спросить");
+      assert.match(await page.locator(".axiom-agent__pilot-link").innerText(), /Запросить пилот Gate/);
     }
 
     await page.keyboard.press("Escape");
