@@ -45,5 +45,8 @@ jobs:
       - name: Production V2 Gate and leakage contracts
         run: npm run test:v2
 
+      - name: Semantic motion and spatial-depth contracts
+        run: npm run test:motion
+
       - name: Cross-route browser contract
         run: npm run test:site
