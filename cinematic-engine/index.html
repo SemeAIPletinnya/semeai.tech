@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en" data-cinematic-scene="field">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self' https://api.semeai.tech https://api.github.com; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'"
+    />
+    <meta
+      name="description"
+      content="An isolated cinematic proof for the real SemeAI Release Field, Gate, and seven-signal Benchmark."
+    />
+    <title>SemeAI — Cinematic Interaction Engine Proof</title>
+    <link rel="icon" href="/assets/brand/semeai-favicon.svg" />
+    <link rel="stylesheet" href="/cinematic-engine/assets/engine.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#cinematic-main">Skip to the current world</a>
+    <noscript>
+      <section class="nojs-contract">
+        <p>SEMEAI / CINEMATIC PROOF / JAVASCRIPT OFF</p>
+        <h1>The release contract remains readable.</h1>
+        <p>
+          A model creates a candidate. The SaC/PoR Gate remains the final release authority.
+          SHOW / PROCEED may release only the exact evaluated candidate. REVIEW / NEEDS_REVIEW
+          and BLOCK / SILENCE release no candidate content. Decision audit remains available.
+        </p>
+        <h2>Release Field</h2>
+        <p>Possibility may approach the decision boundary. It cannot grant itself release.</p>
+        <h2>Gate Chamber</h2>
+        <p>SHOW crosses. REVIEW remains suspended. BLOCK is withheld. ERROR fails closed.</p>
+        <h2>Evidence Observatory</h2>
+        <p>
+          The real Benchmark policy evaluates seven categories. No score is shown here without
+          the analyzer and its presentation decision.
+        </p>
+        <h2>Axiom</h2>
+        <p>Axiom witnesses state and continuity. It is not release authority.</p>
+      </section>
+    </noscript>
+
+    <canvas id="cinematic-canvas" class="cinematic-canvas" aria-hidden="true"></canvas>
+    <div class="cinematic-grain" aria-hidden="true"></div>
+    <div class="cinematic-vignette" aria-hidden="true"></div>
+
+    <header class="cinematic-header">
+      <a class="cinematic-brand" href="/" aria-label="SemeAI production home">
+        <img src="/assets/brand/semeai-mark.svg" alt="" />
+        <span>SemeAI</span>
+        <small>CINEMATIC ENGINE / ISOLATED PROOF</small>
+      </a>
+      <nav class="world-nav" aria-label="Cinematic proof worlds">
+        <button type="button" data-scene-target="field" aria-current="page"><span>01</span> FIELD</button>
+        <button type="button" data-scene-target="gate"><span>02</span> GATE</button>
+        <button type="button" data-scene-target="benchmark"><span>03</span> EVIDENCE</button>
+      </nav>
+      <div class="header-tools">
+        <p class="engine-health"><i aria-hidden="true"></i><span data-copy="engineLive">ENGINE LIVE</span></p>
+        <div class="language-switch" role="group" aria-label="Language">
+          <button type="button" data-lang="en" aria-pressed="true">EN</button>
+          <button type="button" data-lang="uk" aria-pressed="false">UA</button>
+          <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="cinematic-main" class="cinematic-main">
+      <section class="world world--field is-active" data-world="field" aria-labelledby="field-title">
+        <div class="world-copy world-copy--field">
+          <p class="world-index"><span>01</span><b data-copy="fieldIndex">RELEASE FIELD</b></p>
+          <h1 id="field-title"><span data-copy="fieldTitleA">POSSIBILITY</span><em data-copy="fieldTitleB">HAS WEIGHT.</em></h1>
+          <p class="world-lead" data-copy="fieldLead">
+            A candidate can move, gather context, and approach the boundary. Authority does not move with it.
+          </p>
+          <div class="field-contract" aria-label="Release sequence">
+            <span><b>01</b><small data-copy="fieldCandidate">CANDIDATE</small></span>
+            <i aria-hidden="true"></i>
+            <span><b>02</b><small data-copy="fieldBoundary">BOUNDARY</small></span>
+            <i aria-hidden="true"></i>
+            <span><b>03</b><small data-copy="fieldTrace">TRACE</small></span>
+          </div>
+          <button class="cinematic-action" type="button" data-field-depart>
+            <span data-copy="fieldCta">CARRY THE TRACE TO THE GATE</span><i aria-hidden="true">↗</i>
+          </button>
+        </div>
+        <aside class="world-telemetry world-telemetry--field" aria-label="Field telemetry">
+          <p><span data-copy="fieldObject">OBJECT</span><strong>UNRELEASED CANDIDATE</strong></p>
+          <p><span data-copy="fieldForce">FIELD FORCE</span><strong data-field-force>0.38</strong></p>
+          <p><span data-copy="fieldAuthority">AUTHORITY</span><strong>EXTERNAL / GATE</strong></p>
+          <p><span data-copy="fieldState">STATE</span><strong data-field-state>BOUND</strong></p>
+        </aside>
+        <div class="field-instruction" aria-hidden="true">
+          <span></span><p data-copy="fieldPointer">Move the pointer. The field bends; the boundary holds.</p>
+        </div>
+      </section>
+
+      <section class="world world--gate" data-world="gate" aria-labelledby="gate-title" hidden>
+        <div class="world-copy world-copy--gate">
+          <p class="world-index"><span>02</span><b data-copy="gateIndex">GATE CHAMBER</b></p>
+          <h1 id="gate-title"><span data-copy="gateTitleA">ONE BOUNDARY.</span><em data-copy="gateTitleB">FOUR PHYSICAL FATES.</em></h1>
+          <p class="world-lead" data-copy="gateLead">
+            The live production response arrives first. Only then does the chamber resolve SHOW, REVIEW, BLOCK, or ERROR.
+          </p>
+        </div>
+
+        <div class="gate-console" data-gate-console data-decision="IDLE">
+          <div class="gate-console__header">
+            <p><i aria-hidden="true"></i><span data-copy="gateLive">LIVE PRODUCTION GATE</span></p>
+            <code>api.semeai.tech/v0/demo/check</code>
+          </div>
+          <div class="scenario-selector" role="group" aria-label="Published deterministic Gate scenarios">
+            <button type="button" data-gate-scenario="supported_answer" aria-pressed="true"><span>SHOW</span><b data-copy="scenarioShow">SUPPORTED</b></button>
+            <button type="button" data-gate-scenario="unsupported_claim" aria-pressed="false"><span>REVIEW</span><b data-copy="scenarioReview">AMBIGUOUS</b></button>
+            <button type="button" data-gate-scenario="fake_promo_code" aria-pressed="false"><span>BLOCK</span><b data-copy="scenarioBlock">INVENTED</b></button>
+            <button type="button" data-gate-scenario="__error__" aria-pressed="false" title="Deliberate local transport fault injection; not a Gate decision"><span>ERROR</span><b data-copy="scenarioError">FAIL CLOSED</b></button>
+          </div>
+          <button class="gate-run" type="button" data-gate-run>
+            <span data-copy="gateRun">RUN THE REAL GATE</span><i aria-hidden="true"></i>
+          </button>
+          <p class="gate-status" role="status" aria-live="polite" data-gate-status data-copy="gateReady">READY / NO CANDIDATE RELEASED</p>
+        </div>
+
+        <aside class="gate-terminal" data-gate-terminal data-decision="IDLE" aria-live="polite">
+          <div class="gate-terminal__state">
+            <span data-copy="gateTerminal">TERMINAL STATE</span><strong data-gate-public>IDLE</strong>
+          </div>
+          <h2 data-gate-headline data-copy="gateIdleTitle">Awaiting an authoritative response.</h2>
+          <p data-gate-reason data-copy="gateIdleBody">The candidate remains on the unreleased side.</p>
+          <div class="released-surface" data-gate-release hidden>
+            <span data-copy="releasedAnswer">RELEASED ANSWER / EXACT CANDIDATE</span>
+            <blockquote data-gate-answer></blockquote>
+            <small data-copy="noMutation">Hash verified. No post-Gate mutation.</small>
+          </div>
+          <dl class="gate-receipt" data-gate-receipt hidden>
+            <div><dt data-copy="publicState">PUBLIC STATE</dt><dd data-gate-action></dd></div>
+            <div><dt data-copy="canonicalState">CANONICAL</dt><dd data-gate-internal></dd></div>
+            <div><dt data-copy="receiptTrace">RECEIPT TRACE</dt><dd data-gate-receipt-id></dd></div>
+            <div><dt data-copy="executionReceipt">EXECUTION RECEIPT</dt><dd data-copy="notCreated">NOT CREATED</dd></div>
+          </dl>
+        </aside>
+      </section>
+
+      <section class="world world--benchmark" data-world="benchmark" aria-labelledby="benchmark-title" hidden>
+        <div class="world-copy world-copy--benchmark">
+          <p class="world-index"><span>03</span><b data-copy="benchmarkIndex">EVIDENCE OBSERVATORY</b></p>
+          <h1 id="benchmark-title"><span data-copy="benchmarkTitleA">SEVEN SIGNALS.</span><em data-copy="benchmarkTitleB">ONE ASSEMBLED TRACE.</em></h1>
+          <p class="world-lead" data-copy="benchmarkLead">
+            Real public GitHub evidence controls seven bodies. The score arrives only after the policy, signals, and presentation decision settle.
+          </p>
+        </div>
+
+        <form class="benchmark-console" data-benchmark-form>
+          <label for="cinematic-repository" data-copy="benchmarkRepository">PUBLIC REPOSITORY</label>
+          <div>
+            <input id="cinematic-repository" name="repository" value="SemeAIPletinnya/silence-as-control" autocomplete="off" spellcheck="false" />
+            <button type="submit" data-benchmark-run><span data-copy="benchmarkRun">ASSEMBLE REAL EVIDENCE</span><i aria-hidden="true"></i></button>
+          </div>
+          <p role="status" aria-live="polite" data-benchmark-status data-copy="benchmarkReady">READY / NO SCORE ANNOUNCED</p>
+        </form>
+
+        <aside class="benchmark-result" data-benchmark-result data-state="IDLE">
+          <div class="benchmark-result__score">
+            <span data-copy="assembledScore">ASSEMBLED SCORE</span>
+            <strong data-benchmark-score>—</strong><small>/ 100</small>
+          </div>
+          <div class="benchmark-result__source">
+            <p><span data-copy="sourceMode">SOURCE</span><strong data-benchmark-source>NOT CAPTURED</strong></p>
+            <p><span data-copy="presentationGate">PRESENTATION GATE</span><strong data-benchmark-gate>—</strong></p>
+            <p><span data-copy="sourceCommit">SOURCE COMMIT</span><code data-benchmark-commit>—</code></p>
+            <p><span data-copy="benchmarkReceipt">LOCAL RECEIPT</span><code data-benchmark-receipt>—</code></p>
+          </div>
+          <ol class="signal-inspector" data-signal-inspector aria-label="Seven Benchmark signals"></ol>
+        </aside>
+      </section>
+    </main>
+
+    <aside class="axiom-witness" data-axiom-witness data-semantic-state="IDLE" aria-label="Axiom witness presence">
+      <div class="axiom-witness__beam" aria-hidden="true"></div>
+      <div class="axiom-witness__halo" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="axiom-witness__sprite" aria-hidden="true"></div>
+      <div class="axiom-witness__copy">
+        <span>AXIOM / <b data-axiom-state>IDLE</b></span>
+        <p data-axiom-message data-copy="axiomField">Witnessing possibility. No release authority.</p>
+      </div>
+    </aside>
+
+    <footer class="cinematic-footer">
+      <p><span>FROZEN BASELINE</span><code>1fc5b22ba1d83ed0de5cfff6e6e4ec2e02ebadf0</code></p>
+      <p data-copy="prototypeBoundary">ISOLATED PROTOTYPE / NO PR / NO DEPLOY</p>
+      <a href="/gate.html" data-copy="openProduction">OPEN FROZEN PRODUCTION GATE ↗</a>
+    </footer>
+
+    <script src="/assets/js/api.js"></script>
+    <script src="/cinematic-engine/assets/proof-config.js"></script>
+    <script src="/benchmark/assets/benchmark.js"></script>
+    <script type="module" src="/cinematic-engine/assets/engine.mjs"></script>
+  </body>
+</html>
