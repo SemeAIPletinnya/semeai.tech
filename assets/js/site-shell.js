@@ -1,10 +1,10 @@
 (() => {
   const path = (location.pathname || "").toLowerCase();
   const routes = [
-    { key: "product", i18n: "shell.nav.product", label: "Product", href: "/#product" },
-    { key: "how", i18n: "shell.nav.how", label: "How it works", href: "/#how-it-works" },
-    { key: "use-cases", i18n: "shell.nav.useCases", label: "Use cases", href: "/#use-cases" },
-    { key: "evidence-anchor", i18n: "shell.nav.evidence", label: "Evidence", href: "/#evidence" },
+    { key: "home", i18n: "v2.nav.field", label: "Field", href: "/" },
+    { key: "gate", i18n: "v2.nav.gate", label: "Gate", href: "/gate.html" },
+    { key: "benchmark", i18n: "v2.nav.lab", label: "Lab", href: "/benchmark/" },
+    { key: "genesis", i18n: "v2.nav.genesis", label: "Genesis", href: "/genesis/" },
   ];
   const publicRouteContexts = [
     {
