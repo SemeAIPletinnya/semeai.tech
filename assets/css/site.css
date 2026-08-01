@@ -799,6 +799,120 @@ code { font-family: var(--mono); font-size: 0.9em; color: var(--accent-soft); }
   line-height: 1.6;
 }
 
+.commercial-demo__scenarios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 1.25rem;
+}
+
+.commercial-demo__scenario {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--mute);
+  padding: 0.62rem 0.82rem;
+  font: 700 0.72rem/1.15 "JetBrains Mono", monospace;
+  cursor: pointer;
+}
+
+.commercial-demo__scenario:hover,
+.commercial-demo__scenario:focus-visible,
+.commercial-demo__scenario.is-active {
+  border-color: rgba(134, 237, 245, 0.62);
+  color: #e9fbff;
+  background: rgba(134, 237, 245, 0.09);
+}
+
+.commercial-demo__safety,
+.commercial-demo__status,
+.commercial-demo__boundary {
+  margin-top: 1rem;
+  font-size: 0.82rem;
+}
+
+.commercial-demo__safety,
+.commercial-demo__boundary {
+  border-left: 2px solid rgba(255, 208, 138, 0.68);
+  padding-left: 0.85rem;
+}
+
+.commercial-demo__details {
+  margin-top: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  background: rgba(0, 0, 0, 0.24);
+  overflow: hidden;
+}
+
+.commercial-demo__details summary {
+  padding: 0.85rem 1rem;
+  color: #dceef3;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.commercial-demo__details pre {
+  max-height: 20rem;
+  margin: 0;
+  padding: 1rem;
+  border-top: 1px solid var(--line);
+  overflow: auto;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--mute);
+  font: 0.72rem/1.55 "JetBrains Mono", monospace;
+}
+
+.commercial-demo__result {
+  --demo-state: var(--mute);
+  box-shadow: inset 0 2px 0 var(--demo-state);
+}
+
+.commercial-demo__result[data-decision="SHOW"] { --demo-state: #7af0b1; }
+.commercial-demo__result[data-decision="REVIEW"] { --demo-state: #ffd08a; }
+.commercial-demo__result[data-decision="BLOCK"] { --demo-state: #b69cff; }
+.commercial-demo__result[data-decision="ERROR"] { --demo-state: #ff8d8d; }
+.commercial-demo__result[data-decision="WORKING"] { --demo-state: #86edf5; }
+
+.commercial-demo__state {
+  color: var(--demo-state);
+  font: 800 0.72rem/1 "JetBrains Mono", monospace;
+  letter-spacing: 0.12em;
+}
+
+.commercial-demo__fields {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+}
+
+.commercial-demo__fields[hidden] { display: none; }
+
+.commercial-demo__fields div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.42fr) 1fr;
+  gap: 0.8rem;
+  padding-bottom: 0.65rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.commercial-demo__fields dt {
+  color: var(--mute);
+  font-size: 0.78rem;
+}
+
+.commercial-demo__fields dd {
+  margin: 0;
+  color: #f1fbff;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 620px) {
+  .commercial-demo__scenario { width: 100%; text-align: left; }
+  .commercial-demo__fields div { grid-template-columns: 1fr; gap: 0.3rem; }
+}
+
 /* Information architecture and route transitions */
 .architecture-flow {
   display: grid;

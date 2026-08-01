@@ -529,6 +529,7 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
   {
     const pricingSource = fs.readFileSync(path.join(ROOT, "pricing.html"), "utf8");
     const homeSource = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+    const commercialDemoSource = fs.readFileSync(path.join(ROOT, "assets", "js", "commercial-gate-demo.js"), "utf8");
     const supportSource = fs.readFileSync(path.join(ROOT, "pilots", "support.html"), "utf8");
     const dashboardSource = fs.readFileSync(path.join(ROOT, "dashboard.html"), "utf8");
     const changedCommercialSource = [
@@ -536,6 +537,7 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
       "pricing.html",
       path.join("assets", "js", "site-shell.js"),
       path.join("assets", "js", "axiom-agent.js"),
+      path.join("assets", "js", "commercial-gate-demo.js"),
     ].map((file) => fs.readFileSync(path.join(ROOT, file), "utf8")).join("\n");
     const commercialTranslationSource = [
       "index.html", "pricing.html", "dashboard.html", "register.html", "forgot.html", "reset.html", "invite.html", "integrate.html", "self-hosted.html", "gate.html", "article.html", path.join("account", "index.html"), path.join("pilots", "support.html"),
@@ -544,6 +546,10 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
     assert.equal(/SemeAI\.plans\(|price_usd|Checkout Starter|Checkout Growth/.test(pricingSource), false, "Public Pricing must remain fit-review only");
     assert.match(homeSource, /class="legacy-home-surface" hidden inert aria-hidden="true"/);
     assert.match(homeSource, /if \(document\.querySelector\("\.legacy-home-surface:not\(\[hidden\]\)"\)\) \{/);
+    assert.match(homeSource, /id="live-gate"/);
+    assert.match(homeSource, /id="commercial-demo-run"/);
+    assert.match(commercialDemoSource, /runButton\.addEventListener\("click", runGate\)/);
+    assert.equal(/setTimeout\([^\n]*runGate|runGate\(\);/.test(commercialDemoSource), false, "Live Gate must never run automatically");
     assert.equal(/gate\.safe_fallback|return\s+["']A support operator/.test(supportSource), false, "Support example must not substitute post-Gate text");
     assert.match(supportSource, /return candidate; \/\/ exact evaluated candidate/);
     assert.match(supportSource, /routeDecisionOutOfBand\(decision\)/);
@@ -565,8 +571,24 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
       for (const route of routes) {
         const page = await context.newPage();
         const errors = [];
+        const demoRequests = [];
+        page.on("request", (request) => {
+          if (new URL(request.url()).pathname === "/v0/demo/check") demoRequests.push(request.postDataJSON());
+        });
         await wirePage(page, tailwindRuntime, errors);
         await loadRoute(page, origin, route);
+        if (route === "/") {
+          assert.equal(demoRequests.length, 0, "Home must not run the live Gate automatically");
+          assert.equal(await page.locator('a[href="#live-gate"]').count() >= 1, true);
+          if (viewport.width === 1440) {
+            await page.locator("#commercial-demo-run").click();
+            await page.locator('#commercial-demo-result[data-decision="BLOCK"]').waitFor();
+            assert.equal(await page.locator("#commercial-demo-action").textContent(), "BLOCK");
+            assert.equal(await page.locator("#commercial-demo-internal").textContent(), "SILENCE");
+            assert.match(await page.locator("#commercial-demo-json").textContent(), /"audit_preserved": true/);
+            assert.equal(demoRequests.length, 1, "One explicit click should create one bounded demo request");
+          }
+        }
         assert.equal(await page.locator(".site-route-context").count(), 0, `${route} should not render the legacy route counter`);
         if (viewport.width === 1440) {
           const primary = await page.locator(".site-nav > a.nav-link").evaluateAll((links) =>
