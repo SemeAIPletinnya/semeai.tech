@@ -529,11 +529,13 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
   {
     const pricingSource = fs.readFileSync(path.join(ROOT, "pricing.html"), "utf8");
     const homeSource = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+    const gateSource = fs.readFileSync(path.join(ROOT, "gate.html"), "utf8");
     const commercialDemoSource = fs.readFileSync(path.join(ROOT, "assets", "js", "commercial-gate-demo.js"), "utf8");
     const supportSource = fs.readFileSync(path.join(ROOT, "pilots", "support.html"), "utf8");
     const dashboardSource = fs.readFileSync(path.join(ROOT, "dashboard.html"), "utf8");
     const changedCommercialSource = [
       "index.html",
+      "gate.html",
       "pricing.html",
       path.join("assets", "js", "site-shell.js"),
       path.join("assets", "js", "axiom-agent.js"),
@@ -542,14 +544,19 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
     const commercialTranslationSource = [
       "index.html", "pricing.html", "dashboard.html", "register.html", "forgot.html", "reset.html", "invite.html", "integrate.html", "self-hosted.html", "gate.html", "article.html", path.join("account", "index.html"), path.join("pilots", "support.html"),
     ].map((file) => fs.readFileSync(path.join(ROOT, file), "utf8")).join("\n");
-    const commercialKeys = [...new Set([...commercialTranslationSource.matchAll(/data-i18n(?:-aria)?="(commercial\.[^"]+)"/g)].map((match) => match[1]))];
+    const commercialKeys = [...new Set([...commercialTranslationSource.matchAll(/data-i18n(?:-page|-aria)?="((?:commercial|v2)\.[^"]+)"/g)].map((match) => match[1]))];
     assert.equal(/SemeAI\.plans\(|price_usd|Checkout Starter|Checkout Growth/.test(pricingSource), false, "Public Pricing must remain fit-review only");
-    assert.match(homeSource, /class="legacy-home-surface" hidden inert aria-hidden="true"/);
-    assert.match(homeSource, /if \(document\.querySelector\("\.legacy-home-surface:not\(\[hidden\]\)"\)\) \{/);
-    assert.match(homeSource, /id="live-gate"/);
-    assert.match(homeSource, /id="commercial-demo-run"/);
+    assert.match(homeSource, /data-v2-world="field"/);
+    assert.match(homeSource, /href="\/gate\.html#live-gate"/);
+    assert.equal(/data-home-outcome|data-decision-trigger|id="commercial-demo-run"/.test(homeSource), false, "Home must map the release boundary without simulating Gate outcomes");
+    assert.match(gateSource, /id="live-gate"/);
+    assert.match(gateSource, /id="commercial-demo-run"/);
+    assert.match(gateSource, /id="commercial-demo-release"[^>]*hidden/);
     assert.match(commercialDemoSource, /runButton\.addEventListener\("click", runGate\)/);
     assert.equal(/setTimeout\([^\n]*runGate|runGate\(\);/.test(commercialDemoSource), false, "Live Gate must never run automatically");
+    assert.equal(/ai_answer|business_data|business_rules|heldCopy|safe_fallback/.test(commercialDemoSource), false, "Held scenario candidate and fallback content must be absent from the browser Gate controller");
+    assert.match(commercialDemoSource, /supported_answer: "Use promo code SAVE30 to get 30% off\."/);
+    assert.match(commercialDemoSource, /demoCheck\(\{ scenario_id: SCENARIOS\[selected\]\.scenario_id \}\)/);
     assert.equal(/gate\.safe_fallback|return\s+["']A support operator/.test(supportSource), false, "Support example must not substitute post-Gate text");
     assert.match(supportSource, /return candidate; \/\/ exact evaluated candidate/);
     assert.match(supportSource, /routeDecisionOutOfBand\(decision\)/);
@@ -560,10 +567,10 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
     assert.equal(/\/v0\/pilot-requests|\/v0\/commercial-events|posthog|analytics endpoint/i.test(changedCommercialSource), false, "Held intake and analytics capabilities must remain absent");
     const routes = ["/", "/gate.html", "/benchmark/", "/genesis/", "/book/", "/research.html"];
     const expectedPrimary = [
-      ["Product", "/#product"],
-      ["How it works", "/#how-it-works"],
-      ["Use cases", "/#use-cases"],
-      ["Evidence", "/#evidence"],
+      ["Field", "/"],
+      ["Gate", "/gate.html"],
+      ["Lab", "/benchmark/"],
+      ["Genesis", "/genesis/"],
     ];
     const results = [];
     for (const viewport of [{ width: 390, height: 844 }, { width: 1440, height: 900 }]) {
@@ -579,28 +586,30 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
         await loadRoute(page, origin, route);
         if (route === "/") {
           assert.equal(demoRequests.length, 0, "Home must not run the live Gate automatically");
-          assert.equal(await page.locator('a[href="#live-gate"]').count() >= 1, true);
-          if (viewport.width === 1440) {
-            await page.locator("#commercial-demo-run").click();
-            await page.locator('#commercial-demo-result[data-decision="BLOCK"]').waitFor();
-            assert.equal(await page.locator("#commercial-demo-action").textContent(), "BLOCK");
-            assert.equal(await page.locator("#commercial-demo-internal").textContent(), "SILENCE");
-            assert.match(await page.locator("#commercial-demo-json").textContent(), /"audit_preserved": true/);
-            assert.equal(demoRequests.length, 1, "One explicit click should create one bounded demo request");
-          }
+          assert.equal(await page.locator('a[href="/gate.html#live-gate"]').count() >= 1, true);
+          assert.equal(await page.locator("#commercial-demo-run").count(), 0);
+        }
+        if (route === "/gate.html" && viewport.width === 1440) {
+          await page.locator("#commercial-demo-run").click();
+          await page.locator('#commercial-demo-result[data-decision="BLOCK"]').waitFor();
+          assert.equal(await page.locator("#commercial-demo-action").textContent(), "BLOCK");
+          assert.equal(await page.locator("#commercial-demo-internal").textContent(), "SILENCE");
+          assert.match(await page.locator("#commercial-demo-json").textContent(), /"audit_preserved": true/);
+          assert.equal(await page.locator("#commercial-demo-release").isHidden(), true, "BLOCK must expose no candidate surface");
+          assert.deepEqual(demoRequests, [{ scenario_id: "supported_answer" }], "The public Gate request must contain only the published scenario identifier");
         }
         assert.equal(await page.locator(".site-route-context").count(), 0, `${route} should not render the legacy route counter`);
         if (viewport.width === 1440) {
           const primary = await page.locator(".site-nav > a.nav-link").evaluateAll((links) =>
             links.map((link) => [link.textContent.trim(), link.getAttribute("href")]),
           );
-          assert.deepEqual(primary, expectedPrimary, `${route} should expose the commercial primary IA`);
+          assert.deepEqual(primary, expectedPrimary, `${route} should expose the four production V2 worlds`);
           assert.equal(await page.locator(".header-pilot").getAttribute("href"), "/#pilot");
           assert.equal((await page.locator(".header-pilot").textContent()).trim(), "Request a pilot");
         } else {
           await page.locator(".nav-burger:visible").click();
           const mobilePrimary = await page.locator(".mobile-section:not(.mobile-section--system) .mobile-link:visible").evaluateAll((links) =>
-            links.map((link) => [link.textContent.trim(), link.getAttribute("href")]),
+            links.map((link) => [(link.querySelector("strong")?.textContent || link.textContent).trim(), link.getAttribute("href")]),
           );
           assert.deepEqual(mobilePrimary, [...expectedPrimary, ["Request a pilot", "/#pilot"]]);
         }
@@ -621,12 +630,12 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
         keys.filter((key) => !window.SemeAI_I18n.dict[lang]?.[key]).map((key) => `${lang}:${key}`),
       );
     }, commercialKeys);
-    assert.deepEqual(missingCommercialTranslations, [], "Changed commercial copy should be synchronized across EN/UA/RU");
+    assert.deepEqual(missingCommercialTranslations, [], "Changed production V2 copy should be synchronized across EN/UA/RU");
     await localePage.locator('[data-lang="uk"]:visible').first().click();
-    assert.equal((await localePage.locator(".site-nav > a.nav-link").first().textContent()).trim(), "Продукт");
+    assert.equal((await localePage.locator(".site-nav > a.nav-link").first().textContent()).trim(), "Поле");
     assert.equal((await localePage.locator(".header-pilot").textContent()).trim(), "Запросити пілот");
     await localePage.locator('[data-lang="ru"]:visible').first().click();
-    assert.equal((await localePage.locator(".site-nav > a.nav-link").first().textContent()).trim(), "Продукт");
+    assert.equal((await localePage.locator(".site-nav > a.nav-link").first().textContent()).trim(), "Поле");
     assert.equal((await localePage.locator(".header-pilot").textContent()).trim(), "Запросить пилот");
     assert.deepEqual(localeErrors, []);
     await localeContext.close();
@@ -1600,26 +1609,34 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
   const page = await context.newPage();
   const errors = [];
   await wirePage(page, tailwindRuntime, errors);
+  await page.route("https://api.semeai.tech/v0/demo/check", (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        action: "SHOW",
+        internal_decision: "PROCEED",
+        show_to_user: true,
+        audit_preserved: true,
+        reason: "Bounded supported fixture.",
+        audit_id: "decision-show-fixture",
+        mapping: { SHOW: "PROCEED", REVIEW: "NEEDS_REVIEW", BLOCK: "SILENCE" },
+        answer_hash: "6ca851aa85f2cf479fc2562dab09195e91229d17290720682aa0ae604bffb3e8",
+      }),
+    }),
+  );
 
   await loadRoute(page, origin, "/gate.html");
-  assert.equal(await page.locator(".gate-state-visual").getAttribute("aria-hidden"), "true");
-  assert.equal(
-    await page.locator(".gate-opening .gate-state-visual").count(),
-    1,
-    "Gate authority geometry should be part of the opening composition",
-  );
-  assert.ok(
-    (await page.locator(".gate-authority-instrument").boundingBox()).y < 900,
-    "Gate authority geometry should enter the first desktop viewport",
-  );
-  for (const state of ["show", "review", "block"]) {
-    await page.locator(`[data-gate-state="${state}"]`).focus();
-    assert.equal(
-      await page.locator(".gate-state-visual").getAttribute("data-motion-phase"),
-      state,
-      `Gate keyboard focus should expose the ${state} structural state`,
-    );
-  }
+  assert.equal(await page.locator("#live-gate").getAttribute("data-decision"), "IDLE");
+  assert.ok((await page.locator(".threshold-aperture").boundingBox()).y < 900, "The live threshold geometry should enter the first desktop viewport");
+  assert.equal(await page.locator("#commercial-demo-release").isHidden(), true);
+  await page.locator("#commercial-demo-run").click();
+  await page.locator('#live-gate[data-decision="SHOW"]').waitFor();
+  await page.waitForTimeout(650);
+  assert.equal(await page.locator("#commercial-demo-answer").textContent(), "Use promo code SAVE30 to get 30% off.");
+  assert.equal(await page.locator("#commercial-demo-release").isVisible(), true, "SHOW should reveal the exact evaluated candidate");
+  assert.equal(await page.locator("[data-machine-step].is-active").count(), 5, "A real terminal decision should advance the five causal stages");
+  assert.equal(await page.locator("[data-machine-decision]").textContent(), "PROCEED");
 
   await loadRoute(page, origin, "/research.html");
   assert.equal(
@@ -1657,41 +1674,17 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
   assert.ok(dashboard.canvasWidth > 0, "Dashboard should retain its deterministic operational field");
 
   await loadRoute(page, origin, "/");
-  assert.equal(await page.locator(".commercial-stage [data-home-outcome]").count(), 3);
-  const governedPaths = await page.locator(".commercial-stage").evaluate((stage) => {
-    stage.querySelectorAll(".commercial-candidate,.commercial-release-path").forEach((element) => {
-      element.style.transition = "none";
-    });
-    stage.dataset.motionPhase = "decision";
-    stage.dataset.motionOutcome = "show";
-    void stage.offsetWidth;
-    const showTransform = getComputedStyle(stage.querySelector(".commercial-candidate")).transform;
-    const showPath = getComputedStyle(stage.querySelector(".commercial-release-path")).strokeDashoffset;
-    stage.dataset.motionOutcome = "review";
-    void stage.offsetWidth;
-    const reviewTransform = getComputedStyle(stage.querySelector(".commercial-candidate")).transform;
-    const reviewPath = getComputedStyle(stage.querySelector(".commercial-release-path")).strokeDashoffset;
-    return { showTransform, showPath, reviewTransform, reviewPath };
-  });
-  assert.notEqual(governedPaths.showTransform, governedPaths.reviewTransform, "Only SHOW should move the candidate across the boundary");
-  assert.notEqual(governedPaths.showPath, governedPaths.reviewPath, "Only SHOW should reveal the release path");
-  await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
-  await page.waitForFunction(
-    () => document.querySelector(".commercial-stage")?.dataset.motionState === "paused",
-  );
+  assert.equal(await page.locator(".release-field--production [data-decision-trigger]").count(), 0, "The Release Field must not simulate a Gate decision");
+  assert.equal(await page.locator('a.scene-run[href="/gate.html#live-gate"]').count(), 1);
   await page.evaluate(() => {
     window.__semeaiRouteRafCount = 0;
   });
   await page.waitForTimeout(300);
-  assert.equal(
-    await page.evaluate(() => window.__semeaiRouteRafCount),
-    0,
-    "Home should pause its frame loop when the hero is offscreen",
-  );
+  assert.ok(await page.evaluate(() => window.__semeaiRouteRafCount > 0), "Home should retain a low-intensity ambient field in the first viewport");
 
   assert.deepEqual(errors, [], "semantic motion states should remain error-free");
   await context.close();
-  return "Gate focus, Research admission, Dashboard calm state, Home SHOW-only crossing and offscreen pause verified";
+  return "Live Gate causal SHOW, Research admission, Dashboard calm state, and non-authoritative Home ambient field verified";
 }
 
 async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
@@ -1824,7 +1817,7 @@ async function validateGenesisEvolutionTrace(browser, origin, tailwindRuntime) {
   assert.equal(reducedTrace.focus, "lineage");
   assert.equal(reducedTrace.hash, "#lineage");
   assert.equal(reducedTrace.motionEnabled, false);
-  assert.match(reducedTrace.transition, /0\.001ms|0s/);
+  assert.match(reducedTrace.transition, /0\.001ms|1e-06s|0s/);
 
   const unexpectedExternal = requests.filter((url) => {
     const parsed = new URL(url);
@@ -2141,7 +2134,9 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
     assert.equal(await page.locator("[data-axiom-agent]").count(), 1);
     assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "false");
     assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "idle");
-    assert.equal(await page.locator(".axiom-agent__cue").isVisible(), true);
+    const compactV2Witness = await page.locator("body").evaluate((body) => body.classList.contains("v2-production") || body.classList.contains("v2-production-world"));
+    assert.equal(await page.locator(".axiom-agent__launcher").isVisible(), true);
+    assert.equal(await page.locator(".axiom-agent__cue").isVisible(), !compactV2Witness, "V2 worlds should keep Axiom available without an unsolicited overlay cue");
 
     await page.locator(".axiom-agent__launcher").click();
     assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "true");

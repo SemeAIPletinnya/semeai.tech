@@ -19,10 +19,11 @@
     <link rel="stylesheet" href="/assets/css/site.css?v=20260731-premium" />
     <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260731-premium" />
     <link rel="stylesheet" href="./assets/benchmark.css?v=20260801-premium" />
+    <link rel="stylesheet" href="/assets/css/v2-production.css?v=20260801-production" />
     <script src="./assets/sigil.js?v=20260726b" defer></script>
     <script src="./assets/benchmark.js?v=20260728a" defer></script>
   </head>
-  <body class="mode-evidence" data-semeai-custom-bg>
+  <body class="mode-evidence v2-production-world" data-semeai-custom-bg data-v2-route="lab">
     <a class="skip-link" href="#benchmark-input" data-i18n="bench.skip">Skip to benchmark input</a>
     <noscript><p class="axiom-noscript">Axiom animation requires JavaScript. The Benchmark evidence instrument remains available on this page.</p></noscript>
 
@@ -404,7 +405,7 @@
           </div>
           <div class="method-grid">
             <p>
-              This prototype reads public repository metadata, a bounded default-branch tree,
+              This instrument reads public repository metadata, a bounded default-branch tree,
               languages, release metadata, README, and two fixed documentation paths. It never
               clones or executes repository code. Its Presentation Gate controls benchmark display only;
               it is not SaC/PoR runtime release authority.
@@ -419,7 +420,7 @@
 
       <footer>
         <span data-i18n="bench.footer.1">SEMEAI / REPOSITORY EVIDENCE BENCHMARK</span>
-        <span data-i18n="bench.footer.2">EXPERIMENTAL PROTOTYPE · PUBLIC PREVIEW · NOINDEX</span>
+        <span data-i18n="bench.footer.2">PUBLIC EVIDENCE INSTRUMENT · LIVE DATA · NOINDEX</span>
       </footer>
       <div class="site-ecosystem-bridge" data-semeai-ecosystem-bridge role="navigation" aria-label="SemeAI ecosystem surfaces">
         <span class="site-ecosystem-bridge__label">Ecosystem</span>
@@ -437,5 +438,6 @@
     <script src="/assets/js/axiom-archive.js?v=20260729a"></script>
     <script type="module" src="/assets/js/axiom-presence-register.mjs?v=20260731-premium"></script>
     <script defer src="/assets/js/axiom-agent.js?v=20260731-premium"></script>
+    <script defer src="/assets/js/v2-production.js?v=20260801-production"></script>
   </body>
 </html>
