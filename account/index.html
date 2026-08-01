@@ -34,6 +34,9 @@
           <p class="account-lead" data-i18n="account.lead">
             Account establishes identity and access. Workspace preserves governed context. Gate remains the release authority.
           </p>
+          <div class="btn-row mt-6">
+            <a class="product-action product-action--secondary" href="/#pilot" data-i18n="commercial.cta.pilot">Request a Gate pilot</a>
+          </div>
           <div class="boundary-sequence" aria-label="Product boundary" data-i18n-aria="account.boundary.aria">
             <span data-i18n="account.boundary.context">context</span>
             <i aria-hidden="true">→</i>
@@ -62,7 +65,7 @@
 
               <div class="auth-mode-tabs" role="tablist" aria-label="Account access mode" data-i18n-aria="account.tabs.aria">
                 <button type="button" role="tab" aria-selected="true" aria-controls="account-login-panel" id="account-login-tab" data-auth-mode="login" data-i18n="account.tab.login">Sign in</button>
-                <button type="button" role="tab" aria-selected="false" aria-controls="account-register-panel" id="account-register-tab" data-auth-mode="register" data-i18n="account.tab.register">Create workspace</button>
+                <button type="button" role="tab" aria-selected="false" aria-controls="account-register-panel" id="account-register-tab" data-auth-mode="register" data-i18n="account.tab.register">Approved registration</button>
                 <button type="button" role="tab" aria-selected="false" aria-controls="account-verify-panel" id="account-verify-tab" data-auth-mode="verify" data-i18n="account.tab.verify">Verify</button>
               </div>
 
@@ -93,7 +96,7 @@
                   <input id="account-register-password" name="password" type="password" autocomplete="new-password" minlength="8" required />
                   <label for="account-register-confirm" data-i18n="account.field.confirm">Confirm password</label>
                   <input id="account-register-confirm" name="password_confirm" type="password" autocomplete="new-password" minlength="8" required />
-                  <button class="product-action product-action--primary" type="submit" data-i18n="account.register.submit">Create account + workspace</button>
+                  <button class="product-action product-action--primary" type="submit" data-i18n="account.register.submit">Create approved account + workspace</button>
                 </form>
               </div>
 

@@ -28,9 +28,9 @@
           One vertical. Three concrete cases. Same contract: SHOW / REVIEW / BLOCK before customers see AI answers.
         </p>
         <div class="btn-row mt-6">
-          <a class="btn-primary" href="../register.html?v=20260717c" data-i18n="pilot.cta.register">Start pilot workspace</a>
+          <a class="btn-primary" href="../#pilot" data-i18n="commercial.cta.pilot">Request a Gate pilot</a>
           <a class="btn-ghost" href="https://gate.semeai.tech/demo/saas_visible.html" target="_blank" rel="noopener" data-i18n="pilot.cta.console">Run ecosystem demo</a>
-          <a class="btn-ghost" href="../dashboard.html?v=20260717c" data-i18n="pilot.cta.dash">Open cabinet</a>
+          <a class="btn-ghost" href="../account/" data-i18n="commercial.pilot.signin">Approved pilot sign in</a>
         </div>
 
         <div class="grid-3 mt-10">
@@ -83,13 +83,21 @@
 
         <section class="mt-10">
           <h2 class="section-title" data-i18n="pilot.host">Host product branch</h2>
-          <pre class="code-block mt-6">if (gate.action === "SHOW") {
-  return aiAnswer;
-} else if (gate.action === "REVIEW") {
-  return "A support operator should review this before release.";
-} else {
-  return gate.safe_fallback || "I can't confirm that from current business data.";
-}</pre>
+          <pre class="code-block mt-6">const candidate = await generate();
+const decision = await gate.check(candidate, approvedInputs);
+
+if (decision.action === "SHOW") {
+  return candidate; // exact evaluated candidate
+}
+
+withhold(candidate);
+routeDecisionOutOfBand(decision); // REVIEW / BLOCK / ERROR
+return noReleasedCandidate;</pre>
+          <p class="lead mt-6" data-i18n="commercial.support.contractNote">
+            REVIEW keeps the candidate withheld for the approved review process. BLOCK denies release and preserves the audit.
+            ERROR fails closed. If the product needs customer-visible status or fallback text, prepare it before the Gate as a
+            separate candidate or submit it through a separate Gate decision; never substitute text after the decision.
+          </p>
           <div class="btn-row mt-6">
             <a class="btn-primary" href="https://api.semeai.tech/v0/demo/check" target="_blank" rel="noopener" data-i18n="pilot.cta.api">Demo API</a>
             <a class="btn-ghost" href="../gate.html?v=20260717c" data-i18n="pilot.cta.contract">Contract</a>

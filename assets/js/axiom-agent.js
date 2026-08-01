@@ -241,6 +241,73 @@
       queryFailed: "Архив недоступен",
     },
   });
+  const GUIDED_COPY = Object.freeze({
+    en: {
+      cue: "New to release control? Ask Axiom using admitted public evidence.",
+      cueAction: "Ask Axiom",
+      prompts: "Suggested evidence questions",
+      pilot: "Pilot scope is not in Axiom's evidence index. Request a Gate pilot →",
+    },
+    uk: {
+      cue: "Вперше знайомитеся з контролем релізу? Запитайте Axiom на основі допущених публічних доказів.",
+      cueAction: "Запитати Axiom",
+      prompts: "Рекомендовані питання до доказів",
+      pilot: "Обсяг пілоту не входить до evidence-індексу Axiom. Запросити пілот Gate →",
+    },
+    ru: {
+      cue: "Впервые знакомитесь с контролем релиза? Спросите Axiom на основе допущенных публичных доказательств.",
+      cueAction: "Спросить Axiom",
+      prompts: "Рекомендуемые вопросы к доказательствам",
+      pilot: "Объём пилота не входит в evidence-индекс Axiom. Запросить пилот Gate →",
+    },
+  });
+  const PROMPTS = Object.freeze({
+    home: {
+      en: ["What does the Gate control?", "How does a decision receipt work?", "What does SemeAI not claim?"],
+      uk: ["Що контролює Gate?", "Як працює квитанція рішення?", "Чого SemeAI не стверджує?"],
+      ru: ["Что контролирует Gate?", "Как работает квитанция решения?", "Чего SemeAI не утверждает?"],
+    },
+    gate: {
+      en: ["How do SHOW, REVIEW, and BLOCK map?", "What is withheld on BLOCK?", "Which receipt records the decision?"],
+      uk: ["Як мапляться SHOW, REVIEW і BLOCK?", "Що утримується на BLOCK?", "Яка квитанція фіксує рішення?"],
+      ru: ["Как сопоставляются SHOW, REVIEW и BLOCK?", "Что удерживается при BLOCK?", "Какая квитанция фиксирует решение?"],
+    },
+    benchmark: {
+      en: ["What evidence does the Benchmark inspect?", "What does the score not prove?", "What receipt does the Benchmark create?"],
+      uk: ["Які докази перевіряє Benchmark?", "Чого score не доводить?", "Яку квитанцію створює Benchmark?"],
+      ru: ["Какие доказательства проверяет Benchmark?", "Чего score не доказывает?", "Какую квитанцию создаёт Benchmark?"],
+    },
+    genesis: {
+      en: ["What chronology is admitted here?", "How is idea origin separated from implementation proof?", "What are the evidence limits?"],
+      uk: ["Яка хронологія допущена тут?", "Як походження ідеї відокремлене від доказу реалізації?", "Які межі доказів?"],
+      ru: ["Какая хронология допущена здесь?", "Как происхождение идеи отделено от доказательства реализации?", "Каковы границы доказательств?"],
+    },
+    book: {
+      en: ["Why is generation not release authority?", "How are decision and execution receipts separated?", "What happens after SILENCE?"],
+      uk: ["Чому генерація не є владою релізу?", "Як розділені квитанції рішення та виконання?", "Що відбувається після SILENCE?"],
+      ru: ["Почему генерация не является властью релиза?", "Как разделены квитанции решения и исполнения?", "Что происходит после SILENCE?"],
+    },
+    research: {
+      en: ["Which claims are bounded by public evidence?", "What does retrieval not prove?", "Where are the research limitations?"],
+      uk: ["Які твердження обмежені публічними доказами?", "Чого retrieval не доводить?", "Де описані обмеження досліджень?"],
+      ru: ["Какие утверждения ограничены публичными доказательствами?", "Чего retrieval не доказывает?", "Где описаны ограничения исследований?"],
+    },
+    article: {
+      en: ["What is the article's release-control thesis?", "Why can fluent output still be withheld?", "Which public evidence supports the thesis?"],
+      uk: ["Яка теза статті про контроль релізу?", "Чому переконливий результат може бути утриманий?", "Які публічні докази підтримують тезу?"],
+      ru: ["Каков тезис статьи о контроле релиза?", "Почему убедительный результат может быть удержан?", "Какие публичные доказательства поддерживают тезис?"],
+    },
+    roadmap: {
+      en: ["Which capabilities are working?", "Which capabilities are held?", "Does the roadmap prove implementation?"],
+      uk: ["Які можливості працюють?", "Які можливості утримані?", "Чи доводить roadmap реалізацію?"],
+      ru: ["Какие возможности работают?", "Какие возможности удержаны?", "Доказывает ли roadmap реализацию?"],
+    },
+    skills: {
+      en: ["What is a candidate skill?", "What admits evidence here?", "Does metadata have release authority?"],
+      uk: ["Що таке candidate skill?", "Що допускає докази тут?", "Чи мають метадані владу релізу?"],
+      ru: ["Что такое candidate skill?", "Что допускает доказательства здесь?", "Имеют ли метаданные власть релиза?"],
+    },
+  });
 
   const path = (location.pathname || "/").toLowerCase();
   const routeKey = path === "/" || (path.endsWith("/index.html") && !path.includes("/genesis/") && !path.includes("/benchmark/") && !path.includes("/skills/") && !path.includes("/book/") && !path.includes("/roadmap/"))
@@ -657,6 +724,7 @@
   function updateCopy() {
     if (!nodes.root) return;
     const copy = COPY[language()];
+    const guided = GUIDED_COPY[language()];
     const route = ROUTES[routeKey];
     nodes.launcher.setAttribute("aria-label", copy.launch);
     nodes.close.setAttribute("aria-label", copy.close);
@@ -677,6 +745,15 @@
     nodes.sourcesHeading.textContent = copy.sources;
     nodes.sources.setAttribute("aria-label", copy.sourcesAria);
     nodes.authority.textContent = copy.authority;
+    nodes.cueText.textContent = guided.cue;
+    nodes.cueButton.textContent = guided.cueAction;
+    nodes.promptsHeading.textContent = guided.prompts;
+    nodes.pilotLink.textContent = guided.pilot;
+    const prompts = PROMPTS[routeKey]?.[language()] || PROMPTS[routeKey]?.en || [];
+    nodes.promptButtons.forEach((button, index) => {
+      button.textContent = prompts[index] || "";
+      button.hidden = !prompts[index];
+    });
     if (nodes.detailsSummary) nodes.detailsSummary.textContent = copy.details || "Details";
     route.sources.forEach((sourceKey) => {
       const link = nodes.sourceLinks.get(sourceKey);
@@ -687,6 +764,7 @@
   }
 
   function openPanel() {
+    nodes.cue.hidden = true;
     nodes.panel.hidden = false;
     nodes.launcher.setAttribute("aria-expanded", "true");
     nodes.root.dataset.open = "true";
@@ -734,6 +812,10 @@
     const sprite = createElement("span", { class: "axiom-agent__sprite", "aria-hidden": "true" });
     const launcherLabel = createElement("span", { class: "axiom-agent__launcher-label", "aria-hidden": "true" }, "AXIOM");
     launcher.append(sprite, launcherLabel);
+    const cue = createElement("div", { class: "axiom-agent__cue" });
+    const cueText = createElement("p");
+    const cueButton = createElement("button", { type: "button" });
+    cue.append(cueText, cueButton);
 
     const panel = createElement("section", {
       class: "axiom-agent__panel",
@@ -770,6 +852,10 @@
 
     const queryForm = createElement("form", { class: "axiom-agent__query" });
     const queryHeading = createElement("h3", { class: "axiom-agent__section-heading" });
+    const promptsHeading = createElement("p", { class: "axiom-agent__prompts-heading" });
+    const prompts = createElement("div", { class: "axiom-agent__prompts" });
+    const promptButtons = [0, 1, 2].map(() => createElement("button", { type: "button" }));
+    promptButtons.forEach((button) => prompts.append(button));
     const queryInputId = `axiom-query-${routeKey}`;
     const queryLabel = createElement("label", { for: queryInputId });
     const queryInput = createElement("input", {
@@ -785,7 +871,7 @@
     const queryHint = createElement("small");
     const queryButton = createElement("button", { type: "submit" });
     queryFooter.append(queryHint, queryButton);
-    queryForm.append(queryHeading, queryLabel, queryInput, queryFooter);
+    queryForm.append(queryHeading, promptsHeading, prompts, queryLabel, queryInput, queryFooter);
 
     const result = createElement("section", {
       class: "axiom-agent__result",
@@ -829,15 +915,19 @@
     sources.append(sourcesHeading, sourceList);
 
     const authority = createElement("p", { class: "axiom-agent__authority" });
+    const pilotLink = createElement("a", { class: "axiom-agent__pilot-link", href: "/#pilot" });
     const details = createElement("details", { class: "axiom-agent__details" });
     const detailsSummary = createElement("summary", { class: "axiom-agent__details-summary" });
     details.append(detailsSummary, sources, authority);
-    panel.append(header, title, boundary, status, routeCard, queryForm, result, details);
-    root.append(panel, launcher);
+    panel.append(header, title, boundary, status, routeCard, queryForm, result, pilotLink, details);
+    root.append(cue, panel, launcher);
     document.body.append(root);
 
     Object.assign(nodes, {
       root,
+      cue,
+      cueText,
+      cueButton,
       panel,
       launcher,
       sprite,
@@ -853,6 +943,8 @@
       routeSummary,
       queryForm,
       queryHeading,
+      promptsHeading,
+      promptButtons,
       queryLabel,
       queryInput,
       queryHint,
@@ -870,16 +962,26 @@
       sourcesHeading,
       sourceLinks,
       authority,
+      pilotLink,
       details,
       detailsSummary,
     });
 
     queryForm.addEventListener("submit", submitArchiveQuestion);
+    promptButtons.forEach((button) => button.addEventListener("click", () => {
+      queryInput.value = button.textContent;
+      queryForm.requestSubmit();
+    }));
+    cueButton.addEventListener("click", openPanel);
+    window.setTimeout(() => {
+      if (nodes.panel?.hidden) nodes.cue.hidden = true;
+    }, 10_000);
     launcher.addEventListener("click", () => {
       if (panel.hidden) openPanel();
       else closePanel();
     });
     close.addEventListener("click", () => closePanel());
+    document.querySelectorAll("[data-open-axiom]").forEach((button) => button.addEventListener("click", openPanel));
     panel.addEventListener("pointermove", (event) => {
       const bounds = sprite.getBoundingClientRect();
       const centerX = bounds.left + bounds.width / 2;

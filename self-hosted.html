@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SemeAI Gate | Self-hosted deployment</title>
-    <meta name="description" content="Run SemeAI Gate open source, self-hosted, or as SaaS API without forcing document egress." />
+    <meta name="description" content="Inspect SemeAI Gate deployment paths and decide the approved data boundary during technical fit review." />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <link rel="canonical" href="https://semeai.tech/self-hosted.html" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,16 +18,15 @@
     <div class="content">
       <div data-semeai-nav></div>
       <main class="site-main">
-        <span class="eyebrow">Deployment</span>
-        <h1 class="page-title">Run the gate where your data is allowed to live.</h1>
-        <p class="lead">
-          Sensitive teams should not be forced into a single SaaS path.
-          The same SHOW / REVIEW / BLOCK contract runs open source, self-hosted, or hosted.
+        <span class="eyebrow" data-i18n="commercial.self.badge">DEPLOYMENT PATH REVIEW</span>
+        <h1 class="page-title" data-i18n="commercial.self.title">Place the release contract where your approved data boundary allows.</h1>
+        <p class="lead" data-i18n="commercial.self.lead">
+          The pilot evaluates hosted, customer-controlled, and open-source basic-adapter paths against your workflow and
+          test environment. Customer-specific packaging or support is not assumed before scope approval.
         </p>
         <div class="btn-row mt-6">
           <a class="btn-primary" href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener">Open source repo</a>
-          <a class="btn-ghost" href="register.html?v=20260717c">SaaS pilot access</a>
-          <a class="btn-ghost" href="dashboard.html?v=20260717c">Dashboard</a>
+          <a class="btn-ghost" href="/#pilot">Request a Gate pilot</a>
         </div>
 
         <div class="grid-3 mt-10">
@@ -37,11 +36,11 @@
           </article>
           <article class="card">
             <h3>02 · Self-hosted</h3>
-            <p>Deploy inside your VPC/on-prem. Customer documents never need to leave your boundary.</p>
+            <p data-i18n="commercial.self.selfBody">Evaluate whether the published contract can run inside a customer-controlled environment. Packaging and support require separate scope approval.</p>
           </article>
           <article class="card">
             <h3>03 · SaaS API</h3>
-            <p>Start quickly when policy allows scoped request data to leave for pilot evaluation.</p>
+            <p data-i18n="commercial.self.hostedBody">Evaluate scoped request data through the hosted Gate only when your approved policy permits it.</p>
           </article>
         </div>
 

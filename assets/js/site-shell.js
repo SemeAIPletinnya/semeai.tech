@@ -1,11 +1,10 @@
 (() => {
   const path = (location.pathname || "").toLowerCase();
   const routes = [
-    { key: "gate", i18n: "shell.nav.gate", href: "/gate.html" },
-    { key: "benchmark", i18n: "shell.nav.benchmark", href: "/benchmark/" },
-    { key: "genesis", i18n: "shell.nav.genesis", href: "/genesis/" },
-    { key: "book", i18n: "shell.nav.book", href: "/book/" },
-    { key: "research", i18n: "shell.nav.research", href: "/research.html" },
+    { key: "product", i18n: "shell.nav.product", label: "Product", href: "/#product" },
+    { key: "how", i18n: "shell.nav.how", label: "How it works", href: "/#how-it-works" },
+    { key: "use-cases", i18n: "shell.nav.useCases", label: "Use cases", href: "/#use-cases" },
+    { key: "evidence-anchor", i18n: "shell.nav.evidence", label: "Evidence", href: "/#evidence" },
   ];
   const publicRouteContexts = [
     {
@@ -110,8 +109,8 @@
         "";
     } catch {}
     return token.trim()
-      ? { key: "workspace", i18n: "shell.nav.workspace", label: "Workspace", href: "/workspace/" }
-      : { key: "account", i18n: "shell.nav.workspace", label: "Workspace", href: "/account/" };
+      ? { key: "workspace", i18n: "shell.nav.workspace", label: "Pilot workspace", href: "/workspace/" }
+      : { key: "account", i18n: "shell.nav.pilotSignIn", label: "Pilot sign in", href: "/account/" };
   }
 
   function systemMapGroups() {
@@ -200,6 +199,40 @@
             summary: "Gate operator console",
             summaryI18n: "shell.system.dashboard.summary",
           },
+        ],
+      },
+    ];
+  }
+
+  function resourceGroups() {
+    return [
+      {
+        key: "proof",
+        label: "Proof",
+        i18n: "shell.resources.proof",
+        routes: [
+          { key: "gate", i18n: "shell.nav.gate", label: "Live Gate", href: "/gate.html", role: "Public proof", summary: "SHOW / REVIEW / BLOCK and receipts" },
+          { key: "benchmark", i18n: "shell.nav.benchmark", label: "Benchmark", href: "/benchmark/", role: "Public proof", summary: "Bounded repository evidence" },
+          { key: "research", i18n: "shell.nav.research", label: "Research", href: "/research.html", role: "Boundaries", summary: "Evidence and claim limits" },
+        ],
+      },
+      {
+        key: "method",
+        label: "Method and history",
+        i18n: "shell.resources.method",
+        routes: [
+          { key: "genesis", i18n: "shell.nav.genesis", label: "Genesis", href: "/genesis/", role: "History", summary: "Admitted chronology" },
+          { key: "book", i18n: "shell.nav.book", label: "Engineering Book", href: "/book/", role: "Method", summary: "Architecture and rationale" },
+          { key: "roadmap", i18n: "shell.footer.roadmap", label: "Product Roadmap", href: "/roadmap/", role: "Plan", summary: "Working, held, and future" },
+          { key: "github", label: "GitHub", href: "https://github.com/SemeAIPletinnya", role: "Implementation", summary: "Public repositories" },
+        ],
+      },
+      {
+        key: "access",
+        label: "Approved access",
+        i18n: "shell.resources.access",
+        routes: [
+          { ...privateEntryRoute(), role: "Private beta", summary: "Approved-pilot access only" },
         ],
       },
     ];
@@ -318,14 +351,14 @@
       class: "nav-link system-map-trigger",
       "aria-expanded": "false",
       "aria-controls": "site-system-map",
-      "aria-label": t("shell.system.aria", "Open SemeAI system map"),
-      "data-i18n-aria": "shell.system.aria",
+      "aria-label": t("shell.resources.aria", "Open SemeAI resources"),
+      "data-i18n-aria": "shell.resources.aria",
     });
     trigger.append(
       element(
         "span",
-        { "data-i18n": "shell.nav.system" },
-        t("shell.nav.system", "System"),
+        { "data-i18n": "shell.nav.resources" },
+        t("shell.nav.resources", "Resources"),
       ),
       element("span", { class: "nav-chevron", "aria-hidden": "true" }, "⌄"),
     );
@@ -335,10 +368,10 @@
       id: "site-system-map",
       role: "group",
       hidden: "",
-      "aria-label": t("shell.system.aria", "SemeAI system map"),
-      "data-i18n-aria": "shell.system.aria",
+      "aria-label": t("shell.resources.aria", "SemeAI resources"),
+      "data-i18n-aria": "shell.resources.aria",
     });
-    systemMapGroups().forEach((group) => {
+    resourceGroups().forEach((group) => {
       const titleId = `system-map-${group.key}-title`;
       const section = element("div", {
         class: `system-map-group system-map-group--${group.key}`,
@@ -360,6 +393,9 @@
   }
 
   function buildRouteContext() {
+    return null;
+    /* Legacy public-route counter retained below for backwards source compatibility.
+       Commercial navigation intentionally does not render it. */
     const route = routeContext(currentRoute());
     if (!route) return null;
     const routeIndex = publicRouteContexts.indexOf(route);
@@ -455,7 +491,7 @@
     nav.append(buildSystemMap());
 
     const actions = element("div", { class: "header-actions" });
-    const dashboard = routeLink(privateEntryRoute(), "btn-ghost header-dashboard");
+    const pilot = routeLink({ key: "pilot", i18n: "shell.nav.pilot", label: "Request a pilot", href: "/#pilot" }, "btn-primary header-pilot");
     const burger = element("button", {
       type: "button",
       class: "nav-burger",
@@ -465,7 +501,7 @@
       "aria-controls": "site-mobile-nav",
     });
     burger.append(element("span", { "aria-hidden": "true" }), element("span", { "aria-hidden": "true" }), element("span", { "aria-hidden": "true" }));
-    actions.append(languageSwitch("header-lang"), dashboard, burger);
+    actions.append(languageSwitch("header-lang"), pilot, burger);
 
     const mobile = element("div", { class: "mobile-nav", id: "site-mobile-nav", hidden: "" });
     const mobileInner = element("div", { class: "mobile-nav-inner" });
@@ -478,35 +514,26 @@
     });
     const mobileTitle = element("span", { class: "mobile-section-title", "data-i18n": "shell.nav.navigate" }, t("shell.nav.navigate", "Navigate SemeAI"));
     mobileNav.append(mobileTitle);
-    mobileNav.append(
-      mobileRouteLink({
-        key: "home",
-        i18n: "shell.route.home",
-        label: "Home",
-        href: "/",
-      }),
-    );
     routes.forEach((route) => mobileNav.append(mobileRouteLink(route)));
+    mobileNav.append(mobileRouteLink({ key: "pilot", i18n: "shell.nav.pilot", label: "Request a pilot", href: "/#pilot" }));
 
     const mobileSystem = element("nav", {
       class: "mobile-section mobile-section--system",
-      "aria-label": t("shell.system.aria", "SemeAI system map"),
-      "data-i18n-aria": "shell.system.aria",
+      "aria-label": t("shell.resources.aria", "SemeAI resources"),
+      "data-i18n-aria": "shell.resources.aria",
     });
     mobileSystem.append(
       element(
         "span",
         {
           class: "mobile-section-title",
-          "data-i18n": "shell.system.more",
+          "data-i18n": "shell.nav.resources",
         },
-        t("shell.system.more", "Method + product"),
+        t("shell.nav.resources", "Resources"),
       ),
     );
-    const supplementalKeys = new Set(["roadmap", "skills", "account", "workspace", "dashboard"]);
-    systemMapGroups()
+    resourceGroups()
       .flatMap((group) => group.routes)
-      .filter((route) => supplementalKeys.has(route.key))
       .forEach((route) => {
         const link = mobileRouteLink(route);
         link.classList.add("mobile-system-link");
@@ -552,39 +579,31 @@
     );
     grid.append(
       identity,
-      footerColumn("shell.footer.principle", "Principle", [
-        { label: "Genesis", i18n: "shell.footer.genesis", href: "/genesis/" },
+      footerColumn("shell.footer.productColumn", "Product", [
         { label: "SemeAI Gate", i18n: "shell.footer.gate", href: "/gate.html" },
-        { label: "Repository Evidence Benchmark", i18n: "shell.footer.benchmark", href: "/benchmark/" },
+        { label: "Live Gate", i18n: "shell.footer.gateDemo", href: "https://gate.semeai.tech/" },
+        { label: "Gate Pilot", i18n: "shell.footer.pilot", href: "/#pilot" },
+        { label: "Integration contract", i18n: "shell.footer.contract", href: "/gate.html#contract" },
       ]),
-      footerColumn("shell.footer.method", "Method", [
-        { label: "Engineering Book", i18n: "shell.footer.book", href: "/book/" },
+      footerColumn("shell.footer.evidenceColumn", "Evidence", [
+        { label: "Decision receipts", i18n: "shell.footer.receipts", href: "/gate.html#receipt" },
+        { label: "Public repository", i18n: "shell.footer.repository", href: "https://github.com/SemeAIPletinnya/semeai-gate-basic" },
+        { label: "Repository Evidence Benchmark", i18n: "shell.footer.benchmark", href: "/benchmark/" },
         { label: "Research", i18n: "shell.footer.research", href: "/research.html" },
+      ]),
+      footerColumn("shell.footer.resourcesColumn", "Resources", [
+        { label: "Genesis", i18n: "shell.footer.genesis", href: "/genesis/" },
+        { label: "Engineering Book", i18n: "shell.footer.book", href: "/book/" },
         { label: "Skill Forge", i18n: "shell.footer.skills", href: "/skills/" },
         { label: "Product Roadmap", i18n: "shell.footer.roadmap", href: "/roadmap/" },
       ]),
-      footerColumn("shell.footer.use", "Use", [
+      footerColumn("shell.footer.accessColumn", "Access", [
+        { label: "Request a pilot", i18n: "shell.nav.pilot", href: "/#pilot" },
         privateEntryRoute(),
         { label: "Support", i18n: "shell.footer.support", href: "mailto:support@semeai.tech" },
-      ]),
-      footerColumn("shell.footer.ecosystem", "Ecosystem", [
-        {
-          label: "Product surface",
-          i18n: "shell.footer.product",
-          href: "https://semeai.tech/",
-        },
-        {
-          label: "Live Gate console",
-          i18n: "shell.footer.gateDemo",
-          href: "https://gate.semeai.tech/",
-        },
-        {
-          label: "API status",
-          i18n: "shell.footer.api",
-          href: "https://api.semeai.tech/",
-        },
       ])
     );
+    grid.append(element("p", { class: "footer-boundary", "data-i18n": "shell.footer.boundary" }, t("shell.footer.boundary", "SemeAI Gate controls release after generation. It does not replace the model or provide universal truth, safety, or compliance approval.")));
 
     const bridge = element("div", {
       class: "site-ecosystem-bridge",
