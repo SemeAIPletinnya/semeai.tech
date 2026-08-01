@@ -10,7 +10,7 @@
     REVIEW: "NEEDS_REVIEW",
     BLOCK: "SILENCE",
   });
-  const SUPPORTED_ROUTES = new Set(["home", "genesis", "benchmark", "gate", "skills"]);
+  const SUPPORTED_ROUTES = new Set(["home", "genesis", "benchmark", "gate", "skills", "book", "research", "article", "roadmap"]);
   const DEFAULT_STATES = Object.freeze({
     idle: { row: 0, frames: 6 },
     "running-right": { row: 1, frames: 8 },
@@ -73,6 +73,46 @@
       },
       sources: ["skills", "gate", "research"],
     },
+    book: {
+      label: { en: "Engineering Book", uk: "Інженерна книга", ru: "Инженерная книга" },
+      role: { en: "Method", uk: "Метод", ru: "Метод" },
+      summary: {
+        en: "Architecture and release rationale",
+        uk: "Архітектура й обґрунтування релізу",
+        ru: "Архитектура и обоснование релиза",
+      },
+      sources: ["book", "gate", "benchmark"],
+    },
+    research: {
+      label: { en: "Research", uk: "Дослідження", ru: "Исследования" },
+      role: { en: "Boundary", uk: "Межа", ru: "Граница" },
+      summary: {
+        en: "Public evidence and claim limits",
+        uk: "Публічні докази й межі тверджень",
+        ru: "Публичные доказательства и границы утверждений",
+      },
+      sources: ["research", "book", "benchmark"],
+    },
+    article: {
+      label: { en: "Article", uk: "Стаття", ru: "Статья" },
+      role: { en: "Thesis", uk: "Теза", ru: "Тезис" },
+      summary: {
+        en: "Generation is not release authority",
+        uk: "Генерація не є владою релізу",
+        ru: "Генерация не является властью релиза",
+      },
+      sources: ["gate", "research", "book"],
+    },
+    roadmap: {
+      label: { en: "Product Roadmap", uk: "Продуктова дорожня карта", ru: "Продуктовая дорожная карта" },
+      role: { en: "Plan", uk: "План", ru: "План" },
+      summary: {
+        en: "Working, held, and future phases",
+        uk: "Робочі, утримані й майбутні фази",
+        ru: "Рабочие, удержанные и будущие фазы",
+      },
+      sources: ["gate", "skills", "benchmark"],
+    },
   });
   const SOURCE_LINKS = Object.freeze({
     gate: {
@@ -102,105 +142,108 @@
   });
   const COPY = Object.freeze({
     en: {
-      launch: "Open Axiom archive interface",
+      launch: "Open Axiom",
       close: "Close Axiom",
-      mode: "PUBLIC EVIDENCE",
-      eyebrow: "AXIOM / ARCHIVE INTERFACE",
-      title: "Evidence, with authority visible.",
+      mode: "Public",
+      eyebrow: "Axiom",
+      title: "Ask about what you see.",
       boundary:
-        "Ask about admitted public evidence. An answer appears only when SaC/PoR Gate permits release.",
-      route: "Current route context",
-      query: "Ask the public archive",
-      queryLabel: "Question",
+        "Answers appear only when release is allowed. Private archives stay closed.",
+      route: "On this page",
+      query: "Ask",
+      queryLabel: "Your question",
       queryPlaceholder: "What changed here?",
-      ask: "Ask Axiom",
-      queryHint: "256 characters · no private archive",
-      result: "Gate-mediated result",
-      noEvidence: "No matching public evidence; no candidate was generated.",
-      sourcesReturned: "Cited public evidence",
-      decisionReceipt: "Decision receipt",
-      sources: "Inspect public sources",
-      sourcesAria: "Axiom public evidence sources",
-      authority: "Axiom presents and orients. SaC/PoR Gate remains release authority.",
-      ready: "IDLE · orientation ready",
-      loading: "RUNNING · loading accepted atlas",
-      failed: "FAILED · accepted atlas unavailable",
-      queryWaiting: "WAITING · enter a public archive question",
-      queryRunning: "RUNNING · retrieving public evidence",
-      gateShow: "IDLE · SHOW / PROCEED",
-      gateReview: "REVIEW · REVIEW / NEEDS_REVIEW",
-      gateBlock: "REVIEW · BLOCK / SILENCE",
-      queryNoEvidence: "REVIEW · no matching evidence",
-      queryFailed: "FAILED · archive service unavailable",
+      ask: "Ask",
+      queryHint: "Short questions · public evidence only",
+      result: "Answer",
+      noEvidence: "Nothing matching was found in public evidence.",
+      sourcesReturned: "Sources",
+      decisionReceipt: "Receipt",
+      sources: "Related pages",
+      sourcesAria: "Related public pages",
+      authority: "Release is decided separately from generation.",
+      details: "Details",
+      ready: "Ready",
+      loading: "Loading…",
+      failed: "Unavailable",
+      queryWaiting: "Enter a question",
+      queryRunning: "Looking…",
+      gateShow: "Released",
+      gateReview: "Held for review",
+      gateBlock: "Withheld",
+      queryNoEvidence: "No match",
+      queryFailed: "Could not reach the archive",
     },
     uk: {
-      launch: "Відкрити архівний інтерфейс Axiom",
+      launch: "Відкрити Axiom",
       close: "Закрити Axiom",
-      mode: "ПУБЛІЧНІ ДОКАЗИ",
-      eyebrow: "AXIOM / АРХІВНИЙ ІНТЕРФЕЙС",
-      title: "Докази з видимою владою.",
+      mode: "Публічно",
+      eyebrow: "Axiom",
+      title: "Запитайте про те, що бачите.",
       boundary:
-        "Запитайте про допущені публічні докази. Відповідь з’явиться лише тоді, коли SaC/PoR Gate дозволить реліз.",
-      route: "Контекст поточного маршруту",
-      query: "Запитати публічний архів",
-      queryLabel: "Питання",
+        "Відповідь з’явиться лише коли реліз дозволено. Приватні архіви закриті.",
+      route: "На цій сторінці",
+      query: "Запитати",
+      queryLabel: "Ваше питання",
       queryPlaceholder: "Що змінилося тут?",
-      ask: "Запитати Axiom",
-      queryHint: "256 символів · без приватного архіву",
-      result: "Результат через Gate",
-      noEvidence: "Відповідних публічних доказів немає; кандидата не створено.",
-      sourcesReturned: "Цитовані публічні докази",
-      decisionReceipt: "Receipt рішення",
-      sources: "Переглянути публічні джерела",
-      sourcesAria: "Публічні джерела доказів Axiom",
-      authority: "Axiom подає й орієнтує. SaC/PoR Gate зберігає владу релізу.",
-      ready: "IDLE · орієнтація готова",
-      loading: "RUNNING · завантаження прийнятого atlas",
-      failed: "FAILED · прийнятий atlas недоступний",
-      queryWaiting: "WAITING · введіть питання до публічного архіву",
-      queryRunning: "RUNNING · пошук публічних доказів",
-      gateShow: "IDLE · SHOW / PROCEED",
-      gateReview: "REVIEW · REVIEW / NEEDS_REVIEW",
-      gateBlock: "REVIEW · BLOCK / SILENCE",
-      queryNoEvidence: "REVIEW · відповідних доказів немає",
-      queryFailed: "FAILED · архівний сервіс недоступний",
+      ask: "Запитати",
+      queryHint: "Короткі питання · лише публічні докази",
+      result: "Відповідь",
+      noEvidence: "У публічних доказах збігів немає.",
+      sourcesReturned: "Джерела",
+      decisionReceipt: "Квитанція",
+      sources: "Пов’язані сторінки",
+      sourcesAria: "Пов’язані публічні сторінки",
+      authority: "Рішення про реліз окреме від генерації.",
+      details: "Деталі",
+      ready: "Готово",
+      loading: "Завантаження…",
+      failed: "Недоступно",
+      queryWaiting: "Введіть питання",
+      queryRunning: "Шукаємо…",
+      gateShow: "Випущено",
+      gateReview: "На перегляді",
+      gateBlock: "Утримано",
+      queryNoEvidence: "Без збігу",
+      queryFailed: "Архів недоступний",
     },
     ru: {
-      launch: "Открыть архивный интерфейс Axiom",
+      launch: "Открыть Axiom",
       close: "Закрыть Axiom",
-      mode: "ПУБЛИЧНЫЕ ДОКАЗАТЕЛЬСТВА",
-      eyebrow: "AXIOM / АРХИВНЫЙ ИНТЕРФЕЙС",
-      title: "Доказательства с видимой властью.",
+      mode: "Публично",
+      eyebrow: "Axiom",
+      title: "Спросите о том, что видите.",
       boundary:
-        "Спросите о допущенных публичных доказательствах. Ответ появится только тогда, когда SaC/PoR Gate разрешит релиз.",
-      route: "Контекст текущего маршрута",
-      query: "Спросить публичный архив",
-      queryLabel: "Вопрос",
+        "Ответ появится только когда релиз разрешён. Частные архивы закрыты.",
+      route: "На этой странице",
+      query: "Спросить",
+      queryLabel: "Ваш вопрос",
       queryPlaceholder: "Что изменилось здесь?",
-      ask: "Спросить Axiom",
-      queryHint: "256 символов · без приватного архива",
-      result: "Результат через Gate",
-      noEvidence: "Подходящих публичных доказательств нет; кандидат не создан.",
-      sourcesReturned: "Цитируемые публичные доказательства",
-      decisionReceipt: "Receipt решения",
-      sources: "Просмотреть публичные источники",
-      sourcesAria: "Публичные источники доказательств Axiom",
-      authority: "Axiom представляет и ориентирует. SaC/PoR Gate сохраняет власть релиза.",
-      ready: "IDLE · ориентация готова",
-      loading: "RUNNING · загрузка принятого atlas",
-      failed: "FAILED · принятый atlas недоступен",
-      queryWaiting: "WAITING · введите вопрос к публичному архиву",
-      queryRunning: "RUNNING · поиск публичных доказательств",
-      gateShow: "IDLE · SHOW / PROCEED",
-      gateReview: "REVIEW · REVIEW / NEEDS_REVIEW",
-      gateBlock: "REVIEW · BLOCK / SILENCE",
-      queryNoEvidence: "REVIEW · подходящих доказательств нет",
-      queryFailed: "FAILED · архивный сервис недоступен",
+      ask: "Спросить",
+      queryHint: "Короткие вопросы · только публичные доказательства",
+      result: "Ответ",
+      noEvidence: "В публичных доказательствах совпадений нет.",
+      sourcesReturned: "Источники",
+      decisionReceipt: "Квитанция",
+      sources: "Связанные страницы",
+      sourcesAria: "Связанные публичные страницы",
+      authority: "Решение о релизе отдельно от генерации.",
+      details: "Детали",
+      ready: "Готово",
+      loading: "Загрузка…",
+      failed: "Недоступно",
+      queryWaiting: "Введите вопрос",
+      queryRunning: "Ищем…",
+      gateShow: "Выпущено",
+      gateReview: "На проверке",
+      gateBlock: "Удержано",
+      queryNoEvidence: "Без совпадения",
+      queryFailed: "Архив недоступен",
     },
   });
 
   const path = (location.pathname || "/").toLowerCase();
-  const routeKey = path === "/" || path.endsWith("/index.html") && !path.includes("/genesis/") && !path.includes("/benchmark/") && !path.includes("/skills/")
+  const routeKey = path === "/" || (path.endsWith("/index.html") && !path.includes("/genesis/") && !path.includes("/benchmark/") && !path.includes("/skills/") && !path.includes("/book/") && !path.includes("/roadmap/"))
     ? "home"
     : path.includes("/genesis/")
       ? "genesis"
@@ -210,7 +253,15 @@
           ? "gate"
           : path.includes("/skills/")
             ? "skills"
-            : "";
+            : path.includes("/book/")
+              ? "book"
+              : path.endsWith("/research.html")
+                ? "research"
+                : path.endsWith("/article.html")
+                  ? "article"
+                  : path.includes("/roadmap/")
+                    ? "roadmap"
+                    : "";
 
   if (!SUPPORTED_ROUTES.has(routeKey)) return;
 
@@ -227,6 +278,34 @@
   let lastResult = null;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const nodes = {};
+  let Presence = null;
+  let presence = null;
+
+  function ensurePresence() {
+    if (presence) return presence;
+    Presence = window.SemeAI_AxiomPresence || null;
+    if (!Presence) return null;
+    presence = Presence.createPresenceRuntime({ route: routeKey });
+    presence.dispatch(Presence.EVENT_TYPES.ROUTE_ENTER, { route: routeKey });
+    return presence;
+  }
+
+  function syncSemanticDom() {
+    if (!nodes.root || !ensurePresence()) return;
+    const semantic = presence.getSemanticState();
+    const context = presence.getContext();
+    nodes.root.dataset.semanticState = semantic;
+    nodes.root.dataset.contextRoute = context.route || "";
+    if (context.entity?.id) nodes.root.dataset.contextEntity = `${context.entity.type}:${context.entity.id}`;
+    else delete nodes.root.dataset.contextEntity;
+  }
+
+  function dispatchPresence(type, payload) {
+    if (!ensurePresence() || !type) return null;
+    const result = presence.dispatch(type, payload || {});
+    syncSemanticDom();
+    return result;
+  }
 
   function language() {
     const selected = window.SemeAI_I18n?.lang || document.documentElement.lang || "en";
@@ -269,7 +348,12 @@
     if (assetStatus === "failed") return copy.failed;
     if (assetStatus === "loading") return copy.loading;
     if (statusOverride && copy[statusOverride]) return copy[statusOverride];
-    return `${stateName.toUpperCase()} · ${stateName === "idle" ? copy.ready.split("·")[1].trim() : stateName}`;
+    if (stateName === "idle" || stateName === "waving") return copy.ready;
+    if (stateName === "failed") return copy.failed;
+    if (stateName === "running") return copy.queryRunning;
+    if (stateName === "waiting") return copy.queryWaiting;
+    if (stateName === "review") return copy.gateReview;
+    return copy.ready;
   }
 
   function paintState() {
@@ -329,12 +413,33 @@
   }
 
   function setOperationState(nextState, statusKey, source) {
+    window.clearTimeout(greetingTimer);
     statusOverride = statusKey;
     setState(nextState, source);
   }
 
   function applyResultVisual(result) {
     const release = result?.release || {};
+    if (ensurePresence()) {
+      if (release.gateEvaluated !== true) {
+        dispatchPresence(Presence.EVENT_TYPES.GATE_DECISION, { noEvidence: true, action: null });
+        setOperationState("review", "queryNoEvidence", "retrieval-no-evidence");
+      } else {
+        dispatchPresence(Presence.EVENT_TYPES.GATE_DECISION, {
+          action: release.action,
+          receipt_id: release.decisionReceiptId || release.receipt_id || null,
+        });
+        if (release.action === "SHOW") {
+          setOperationState("idle", "gateShow", "gate-show-proceed");
+        } else if (release.action === "REVIEW") {
+          setOperationState("review", "gateReview", "gate-review-needs-review");
+        } else {
+          setOperationState("review", "gateBlock", "gate-block-silence");
+        }
+      }
+      syncSemanticDom();
+      return;
+    }
     if (release.gateEvaluated !== true) {
       setOperationState("review", "queryNoEvidence", "retrieval-no-evidence");
     } else if (release.action === "SHOW") {
@@ -431,10 +536,17 @@
     const evidence = result.evidenceBundle.evidence;
     nodes.result.hidden = false;
     nodes.result.dataset.action = String(release.action || "NO_EVIDENCE").toLowerCase();
-    nodes.resultAction.textContent =
-      release.gateEvaluated === true
-        ? `${release.action} / ${release.internalDecision}`
-        : "NO EVIDENCE / NOT EVALUATED";
+    const productAction =
+      release.gateEvaluated !== true
+        ? copy.queryNoEvidence
+        : release.action === "SHOW"
+          ? copy.gateShow
+          : release.action === "REVIEW"
+            ? copy.gateReview
+            : copy.gateBlock;
+    nodes.resultAction.textContent = productAction;
+    nodes.resultAction.dataset.gateAction = String(release.action || "NONE");
+    nodes.resultAction.dataset.internalDecision = String(release.internalDecision || "");
     nodes.resultReason.textContent =
       release.gateEvaluated === true ? String(release.reason || "") : copy.noEvidence;
 
@@ -451,7 +563,7 @@
     evidence.forEach((item, index) => {
       const row = createElement("li");
       const href = safeEvidenceHref(item.route);
-      const identity = createElement("small", {}, `${String(index + 1).padStart(2, "0")} · ${item.sourceId}`);
+      const identity = createElement("small", { class: "axiom-agent__source-meta" }, String(index + 1).padStart(2, "0"));
       const label = createElement(href ? "a" : "span", href ? { href } : {}, item.title);
       row.append(identity, label);
       nodes.resultSources.append(row);
@@ -473,6 +585,7 @@
       return;
     }
 
+    window.clearTimeout(greetingTimer);
     activeRequest?.controller.abort();
     const sequence = ++requestSequence;
     const controller = new AbortController();
@@ -482,7 +595,12 @@
     nodes.root.removeAttribute("data-request-error");
     nodes.queryButton.disabled = true;
     nodes.queryInput.setAttribute("aria-busy", "true");
+    dispatchPresence(Presence?.EVENT_TYPES.USER_QUESTION, {
+      question,
+      routeContext: routeKey,
+    });
     setOperationState("running", "queryRunning", "public-archive-request");
+    syncSemanticDom();
     const timeout = window.setTimeout(() => controller.abort(), 15_000);
 
     try {
@@ -521,7 +639,11 @@
       nodes.result.hidden = true;
       nodes.root.dataset.requestError =
         error instanceof Error && error.name !== "AbortError" ? error.message : "archive request unavailable";
+      dispatchPresence(Presence?.EVENT_TYPES.REQUEST_FAILED, {
+        reasonClass: "archive-request",
+      });
       setOperationState("failed", "queryFailed", "public-archive-request-failure");
+      syncSemanticDom();
     } finally {
       window.clearTimeout(timeout);
       if (sequence === requestSequence) {
@@ -555,6 +677,7 @@
     nodes.sourcesHeading.textContent = copy.sources;
     nodes.sources.setAttribute("aria-label", copy.sourcesAria);
     nodes.authority.textContent = copy.authority;
+    if (nodes.detailsSummary) nodes.detailsSummary.textContent = copy.details || "Details";
     route.sources.forEach((sourceKey) => {
       const link = nodes.sourceLinks.get(sourceKey);
       if (link) link.textContent = translated(SOURCE_LINKS[sourceKey].label);
@@ -567,12 +690,15 @@
     nodes.panel.hidden = false;
     nodes.launcher.setAttribute("aria-expanded", "true");
     nodes.root.dataset.open = "true";
+    dispatchPresence(Presence?.EVENT_TYPES.PANEL_OPEN, {});
     if (lastResult) {
       applyResultVisual(lastResult);
     } else {
       setState("waving", "panel-open-greeting");
       window.clearTimeout(greetingTimer);
-      greetingTimer = window.setTimeout(() => setState("idle", "ready-no-active-work"), 900);
+      greetingTimer = window.setTimeout(() => {
+        if (stateName === "waving") setState("idle", "ready-no-active-work");
+      }, 900);
     }
     window.requestAnimationFrame(() => nodes.close.focus());
   }
@@ -581,6 +707,7 @@
     nodes.panel.hidden = true;
     nodes.launcher.setAttribute("aria-expanded", "false");
     delete nodes.root.dataset.open;
+    dispatchPresence(Presence?.EVENT_TYPES.PANEL_CLOSE, {});
     window.clearTimeout(greetingTimer);
     if (lastResult) applyResultVisual(lastResult);
     else setState("idle", "ready-no-active-work");
@@ -702,7 +829,10 @@
     sources.append(sourcesHeading, sourceList);
 
     const authority = createElement("p", { class: "axiom-agent__authority" });
-    panel.append(header, title, boundary, status, routeCard, queryForm, result, sources, authority);
+    const details = createElement("details", { class: "axiom-agent__details" });
+    const detailsSummary = createElement("summary", { class: "axiom-agent__details-summary" });
+    details.append(detailsSummary, sources, authority);
+    panel.append(header, title, boundary, status, routeCard, queryForm, result, details);
     root.append(panel, launcher);
     document.body.append(root);
 
@@ -740,6 +870,8 @@
       sourcesHeading,
       sourceLinks,
       authority,
+      details,
+      detailsSummary,
     });
 
     queryForm.addEventListener("submit", submitArchiveQuestion);
@@ -790,12 +922,16 @@
       nodes.sprite.style.backgroundImage = `url("${value.spritesheetPath}")`;
       assetStatus = "ready";
       nodes.root.dataset.assetState = "ready";
+      dispatchPresence(Presence?.EVENT_TYPES.ASSET_READY, {});
       setState("idle", "ready-no-active-work");
+      syncSemanticDom();
     } catch (error) {
       assetStatus = "failed";
       nodes.root.dataset.assetState = "failed";
       nodes.root.dataset.assetError = error instanceof Error ? error.message : "accepted atlas unavailable";
+      dispatchPresence(Presence?.EVENT_TYPES.ASSET_FAILED, {});
       setState("failed", "accepted-atlas-failure");
+      syncSemanticDom();
     }
     updateCopy();
   }
@@ -803,7 +939,21 @@
   function boot() {
     if (document.querySelector("[data-axiom-agent]")) return;
     buildInterface();
+    syncSemanticDom();
     loadAcceptedAsset();
+  }
+
+  function bootWhenReady() {
+    if (window.SemeAI_AxiomPresence || !document.querySelector('script[src*="axiom-presence-register"]')) {
+      boot();
+      return;
+    }
+    const onReady = () => {
+      window.clearTimeout(timer);
+      boot();
+    };
+    window.addEventListener("semeai:axiom-presence-ready", onReady, { once: true });
+    const timer = window.setTimeout(onReady, 1500);
   }
 
   window.SemeAI_Axiom = Object.freeze({
@@ -814,9 +964,14 @@
       assetState: assetStatus,
       route: routeKey,
       orientation: nodes.root?.dataset.orientation || null,
+      semanticState: presence ? presence.getSemanticState() : null,
+      context: presence ? presence.getContext() : null,
     }),
+    getContext: () => (presence ? presence.getContext() : null),
+    getSemanticState: () => (presence ? presence.getSemanticState() : null),
+    dispatch: (type, payload) => dispatchPresence(type, payload),
   });
   window.addEventListener("semeai:lang", updateCopy);
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
-  else boot();
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", bootWhenReady);
+  else bootWhenReady();
 })();

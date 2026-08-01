@@ -43,6 +43,7 @@ const MIME = {
   ".html": "text/html; charset=utf-8",
   ".ico": "image/x-icon",
   ".js": "text/javascript; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
   ".json": "application/json",
   ".png": "image/png",
   ".pdf": "application/pdf",
@@ -1967,11 +1968,11 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
     await page.locator(".axiom-agent__launcher").click();
     assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "true");
     assert.equal(await page.locator(".axiom-agent__panel").isVisible(), true);
-    assert.equal(await page.locator(".axiom-agent__mode").innerText(), "PUBLIC EVIDENCE");
+    assert.equal(await page.locator(".axiom-agent__mode").innerText(), "Public");
     assert.equal(await page.locator(".axiom-agent__route-identity strong").innerText(), routeLabel);
     assert.match(
       await page.locator(".axiom-agent__boundary").innerText(),
-      /An answer appears only when SaC\/PoR Gate permits release/,
+      /Answers appear only when release is allowed/,
     );
     assert.equal(await page.locator(".axiom-agent__query input").count(), 1);
     assert.equal(await page.locator(".axiom-agent__query input").getAttribute("maxlength"), "256");
@@ -2060,11 +2061,15 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
         routeContext: "home",
         limit: 5,
       });
-      assert.equal(await page.locator(".axiom-agent__result-action").innerText(), "SHOW / PROCEED");
+      assert.equal(await page.locator(".axiom-agent__result-action").innerText(), "Released");
+      assert.equal(
+        await page.locator(".axiom-agent__result-action").getAttribute("data-gate-action"),
+        "SHOW",
+      );
       assert.equal(await page.locator(".axiom-agent__result-answer").innerText(), releasedFixture);
       assert.equal(
         await page.locator(".axiom-agent__result-receipt").innerText(),
-        "Decision receipt: decision-show-fixture",
+        "Receipt: decision-show-fixture",
       );
       assert.equal(await page.locator(".axiom-agent__result-sources a").getAttribute("href"), "/gate.html#semantics-title");
       assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "idle");
@@ -2080,7 +2085,11 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
       await queryInput.fill("block this candidate");
       await queryInput.press("Enter");
       await page.locator('.axiom-agent__result[data-action="block"]').waitFor();
-      assert.equal(await page.locator(".axiom-agent__result-action").innerText(), "BLOCK / SILENCE");
+      assert.equal(await page.locator(".axiom-agent__result-action").innerText(), "Withheld");
+      assert.equal(
+        await page.locator(".axiom-agent__result-action").getAttribute("data-gate-action"),
+        "BLOCK",
+      );
       assert.equal(await page.locator(".axiom-agent__result-answer").isHidden(), true);
       assert.equal(await page.locator(".axiom-agent__result-answer").textContent(), "");
       assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "review");
@@ -2095,9 +2104,9 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
       await page.locator('.axiom-agent__result[data-action="no_evidence"]').waitFor();
       assert.equal(
         await page.locator(".axiom-agent__result-action").innerText(),
-        "NO EVIDENCE / NOT EVALUATED",
+        "No match",
       );
-      assert.match(await page.locator(".axiom-agent__result-reason").innerText(), /no candidate was generated/i);
+      assert.match(await page.locator(".axiom-agent__result-reason").innerText(), /nothing matching was found/i);
 
       await queryInput.fill("show markup as evidence");
       await queryInput.press("Enter");
@@ -2125,19 +2134,19 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
           document.querySelector("[data-axiom-agent]")?.dataset.state === "failed" &&
           document.querySelector(".axiom-agent__result")?.hidden === true,
       );
-      assert.match(await page.locator(".axiom-agent__status").innerText(), /archive service unavailable/i);
+      assert.match(await page.locator(".axiom-agent__status").innerText(), /could not reach the archive/i);
 
       await queryInput.fill("");
       await queryInput.press("Enter");
       assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "waiting");
-      assert.match(await page.locator(".axiom-agent__status").innerText(), /enter a public archive question/i);
+      assert.match(await page.locator(".axiom-agent__status").innerText(), /enter a question/i);
 
       await page.evaluate(() => window.SemeAI_I18n.setLang("uk"));
-      assert.equal(await page.locator(".axiom-agent__mode").innerText(), "ПУБЛІЧНІ ДОКАЗИ");
-      assert.equal(await page.locator(".axiom-agent__query button").innerText(), "Запитати Axiom");
+      assert.equal(await page.locator(".axiom-agent__mode").innerText(), "Публічно");
+      assert.equal(await page.locator(".axiom-agent__query button").innerText(), "Запитати");
       await page.evaluate(() => window.SemeAI_I18n.setLang("ru"));
-      assert.equal(await page.locator(".axiom-agent__mode").innerText(), "ПУБЛИЧНЫЕ ДОКАЗАТЕЛЬСТВА");
-      assert.equal(await page.locator(".axiom-agent__query button").innerText(), "Спросить Axiom");
+      assert.equal(await page.locator(".axiom-agent__mode").innerText(), "Публично");
+      assert.equal(await page.locator(".axiom-agent__query button").innerText(), "Спросить");
     }
 
     await page.keyboard.press("Escape");

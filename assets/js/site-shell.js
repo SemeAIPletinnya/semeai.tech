@@ -566,9 +566,53 @@
       footerColumn("shell.footer.use", "Use", [
         privateEntryRoute(),
         { label: "Support", i18n: "shell.footer.support", href: "mailto:support@semeai.tech" },
+      ]),
+      footerColumn("shell.footer.ecosystem", "Ecosystem", [
+        {
+          label: "Product surface",
+          i18n: "shell.footer.product",
+          href: "https://semeai.tech/",
+        },
+        {
+          label: "Live Gate console",
+          i18n: "shell.footer.gateDemo",
+          href: "https://gate.semeai.tech/",
+        },
+        {
+          label: "API status",
+          i18n: "shell.footer.api",
+          href: "https://api.semeai.tech/",
+        },
       ])
     );
-    footer.append(grid);
+
+    const bridge = element("div", {
+      class: "site-ecosystem-bridge",
+      "data-semeai-ecosystem-bridge": "",
+      role: "navigation",
+      "aria-label": t("shell.footer.ecosystem", "Ecosystem surfaces"),
+    });
+    const bridgeLabel = element(
+      "span",
+      { class: "site-ecosystem-bridge__label", "data-i18n": "shell.footer.ecosystem" },
+      t("shell.footer.ecosystem", "Ecosystem"),
+    );
+    const bridgeLinks = element("div", { class: "site-ecosystem-bridge__links" });
+    [
+      { href: "https://semeai.tech/", label: "semeai.tech", current: true },
+      { href: "https://www.semeai.tech/", label: "www" },
+      { href: "https://gate.semeai.tech/", label: "gate.semeai.tech" },
+      { href: "https://api.semeai.tech/", label: "api.semeai.tech" },
+    ].forEach((item) => {
+      const link = element("a", { href: item.href, rel: "noopener" }, item.label);
+      if (item.current) link.setAttribute("aria-current", "true");
+      if (item.href.startsWith("http") && !item.href.includes(location.host)) {
+        link.setAttribute("target", "_blank");
+      }
+      bridgeLinks.append(link);
+    });
+    bridge.append(bridgeLabel, bridgeLinks);
+    footer.append(grid, bridge);
     return footer;
   }
 
