@@ -94,15 +94,42 @@
 
   function initGate() {
     if (route !== "gate") return;
+    const semanticByAction = Object.freeze({
+      WORKING: "WORKING",
+      SHOW: "RESULT",
+      REVIEW: "REVIEW",
+      BLOCK: "HELD",
+      ERROR: "ERROR",
+    });
+    let pendingWitness = null;
+
+    function flushWitness() {
+      if (!pendingWitness) return;
+      const axiom = window.SemeAI_Axiom;
+      const root = document.querySelector("[data-axiom-agent]");
+      if (!axiom?.dispatch || root?.dataset.semanticState === pendingWitness.expected) return;
+      axiom.dispatch(pendingWitness.type, pendingWitness.payload);
+    }
+
+    function witness(type, payload, action) {
+      pendingWitness = { type, payload, expected: semanticByAction[action] || "ERROR" };
+      flushWitness();
+    }
+
+    new MutationObserver(flushWitness).observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-asset-state", "data-semantic-state"],
+      childList: true,
+      subtree: true,
+    });
+    window.addEventListener("semeai:axiom-presence-ready", flushWitness);
+
     window.addEventListener("semeai:gate-decision", (event) => {
       const action = event.detail?.action || "ERROR";
       animateGate(action);
-      const axiom = window.SemeAI_Axiom;
-      if (axiom?.dispatch) {
-        if (action === "WORKING") axiom.dispatch("TASK_STARTED", { source: "public-gate" });
-        else if (action === "ERROR") axiom.dispatch("REQUEST_FAILED", { source: "public-gate" });
-        else axiom.dispatch("GATE_DECISION", { action, receipt_id: event.detail?.receiptId || null });
-      }
+      if (action === "WORKING") witness("TASK_STARTED", { source: "public-gate" }, action);
+      else if (action === "ERROR") witness("REQUEST_FAILED", { source: "public-gate" }, action);
+      else witness("GATE_DECISION", { action, receipt_id: event.detail?.receiptId || null }, action);
       window.dispatchEvent(new CustomEvent("semeai:axiom-context", {
         detail: { source: "gate", state: action === "WORKING" ? "WORKING" : "RESULT", decision: action },
       }));

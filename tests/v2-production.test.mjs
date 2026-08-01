@@ -86,6 +86,10 @@ async function run() {
       page.on("pageerror", (error) => errors.push(error.message));
       await page.route("https://fonts.googleapis.com/**", (route) => route.abort());
       await page.route("https://fonts.gstatic.com/**", (route) => route.abort());
+      await page.route("**/assets/pets/axiom/spritesheet.webp", async (route) => {
+        await new Promise((resolve) => setTimeout(resolve, 250));
+        await route.continue();
+      });
       await page.route("https://api.semeai.tech/v0/demo/check", async (route) => {
         requests.push(route.request().postDataJSON());
         await route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(fixture.response) });
@@ -95,6 +99,8 @@ async function run() {
       await page.locator("#commercial-demo-run").click({ force: true });
       await page.waitForFunction((expected) => document.querySelector("#live-gate")?.dataset.decision === expected, fixture.expected);
       const expectedAxiom = { SHOW: "RESULT", REVIEW: "REVIEW", BLOCK: "HELD", ERROR: "ERROR" }[fixture.expected];
+      await page.waitForFunction((expected) => document.querySelector("[data-axiom-agent]")?.dataset.semanticState === expected, expectedAxiom);
+      await page.waitForFunction(() => document.querySelector("[data-axiom-agent]")?.dataset.assetState === "ready");
       await page.waitForFunction((expected) => document.querySelector("[data-axiom-agent]")?.dataset.semanticState === expected, expectedAxiom);
       assert.deepEqual(requests, [{ scenario_id: "supported_answer" }], `${fixture.name}: only scenario_id may cross the public request boundary`);
       const state = await page.evaluate(({ candidate, expected }) => ({
