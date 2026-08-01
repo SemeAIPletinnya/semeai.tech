@@ -3,15 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SemeAI | Living release-control ecosystem</title>
+    <title>SemeAI Gate | Release control after AI generation</title>
     <meta
       name="description"
-      content="SemeAI is a governed release-control ecosystem for AI outputs. The model generates; the gate decides SHOW, REVIEW, or BLOCK; receipts preserve the decision trace."
+      content="Add an explicit release boundary between AI generation and your users. Evaluate candidates against policy, evidence, and context; return SHOW, REVIEW, or BLOCK; preserve a decision receipt."
     />
-    <meta property="og:title" content="SemeAI | Generation is not release authority" />
+    <meta property="og:title" content="SemeAI Gate | Release control after AI generation" />
     <meta
       property="og:description"
-      content="A living release-control ecosystem for AI outputs: memory, evidence, receipts, API, and governed release decisions."
+      content="Put an explicit release decision after AI generation and before customer visibility."
     />
     <meta property="og:url" content="https://semeai.tech/" />
     <meta name="theme-color" content="#050708" />
@@ -2339,6 +2339,125 @@
           scroll-behavior: auto !important;
         }
       }
+      .commercial-home { position: relative; z-index: 2; }
+      .commercial-home section { scroll-margin-top: 6.5rem; }
+      .commercial-hero { padding-bottom: 6rem; }
+      .commercial-hero .hero-layout { align-items: center; }
+      .commercial-proof-line,
+      .commercial-principle {
+        margin: 1rem 0 0;
+        color: var(--mute);
+        font: 600 0.76rem/1.55 "JetBrains Mono", monospace;
+        letter-spacing: 0.04em;
+      }
+      .commercial-principle { color: #ffd08a; }
+      .commercial-stage {
+        min-height: 31rem;
+        padding: 2rem;
+        display: grid;
+        align-content: center;
+        gap: 1.25rem;
+        overflow: hidden;
+      }
+      .commercial-stage::before { opacity: 0.48; }
+      .commercial-stage__labels,
+      .commercial-stage__outcomes,
+      .commercial-motion-controls {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        align-items: center;
+      }
+      .commercial-stage__labels { justify-content: space-between; }
+      .commercial-stage__labels span,
+      .commercial-stage__outcomes button,
+      .commercial-motion-controls button {
+        border: 1px solid rgba(226,244,255,0.15);
+        border-radius: 999px;
+        background: rgba(5,7,8,0.72);
+        color: var(--mute);
+        padding: 0.48rem 0.72rem;
+        font: 600 0.66rem/1 "JetBrains Mono", monospace;
+        letter-spacing: 0.04em;
+      }
+      .commercial-stage__outcomes button,
+      .commercial-motion-controls button { cursor: pointer; }
+      .commercial-stage__outcomes button[aria-pressed="true"] {
+        border-color: rgba(134,237,245,0.6);
+        color: white;
+      }
+      .commercial-stage svg { position: relative; z-index: 2; width: 100%; height: auto; overflow: visible; }
+      .commercial-stage .commercial-input-path,
+      .commercial-stage .commercial-candidate-path,
+      .commercial-stage .commercial-release-path,
+      .commercial-stage .commercial-held-path,
+      .commercial-stage .commercial-receipt-path {
+        fill: none;
+        stroke: rgba(134,237,245,0.34);
+        stroke-width: 2;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 100;
+        transition: stroke-dashoffset 700ms ease, opacity 350ms ease;
+      }
+      .commercial-stage .commercial-boundary { stroke: rgba(255,208,138,0.5); stroke-width: 2; }
+      .commercial-stage .commercial-gate { fill: rgba(5,7,8,0.94); stroke: rgba(255,208,138,0.78); stroke-width: 2; }
+      .commercial-stage .commercial-candidate { fill: #86edf5; transition: transform 700ms ease; transform-origin: center; }
+      .commercial-stage .commercial-receipt { fill: rgba(255,208,138,0.08); stroke: rgba(255,208,138,0.7); opacity: 0; transition: opacity 350ms ease; }
+      .commercial-stage .commercial-state-label { fill: white; font: 700 12px "JetBrains Mono", monospace; opacity: 0.32; }
+      .commercial-stage[data-motion-phase="candidate"] .commercial-candidate-path,
+      .commercial-stage[data-motion-phase="inputs"] .commercial-candidate-path,
+      .commercial-stage[data-motion-phase="gate"] .commercial-candidate-path,
+      .commercial-stage[data-motion-phase="decision"] .commercial-candidate-path,
+      .commercial-stage[data-motion-phase="receipt"] .commercial-candidate-path { stroke-dashoffset: 0; }
+      .commercial-stage[data-motion-phase="inputs"] .commercial-input-path,
+      .commercial-stage[data-motion-phase="gate"] .commercial-input-path,
+      .commercial-stage[data-motion-phase="decision"] .commercial-input-path,
+      .commercial-stage[data-motion-phase="receipt"] .commercial-input-path { stroke-dashoffset: 0; }
+      .commercial-stage[data-motion-outcome="show"][data-motion-phase="decision"] .commercial-release-path,
+      .commercial-stage[data-motion-outcome="show"][data-motion-phase="receipt"] .commercial-release-path,
+      .commercial-stage[data-motion-outcome="review"][data-motion-phase="decision"] .commercial-held-path,
+      .commercial-stage[data-motion-outcome="review"][data-motion-phase="receipt"] .commercial-held-path,
+      .commercial-stage[data-motion-outcome="block"][data-motion-phase="decision"] .commercial-held-path,
+      .commercial-stage[data-motion-outcome="block"][data-motion-phase="receipt"] .commercial-held-path,
+      .commercial-stage[data-motion-phase="receipt"] .commercial-receipt-path { stroke-dashoffset: 0; }
+      .commercial-stage[data-motion-outcome="show"][data-motion-phase="decision"] .commercial-candidate,
+      .commercial-stage[data-motion-outcome="show"][data-motion-phase="receipt"] .commercial-candidate { transform: translateX(236px); }
+      .commercial-stage[data-motion-phase="receipt"] .commercial-receipt { opacity: 1; }
+      .commercial-stage[data-motion-outcome="show"] .commercial-label-show,
+      .commercial-stage[data-motion-outcome="review"] .commercial-label-review,
+      .commercial-stage[data-motion-outcome="block"] .commercial-label-block { opacity: 1; }
+      .commercial-section { max-width: 76rem; margin: 0 auto; padding: 5.5rem 1.25rem; }
+      .commercial-section__head { max-width: 50rem; margin-bottom: 2rem; }
+      .commercial-section__head h2 { margin: 1rem 0; color: #fff; font-size: clamp(2.25rem,5vw,4.25rem); line-height: 0.98; letter-spacing: -0.045em; }
+      .commercial-section__head p { margin: 0; color: var(--mute); font-size: 1.05rem; line-height: 1.75; }
+      .commercial-grid { display: grid; gap: 1rem; grid-template-columns: repeat(12,minmax(0,1fr)); }
+      .commercial-card { grid-column: span 4; padding: 1.5rem; border: 1px solid var(--line); border-radius: 1.3rem; background: rgba(10,14,17,0.76); }
+      .commercial-card.wide { grid-column: span 6; }
+      .commercial-card h3 { margin: 0 0 0.65rem; color: #fff; font-size: 1.05rem; }
+      .commercial-card p, .commercial-card li { color: var(--mute); line-height: 1.65; }
+      .commercial-card ul { margin: 0; padding-left: 1.15rem; }
+      .commercial-card a { color: #86edf5; }
+      .commercial-step small { display: block; margin-bottom: 0.75rem; color: #ffd08a; font: 600 0.7rem/1.2 "JetBrains Mono", monospace; }
+      .commercial-outcome { border-top: 2px solid var(--outcome); }
+      .commercial-sequence { margin-top: 1.5rem; padding: 1rem 1.2rem; border-left: 2px solid #ffd08a; color: #fff; background: rgba(255,208,138,0.05); font: 600 0.82rem/1.7 "JetBrains Mono", monospace; }
+      .commercial-boundary-note { margin-top: 1.5rem; padding: 1rem 1.2rem; border: 1px solid rgba(255,208,138,0.25); border-radius: 1rem; color: var(--mute); }
+      .commercial-pilot { border: 1px solid rgba(134,237,245,0.24); border-radius: 2rem; background: linear-gradient(135deg,rgba(134,237,245,0.06),rgba(255,208,138,0.04)); }
+      .commercial-pilot .commercial-section__head { max-width: 58rem; }
+      .commercial-question-list { display: grid; gap: 0.65rem; margin: 0; padding: 0; list-style: none; }
+      .commercial-question-list li { padding: 0.8rem 1rem; border-left: 2px solid rgba(134,237,245,0.5); background: rgba(5,7,8,0.5); }
+      .commercial-email-note { margin-top: 1rem; color: var(--faint); font-size: 0.85rem; line-height: 1.6; }
+      .legacy-home-surface[hidden] { display: none !important; }
+      @media (max-width: 880px) {
+        .commercial-card, .commercial-card.wide { grid-column: 1 / -1; }
+        .commercial-stage { min-height: 25rem; padding: 1.25rem; }
+        .commercial-stage[data-motion-outcome="show"][data-motion-phase="decision"] .commercial-candidate,
+        .commercial-stage[data-motion-outcome="show"][data-motion-phase="receipt"] .commercial-candidate { transform: translateX(170px); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .commercial-stage * { transition-duration: 0.001ms !important; animation: none !important; }
+      }
     </style>
   </head>
   <body class="mode-runtime" data-semeai-custom-bg>
@@ -2351,6 +2470,164 @@
       <div data-semeai-nav></div>
 
       <main id="top">
+        <div class="commercial-home">
+          <section class="hero commercial-hero" aria-labelledby="commercial-home-title">
+            <div class="hero-layout">
+              <div>
+                <div class="kicker"><span class="signal-dot"></span><span data-i18n="commercial.hero.eyebrow">POST-GENERATION RELEASE CONTROL</span></div>
+                <h1 id="commercial-home-title" class="hero-title" data-i18n="commercial.hero.title">Ship customer-facing AI without releasing every model output.</h1>
+                <p class="hero-copy" data-i18n="commercial.hero.body">Your model still generates. SemeAI Gate checks the candidate against your policy, evidence, and context, then returns SHOW, REVIEW, or BLOCK with an auditable decision receipt.</p>
+                <div class="hero-actions mt-8">
+                  <a class="btn-primary" href="#pilot" data-i18n="commercial.cta.pilot">Request a Gate pilot</a>
+                  <a class="btn-ghost" href="/gate.html" data-i18n="commercial.cta.live">Run the live Gate</a>
+                </div>
+                <p class="commercial-proof-line" data-i18n="commercial.hero.proof">Working public API · deterministic scenarios · decision receipts · no model migration</p>
+                <p class="commercial-principle" data-i18n="commercial.hero.principle">Generation creates a candidate. Release is a separate decision.</p>
+              </div>
+
+              <div class="ecosystem-stage commercial-stage glass" data-motion-outcome="show" data-motion-phase="candidate" aria-label="Candidate, Gate, release decision, and receipt diagram" data-i18n-aria="commercial.motion.aria">
+                <div class="commercial-stage__labels"><span data-i18n="commercial.motion.candidate">Candidate output</span><span data-i18n="commercial.motion.release">Release field</span></div>
+                <svg viewBox="0 0 560 260" aria-hidden="true">
+                  <path class="commercial-candidate-path" pathLength="100" d="M42 132 H252" />
+                  <path class="commercial-input-path" pathLength="100" d="M170 42 C204 58 224 78 252 106" />
+                  <path class="commercial-input-path" pathLength="100" d="M170 220 C204 204 224 184 252 158" />
+                  <line class="commercial-boundary" x1="330" y1="28" x2="330" y2="232" />
+                  <rect class="commercial-gate" x="252" y="92" width="104" height="80" rx="14" />
+                  <text x="304" y="126" fill="#ffd08a" text-anchor="middle" font-size="12" font-family="JetBrains Mono">SEMEAI</text>
+                  <text x="304" y="146" fill="#fff" text-anchor="middle" font-size="15" font-weight="700" font-family="Inter">GATE</text>
+                  <path class="commercial-release-path" pathLength="100" d="M356 132 H518" />
+                  <path class="commercial-held-path" pathLength="100" d="M252 132 C218 156 218 184 252 204" />
+                  <path class="commercial-receipt-path" pathLength="100" d="M356 158 C404 184 428 208 464 222" />
+                  <circle class="commercial-candidate" cx="80" cy="132" r="7" />
+                  <rect class="commercial-receipt" x="452" y="210" width="24" height="24" rx="3" />
+                  <text class="commercial-state-label commercial-label-show" x="438" y="112">SHOW</text>
+                  <text class="commercial-state-label commercial-label-review" x="178" y="196">REVIEW</text>
+                  <text class="commercial-state-label commercial-label-block" x="182" y="196">BLOCK</text>
+                </svg>
+                <div class="commercial-stage__outcomes" aria-label="Choose diagram outcome" data-i18n-aria="commercial.motion.choose">
+                  <button type="button" data-home-outcome="show" aria-pressed="true">SHOW</button>
+                  <button type="button" data-home-outcome="review" aria-pressed="false">REVIEW</button>
+                  <button type="button" data-home-outcome="block" aria-pressed="false">BLOCK</button>
+                </div>
+                <div class="commercial-motion-controls">
+                  <button id="home-motion-replay" type="button" data-i18n="commercial.motion.replay">Replay flow</button>
+                  <button id="home-motion-pause" type="button" data-i18n="commercial.motion.pause">Pause</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="product" class="commercial-section" aria-labelledby="problem-title">
+            <div class="commercial-section__head">
+              <span class="pill" data-i18n="commercial.problem.eyebrow">THE MISSING BOUNDARY</span>
+              <h2 id="problem-title" data-i18n="commercial.problem.title">Fluent output is not permission to release.</h2>
+              <p data-i18n="commercial.problem.body">Prompts, retrieval, moderation, and model confidence can inform a decision. They do not make the generated answer release authority. Before output reaches a customer—or becomes an action—your host needs an explicit decision boundary.</p>
+            </div>
+            <div class="commercial-grid">
+              <article class="commercial-card"><h3 data-i18n="commercial.problem.c1t">Invented customer facts</h3><p data-i18n="commercial.problem.c1b">A support assistant promises a discount, refund, or entitlement that current business data does not support.</p></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.problem.c2t">Ambiguous policy claims</h3><p data-i18n="commercial.problem.c2b">Evidence is incomplete or conflicting, but the model answers with more certainty than the workflow can justify.</p></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.problem.c3t">Unapproved action proposals</h3><p data-i18n="commercial.problem.c3b">An agent proposes a change, message, or operation that should not proceed without a separate release and execution boundary.</p></article>
+            </div>
+            <p class="commercial-sequence" data-i18n="commercial.problem.closing">Generated ≠ verified ≠ allowed ≠ released.</p>
+          </section>
+
+          <section id="how-it-works" class="commercial-section" aria-labelledby="how-title">
+            <div class="commercial-section__head">
+              <span class="pill" data-i18n="commercial.how.eyebrow">ONE RELEASE CONTRACT</span>
+              <h2 id="how-title" data-i18n="commercial.how.title">Put the Gate after generation and before visibility.</h2>
+              <p data-i18n="commercial.how.body">SemeAI does not replace your model. It evaluates the candidate at the point where your application is about to expose it.</p>
+            </div>
+            <div class="commercial-grid">
+              <article class="commercial-card wide commercial-step"><small data-i18n="commercial.how.s1l">01 · CANDIDATE</small><h3 data-i18n="commercial.how.s1t">Your model generates.</h3><p data-i18n="commercial.how.s1b">The output remains a candidate. It has not been released to the user or authorized for execution.</p></article>
+              <article class="commercial-card wide commercial-step"><small data-i18n="commercial.how.s2l">02 · BOUNDED INPUTS</small><h3 data-i18n="commercial.how.s2t">Your workflow supplies policy, evidence, and context.</h3><p data-i18n="commercial.how.s2b">Only customer-approved inputs enter the decision. Retrieval is evidence—not automatic truth or permanent memory.</p></article>
+              <article class="commercial-card wide commercial-step"><small data-i18n="commercial.how.s3l">03 · DECISION</small><h3 data-i18n="commercial.how.s3t">The Gate returns an explicit release state.</h3><p data-i18n="commercial.how.s3b">SHOW maps to PROCEED. REVIEW maps to NEEDS_REVIEW. BLOCK maps to SILENCE.</p></article>
+              <article class="commercial-card wide commercial-step"><small data-i18n="commercial.how.s4l">04 · RECEIPT</small><h3 data-i18n="commercial.how.s4t">The decision remains inspectable.</h3><p data-i18n="commercial.how.s4b">A decision receipt preserves the trace. Any later execution or result belongs in a separate linked receipt.</p></article>
+              <article class="commercial-card commercial-outcome" style="--outcome:#7af0b1"><h3>SHOW</h3><p data-i18n="commercial.how.show">Release the evaluated candidate.</p></article>
+              <article class="commercial-card commercial-outcome" style="--outcome:#ffd08a"><h3>REVIEW</h3><p data-i18n="commercial.how.review">Keep the candidate withheld and route the case to your approved review process.</p></article>
+              <article class="commercial-card commercial-outcome" style="--outcome:#b69cff"><h3>BLOCK</h3><p data-i18n="commercial.how.block">Deny release, withhold execution, and preserve the audit. SILENCE is not deletion.</p></article>
+            </div>
+            <p class="commercial-boundary-note" data-i18n="commercial.how.error">If the Gate cannot make a valid decision, fail closed. Do not replace the candidate with newly generated or un-gated text.</p>
+          </section>
+
+          <section class="commercial-section" aria-labelledby="proof-demo-title">
+            <div class="commercial-section__head">
+              <span class="pill" data-i18n="commercial.demo.eyebrow">SEE THE BOUNDARY</span>
+              <h2 id="proof-demo-title" data-i18n="commercial.demo.title">Run a deterministic Gate scenario.</h2>
+              <p data-i18n="commercial.demo.body">Choose a published scenario and inspect the inputs, decision mapping, withheld behavior, and receipt. The demo proves the published scenario—not every policy or workflow.</p>
+            </div>
+            <div class="commercial-grid">
+              <article class="commercial-card wide"><h3 data-i18n="commercial.demo.liveTitle">Live Gate</h3><p data-i18n="commercial.demo.liveBody">Run supported, ambiguous, blocked, and error cases without entering private data.</p><div class="btn-row mt-6"><a class="btn-primary" href="/gate.html" data-i18n="commercial.cta.live">Run the live Gate</a><a class="btn-ghost" href="/pilots/support.html" data-i18n="commercial.demo.scenarios">Inspect support scenarios</a></div></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.demo.axiomTitle">Ask the evidence, not a sales script.</h3><p data-i18n="commercial.demo.axiomBody">Axiom explains SemeAI from an admitted public evidence index. It is a guided demo—not release authority, private-workspace retrieval, or a source of custom commercial commitments.</p><div class="btn-row mt-6"><button class="btn-ghost" type="button" data-open-axiom data-i18n="commercial.demo.askAxiom">Ask Axiom</button></div></article>
+            </div>
+          </section>
+
+          <section id="use-cases" class="commercial-section" aria-labelledby="use-cases-title">
+            <div class="commercial-section__head"><span class="pill" data-i18n="commercial.use.eyebrow">START WITH ONE WORKFLOW</span><h2 id="use-cases-title" data-i18n="commercial.use.title">Use release control where a fluent answer can change a real outcome.</h2><p data-i18n="commercial.use.body">The first pilot should have a clear candidate, a clear release point, and policy or evidence the Gate can evaluate.</p></div>
+            <div class="commercial-grid">
+              <article class="commercial-card wide"><h3 data-i18n="commercial.use.c1t">Customer support assistants</h3><p data-i18n="commercial.use.c1b">Check discounts, refunds, entitlements, and account claims against current business data before the answer reaches a customer.</p></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.use.c2t">Knowledge assistants and internal copilots</h3><p data-i18n="commercial.use.c2b">Hold answers when the source set is missing, conflicting, out of scope, or insufficient for the requested claim.</p></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.use.c3t">Generated reports and recommendations</h3><p data-i18n="commercial.use.c3b">Require evidence and policy checks before generated conclusions become customer-visible or operationally relied upon.</p></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.use.c4t">Agent action proposals</h3><p data-i18n="commercial.use.c4b">Gate the proposal before a separate execution authority decides whether any real-world action may occur.</p></article>
+            </div>
+            <p class="commercial-boundary-note" data-i18n="commercial.use.boundary">SemeAI Gate does not provide medical, legal, financial, or compliance approval. Regulated workflows require the customer’s own qualified governance and separate review.</p>
+            <div class="btn-row mt-6"><a class="btn-primary" href="#pilot" data-i18n="commercial.cta.pilot">Request a Gate pilot</a></div>
+          </section>
+
+          <section class="commercial-section" aria-labelledby="package-title">
+            <div class="commercial-section__head"><span class="pill" data-i18n="commercial.package.eyebrow">SEMEAI GATE PILOT</span><h2 id="package-title" data-i18n="commercial.package.title">Prove the release boundary on one existing workflow.</h2><p data-i18n="commercial.package.body">The pilot is a bounded technical engagement. Together we map your release point, connect the Gate in an approved test path, run agreed scenarios, and produce an evidence-backed conclusion before any broader rollout.</p></div>
+            <div class="commercial-grid">
+              <article class="commercial-card"><h3 data-i18n="commercial.package.included">What the pilot includes</h3><ul><li data-i18n="commercial.package.i1">One workflow and one release-boundary map</li><li data-i18n="commercial.package.i2">Policy, evidence, and context field mapping</li><li data-i18n="commercial.package.i3">SHOW / REVIEW / BLOCK host behavior</li><li data-i18n="commercial.package.i4">Decision receipt verification</li><li data-i18n="commercial.package.i5">Deterministic supported, ambiguous, blocked, and error scenarios</li><li data-i18n="commercial.package.i6">Integration, limitation, handoff, and rollback notes</li></ul></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.package.inputs">What we need from your team</h3><ul><li data-i18n="commercial.package.n1">A working AI workflow and technical owner</li><li data-i18n="commercial.package.n2">The point where output becomes visible or actionable</li><li data-i18n="commercial.package.n3">Non-sensitive example candidates and expected outcomes</li><li data-i18n="commercial.package.n4">Approved policy and evidence sources</li><li data-i18n="commercial.package.n5">A test environment and data-boundary requirements</li><li data-i18n="commercial.package.n6">Your intended review and withheld-output process</li></ul></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.package.success">What success means</h3><p data-i18n="commercial.package.successBody">Agreed scenarios produce reproducible decisions; no candidate is visible before SHOW; REVIEW and BLOCK remain withheld; receipts are inspectable; operational behavior and limitations are documented.</p></article>
+            </div>
+            <p class="commercial-boundary-note" data-i18n="commercial.package.terms">Pilot scope and commercial terms are confirmed after a technical fit review. Submitting a request creates no purchase commitment.</p>
+            <div class="btn-row mt-6"><a class="btn-primary" href="#pilot" data-i18n="commercial.cta.pilot">Request a Gate pilot</a></div>
+          </section>
+
+          <section id="evidence" class="commercial-section" aria-labelledby="evidence-title">
+            <div class="commercial-section__head"><span class="pill" data-i18n="commercial.evidence.eyebrow">INSPECT BEFORE YOU TRUST</span><h2 id="evidence-title" data-i18n="commercial.evidence.title">Follow the decision from candidate to receipt.</h2><p data-i18n="commercial.evidence.body">SemeAI publishes working surfaces and their limits so your team can inspect the mechanism before discussing a broader deployment.</p></div>
+            <div class="commercial-grid">
+              <article class="commercial-card"><h3 data-i18n="commercial.evidence.live">Live Gate</h3><p data-i18n="commercial.evidence.liveBody">Run bounded scenarios and inspect SHOW, REVIEW, BLOCK, and receipt behavior.</p><a href="/gate.html" data-i18n="commercial.evidence.liveLink">Run the Gate →</a></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.evidence.api">API and schema</h3><p data-i18n="commercial.evidence.apiBody">Inspect the request, response, canonical decisions, public mappings, and receipt fields.</p><a href="/gate.html#contract" data-i18n="commercial.evidence.apiLink">View the contract →</a></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.evidence.repo">Public implementation</h3><p data-i18n="commercial.evidence.repoBody">Review the basic adapter, examples, tests, and deterministic behavior in the public repository.</p><a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" data-i18n="commercial.evidence.repoLink">Open the repository ↗</a></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.evidence.arch">Architecture and boundaries</h3><p data-i18n="commercial.evidence.archBody">Read the Engineering Book and Research surfaces for design decisions, evidence, and explicit claim limits.</p><a href="/book/" data-i18n="commercial.evidence.archLink">Read the evidence →</a></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.evidence.bench">Repository Evidence Benchmark</h3><p data-i18n="commercial.evidence.benchBody">The Benchmark evaluates bounded public repository signals. It is not a security audit, product certification, or production endorsement.</p><a href="/benchmark/" data-i18n="commercial.evidence.benchLink">Open the Benchmark →</a></article>
+            </div>
+          </section>
+
+          <section class="commercial-section" aria-labelledby="integration-title">
+            <div class="commercial-section__head"><span class="pill" data-i18n="commercial.integration.eyebrow">KEEP YOUR GENERATION STACK</span><h2 id="integration-title" data-i18n="commercial.integration.title">One release contract, placed where your data is allowed to live.</h2><p data-i18n="commercial.integration.body">The pilot selects an integration path based on your workflow, approved data boundary, and test environment. No deployment shape is assumed before technical review.</p></div>
+            <div class="commercial-grid">
+              <article class="commercial-card"><h3 data-i18n="commercial.integration.hosted">Hosted API</h3><p data-i18n="commercial.integration.hostedBody">Evaluate scoped request data through the hosted Gate when your policy permits it.</p></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.integration.self">Self-hosted path</h3><p data-i18n="commercial.integration.selfBody">Evaluate whether the published contract can run inside a customer-controlled environment. Customer-specific packaging and support require separate scope approval.</p></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.integration.oss">Open-source basic adapter</h3><p data-i18n="commercial.integration.ossBody">Inspect and run the basic deterministic adapter locally as implementation evidence.</p></article>
+            </div>
+            <p class="commercial-sequence" data-i18n="commercial.integration.sequence">Generate candidate → call Gate → release only on SHOW → withhold on REVIEW/BLOCK/ERROR → retain decision receipt</p>
+            <p class="commercial-boundary-note" data-i18n="commercial.integration.fallback">If your product needs customer-visible fallback or warning text, include it in a candidate evaluated before release or submit it through a separate Gate decision. Never mutate the released answer after the Gate.</p>
+          </section>
+
+          <section class="commercial-section" aria-labelledby="boundaries-title">
+            <div class="commercial-section__head"><span class="pill" data-i18n="commercial.boundaries.eyebrow">WHAT THE GATE DOES—AND DOES NOT DO</span><h2 id="boundaries-title" data-i18n="commercial.boundaries.title">A release decision is not a universal truth claim.</h2></div>
+            <div class="commercial-grid">
+              <article class="commercial-card wide"><h3 data-i18n="commercial.boundaries.does">SemeAI Gate does</h3><ul><li data-i18n="commercial.boundaries.d1">Evaluate an AI-generated candidate against bounded policy, evidence, and context</li><li data-i18n="commercial.boundaries.d2">Return an explicit release state</li><li data-i18n="commercial.boundaries.d3">Help the host withhold REVIEW and BLOCK candidates</li><li data-i18n="commercial.boundaries.d4">Preserve an inspectable decision receipt</li><li data-i18n="commercial.boundaries.d5">Keep release authority separate from generation and advisory metadata</li></ul></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.boundaries.not">SemeAI Gate does not</h3><ul><li data-i18n="commercial.boundaries.n1">Replace your model or guarantee that generated content is true</li><li data-i18n="commercial.boundaries.n2">Turn retrieval, memory, or metadata into release authority</li><li data-i18n="commercial.boundaries.n3">Provide regulatory, medical, legal, financial, or compliance approval</li><li data-i18n="commercial.boundaries.n4">Authorize real-world execution merely because content was released</li><li data-i18n="commercial.boundaries.n5">Generate or rewrite a fallback after a blocked decision</li><li data-i18n="commercial.boundaries.n6">Convert public evidence into proof of private customer outcomes</li></ul></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.boundaries.accessQ">Is SemeAI self-serve?</h3><p data-i18n="commercial.boundaries.accessA">The public Gate and evidence surfaces are available to inspect. Account, Workspace, and Dashboard access is approved-pilot access until the commercial onboarding journey is verified end to end.</p></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.boundaries.priceQ">How much does a pilot cost and how long does it take?</h3><p data-i18n="commercial.boundaries.priceA">Scope and commercial terms are confirmed after a technical fit review. SemeAI does not publish an unverified pilot price or timeline.</p></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.boundaries.blockQ">What happens to a blocked candidate?</h3><p data-i18n="commercial.boundaries.blockA">Release is denied, execution is withheld, and the audit record remains. The candidate is not deleted and must not be exposed through the page, events, receipts, or a generated fallback.</p></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.boundaries.showQ">Does SHOW mean the answer is universally true or safe?</h3><p data-i18n="commercial.boundaries.showA">No. SHOW means the candidate satisfied the configured decision contract for that evaluated case. It is not a universal quality, security, compliance, or production endorsement.</p></article>
+            </div>
+          </section>
+
+          <section id="pilot" class="commercial-section commercial-pilot" aria-labelledby="pilot-title">
+            <div class="commercial-section__head"><span class="pill" data-i18n="commercial.pilot.eyebrow">REQUEST A TECHNICAL FIT REVIEW</span><h2 id="pilot-title" data-i18n="commercial.pilot.title">Name the workflow you want the Gate to control.</h2><p data-i18n="commercial.pilot.body">Tell us where generated output becomes visible or actionable. We will review the fit for one bounded Gate pilot by email.</p></div>
+            <div class="commercial-grid">
+              <article class="commercial-card wide"><h3 data-i18n="commercial.pilot.questions">Include these non-sensitive details</h3><ul class="commercial-question-list"><li data-i18n="commercial.pilot.q1">Your role, company or project, and current workflow stage</li><li data-i18n="commercial.pilot.q2">Where generated output becomes visible or actionable</li><li data-i18n="commercial.pilot.q3">One supported, one ambiguous, and one withheld case</li><li data-i18n="commercial.pilot.q4">What should happen on REVIEW or BLOCK</li><li data-i18n="commercial.pilot.q5">Your model/host stack and data-boundary requirement</li></ul></article>
+              <article class="commercial-card wide"><h3 data-i18n="commercial.pilot.emailTitle">Request by work email</h3><p data-i18n="commercial.pilot.privacy">Do not submit secrets, credentials, personal data, proprietary prompts, private documents, or customer content. A short non-sensitive description is enough for the first review.</p><div class="btn-row mt-6"><a class="btn-primary" href="mailto:support@semeai.tech?subject=Gate%20Pilot%20Request" data-i18n="commercial.cta.pilot">Request a Gate pilot</a><a class="btn-ghost" href="/account/" data-i18n="commercial.pilot.signin">Approved pilot sign in</a></div><p class="commercial-email-note" data-i18n="commercial.pilot.note">This opens your email client with a safe subject only. It is a non-binding fit request, not account creation or a purchase. Scope and commercial terms are confirmed separately.</p></article>
+            </div>
+          </section>
+        </div>
+
+        <div class="legacy-home-surface" hidden inert aria-hidden="true">
         <section class="hero">
           <svg class="hero-mobile-system" viewBox="0 0 390 720" aria-hidden="true">
             <path class="hero-mobile-evidence" d="M356 112 C322 176 298 232 304 314 C308 380 334 416 318 482" />
@@ -2722,10 +2999,10 @@
               <div id="limit-cta" class="glass mt-6 hidden rounded-2xl p-5">
                 <p class="font-black text-white">You have used the public demo checks.</p>
                 <p class="mt-2 text-sm leading-relaxed text-mute">
-                  Create a workspace for API keys, account records, receipt browsing, and pilot access.
+                  Request a technical fit review for approved pilot access.
                 </p>
                 <div class="mt-4 flex flex-wrap gap-2">
-                  <a class="btn-primary" href="register.html?v=20260720a&amp;from=demo">Register workspace</a>
+                  <a class="btn-primary" href="/#pilot">Request a Gate pilot</a>
                   <a class="btn-ghost" href="integrate.html?v=20260720a">Integration guide</a>
                 </div>
               </div>
@@ -2778,8 +3055,8 @@
               <a class="chapter-pill" href="self-hosted.html?v=20260720a">
                 <b>Self-hosted Enterprise</b><span>Deploy in your VPC or internal network. We do not need to see your documents.</span>
               </a>
-              <a class="chapter-pill" href="register.html?v=20260720a&amp;from=landing">
-                <b>SaaS API</b><span>Fast pilot path with workspace registration, live checks, API keys, and account console.</span>
+              <a class="chapter-pill" href="/#pilot">
+                <b>Hosted API fit review</b><span>Evaluate an approved pilot path without assuming self-service access or commercial terms.</span>
               </a>
             </div>
           </div>
@@ -2940,6 +3217,7 @@
             </div>
           </div>
         </section>
+        </div>
       </main>
 
       <div data-semeai-footer></div>
@@ -3151,7 +3429,8 @@
         else raf = requestAnimationFrame(draw);
       })();
 
-            const t = (key, fallback) => {
+      if (document.querySelector(".legacy-home-surface:not([hidden])")) {
+      const t = (key, fallback) => {
         const api = window.SemeAI_I18n;
         if (!api || typeof api.t !== "function") return fallback;
         const value = api.t(key);
@@ -3386,6 +3665,7 @@
         reason: "User sees nothing. Audit preserved.",
       }, false);
       if (freeLeft() > 0) setTimeout(() => runCheck({ hero: true }), 900);
+      }
     </script>
   </body>
 </html>

@@ -152,11 +152,16 @@
       </div>
 
       <main class="site-main" id="dashboard-main">
+        <div class="card mb-6">
+          <span class="pill" data-i18n="commercial.access.badge">Approved pilot access · private beta</span>
+          <p class="lead mt-4" data-i18n="commercial.access.dashboardNote">This operator console is retained for approved participants. New pilot requests start with a technical fit review.</p>
+          <div class="btn-row mt-4"><a class="btn-ghost" href="/#pilot" data-i18n="commercial.cta.pilot">Request a Gate pilot</a></div>
+        </div>
         <!-- AUTH GATE -->
         <section id="view-gate" class="cab-wrap workspace-access">
           <div class="workspace-intro">
-            <span class="eyebrow" data-i18n="dash.badge">Workspace access</span>
-            <h1 class="page-title" data-i18n="dash.title">Sign in to your workspace</h1>
+            <span class="eyebrow" data-i18n="dash.badge">Approved pilot access</span>
+            <h1 class="page-title" data-i18n="dash.title">Sign in to an approved operator workspace</h1>
             <p class="lead" data-i18n="dash.lead">
               Enter the governed operator workspace for gate checks, release decisions, and retained receipts.
             </p>
@@ -193,10 +198,10 @@
                 </label>
                 <div class="btn-row mt-2">
                   <button class="btn-primary" type="submit" id="btn-login" data-i18n="dash.login.submit">Log in</button>
-                  <a class="btn-ghost" href="register.html?v=20260717e" data-i18n="dash.login.create">Create account</a>
+                  <a class="btn-ghost" href="register.html?v=20260717e" data-i18n="dash.login.create">Approved registration</a>
                 </div>
                 <div class="btn-row mt-3">
-                  <a class="btn-ghost" id="btn-google" href="#">Continue with Google</a>
+                  <a class="btn-ghost" id="btn-google" href="#" hidden style="display:none">Continue with Google</a>
                   <a class="btn-ghost" href="forgot.html?v=20260717e">Forgot password</a>
                 </div>
               </form>
@@ -207,9 +212,9 @@
               <p style="margin:0 0 1rem;color:var(--mute);font-size:0.92rem" data-i18n="dash.register.hint">
                 Full registration form with password and email confirmation.
               </p>
-              <a class="btn-primary" href="register.html?v=20260717e&amp;from=cabinet" data-i18n="dash.register.cta">Open registration</a>
+              <a class="btn-primary" href="register.html?v=20260717e&amp;from=cabinet" data-i18n="dash.register.cta">Open approved registration</a>
               <div class="btn-row mt-3">
-                <a class="btn-ghost" id="btn-google-reg" href="#">Continue with Google</a>
+                <a class="btn-ghost" id="btn-google-reg" href="#" hidden style="display:none">Continue with Google</a>
               </div>
             </div>
 
@@ -251,7 +256,7 @@
             <p data-i18n="dash.gate.hint">Use email + password after verification. Integration API key is optional for servers.</p>
           </details>
           <p class="mt-6" style="color:var(--faint);font-size:0.85rem">
-            <a href="index.html?v=20260717d#demo" data-i18n="dash.path.tests">Try free tests first</a>
+            <a href="gate.html" data-i18n="dash.path.tests">Run the public Gate proof</a>
             ·
             <a href="mailto:support@semeai.tech" data-i18n="dash.home.support">Support</a>
           </p>
@@ -380,9 +385,9 @@
                 Stripe auto-billing when configured. USDT pilot remains available below. Payment never controls gate decisions.
               </p>
               <div class="btn-row">
-                <button type="button" class="btn-primary" id="btn-stripe-starter" data-plan="starter">Checkout Starter</button>
-                <button type="button" class="btn-ghost" id="btn-stripe-growth" data-plan="growth">Checkout Growth</button>
-                <button type="button" class="btn-ghost" id="btn-stripe-portal">Manage billing</button>
+                <button type="button" class="btn-primary" id="btn-stripe-starter" data-plan="starter" hidden style="display:none">Checkout Starter</button>
+                <button type="button" class="btn-ghost" id="btn-stripe-growth" data-plan="growth" hidden style="display:none">Checkout Growth</button>
+                <button type="button" class="btn-ghost" id="btn-stripe-portal" hidden style="display:none">Manage billing</button>
                 <a class="btn-ghost" href="pricing.html?v=20260717e">All plans</a>
               </div>
             </section>
@@ -829,12 +834,26 @@
           }
         });
 
-        function wireGoogle(id) {
-          const a = document.querySelector(id);
-          if (a) a.href = SemeAI.googleOAuthStart();
+        async function applyProviderVisibility() {
+          const providers = await SemeAI.authProviders().catch(() => null);
+          const googleEnabled = providers?.google?.enabled === true;
+          const stripeEnabled = providers?.stripe?.enabled === true;
+          ["#btn-google", "#btn-google-reg"].forEach((id) => {
+            const link = document.querySelector(id);
+            if (!link) return;
+            link.hidden = !googleEnabled;
+            link.style.display = googleEnabled ? "" : "none";
+            if (googleEnabled) link.href = SemeAI.googleOAuthStart();
+          });
+          ["#btn-stripe-starter", "#btn-stripe-growth", "#btn-stripe-portal"].forEach((id) => {
+            const control = document.querySelector(id);
+            if (control) {
+              control.hidden = !stripeEnabled;
+              control.style.display = stripeEnabled ? "" : "none";
+            }
+          });
         }
-        wireGoogle("#btn-google");
-        wireGoogle("#btn-google-reg");
+        applyProviderVisibility();
 
         // light bg
         (function () {

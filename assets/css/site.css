@@ -363,6 +363,13 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 @media (min-width: 640px) { .header-dashboard { display: inline-flex !important; } }
 .header-dashboard.active { border-color: rgba(103, 232, 249, 0.55); color: #fff; }
+.header-pilot {
+  display: none !important;
+  padding: 0.5rem 0.82rem !important;
+  font-size: 0.72rem !important;
+  white-space: nowrap;
+}
+@media (min-width: 640px) { .header-pilot { display: inline-flex !important; } }
 .header-gh {
   display: none; font-size: 13px; font-weight: 500; color: var(--mute);
   padding: 0.45rem 0.5rem;
@@ -760,6 +767,9 @@ code { font-family: var(--mono); font-size: 0.9em; color: var(--accent-soft); }
     padding: 0 1.5rem; gap: 1.5rem;
   }
 }
+@media (min-width: 1100px) {
+  .site-footer-grid { grid-template-columns: 1.35fr repeat(4, minmax(0, 1fr)); }
+}
 .footer-brand-col { display: grid; gap: 0.75rem; align-content: start; }
 .footer-tagline {
   margin: 0; max-width: 18rem;
@@ -779,6 +789,15 @@ code { font-family: var(--mono); font-size: 0.9em; color: var(--accent-soft); }
 .footer-links { display: flex; flex-wrap: wrap; gap: 1.15rem; font-size: 13px; color: var(--mute); }
 .footer-links a:hover { color: #fff; }
 .footer-copy { font-size: 0.75rem; color: var(--faint); margin: 0; }
+.footer-boundary {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--faint);
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
 
 /* Information architecture and route transitions */
 .architecture-flow {

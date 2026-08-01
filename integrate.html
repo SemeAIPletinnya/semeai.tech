@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Integrate · SemeAI Gate</title>
-    <meta name="description" content="Copy your API key, run 5 free checks, then pay 25 USDT TRC20 in one click." />
+    <meta name="description" content="Approved-pilot integration utility for the existing SemeAI Gate contract." />
+    <meta name="robots" content="noindex,follow" />
     <link rel="stylesheet" href="assets/css/site.css?v=20260731-premium" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
@@ -26,12 +27,13 @@
     <div class="content">
       <div data-semeai-nav></div>
       <main class="site-main" style="max-width:42rem">
-        <span class="eyebrow">Easy path</span>
-        <h1 class="page-title">Integrate in 3 steps</h1>
-        <p class="lead">
-          5 free checks on your key → one-click 25 USDT TRC20 to the pilot wallet → more volume.
-          Payment is never gate authority.
+        <span class="eyebrow" data-i18n="commercial.integrate.badge">APPROVED PILOT ACCESS · PRIVATE BETA</span>
+        <h1 class="page-title" data-i18n="commercial.integrate.title">Inspect the integration contract in an approved test path.</h1>
+        <p class="lead" data-i18n="commercial.integrate.lead">
+          Use this compatibility utility only with credentials supplied for an approved pilot. Public pilot requests begin
+          with a technical fit review; no deployment shape or commercial term is implied here.
         </p>
+        <div class="btn-row mt-6"><a class="btn-primary" href="/#pilot">Request a Gate pilot</a><a class="btn-ghost" href="/gate.html">Inspect the public contract</a></div>
         <div class="msg" id="msg">Loading workspace…</div>
 
         <section class="step mt-8">
@@ -61,7 +63,7 @@
           <pre class="snip mt-4" id="test-out" style="display:none"></pre>
         </section>
 
-        <section class="step">
+        <section class="step" id="approved-billing-step" hidden>
           <h2>3 · Invoice by email · 25 USDT TRC20</h2>
           <p>
             On this step we email your pilot invoice and show the same payment details here.
@@ -133,6 +135,7 @@
             SemeAI.account(t),
             SemeAI.usage(t),
           ]);
+          document.querySelector("#approved-billing-step").hidden = false;
           document.querySelector("#pill-usage").textContent =
             `free/usage ${usage.checks_today}/${usage.daily_limit} · left ${usage.remaining_today}`;
           const sub = account.subscription || {};
