@@ -2479,7 +2479,7 @@
                 <p class="hero-copy" data-i18n="commercial.hero.body">Your model still generates. SemeAI Gate checks the candidate against your policy, evidence, and context, then returns SHOW, REVIEW, or BLOCK with an auditable decision receipt.</p>
                 <div class="hero-actions mt-8">
                   <a class="btn-primary" href="#pilot" data-i18n="commercial.cta.pilot">Request a Gate pilot</a>
-                  <a class="btn-ghost" href="/gate.html" data-i18n="commercial.cta.live">Run the live Gate</a>
+                  <a class="btn-ghost" href="#live-gate" data-i18n="commercial.cta.live">Run the live Gate</a>
                 </div>
                 <p class="commercial-proof-line" data-i18n="commercial.hero.proof">Working public API · deterministic scenarios · decision receipts · no model migration</p>
                 <p class="commercial-principle" data-i18n="commercial.hero.principle">Generation creates a candidate. Release is a separate decision.</p>
@@ -2549,14 +2549,39 @@
             <p class="commercial-boundary-note" data-i18n="commercial.how.error">If the Gate cannot make a valid decision, fail closed. Do not replace the candidate with newly generated or un-gated text.</p>
           </section>
 
-          <section class="commercial-section" aria-labelledby="proof-demo-title">
+          <section id="live-gate" class="commercial-section" aria-labelledby="proof-demo-title">
             <div class="commercial-section__head">
               <span class="pill" data-i18n="commercial.demo.eyebrow">SEE THE BOUNDARY</span>
               <h2 id="proof-demo-title" data-i18n="commercial.demo.title">Run a deterministic Gate scenario.</h2>
               <p data-i18n="commercial.demo.body">Choose a published scenario and inspect the inputs, decision mapping, withheld behavior, and receipt. The demo proves the published scenario—not every policy or workflow.</p>
             </div>
             <div class="commercial-grid">
-              <article class="commercial-card wide"><h3 data-i18n="commercial.demo.liveTitle">Live Gate</h3><p data-i18n="commercial.demo.liveBody">Run supported, ambiguous, blocked, and error cases without entering private data.</p><div class="btn-row mt-6"><a class="btn-primary" href="/gate.html" data-i18n="commercial.cta.live">Run the live Gate</a><a class="btn-ghost" href="/pilots/support.html" data-i18n="commercial.demo.scenarios">Inspect support scenarios</a></div></article>
+              <article class="commercial-card wide commercial-demo__controls">
+                <h3 data-i18n="commercial.demo.liveTitle">Live Gate</h3>
+                <p data-i18n="commercial.demo.liveBody">Run supported, ambiguous, blocked, and error cases without entering private data.</p>
+                <div class="commercial-demo__scenarios" role="group" aria-label="Published deterministic scenarios" data-i18n-aria="commercial.demo.scenarioAria">
+                  <button type="button" class="commercial-demo__scenario is-active" data-commercial-scenario="supported_answer" aria-pressed="true" data-i18n="commercial.demo.supported">Supported entitlement</button>
+                  <button type="button" class="commercial-demo__scenario" data-commercial-scenario="unsupported_claim" aria-pressed="false" data-i18n="commercial.demo.ambiguous">Ambiguous refund</button>
+                  <button type="button" class="commercial-demo__scenario" data-commercial-scenario="fake_promo_code" aria-pressed="false" data-i18n="commercial.demo.invented">Invented promo code</button>
+                  <button type="button" class="commercial-demo__scenario" data-commercial-scenario="unsafe_action" aria-pressed="false" data-i18n="commercial.demo.unsafe">Unsafe action proposal</button>
+                  <button type="button" class="commercial-demo__scenario" data-commercial-scenario="context_drift" aria-pressed="false" data-i18n="commercial.demo.drift">Context drift</button>
+                </div>
+                <p class="commercial-demo__safety" data-i18n="commercial.demo.safety">Use only these published scenarios. Do not enter secrets, personal data, or private customer content.</p>
+                <details class="commercial-demo__details"><summary data-i18n="commercial.demo.inputs">Inspect bounded inputs</summary><pre><code id="commercial-demo-inputs"></code></pre></details>
+                <div class="btn-row mt-6"><button class="btn-primary" id="commercial-demo-run" type="button" data-i18n="commercial.demo.run">Run the live check</button><a class="btn-ghost" href="/pilots/support.html" data-i18n="commercial.demo.scenarios">Inspect support scenarios</a></div>
+                <p id="commercial-demo-status" class="commercial-demo__status" role="status" aria-live="polite" data-i18n="commercial.demo.ready">Ready. No candidate has been released.</p>
+              </article>
+              <article id="commercial-demo-result" class="commercial-card wide commercial-demo__result" data-decision="IDLE" aria-labelledby="commercial-demo-result-title">
+                <small class="commercial-demo__state">IDLE</small>
+                <h3 id="commercial-demo-result-title" tabindex="-1" data-i18n="commercial.demo.resultIdle">Choose a scenario, then run the Gate.</h3>
+                <dl class="commercial-demo__fields" hidden>
+                  <div><dt data-i18n="commercial.demo.action">Action</dt><dd id="commercial-demo-action">—</dd></div>
+                  <div><dt data-i18n="commercial.demo.internal">Canonical state</dt><dd id="commercial-demo-internal">—</dd></div>
+                  <div><dt data-i18n="commercial.demo.reason">Reason</dt><dd id="commercial-demo-reason">—</dd></div>
+                </dl>
+                <p id="commercial-demo-boundary" class="commercial-demo__boundary" data-i18n="commercial.demo.resultIdleBody">A candidate remains a candidate until a valid Gate decision permits release.</p>
+                <details id="commercial-demo-receipt" class="commercial-demo__details" hidden><summary data-i18n="commercial.demo.receipt">Inspect the decision receipt</summary><pre><code id="commercial-demo-json"></code></pre></details>
+              </article>
               <article class="commercial-card wide"><h3 data-i18n="commercial.demo.axiomTitle">Ask the evidence, not a sales script.</h3><p data-i18n="commercial.demo.axiomBody">Axiom explains SemeAI from an admitted public evidence index. It is a guided demo—not release authority, private-workspace retrieval, or a source of custom commercial commitments.</p><div class="btn-row mt-6"><button class="btn-ghost" type="button" data-open-axiom data-i18n="commercial.demo.askAxiom">Ask Axiom</button></div></article>
             </div>
           </section>
@@ -2587,7 +2612,7 @@
           <section id="evidence" class="commercial-section" aria-labelledby="evidence-title">
             <div class="commercial-section__head"><span class="pill" data-i18n="commercial.evidence.eyebrow">INSPECT BEFORE YOU TRUST</span><h2 id="evidence-title" data-i18n="commercial.evidence.title">Follow the decision from candidate to receipt.</h2><p data-i18n="commercial.evidence.body">SemeAI publishes working surfaces and their limits so your team can inspect the mechanism before discussing a broader deployment.</p></div>
             <div class="commercial-grid">
-              <article class="commercial-card"><h3 data-i18n="commercial.evidence.live">Live Gate</h3><p data-i18n="commercial.evidence.liveBody">Run bounded scenarios and inspect SHOW, REVIEW, BLOCK, and receipt behavior.</p><a href="/gate.html" data-i18n="commercial.evidence.liveLink">Run the Gate →</a></article>
+              <article class="commercial-card"><h3 data-i18n="commercial.evidence.live">Live Gate</h3><p data-i18n="commercial.evidence.liveBody">Run bounded scenarios and inspect SHOW, REVIEW, BLOCK, and receipt behavior.</p><a href="#live-gate" data-i18n="commercial.evidence.liveLink">Run the Gate →</a></article>
               <article class="commercial-card"><h3 data-i18n="commercial.evidence.api">API and schema</h3><p data-i18n="commercial.evidence.apiBody">Inspect the request, response, canonical decisions, public mappings, and receipt fields.</p><a href="/gate.html#contract" data-i18n="commercial.evidence.apiLink">View the contract →</a></article>
               <article class="commercial-card"><h3 data-i18n="commercial.evidence.repo">Public implementation</h3><p data-i18n="commercial.evidence.repoBody">Review the basic adapter, examples, tests, and deterministic behavior in the public repository.</p><a href="https://github.com/SemeAIPletinnya/semeai-gate-basic" target="_blank" rel="noopener" data-i18n="commercial.evidence.repoLink">Open the repository ↗</a></article>
               <article class="commercial-card wide"><h3 data-i18n="commercial.evidence.arch">Architecture and boundaries</h3><p data-i18n="commercial.evidence.archBody">Read the Engineering Book and Research surfaces for design decisions, evidence, and explicit claim limits.</p><a href="/book/" data-i18n="commercial.evidence.archLink">Read the evidence →</a></article>
@@ -3232,6 +3257,7 @@
     <script src="/assets/js/axiom-archive.js?v=20260729a"></script>
     <script type="module" src="/assets/js/axiom-presence-register.mjs?v=20260731-premium"></script>
     <script defer src="/assets/js/axiom-agent.js?v=20260731-premium"></script>
+    <script defer src="/assets/js/commercial-gate-demo.js?v=20260801-commercial"></script>
     <script src="assets/js/home-motion.js?v=20260726a"></script>
     <script>
       (function initCanvas() {
