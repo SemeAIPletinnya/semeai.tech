@@ -16,9 +16,9 @@
     <title data-i18n-page="bench.title.page">Repository Evidence Benchmark — SemeAI</title>
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
-    <link rel="stylesheet" href="/assets/css/site.css?v=20260729a" />
-    <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260729b" />
-    <link rel="stylesheet" href="./assets/benchmark.css?v=20260728a" />
+    <link rel="stylesheet" href="/assets/css/site.css?v=20260731-premium" />
+    <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260731-premium" />
+    <link rel="stylesheet" href="./assets/benchmark.css?v=20260801-premium" />
     <script src="./assets/sigil.js?v=20260726b" defer></script>
     <script src="./assets/benchmark.js?v=20260728a" defer></script>
   </head>
@@ -153,29 +153,55 @@
 
         <article id="benchmark-result" class="result" aria-labelledby="result-title" hidden>
           <header class="result-header" id="result-header">
-            <div>
-              <p class="section-index" data-i18n="bench.result.index">02 / ADMITTED REPOSITORY TRACE</p>
+            <p class="section-index" data-i18n="bench.result.index">02 / ADMITTED REPOSITORY TRACE</p>
+            <div class="result-outcome">
+              <div class="score-primary" id="score-stage">
+                <p id="score-title" data-i18n="bench.score.title">REPOSITORY PROGRESSION INDEX</p>
+                <p class="score-number"><span id="total-score"></span><small>/ 100</small></p>
+
+                <div class="evidence-rank-block" id="evidence-rank-block" hidden>
+                  <p class="evidence-rank-kicker" data-i18n="bench.rank.heading">REPOSITORY EVIDENCE RANK</p>
+                  <p class="evidence-rank-code" id="evidence-rank-code"></p>
+                  <p class="evidence-rank-family" id="evidence-rank-family"></p>
+                  <p class="evidence-rank-stage" id="evidence-rank-stage"></p>
+                  <p class="evidence-rank-status" id="evidence-rank-status"></p>
+                  <p class="evidence-rank-note" data-i18n="bench.rank.note">Derived from visible repository evidence under the current benchmark policy.</p>
+                </div>
+
+                <details class="score-context-details">
+                  <summary data-i18n="bench.score.profile">REPOSITORY PROFILE</summary>
+                  <p class="score-note" data-i18n="bench.score.note">Visible evidence, transparently weighted.</p>
+                  <div class="repository-profile">
+                    <p id="repository-profile"></p>
+                  </div>
+                </details>
+              </div>
+              <div id="gate-badge" class="gate-badge">
+                <span data-i18n="bench.result.gate">PRESENTATION GATE</span>
+                <strong id="gate-decision"></strong>
+                <p id="gate-explanation"></p>
+              </div>
+            </div>
+            <div class="result-identity">
               <p id="source-mode" class="source-mode"></p>
               <h2 id="result-title"></h2>
-              <dl class="source-facts">
-                <div>
-                  <dt data-i18n="bench.result.branch">DEFAULT BRANCH</dt>
-                  <dd id="default-branch"></dd>
-                </div>
-                <div>
-                  <dt data-i18n="bench.result.commit">SOURCE COMMIT</dt>
-                  <dd><code id="source-commit"></code></dd>
-                </div>
-                <div>
-                  <dt data-i18n="bench.result.snapshot">SNAPSHOT</dt>
-                  <dd id="snapshot-time"></dd>
-                </div>
-              </dl>
-            </div>
-            <div id="gate-badge" class="gate-badge">
-              <span data-i18n="bench.result.gate">PRESENTATION GATE</span>
-              <strong id="gate-decision"></strong>
-              <p id="gate-explanation"></p>
+              <details class="result-source-details">
+                <summary data-i18n="bench.result.snapshot">SNAPSHOT</summary>
+                <dl class="source-facts">
+                  <div>
+                    <dt data-i18n="bench.result.branch">DEFAULT BRANCH</dt>
+                    <dd id="default-branch"></dd>
+                  </div>
+                  <div>
+                    <dt data-i18n="bench.result.commit">SOURCE COMMIT</dt>
+                    <dd><code id="source-commit"></code></dd>
+                  </div>
+                  <div>
+                    <dt data-i18n="bench.result.snapshot">SNAPSHOT</dt>
+                    <dd id="snapshot-time"></dd>
+                  </div>
+                </dl>
+              </details>
             </div>
           </header>
 
@@ -208,26 +234,7 @@
             </a>
           </nav>
 
-          <section class="score-stage" id="score-stage" aria-labelledby="score-title">
-            <div class="score-primary">
-              <p id="score-title" data-i18n="bench.score.title">REPOSITORY PROGRESSION INDEX</p>
-              <p class="score-number"><span id="total-score"></span><small>/ 100</small></p>
-
-              <div class="evidence-rank-block" id="evidence-rank-block" hidden>
-                <p class="evidence-rank-kicker" data-i18n="bench.rank.heading">REPOSITORY EVIDENCE RANK</p>
-                <p class="evidence-rank-code" id="evidence-rank-code"></p>
-                <p class="evidence-rank-family" id="evidence-rank-family"></p>
-                <p class="evidence-rank-stage" id="evidence-rank-stage"></p>
-                <p class="evidence-rank-status" id="evidence-rank-status"></p>
-                <p class="evidence-rank-note" data-i18n="bench.rank.note">Derived from visible repository evidence under the current benchmark policy.</p>
-              </div>
-
-              <p class="score-note" data-i18n="bench.score.note">Visible evidence, transparently weighted.</p>
-              <div class="repository-profile">
-                <span data-i18n="bench.score.profile">REPOSITORY PROFILE</span>
-                <p id="repository-profile"></p>
-              </div>
-            </div>
+          <section class="score-stage" aria-labelledby="score-title">
             <figure class="score-sigil-frame">
               <div id="result-sigil" class="evidence-sigil" aria-live="polite"></div>
               <figcaption>
@@ -414,11 +421,21 @@
         <span data-i18n="bench.footer.1">SEMEAI / REPOSITORY EVIDENCE BENCHMARK</span>
         <span data-i18n="bench.footer.2">EXPERIMENTAL PROTOTYPE · PUBLIC PREVIEW · NOINDEX</span>
       </footer>
+      <div class="site-ecosystem-bridge" data-semeai-ecosystem-bridge role="navigation" aria-label="SemeAI ecosystem surfaces">
+        <span class="site-ecosystem-bridge__label">Ecosystem</span>
+        <div class="site-ecosystem-bridge__links">
+          <a href="https://semeai.tech/" rel="noopener" aria-current="true">semeai.tech</a>
+          <a href="https://www.semeai.tech/" rel="noopener">www</a>
+          <a href="https://gate.semeai.tech/" rel="noopener">gate.semeai.tech</a>
+          <a href="https://api.semeai.tech/" rel="noopener">api.semeai.tech</a>
+        </div>
+      </div>
     </div>
     <script src="/assets/js/i18n.js?v=20260724a"></script>
     <script src="/assets/js/i18n-arch.js?v=20260729a"></script>
-    <script src="/assets/js/site-shell.js?v=20260729a"></script>
+    <script src="/assets/js/site-shell.js?v=20260731-premium"></script>
     <script src="/assets/js/axiom-archive.js?v=20260729a"></script>
-    <script src="/assets/js/axiom-agent.js?v=20260729b"></script>
+    <script type="module" src="/assets/js/axiom-presence-register.mjs?v=20260731-premium"></script>
+    <script defer src="/assets/js/axiom-agent.js?v=20260731-premium"></script>
   </body>
 </html>

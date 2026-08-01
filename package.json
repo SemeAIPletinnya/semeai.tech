@@ -7,7 +7,7 @@
     "test:benchmark": "node benchmark/tests/golden.browser.mjs",
     "test:book": "node book/tests/book.browser.mjs",
     "test:genesis": "node genesis/tests/manifest.test.mjs && node genesis/tests/historical-admission.test.mjs",
-    "test:axiom": "node tests/axiom-index.test.mjs",
+    "test:axiom": "node tests/axiom-index.test.mjs && node tests/axiom-presence.test.mjs && node tests/axiom-e2e.test.mjs && node tests/axiom-governance-leakage.test.mjs",
     "test:site": "node tests/site.browser.mjs",
     "test": "npm run test:benchmark && npm run test:book && npm run test:genesis && npm run test:axiom && npm run test:site"
   },

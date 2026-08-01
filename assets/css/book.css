@@ -1820,6 +1820,10 @@ body[data-book-chapter="cover"] .book-continuity-field {
     display: block;
   }
 
+  .book-chapter-turn {
+    padding-right: 5.4rem;
+  }
+
   .book-author-grid,
   .book-product-grid,
   .book-stack-grid,
@@ -1901,6 +1905,7 @@ body[data-book-chapter="cover"] .book-continuity-field {
   .book-chapter-turn,
   .book-context-links,
   .book-keyboard-hint,
+  .site-footer,
   .book-start {
     display: none !important;
   }
