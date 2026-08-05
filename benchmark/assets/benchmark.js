@@ -5,7 +5,7 @@
   const ANALYZER_VERSION = "1.0.0";
   const SCORING_POLICY_VERSION = "semeai.repository-evidence.score.v1";
   const SNAPSHOT_SCHEMA_VERSION = "semeai.repository-evidence.snapshot.v1";
-  const API_ROOT = "https://api.github.com";
+  const API_ROOT = String(globalScope.SEMEAI_BENCHMARK_API_ROOT || "https://api.github.com").replace(/\/+$/, "");
   const REQUEST_TIMEOUT_MS = 9000;
   const MAX_TREE_ENTRIES = 10000;
   const MAX_TREE_BYTES = 4 * 1024 * 1024;
@@ -420,11 +420,14 @@
   async function fetchBounded(url, options) {
     const settings = options || {};
     const parsed = new URL(url, globalScope.location ? globalScope.location.href : API_ROOT);
-    const isApiRequest = parsed.origin === API_ROOT;
+    const apiRoot = new URL(API_ROOT, globalScope.location ? globalScope.location.href : "https://api.github.com");
+    const rootPath = apiRoot.pathname.replace(/\/+$/, "");
+    const isApiRequest = parsed.origin === apiRoot.origin && (!rootPath || parsed.pathname.startsWith(`${rootPath}/`));
     if (!isApiRequest && !settings.allowLocal) {
       throw new BenchmarkError("unsafe_url", "The analyzer refused a non-GitHub API request.");
     }
-    if (isApiRequest && parsed.protocol !== "https:") {
+    const isLoopbackApi = parsed.protocol === "http:" && ["127.0.0.1", "localhost"].includes(parsed.hostname);
+    if (isApiRequest && parsed.protocol !== "https:" && !isLoopbackApi) {
       throw new BenchmarkError("unsafe_url", "The analyzer requires HTTPS GitHub API requests.");
     }
 
@@ -858,6 +861,8 @@
     SCORING_POLICY,
     BenchmarkError,
     normalizeRepositoryInput,
+    collectLiveSnapshot,
+    loadFallbackSnapshot,
     stableStringify,
     sha256Hex,
     deriveEvidence,
@@ -874,6 +879,9 @@
   }
 
   if (typeof document === "undefined") return;
+  // Reusable analyzer consumers (for example the isolated cinematic engine)
+  // load this file for SemeAIBenchmarkCore without mounting the legacy page UI.
+  if (!document.getElementById("benchmark-form")) return;
 
   const elements = {
     form: document.getElementById("benchmark-form"),
