@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="core-product">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,7 +11,7 @@
     />
     <meta
       name="description"
-      content="An isolated experimental benchmark of visible public repository evidence."
+      content="Evidence Observatory: seven public repository signals assembled into one inspectable trace."
     />
     <title data-i18n-page="bench.title.page">Repository Evidence Benchmark — SemeAI</title>
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
@@ -19,9 +19,7 @@
     <link rel="stylesheet" href="/assets/css/site.css?v=20260731-premium" />
     <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260731-premium" />
     <link rel="stylesheet" href="./assets/benchmark.css?v=20260801-premium" />
-    <link rel="stylesheet" href="/assets/css/v2-production.css?v=20260801-production" />
-    <link rel="stylesheet" href="/assets/css/v2-motion.css?v=20260801-motion-v1" />
-    <link rel="stylesheet" href="/assets/css/product-cinematic.css?v=20260807-product" />
+    <link rel="stylesheet" href="/assets/css/core-product.css?v=20260807-core" />
     <script src="./assets/sigil.js?v=20260726b" defer></script>
     <script src="./assets/benchmark.js?v=20260728a" defer></script>
   </head>
@@ -40,7 +38,7 @@
         <div class="benchmark-header-actions">
           <div class="instrument-status" aria-current="page">
             <span class="status-light" aria-hidden="true"></span>
-            <span data-i18n="bench.status">ISOLATED EVIDENCE INSTRUMENT</span>
+            <span data-i18n="bench.status">LIVE PUBLIC EVIDENCE INSTRUMENT</span>
           </div>
           <nav class="benchmark-route-nav" aria-label="Benchmark context">
             <a href="/gate.html" data-i18n="bench.route.gate">UNDERSTAND THE GATE</a>
@@ -55,77 +53,95 @@
         </div>
       </header>
 
-      <main>
-        <section class="hero" aria-labelledby="page-title">
-          <div class="hero-copy">
-            <p class="eyebrow" data-i18n="bench.hero.eyebrow">03 / EVIDENCE OBSERVATORY</p>
-            <h1 id="page-title"><span data-i18n="bench.hero.h1">SEVEN SIGNALS.</span><br /><span data-i18n="bench.hero.h1.span">ONE ASSEMBLED TRACE.</span></h1>
-            <p class="hero-description">
+      <main class="cp-stage">
+        <section class="cp-world" aria-labelledby="page-title">
+          <div class="cp-copy">
+            <p class="cp-index"><b>03</b><span data-i18n="bench.hero.eyebrow">EVIDENCE OBSERVATORY</span></p>
+            <h1 class="cp-title" id="page-title">
+              <span data-i18n="bench.hero.h1">SEVEN SIGNALS.</span>
+              <em data-i18n="bench.hero.h1.span">ONE ASSEMBLED TRACE.</em>
+            </h1>
+            <p class="cp-lead">
               <span data-i18n="bench.hero.desc">Real public GitHub evidence controls seven categories. The score arrives only after the policy, signals, and presentation decision settle. No hard-coded score theater.</span>
             </p>
-            <p class="hero-secondary" data-i18n="bench.hero.secondary">The project is the identity. The benchmark is the instrument — not decoration.</p>
-          </div>
-
-          <div class="hero-visual" aria-label="Deterministic repository sigil preview">
-            <div class="orbit orbit-a" aria-hidden="true"></div>
-            <div class="orbit orbit-b" aria-hidden="true"></div>
-            <div id="sigil" class="sigil" aria-hidden="true"></div>
-            <div class="visual-caption">
-              <span data-i18n="bench.visual.identity">VISUAL IDENTITY</span>
-              <span id="visual-phase-preview">+3 / EXPANSION</span>
+            <div class="hero-visual cp-sigil-preview" aria-label="Deterministic repository sigil preview">
+              <div class="orbit orbit-a" aria-hidden="true"></div>
+              <div class="orbit orbit-b" aria-hidden="true"></div>
+              <div id="sigil" class="sigil" aria-hidden="true"></div>
+              <div class="visual-caption">
+                <span data-i18n="bench.visual.identity">VISUAL IDENTITY</span>
+                <span id="visual-phase-preview">+3 / EXPANSION</span>
+              </div>
             </div>
           </div>
 
-          <p class="control-line">
-            <span aria-hidden="true"></span>
-            <span data-i18n="bench.control">Governed at the point of divergence.</span>
-          </p>
+          <aside class="cp-panel cp-score" aria-label="Assembled score panel">
+            <div class="cp-score__value">
+              <span data-i18n="bench.score.title">ASSEMBLED SCORE</span>
+              <strong id="cp-score-mirror">—</strong><small>/ 100</small>
+            </div>
+            <div class="cp-score__meta">
+              <p><span>SOURCE</span><strong id="cp-source-mirror">NOT CAPTURED</strong></p>
+              <p><span>PRESENTATION GATE</span><strong id="cp-gate-mirror">—</strong></p>
+              <p><span>SOURCE COMMIT</span><code id="cp-commit-mirror">—</code></p>
+              <p><span>LOCAL RECEIPT</span><code id="cp-receipt-mirror">—</code></p>
+            </div>
+            <ol class="cp-signals" aria-label="Seven Benchmark signals">
+              <li><b>01 IMPL</b><strong data-cp-sig="0">—</strong></li>
+              <li><b>02 TESTS</b><strong data-cp-sig="1">—</strong></li>
+              <li><b>03 EVID</b><strong data-cp-sig="2">—</strong></li>
+              <li><b>04 CONT</b><strong data-cp-sig="3">—</strong></li>
+              <li><b>05 REL</b><strong data-cp-sig="4">—</strong></li>
+              <li><b>06 RES</b><strong data-cp-sig="5">—</strong></li>
+              <li><b>07 EXT</b><strong data-cp-sig="6">—</strong></li>
+            </ol>
+          </aside>
+
+          <div class="cp-axiom-strip" data-cp-axiom aria-label="Axiom witness">
+            <div class="cp-axiom-strip__sprite" aria-hidden="true"></div>
+            <div class="cp-axiom-strip__copy">
+              <span>AXIOM / <strong data-cp-axiom-state>ATTENTIVE</strong></span>
+              <p data-cp-axiom-msg>Observing evidence assembly. Not scoring.</p>
+            </div>
+          </div>
+
+          <section id="benchmark-input" class="cp-panel cp-bench-console input-panel" aria-labelledby="input-title">
+            <form id="benchmark-form" novalidate>
+              <label for="repository-input">
+                <span data-i18n="bench.input.label">PUBLIC REPOSITORY</span>
+              </label>
+              <div class="input-row">
+                <input
+                  id="repository-input"
+                  name="repository"
+                  type="text"
+                  value="SemeAIPletinnya/silence-as-control"
+                  autocomplete="off"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  aria-describedby="input-help input-error"
+                  required
+                />
+                <button id="run-button" class="primary-button" type="submit">
+                  <span data-i18n="bench.input.run">ASSEMBLE REAL EVIDENCE</span>
+                  <span aria-hidden="true">↗</span>
+                </button>
+              </div>
+              <div class="form-meta cp-form-meta">
+                <p id="input-help" data-i18n="bench.input.help">Example: owner/repository or https://github.com/owner/repository</p>
+                <button id="reset-button" class="text-button" type="button" data-i18n="bench.input.reset">RESET TO FIRST REPOSITORY</button>
+              </div>
+              <p id="input-error" class="input-error" role="alert"></p>
+            </form>
+            <div id="run-status" class="run-status cp-run-status" role="status" aria-live="polite">
+              <span class="status-track" aria-hidden="true"><span></span></span>
+              <span id="run-status-text" data-i18n="bench.input.ready">READY / NO SCORE ANNOUNCED</span>
+            </div>
+            <h2 id="input-title" class="sr-only" data-i18n="bench.input.title">Name the repository.</h2>
+          </section>
         </section>
 
-        <section id="benchmark-input" class="input-panel" aria-labelledby="input-title">
-          <div class="panel-intro">
-            <p class="section-index" data-i18n="bench.input.index">01 / EVIDENCE INTAKE</p>
-            <h2 id="input-title" data-i18n="bench.input.title">Name the repository.</h2>
-            <p>
-              <span data-i18n="bench.input.lead">Public GitHub evidence only. Nothing is cloned, executed, authenticated, or sent beyond GitHub's public API.</span>
-            </p>
-          </div>
-
-          <form id="benchmark-form" novalidate>
-            <label for="repository-input">
-              <span data-i18n="bench.input.label">PUBLIC GITHUB REPOSITORY</span>
-              <small data-i18n="bench.input.small">OWNER / REPOSITORY OR FULL URL</small>
-            </label>
-            <div class="input-row">
-              <input
-                id="repository-input"
-                name="repository"
-                type="text"
-                value="SemeAIPletinnya/silence-as-control"
-                autocomplete="off"
-                autocapitalize="none"
-                spellcheck="false"
-                aria-describedby="input-help input-error"
-                required
-              />
-              <button id="run-button" class="primary-button" type="submit">
-                <span data-i18n="bench.input.run">RUN BENCHMARK</span>
-                <span aria-hidden="true">↗</span>
-              </button>
-            </div>
-            <div class="form-meta">
-              <p id="input-help" data-i18n="bench.input.help">Example: owner/repository or https://github.com/owner/repository</p>
-              <button id="reset-button" class="text-button" type="button" data-i18n="bench.input.reset">RESET TO FIRST REPOSITORY
-              </button>
-            </div>
-            <p id="input-error" class="input-error" role="alert"></p>
-          </form>
-
-          <div id="run-status" class="run-status" role="status" aria-live="polite">
-            <span class="status-track" aria-hidden="true"><span></span></span>
-            <span id="run-status-text" data-i18n="bench.input.ready">READY FOR PUBLIC EVIDENCE</span>
-          </div>
-        </section>
+        <div class="cp-instrument">
 
         <noscript>
           <section class="noscript-panel" aria-labelledby="noscript-title">
@@ -418,6 +434,7 @@
             </p>
           </div>
         </section>
+        </div>
       </main>
 
       <footer>
@@ -441,6 +458,7 @@
     <script type="module" src="/assets/js/axiom-presence-register.mjs?v=20260731-premium"></script>
     <script defer src="/assets/js/axiom-agent.js?v=20260731-premium"></script>
     <script defer src="/assets/js/v2-production.js?v=20260807-product"></script>
-    <script defer src="/assets/js/product-cinematic.js?v=20260807-product"></script>
+    <script defer src="/assets/js/core-product.js?v=20260807-core"></script>
+    <script defer src="/assets/js/core-benchmark-mirror.js?v=20260807-core"></script>
   </body>
 </html>
