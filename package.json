@@ -10,8 +10,9 @@
     "test:axiom": "node tests/axiom-index.test.mjs && node tests/axiom-presence.test.mjs && node tests/axiom-e2e.test.mjs && node tests/axiom-governance-leakage.test.mjs",
     "test:v2": "node tests/v2-production.test.mjs",
     "test:motion": "node tests/v2-motion.test.mjs",
+    "test:product": "node tests/product-cinematic.test.mjs",
     "test:site": "node tests/site.browser.mjs",
-    "test": "npm run test:benchmark && npm run test:book && npm run test:genesis && npm run test:axiom && npm run test:v2 && npm run test:motion && npm run test:site"
+    "test": "npm run test:benchmark && npm run test:book && npm run test:genesis && npm run test:axiom && npm run test:v2 && npm run test:motion && npm run test:product && npm run test:site"
   },
   "devDependencies": {
     "playwright": "1.62.0"
