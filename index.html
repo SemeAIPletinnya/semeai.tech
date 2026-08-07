@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en" data-v2-world="field">
+<html lang="en" class="core-product" data-v2-world="field">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#07090d" />
+    <meta name="theme-color" content="#030507" />
     <meta name="description" data-i18n-page="v2.field.meta" content="SemeAI separates AI generation from release authority through a governed Gate, visible evidence, and durable decision receipts." />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <link rel="canonical" href="https://semeai.tech/" />
@@ -14,98 +14,86 @@
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260731-premium" />
     <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260731-premium" />
-    <link rel="stylesheet" href="/assets/css/v2-production.css?v=20260801-production" />
-    <link rel="stylesheet" href="/assets/css/v2-motion.css?v=20260801-motion-v1" />
-    <link rel="stylesheet" href="/assets/css/product-cinematic.css?v=20260807-product" />
+    <link rel="stylesheet" href="/assets/css/core-product.css?v=20260807-core" />
     <title data-i18n-page="v2.field.title">SemeAI — The Release Field</title>
   </head>
-  <body class="v2-production mode-field" data-v2-route="field">
+  <body class="core-immersive v2-production mode-field" data-v2-route="field">
     <a class="skip-link" href="#main" data-i18n="v2.field.skip">Skip to the Release Field</a>
-    <noscript><p class="axiom-noscript">The release-control contract remains readable. Motion and Axiom presence require JavaScript.</p></noscript>
-    <canvas class="world-canvas" data-v2-canvas aria-hidden="true"></canvas>
+    <noscript>
+      <section class="cp-noscript">
+        <p>SEMEAI / RELEASE FIELD / JAVASCRIPT OFF</p>
+        <h1>Possibility has weight. Authority holds the boundary.</h1>
+        <p>A model creates a candidate. The Gate remains the final release authority. SHOW may release only the exact evaluated candidate. REVIEW and BLOCK release no candidate content. Axiom witnesses; it never decides.</p>
+      </section>
+    </noscript>
+
     <div data-semeai-nav></div>
 
-    <main id="main" class="v2-main">
-      <section class="entrance" id="product" aria-labelledby="field-title">
-        <div class="entrance-copy" data-v2-reveal>
-          <p class="world-index" data-i18n="v2.field.index">00 / THE RELEASE FIELD</p>
-          <h1 id="field-title">
-            <span data-i18n="v2.field.h1a">Possibility has weight.</span><br />
+    <main id="main" class="cp-stage">
+      <section class="cp-world" data-field-scene data-field-motion="ambient" data-state="idle" aria-labelledby="field-title">
+        <div class="cp-copy" data-v2-reveal>
+          <p class="cp-index"><b>00</b><span data-i18n="v2.field.index">THE RELEASE FIELD</span></p>
+          <h1 class="cp-title" id="field-title">
+            <span data-i18n="v2.field.h1a">Possibility has weight.</span>
             <em data-i18n="v2.field.h1b">Authority holds the boundary.</em>
           </h1>
-          <p class="entrance-deck" data-i18n="v2.field.lead">A model creates a candidate. SemeAI keeps release separate: evidence and policy meet a visible boundary, the Gate decides, and a receipt remains. Generation is not release authority.</p>
-          <div class="entrance-actions">
-            <a class="action-primary" href="/gate.html#live-gate"><span data-i18n="v2.field.enter">Run the Gate</span> <span aria-hidden="true">↗</span></a>
-            <a class="action-quiet" href="#how-it-works" data-i18n="v2.field.map">Map the system</a>
+          <p class="cp-lead" data-i18n="v2.field.lead">A candidate can move, gather context, and approach the boundary. Authority does not move with it. Generation is not release authority.</p>
+          <div class="cp-chain" aria-label="Product architecture">
+            <span><b>01</b><small data-i18n="v2.field.thesis1s">MODEL</small></span><i aria-hidden="true"></i>
+            <span><b>02</b><small data-i18n="v2.field.thesis2s">GATE</small></span><i aria-hidden="true"></i>
+            <span><b>03</b><small data-i18n="v2.field.thesis3s">RECEIPT</small></span><i aria-hidden="true"></i>
+            <span><b>04</b><small data-i18n="v2.field.thesis4s">AXIOM</small></span>
           </div>
-          <div class="pc-thesis" aria-label="Product architecture" data-i18n-aria="v2.field.thesisAria">
-            <div class="pc-thesis__step"><b data-i18n="v2.field.thesis1b">01 MODEL</b><span data-i18n="v2.field.thesis1s">generates</span></div>
-            <div class="pc-thesis__step" data-role="authority"><b data-i18n="v2.field.thesis2b">02 GATE</b><span data-i18n="v2.field.thesis2s">decides</span></div>
-            <div class="pc-thesis__step"><b data-i18n="v2.field.thesis3b">03 RECEIPT</b><span data-i18n="v2.field.thesis3s">proves</span></div>
-            <div class="pc-thesis__step"><b data-i18n="v2.field.thesis4b">04 AXIOM</b><span data-i18n="v2.field.thesis4s">witnesses</span></div>
-          </div>
-          <dl class="truth-line" aria-label="Protected product truths" data-i18n-aria="v2.field.truthAria">
-            <div><dt data-i18n="v2.field.generation">Generation</dt><dd data-i18n="v2.field.candidate">candidate</dd></div>
-            <div><dt>Gate</dt><dd data-i18n="v2.field.authority">authority</dd></div>
-            <div><dt data-i18n="v2.field.trace">Terminal trace</dt><dd data-i18n="v2.field.receipt">receipt</dd></div>
-          </dl>
+          <a class="cp-cta scene-run" href="/gate.html#live-gate">
+            <span data-i18n="v2.field.enter">Run the Gate</span>
+            <i aria-hidden="true">↗</i>
+          </a>
         </div>
 
-        <div class="release-field release-field--production" data-field-scene data-state="idle" aria-labelledby="field-scene-title" data-v2-reveal>
-          <div class="scene-topline"><span id="field-scene-title" data-i18n="v2.field.scene">RELEASE TOPOLOGY</span><span data-field-status data-i18n="v2.field.idle">SYSTEM IDLE</span></div>
-          <div class="field-label field-label--candidate" data-i18n="v2.field.candidateCaps">CANDIDATE</div>
-          <div class="field-label field-label--authority" data-i18n="v2.field.authorityCaps">RELEASE AUTHORITY</div>
-          <div class="field-label field-label--trace" data-i18n="v2.field.traceCaps">TRACE</div>
-          <div class="candidate-orbit" aria-hidden="true"><span class="candidate-core"></span><span class="candidate-ring candidate-ring--one"></span><span class="candidate-ring candidate-ring--two"></span></div>
-          <div class="gate-membrane" aria-hidden="true"><span></span></div>
-          <div class="released-signal" aria-hidden="true"><span></span></div>
-          <div class="withheld-signal" aria-hidden="true"><span></span></div>
-          <div class="receipt-trace" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-          <div class="decision-readout">
-            <strong data-i18n="v2.field.readout">Candidate is not released</strong>
-            <span data-i18n="v2.field.readoutBody">The field shows the boundary. It never simulates the Gate's decision.</span>
+        <aside class="cp-telemetry" aria-hidden="true">
+          <p><span>OBJECT</span><strong>UNRELEASED CANDIDATE</strong></p>
+          <p><span>FIELD FORCE</span><strong data-cp-force>0.38</strong></p>
+          <p><span>AUTHORITY</span><strong data-cp-authority>EXTERNAL / GATE</strong></p>
+          <p><span>STATE</span><strong data-cp-state>BOUND</strong></p>
+        </aside>
+
+        <div class="cp-axiom-strip" data-cp-axiom aria-label="Axiom witness">
+          <div class="cp-axiom-strip__sprite" aria-hidden="true"></div>
+          <div class="cp-axiom-strip__copy">
+            <span>AXIOM / <strong data-cp-axiom-state>IDLE</strong></span>
+            <p data-cp-axiom-msg>Witnessing possibility. No release authority.</p>
           </div>
-          <a class="scene-run" href="/gate.html#live-gate" data-i18n="v2.field.run">RUN THE REAL GATE</a>
-          <p class="scene-boundary-note" data-i18n="v2.field.note">Ambient system map. Decisions occur only in the live Gate Chamber.</p>
         </div>
 
-        <div class="scroll-cue" aria-hidden="true"><span></span>FOUR COORDINATES</div>
+        <div class="cp-hint" aria-hidden="true">
+          <span></span>
+          <p data-i18n="v2.field.note">Move the pointer. The field bends; the boundary holds. Home cannot release.</p>
+        </div>
       </section>
 
-      <section class="coordinates" id="how-it-works" aria-labelledby="coordinates-title">
-        <header data-v2-reveal>
-          <p class="world-index" data-i18n="v2.field.coordinatesIndex">01 / ONE SYSTEM, DIFFERENT PHYSICS</p>
+      <section class="cp-below" id="how-it-works" aria-labelledby="coordinates-title">
+        <header>
+          <p class="cp-index"><b>01</b><span data-i18n="v2.field.coordinatesIndex">ONE SYSTEM, DIFFERENT PHYSICS</span></p>
           <h2 id="coordinates-title" data-i18n="v2.field.coordinatesTitle">Move through the mechanism, not a menu of claims.</h2>
-          <p class="coordinates-lede" data-i18n="v2.field.coordinatesLead">Each world has one job. The Gate decides, the Lab measures, Genesis preserves admitted history, and Axiom keeps orientation without becoming authority.</p>
         </header>
-        <div class="coordinate-grid" id="use-cases">
-          <a href="/gate.html#live-gate" class="coordinate coordinate--gate" data-v2-reveal><span>01</span><strong data-i18n="v2.nav.gate">Gate</strong><small data-i18n="v2.field.gateSmall">The real release threshold</small><i aria-hidden="true">→</i></a>
-          <a href="/benchmark/" class="coordinate coordinate--lab" data-v2-reveal><span>02</span><strong data-i18n="v2.nav.lab">Evidence Lab</strong><small data-i18n="v2.field.labSmall">A real repository assembled in public</small><i aria-hidden="true">→</i></a>
-          <a href="/genesis/" class="coordinate coordinate--genesis" data-v2-reveal><span>03</span><strong data-i18n="v2.nav.genesis">Genesis</strong><small data-i18n="v2.field.genesisSmall">Admitted trace across time</small><i aria-hidden="true">→</i></a>
-          <a href="/research.html" class="coordinate coordinate--production" data-v2-reveal><span>04</span><strong data-i18n="v2.field.boundaries">Claim boundaries</strong><small data-i18n="v2.field.boundariesSmall">What the evidence does and does not prove</small><i aria-hidden="true">↗</i></a>
+        <div class="cp-coords" id="use-cases">
+          <a href="/gate.html#live-gate"><span>01</span><strong data-i18n="v2.nav.gate">Gate</strong><small data-i18n="v2.field.gateSmall">The real release threshold</small></a>
+          <a href="/benchmark/"><span>02</span><strong data-i18n="v2.nav.lab">Evidence Lab</strong><small data-i18n="v2.field.labSmall">A real repository assembled in public</small></a>
+          <a href="/genesis/"><span>03</span><strong data-i18n="v2.nav.genesis">Genesis</strong><small data-i18n="v2.field.genesisSmall">Admitted trace across time</small></a>
+          <a href="/research.html"><span>04</span><strong data-i18n="v2.field.boundaries">Claim boundaries</strong><small data-i18n="v2.field.boundariesSmall">What the evidence does and does not prove</small></a>
         </div>
-      </section>
 
-      <section class="field-evidence" id="evidence" aria-labelledby="field-evidence-title">
-        <div data-v2-reveal>
-          <p class="world-index" data-i18n="v2.field.evidenceIndex">02 / GOVERNED CONTINUITY</p>
-          <h2 id="field-evidence-title" data-i18n="v2.field.evidenceTitle">A release decision is visible. Its authority stays where it belongs.</h2>
-        </div>
-        <div class="field-evidence__rail" data-v2-reveal>
-          <article><span>01</span><h3 data-i18n="v2.field.e1t">Candidate</h3><p data-i18n="v2.field.e1b">Generation produces a proposal—not permission.</p></article>
-          <article><span>02</span><h3 data-i18n="v2.field.e2t">Decision</h3><p data-i18n="v2.field.e2b">SaC/PoR/Gate remains the final release authority.</p></article>
-          <article><span>03</span><h3 data-i18n="v2.field.e3t">Receipt</h3><p data-i18n="v2.field.e3b">The release decision and any execution result remain distinct linked artifacts.</p></article>
-          <article><span>04</span><h3>Axiom</h3><p data-i18n="v2.field.e4b">Witnesses state and continuity. Never decides or rewrites release.</p></article>
-        </div>
-      </section>
-
-      <section class="pilot-line pilot-line--production" id="pilot" aria-labelledby="pilot-title" data-v2-reveal>
-        <div>
-          <p class="world-index" data-i18n="v2.field.pilotIndex">03 / GATE TECHNICAL PILOT</p>
-          <h2 id="pilot-title" data-i18n="v2.field.pilotTitle">Map one bounded workflow from generation to release.</h2>
-          <p data-i18n="v2.field.pilotBody">The pilot tests a defined decision boundary, published integration contract, and receipt flow. It is not a universal safety, truth, or compliance claim.</p>
-        </div>
-        <div class="pilot-actions"><a class="action-primary" href="/pilots/support.html" data-i18n="v2.field.pilotCta">Inspect the Gate Pilot</a><a class="action-quiet" href="/gate.html#semantics-title" data-i18n="v2.field.contractCta">Read the contract</a></div>
+        <section class="pilot-line pilot-line--production" id="pilot" style="margin-top:3rem" aria-labelledby="pilot-title">
+          <div>
+            <p class="cp-index"><b>03</b><span data-i18n="v2.field.pilotIndex">GATE TECHNICAL PILOT</span></p>
+            <h2 id="pilot-title" data-i18n="v2.field.pilotTitle">Map one bounded workflow from generation to release.</h2>
+            <p class="cp-lead" data-i18n="v2.field.pilotBody">The pilot tests a defined decision boundary, published integration contract, and receipt flow. It is not a universal safety, truth, or compliance claim.</p>
+          </div>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.2rem">
+            <a class="cp-cta" style="width:auto;min-width:14rem" href="/pilots/support.html" data-i18n="v2.field.pilotCta">Inspect the Gate Pilot</a>
+            <a class="cp-cta" style="width:auto;min-width:12rem;background:transparent" href="/gate.html#semantics-title" data-i18n="v2.field.contractCta">Read the contract</a>
+          </div>
+        </section>
       </section>
     </main>
 
@@ -117,6 +105,6 @@
     <script type="module" src="/assets/js/axiom-presence-register.mjs?v=20260731-premium"></script>
     <script defer src="/assets/js/axiom-agent.js?v=20260731-premium"></script>
     <script defer src="/assets/js/v2-production.js?v=20260807-product"></script>
-    <script defer src="/assets/js/product-cinematic.js?v=20260807-product"></script>
+    <script defer src="/assets/js/core-product.js?v=20260807-core"></script>
   </body>
 </html>

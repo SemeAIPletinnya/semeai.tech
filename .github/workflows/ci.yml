@@ -51,5 +51,8 @@ jobs:
       - name: Production cinematic productization contracts
         run: npm run test:product
 
+      - name: Core product visual rebuild contracts
+        run: npm run test:core
+
       - name: Cross-route browser contract
         run: npm run test:site

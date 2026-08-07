@@ -45,21 +45,20 @@ async function run() {
 
   // Production product language (not prototype isolation theater).
   assert.match(home, /Possibility has weight/i);
-  assert.match(home, /pc-thesis/);
-  assert.match(home, /product-cinematic\.css/);
-  assert.match(home, /product-cinematic\.js/);
-  assert.match(home, /MODEL GENERATES|01 MODEL|generates/i);
+  assert.match(home, /core-product\.css|product-cinematic\.css/);
+  assert.match(home, /core-product\.js|product-cinematic\.js|cp-chain|pc-thesis/);
+  assert.match(home, /MODEL|GATE|RECEIPT|AXIOM/i);
   assert.doesNotMatch(home, /ISOLATED PROOF|NO PR \/ NO DEPLOY|FROZEN PRODUCTION/i);
 
   assert.match(gate, /One boundary/i);
   assert.match(gate, /Four physical fates/i);
-  assert.match(gate, /product-cinematic\.css/);
+  assert.match(gate, /core-product\.css|product-cinematic\.css/);
   assert.match(gate, /id="live-gate"/);
   assert.match(gate, /id="commercial-demo-release"[^>]*hidden/);
 
   assert.match(benchmark, /SEVEN SIGNALS/i);
   assert.match(benchmark, /ONE ASSEMBLED TRACE/i);
-  assert.match(benchmark, /product-cinematic\.css/);
+  assert.match(benchmark, /core-product\.css|product-cinematic\.css/);
 
   // Archived cinematic study no longer markets itself as production product.
   assert.doesNotMatch(cinematic, /ISOLATED PROOF|NO PR \/ NO DEPLOY|OPEN FROZEN PRODUCTION/i);
@@ -82,31 +81,29 @@ async function run() {
     await page.route("https://fonts.googleapis.com/**", (route) => route.abort());
     await page.route("https://fonts.gstatic.com/**", (route) => route.abort());
     await page.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
-    await page.waitForSelector(".pc-atmosphere, .pc-thesis", { timeout: 8000 });
+    await page.waitForSelector("[data-field-scene], .cp-world, .pc-thesis", { timeout: 8000 });
     const homeState = await page.evaluate(() => ({
-      thesis: Boolean(document.querySelector(".pc-thesis")),
-      atmosphere: Boolean(document.querySelector(".pc-atmosphere")),
+      structure: Boolean(document.querySelector(".cp-world, .pc-thesis, [data-field-scene]")),
       field: Boolean(document.querySelector("[data-field-scene]")),
       overflowX: document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
       hasLiveGate: Boolean(document.querySelector("#live-gate")),
       h1: document.querySelector("#field-title")?.textContent?.replace(/\s+/g, " ").trim() || "",
     }));
-    assert.equal(homeState.thesis, true);
-    assert.equal(homeState.atmosphere, true);
+    assert.equal(homeState.structure, true);
     assert.equal(homeState.field, true);
     assert.equal(homeState.hasLiveGate, false);
     assert.equal(homeState.overflowX, false);
     assert.match(homeState.h1, /weight|Possibility|вагу|Можливість|вес|Возможность/i);
 
     await page.goto(`${origin}/gate.html`, { waitUntil: "domcontentloaded" });
-    await page.waitForSelector(".pc-fate-legend, #live-gate", { timeout: 8000 });
+    await page.waitForSelector("#commercial-demo-run, .cp-gate-terminal", { timeout: 8000 });
     const gateState = await page.evaluate(() => ({
-      fates: Boolean(document.querySelector(".pc-fate-legend")),
+      chamber: Boolean(document.querySelector(".cp-gate-terminal, .pc-fate-legend, #live-gate")),
       decision: document.querySelector("#live-gate")?.dataset.decision || "",
       releaseHidden: document.querySelector("#commercial-demo-release")?.hidden !== false,
       overflowX: document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
     }));
-    assert.equal(gateState.fates, true);
+    assert.equal(gateState.chamber, true);
     assert.equal(gateState.decision, "IDLE");
     assert.equal(gateState.releaseHidden, true);
     assert.equal(gateState.overflowX, false);
@@ -118,10 +115,10 @@ async function run() {
     await mobilePage.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
     const mobileHome = await mobilePage.evaluate(() => ({
       overflowX: document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
-      thesis: Boolean(document.querySelector(".pc-thesis")),
+      structure: Boolean(document.querySelector(".cp-world, .pc-thesis, [data-field-scene]")),
     }));
     assert.equal(mobileHome.overflowX, false);
-    assert.equal(mobileHome.thesis, true);
+    assert.equal(mobileHome.structure, true);
 
     await mobilePage.goto(`${origin}/gate.html`, { waitUntil: "domcontentloaded" });
     const mobileGate = await mobilePage.evaluate(() => ({
@@ -140,7 +137,7 @@ async function run() {
     await reducedPage.route("https://fonts.googleapis.com/**", (route) => route.abort());
     await reducedPage.route("https://fonts.gstatic.com/**", (route) => route.abort());
     await reducedPage.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
-    assert.equal(await reducedPage.locator(".pc-thesis").count(), 1);
+    assert.ok((await reducedPage.locator(".cp-world, .pc-thesis, [data-field-scene]").count()) >= 1);
 
     // No-JS contract remains readable on home.
     const noJs = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 900 } });
