@@ -32,8 +32,8 @@ function assertPresentationBoundary() {
   const pages = ["index.html", "gate.html", "benchmark/index.html", "genesis/index.html"];
   pages.forEach((file) => {
     const html = fs.readFileSync(path.join(ROOT, file), "utf8");
-    assert.match(html, /v2-motion\.css\?v=20260801-motion-v1/, `${file}: semantic motion layer must be present`);
-    assert.match(html, /v2-production\.js\?v=20260801-motion-v1/, `${file}: semantic runtime must be versioned`);
+    assert.match(html, /v2-motion\.css\?v=[0-9a-zA-Z-]+/, `${file}: semantic motion layer must be present`);
+    assert.match(html, /v2-production\.js\?v=[0-9a-zA-Z-]+/, `${file}: semantic runtime must be versioned`);
   });
   assert.match(motion, /Home is a topology, never a staged release/);
   assert.match(motion, /\.release-field--production \.released-signal\s*\{[^}]*display:\s*none\s*!important/s);

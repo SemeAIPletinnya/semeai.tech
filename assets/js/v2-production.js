@@ -5,7 +5,23 @@
   const coarse = window.matchMedia("(pointer: coarse)");
   const body = document.body;
   const route = body.dataset.v2Route || "";
-  const majorRoutes = new Set(["/", "/index.html", "/gate.html", "/benchmark/", "/benchmark/index.html", "/genesis/", "/genesis/index.html"]);
+  const majorRoutes = new Set([
+    "/",
+    "/index.html",
+    "/gate.html",
+    "/benchmark/",
+    "/benchmark/index.html",
+    "/genesis/",
+    "/genesis/index.html",
+    "/research.html",
+    "/book/",
+    "/book/index.html",
+    "/roadmap/",
+    "/roadmap/index.html",
+    "/skills/",
+    "/skills/index.html",
+    "/pilots/support.html",
+  ]);
   const motionTimers = new Set();
 
   document.documentElement.dataset.motion = reduced.matches ? "reduced" : "full";
@@ -151,13 +167,13 @@
     let frame = 0;
     let lastDraw = 0;
     let stopped = false;
-    const count = coarse.matches ? 12 : 22;
+    const count = coarse.matches ? 14 : 28;
     const nodes = Array.from({ length: count }, (_, index) => ({
       x: ((index * 47) % 101) / 100,
       y: ((index * 73) % 97) / 96,
-      speed: .000012 + (index % 5) * .000002,
+      speed: .000011 + (index % 5) * .0000022,
       phase: index * .71,
-      size: .7 + (index % 4) * .34,
+      size: .65 + (index % 4) * .36,
     }));
     let evidenceRatios = [];
 
@@ -194,19 +210,33 @@
 
     function drawField(now) {
       const boundary = width * .62;
-      [0.22, 0.38, 0.57, 0.73].forEach((y, index) => {
-        curve(width * .03, height * y, boundary - 20, height * (y + Math.sin(now * .0002 + index) * .045), "rgba(114,227,250,.095)", now * .00025 + index);
+      // Soft depth veil behind the authority boundary.
+      const veil = context.createLinearGradient(boundary - 80, 0, boundary + 120, 0);
+      veil.addColorStop(0, "rgba(114,227,250,0)");
+      veil.addColorStop(0.55, "rgba(114,227,250,.03)");
+      veil.addColorStop(0.75, "rgba(239,195,118,.045)");
+      veil.addColorStop(1, "rgba(239,195,118,0)");
+      context.fillStyle = veil;
+      context.fillRect(boundary - 80, height * .06, 200, height * .88);
+      [0.18, 0.32, 0.46, 0.6, 0.74].forEach((y, index) => {
+        curve(width * .02, height * y, boundary - 18, height * (y + Math.sin(now * .0002 + index) * .04), "rgba(114,227,250,.11)", now * .00025 + index);
       });
-      context.fillStyle = "rgba(239,195,118,.18)";
-      context.fillRect(boundary, height * .08, .7, height * .84);
+      context.fillStyle = "rgba(239,195,118,.22)";
+      context.fillRect(boundary, height * .08, .9, height * .84);
+      context.fillStyle = "rgba(239,195,118,.06)";
+      context.fillRect(boundary + 4, height * .1, 1.2, height * .8);
       nodes.forEach((node, index) => {
         const progress = (now * node.speed + node.x) % 1;
         const eased = 1 - Math.pow(1 - progress, 2.6);
         const x = width * .04 + eased * (boundary - width * .07);
         const y = node.y * height + Math.sin(now * .00017 + node.phase) * 12;
+        // Candidate weight gathers near the boundary; authority does not move.
+        const near = Math.max(0, 1 - Math.abs((Math.min(x, boundary - 5) / boundary) - 0.92) * 4);
         context.beginPath();
-        context.fillStyle = index % 6 === 0 ? "rgba(239,195,118,.28)" : "rgba(114,227,250,.22)";
-        context.arc(Math.min(x, boundary - 5), y, node.size, 0, Math.PI * 2);
+        context.fillStyle = index % 6 === 0
+          ? `rgba(239,195,118,${0.22 + near * 0.18})`
+          : `rgba(114,227,250,${0.16 + near * 0.2})`;
+        context.arc(Math.min(x, boundary - 5), y, node.size + near * 0.8, 0, Math.PI * 2);
         context.fill();
       });
     }

@@ -48,8 +48,8 @@ const COPY = {
     sourceCommit: "SOURCE COMMIT",
     benchmarkReceipt: "LOCAL RECEIPT",
     axiomField: "Witnessing possibility. No release authority.",
-    prototypeBoundary: "ISOLATED PROTOTYPE / NO PR / NO DEPLOY",
-    openProduction: "OPEN FROZEN PRODUCTION GATE ↗"
+    prototypeBoundary: "HISTORICAL INTERACTION ARCHIVE · PRODUCT LIVES ON PRODUCTION ROUTES",
+    openProduction: "OPEN THE LIVE PRODUCT GATE ↗"
   },
   uk: {
     engineLive: "ДВИГУН АКТИВНИЙ",
@@ -100,8 +100,8 @@ const COPY = {
     sourceCommit: "КОМІТ ДЖЕРЕЛА",
     benchmarkReceipt: "ЛОКАЛЬНА КВИТАНЦІЯ",
     axiomField: "Свідчить можливість. Без повноважень релізу.",
-    prototypeBoundary: "ІЗОЛЬОВАНИЙ ПРОТОТИП / БЕЗ PR / БЕЗ DEPLOY",
-    openProduction: "ВІДКРИТИ ЗАМОРОЖЕНИЙ PRODUCTION GATE ↗"
+    prototypeBoundary: "ІСТОРИЧНИЙ АРХІВ ВЗАЄМОДІЇ · ПРОДУКТ НА PRODUCTION-МАРШРУТАХ",
+    openProduction: "ВІДКРИТИ ЖИВИЙ PRODUCT GATE ↗"
   },
   ru: {
     engineLive: "ДВИЖОК АКТИВЕН",
@@ -152,8 +152,8 @@ const COPY = {
     sourceCommit: "КОММИТ ИСТОЧНИКА",
     benchmarkReceipt: "ЛОКАЛЬНАЯ КВИТАНЦИЯ",
     axiomField: "Свидетельствует возможность. Без полномочий релиза.",
-    prototypeBoundary: "ИЗОЛИРОВАННЫЙ ПРОТОТИП / БЕЗ PR / БЕЗ DEPLOY",
-    openProduction: "ОТКРЫТЬ ЗАМОРОЖЕННЫЙ PRODUCTION GATE ↗"
+    prototypeBoundary: "ИСТОРИЧЕСКИЙ АРХИВ ВЗАИМОДЕЙСТВИЯ · ПРОДУКТ НА PRODUCTION-МАРШРУТАХ",
+    openProduction: "ОТКРЫТЬ ЖИВОЙ PRODUCT GATE ↗"
   }
 };
 
