@@ -84,6 +84,7 @@
   }
 
   function currentRoute() {
+    if (path === "/crm/" || path.endsWith("/crm/index.html")) return "crm";
     if (path === "/workspace/" || path.endsWith("/workspace/index.html")) return "workspace";
     if (path === "/account/" || path.endsWith("/account/index.html") || path.endsWith("/account.html")) return "account";
     if (path.includes("/skills/")) return "skills";
@@ -101,16 +102,11 @@
   function privateEntryRoute() {
     let token = "";
     try {
-      token =
-        window.SemeAI?.getStoredToken?.() ||
-        sessionStorage.getItem("semeai_session_token") ||
-        sessionStorage.getItem("semeai_dashboard_api_key") ||
-        localStorage.getItem("semeai_session_token") ||
-        "";
+      token = sessionStorage.getItem("semeai_identity_session") || "";
     } catch {}
     return token.trim()
-      ? { key: "workspace", i18n: "shell.nav.workspace", label: "Pilot workspace", href: "/workspace/" }
-      : { key: "account", i18n: "shell.nav.pilotSignIn", label: "Pilot sign in", href: "/account/" };
+      ? { key: "workspace", i18n: "shell.nav.workspace", label: "Workspace", href: "/workspace/" }
+      : { key: "account", i18n: "shell.nav.pilotSignIn", label: "Sign in", href: "/account/" };
   }
 
   function systemMapGroups() {

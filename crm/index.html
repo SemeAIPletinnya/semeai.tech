@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SemeAI · Owner CRM</title>
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Referrer-Policy" content="no-referrer" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; img-src 'self' data: https://*.supabase.co https://avatars.githubusercontent.com https://lh3.googleusercontent.com; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'" />
+    <link rel="canonical" href="https://semeai.tech/crm/" />
+    <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/css/brand.css?v=20260726b" />
+    <link rel="stylesheet" href="/assets/css/identity.css?v=20260808-identity-v1" />
+  </head>
+  <body class="identity-route crm-route" data-identity-route="crm">
+    <a class="skip-link" href="#crm-private">Skip to CRM</a>
+    <div class="identity-atmosphere" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <div id="identity-restoring" class="private-route-state is-visible" role="status" aria-live="polite"><span class="identity-orbit" aria-hidden="true"></span><p data-identity-i18n="crm.restoring">Verifying owner authorization…</p></div>
+    <div id="identity-unconfigured" class="private-route-state" hidden><h1 data-identity-i18n="identity.unconfigured.title">Identity infrastructure is ready for provider configuration.</h1><p data-identity-i18n="identity.unconfigured.body">No registration data was loaded.</p></div>
+    <div id="identity-error" class="private-route-state" role="alert" hidden><h1 data-identity-i18n="identity.error.title">The identity boundary did not open.</h1><p id="identity-error-message" data-identity-i18n="identity.error.retry">No registration data was exposed.</p></div>
+    <div id="crm-denied" class="private-route-state" hidden><p class="identity-index">RLS / DENIED</p><h1 data-identity-i18n="crm.denied.title">Owner authorization required.</h1><p data-identity-i18n="crm.denied.body">This identity is authenticated but is not admitted to the CRM. No registration rows were returned.</p><a class="identity-action" href="/workspace/" data-identity-i18n="crm.back">Back to workspace</a></div>
+
+    <div id="crm-private" class="crm-private" hidden>
+      <header class="private-topbar">
+        <a class="private-brand" href="/" aria-label="SemeAI home"><img src="/assets/brand/semeai-mark.svg" alt="" /><span><strong>SemeAI</strong><small>OWNER CRM</small></span></a>
+        <nav aria-label="CRM actions"><div class="lang-switch" role="group" aria-label="Language"><button class="lang-btn" data-lang="en" type="button">EN</button><button class="lang-btn" data-lang="uk" type="button">UA</button><button class="lang-btn" data-lang="ru" type="button">RU</button></div><a href="/workspace/" data-identity-i18n="crm.back">Back to workspace</a><button type="button" data-identity-sign-out data-identity-i18n="workspace.signout">Sign out</button></nav>
+      </header>
+
+      <main class="crm-main" id="crm-main-content">
+        <header class="crm-hero"><div><p class="identity-kicker" data-identity-i18n="crm.kicker">OWNER-ONLY CRM / REGISTRATIONS</p><h1 data-identity-i18n="crm.title">Identity ledger.</h1><p data-identity-i18n="crm.lead">A private operational view of people who created a SemeAI identity. Access is enforced by database RLS.</p></div><div class="crm-owner-proof"><span>RLS</span><strong>OWNER</strong><small id="crm-owner-email">—</small></div></header>
+
+        <section class="crm-metrics" aria-label="Registration summary">
+          <div><span data-identity-i18n="crm.total">Total identities</span><strong id="crm-total">0</strong></div>
+          <div><span data-identity-i18n="crm.today">Registered today</span><strong id="crm-today">0</strong></div>
+          <div><span data-identity-i18n="crm.google">Google</span><strong id="crm-google">0</strong></div>
+          <div><span data-identity-i18n="crm.github">GitHub</span><strong id="crm-github">0</strong></div>
+        </section>
+
+        <section class="crm-ledger" aria-labelledby="crm-ledger-title">
+          <header><div><p class="identity-index">PRIVATE REGISTRATION DATA</p><h2 id="crm-ledger-title">Registrations</h2></div><label><span class="sr-only" data-identity-i18n="crm.search">Search name, email, or provider</span><input id="crm-search" type="search" data-identity-i18n-placeholder="crm.search" placeholder="Search name, email, or provider" /></label></header>
+          <div class="crm-columns" aria-hidden="true"><span data-identity-i18n="crm.person">Person</span><span data-identity-i18n="crm.providers">Provider</span><span data-identity-i18n="crm.registered">Registered</span><span data-identity-i18n="crm.status">Status</span><span data-identity-i18n="crm.note">Private note</span></div>
+          <div id="crm-rows" class="crm-rows"></div>
+          <p id="crm-empty" class="crm-empty" data-identity-i18n="crm.empty" hidden>No registrations match this view.</p>
+        </section>
+      </main>
+    </div>
+
+    <noscript><div class="identity-noscript"><h1>Owner CRM requires JavaScript.</h1><p>No registration data was loaded.</p></div></noscript>
+    <script src="/assets/js/i18n.js?v=20260724a"></script>
+    <script src="/assets/js/identity-config.js?v=20260808-identity-v1"></script>
+    <script type="module" src="/assets/js/identity-app.mjs?v=20260808-identity-v1"></script>
+  </body>
+</html>

@@ -54,5 +54,8 @@ jobs:
       - name: Cinematic production integration contracts
         run: npm run test:cinematic
 
+      - name: Identity, workspace, and owner CRM contracts
+        run: npm run test:identity
+
       - name: Cross-route browser contract
         run: npm run test:site

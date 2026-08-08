@@ -3,293 +3,88 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title data-i18n-page="workspace.title.page">SemeAI Workspace</title>
-    <meta
-      name="description"
-      data-i18n-page="workspace.meta"
-      content="A governed context workspace backed by the existing SemeAI account, usage, billing, and receipt APIs."
-    />
+    <title>SemeAI · Private Workspace</title>
+    <meta name="description" content="A private SemeAI workspace for an authenticated identity." />
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; connect-src 'self' https://api.semeai.tech; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'"
-    />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://*.supabase.co wss://*.supabase.co; img-src 'self' data: https://*.supabase.co https://avatars.githubusercontent.com https://lh3.googleusercontent.com; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'; object-src 'none'" />
     <link rel="canonical" href="https://semeai.tech/workspace/" />
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260726b" />
-    <link rel="stylesheet" href="/assets/css/site.css?v=20260731-premium" />
-    <link rel="stylesheet" href="/assets/css/workspace.css?v=20260728e" />
+    <link rel="stylesheet" href="/assets/css/site.css?v=20260808-production" />
+    <link rel="stylesheet" href="/assets/css/identity.css?v=20260808-identity-v1" />
   </head>
-  <body class="mode-evidence product-private workspace-route" data-product-route="workspace" data-semeai-custom-bg>
-    <a class="skip-link" href="#workspace-work-area" data-i18n="workspace.skip">Skip to workspace</a>
+  <body class="identity-route workspace-identity-route" data-identity-route="workspace">
+    <a class="skip-link" href="#workspace-private">Skip to workspace</a>
+    <div class="identity-atmosphere" aria-hidden="true"><i></i><i></i><i></i></div>
 
-    <div id="workspace-loading" class="workspace-loading" role="status" aria-live="polite" hidden>
-      <img src="/assets/brand/semeai-mark.svg" alt="" width="38" height="38" aria-hidden="true" />
-      <span data-i18n="workspace.loading">Opening governed workspace…</span>
+    <div id="identity-restoring" class="private-route-state is-visible" role="status" aria-live="polite">
+      <span class="identity-orbit" aria-hidden="true"></span>
+      <p data-identity-i18n="workspace.restoring">Verifying the private session…</p>
+    </div>
+    <div id="identity-unconfigured" class="private-route-state" hidden>
+      <h1 data-identity-i18n="identity.unconfigured.title">Identity infrastructure is ready for provider configuration.</h1>
+      <p data-identity-i18n="identity.unconfigured.body">No simulated sign-in is available.</p>
+      <a class="identity-action" href="/account/">Account</a>
+    </div>
+    <div id="identity-error" class="private-route-state" role="alert" hidden>
+      <h1 data-identity-i18n="identity.error.title">The identity boundary did not open.</h1>
+      <p id="identity-error-message" data-identity-i18n="identity.error.retry">No private workspace data was exposed.</p>
+      <a class="identity-action" href="/account/?next=/workspace/">Sign in</a>
     </div>
 
-    <div id="workspace-app" class="workspace-app" hidden>
-      <header class="workspace-topbar">
-        <a class="workspace-brand" href="/" aria-label="SemeAI home" data-i18n-aria="shell.home">
-          <img src="/assets/brand/semeai-mark.svg" alt="" width="30" height="30" aria-hidden="true" />
-          <span>SemeAI</span>
-          <b data-i18n="workspace.productName">Workspace</b>
-        </a>
-        <div class="workspace-top-actions">
-          <div class="lang-switch" role="group" aria-label="Language" data-i18n-aria="shell.lang">
-            <button class="lang-btn" type="button" data-lang="en" aria-pressed="false">EN</button>
-            <button class="lang-btn" type="button" data-lang="uk" aria-pressed="false">UA</button>
-            <button class="lang-btn" type="button" data-lang="ru" aria-pressed="false">RU</button>
-          </div>
-          <a href="/account/" class="workspace-account-link">
-            <span id="workspace-top-identity">—</span>
-            <span data-i18n="workspace.account">Account</span>
-          </a>
-          <button id="workspace-sign-out-top" class="product-action product-action--quiet" type="button" data-i18n="workspace.signout">Sign out</button>
-        </div>
+    <div id="workspace-private" class="private-workspace" hidden>
+      <header class="private-topbar">
+        <a class="private-brand" href="/" aria-label="SemeAI home"><img src="/assets/brand/semeai-mark.svg" alt="" /><span><strong>SemeAI</strong><small data-identity-i18n="workspace.kicker">PRIVATE WORKSPACE / V1</small></span></a>
+        <nav aria-label="Workspace actions">
+          <div class="lang-switch" role="group" aria-label="Language"><button class="lang-btn" data-lang="en" type="button">EN</button><button class="lang-btn" data-lang="uk" type="button">UA</button><button class="lang-btn" data-lang="ru" type="button">RU</button></div>
+          <a href="/account/" data-identity-i18n="workspace.account">Account</a>
+          <button type="button" data-identity-sign-out data-identity-i18n="workspace.signout">Sign out</button>
+        </nav>
       </header>
 
-      <div class="workspace-frame">
-        <aside class="workspace-sidebar" aria-label="Workspace navigation" data-i18n-aria="workspace.nav.aria">
-          <div class="workspace-identity">
-            <p class="section-index" data-i18n="workspace.identity.index">GOVERNED CONTEXT</p>
-            <h1 id="workspace-sidebar-name">—</h1>
-            <p id="workspace-sidebar-id" class="mono-value">—</p>
+      <main class="private-workspace-main">
+        <section class="workspace-identity-hero">
+          <div>
+            <p class="identity-kicker" data-identity-i18n="workspace.kicker">PRIVATE WORKSPACE / V1</p>
+            <p class="workspace-status"><span></span><b data-identity-i18n="workspace.ready">Workspace ready.</b></p>
+            <h1><span data-identity-i18n="workspace.welcome">Welcome</span>, <strong id="workspace-display-name">—</strong></h1>
+            <p id="workspace-email">—</p>
           </div>
-          <nav class="workspace-nav">
-            <button type="button" data-workspace-view="overview" aria-current="page" aria-controls="workspace-view-overview" data-i18n="workspace.nav.overview">Overview</button>
-            <button type="button" data-workspace-view="conversations" aria-controls="workspace-view-conversations" data-i18n="workspace.nav.conversations">Conversations</button>
-            <button type="button" data-workspace-view="sources" aria-controls="workspace-view-sources" data-i18n="workspace.nav.sources">Sources</button>
-            <button type="button" data-workspace-view="memory" aria-controls="workspace-view-memory" data-i18n="workspace.nav.memory">Memory</button>
-            <button type="button" data-workspace-view="evidence" aria-controls="workspace-view-evidence" data-i18n="workspace.nav.evidence">Evidence</button>
-            <button type="button" data-workspace-view="decisions" aria-controls="workspace-view-decisions" data-i18n="workspace.nav.decisions">Decisions</button>
-            <button type="button" data-workspace-view="skills" aria-controls="workspace-view-skills" data-i18n="workspace.nav.skills">Skills</button>
-            <button type="button" data-workspace-view="receipts" aria-controls="workspace-view-receipts" data-i18n="workspace.nav.receipts">Receipts</button>
-            <button type="button" data-workspace-view="settings" aria-controls="workspace-view-settings" data-i18n="workspace.nav.settings">Settings</button>
-          </nav>
-          <p class="workspace-nav-hint">
-            <span id="workspace-nav-position" aria-hidden="true">01 / 09</span>
-            <span data-i18n="workspace.nav.hint">Swipe to inspect all workspace surfaces</span>
-          </p>
-          <div class="workspace-operator">
-            <p data-i18n="workspace.operator.note">Gate operations remain in the existing operator console.</p>
-            <a href="/dashboard.html" data-i18n="workspace.operator.open">Open operator dashboard</a>
+          <div class="workspace-session-card">
+            <span data-identity-i18n="workspace.private">Private</span>
+            <dl><div><dt data-identity-i18n="workspace.signedWith">Signed in with</dt><dd id="workspace-providers">—</dd></div><div><dt>SEMEAI USER</dt><dd id="workspace-user-id">—</dd></div></dl>
           </div>
-        </aside>
+        </section>
 
-        <main class="workspace-work-area" id="workspace-work-area" tabindex="-1">
-          <div id="workspace-alert" class="form-alert" role="alert" hidden></div>
+        <section class="workspace-quick-grid" aria-label="Quick actions">
+          <a href="/gate.html"><span>01 / LIVE AUTHORITY</span><strong data-identity-i18n="workspace.gate">Run Gate</strong><b aria-hidden="true">→</b></a>
+          <a href="/benchmark/"><span>02 / REAL EVIDENCE</span><strong data-identity-i18n="workspace.benchmark">Benchmark repository</strong><b aria-hidden="true">→</b></a>
+        </section>
 
-          <section class="workspace-view" id="workspace-view-overview" data-workspace-section="overview" aria-labelledby="workspace-overview-title">
-            <header class="workspace-view-heading">
-              <div>
-                <p class="section-index" data-i18n="workspace.overview.index">01 / OVERVIEW</p>
-                <h2 id="workspace-overview-title" data-i18n="workspace.overview.title">The governed context container.</h2>
-              </div>
-              <p data-i18n="workspace.overview.lead">One real workspace is connected to the current account. Access and context do not replace Gate authority.</p>
-            </header>
-
-            <dl class="workspace-facts">
-              <div>
-                <dt data-i18n="workspace.fact.identity">Account identity</dt>
-                <dd id="workspace-email">—</dd>
-              </div>
-              <div>
-                <dt data-i18n="workspace.fact.plan">Plan / billing</dt>
-                <dd id="workspace-plan">—</dd>
-                <small id="workspace-billing">—</small>
-              </div>
-              <div>
-                <dt data-i18n="workspace.fact.usage">Checks today / remaining</dt>
-                <dd id="workspace-usage">—</dd>
-              </div>
-              <div>
-                <dt data-i18n="workspace.fact.receipts">Retained receipts returned</dt>
-                <dd id="workspace-receipt-count">0</dd>
-              </div>
-            </dl>
-
-            <div class="workspace-boundary-flow" aria-label="Workspace boundary" data-i18n-aria="workspace.flow.aria">
-              <div><span>01</span><strong data-i18n="workspace.flow.context">Context</strong></div>
-              <i aria-hidden="true">→</i>
-              <div><span>02</span><strong data-i18n="workspace.flow.candidate">Candidate</strong></div>
-              <i aria-hidden="true">→</i>
-              <div class="authority"><span>03</span><strong data-i18n="workspace.flow.gate">Gate</strong></div>
-              <i aria-hidden="true">→</i>
-              <div><span>04</span><strong data-i18n="workspace.flow.decision">Decision</strong></div>
-              <i aria-hidden="true">→</i>
-              <div><span>05</span><strong data-i18n="workspace.flow.receipt">Receipt</strong></div>
-            </div>
-
-            <div class="workspace-route-links">
-              <a href="/gate.html">
-                <span data-i18n="workspace.link.contract.index">AUTHORITY</span>
-                <strong data-i18n="workspace.link.contract">Gate contract</strong>
-              </a>
-              <a href="/benchmark/">
-                <span data-i18n="workspace.link.benchmark.index">PUBLIC INSTRUMENT</span>
-                <strong data-i18n="workspace.link.benchmark">Repository Evidence Benchmark</strong>
-              </a>
-              <a href="/dashboard.html">
-                <span data-i18n="workspace.link.dashboard.index">OPERATION</span>
-                <strong data-i18n="workspace.link.dashboard">Operator dashboard</strong>
-              </a>
-              <a href="/skills/">
-                <span data-i18n="workspace.link.skills.index">METHOD EVIDENCE</span>
-                <strong data-i18n="workspace.link.skills">Skill Forge review</strong>
-              </a>
-            </div>
+        <div class="workspace-lower-grid">
+          <section class="workspace-empty-state">
+            <p class="identity-index">RECENT PRIVATE ACTIVITY</p>
+            <h2 data-identity-i18n="workspace.empty.title">No private history yet.</h2>
+            <p data-identity-i18n="workspace.empty.body">Recent Gate runs, receipts, benchmarks, and saved evidence will appear only after real persistence contracts exist.</p>
+            <small data-identity-i18n="workspace.empty.truth">No example activity has been fabricated.</small>
+            <div class="empty-tracks" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
           </section>
-
-          <section class="workspace-view" id="workspace-view-conversations" data-workspace-section="conversations" aria-labelledby="workspace-conversations-title" hidden>
-            <header class="workspace-view-heading">
-              <div><p class="section-index" data-i18n="workspace.surface.index">ARCHITECTURE SURFACE / v0.1</p><h2 id="workspace-conversations-title" data-i18n="workspace.conversations.title">Conversations</h2></div>
-            </header>
-            <div class="unconnected-surface">
-              <strong data-i18n="workspace.unconnected">Persistence not connected in v0.1.</strong>
-              <p data-i18n="workspace.conversations.body">Governed conversation candidates and their context will belong here when a backend persistence contract exists.</p>
-              <span data-i18n="workspace.empty.real">No fabricated items are shown.</span>
-            </div>
-          </section>
-
-          <section class="workspace-view" id="workspace-view-sources" data-workspace-section="sources" aria-labelledby="workspace-sources-title" hidden>
-            <header class="workspace-view-heading">
-              <div><p class="section-index" data-i18n="workspace.surface.index">ARCHITECTURE SURFACE / v0.1</p><h2 id="workspace-sources-title" data-i18n="workspace.sources.title">Sources</h2></div>
-            </header>
-            <div class="unconnected-surface">
-              <strong data-i18n="workspace.unconnected">Persistence not connected in v0.1.</strong>
-              <p data-i18n="workspace.sources.body">Admitted source references will belong here. Raw archive is not admitted memory.</p>
-              <span data-i18n="workspace.empty.real">No fabricated items are shown.</span>
-            </div>
-          </section>
-
-          <section class="workspace-view" id="workspace-view-memory" data-workspace-section="memory" aria-labelledby="workspace-memory-title" hidden>
-            <header class="workspace-view-heading">
-              <div><p class="section-index" data-i18n="workspace.surface.index">ARCHITECTURE SURFACE / v0.1</p><h2 id="workspace-memory-title" data-i18n="workspace.memory.title">Memory</h2></div>
-            </header>
-            <div class="unconnected-surface">
-              <strong data-i18n="workspace.unconnected">Persistence not connected in v0.1.</strong>
-              <p data-i18n="workspace.memory.body">Explicitly admitted workspace memory will belong here. Session context is not permanent memory.</p>
-              <span data-i18n="workspace.empty.real">No fabricated items are shown.</span>
-            </div>
-          </section>
-
-          <section class="workspace-view" id="workspace-view-evidence" data-workspace-section="evidence" aria-labelledby="workspace-evidence-title" hidden>
-            <header class="workspace-view-heading">
-              <div><p class="section-index" data-i18n="workspace.surface.index">ARCHITECTURE SURFACE / v0.1</p><h2 id="workspace-evidence-title" data-i18n="workspace.evidence.title">Evidence</h2></div>
-            </header>
-            <div class="unconnected-surface">
-              <strong data-i18n="workspace.unconnected">Persistence not connected in v0.1.</strong>
-              <p data-i18n="workspace.evidence.body">Inspectable evidence admitted through a future backend contract will belong here. Retrieval is not truth.</p>
-              <span data-i18n="workspace.empty.real">No fabricated items are shown.</span>
-            </div>
-          </section>
-
-          <section class="workspace-view" id="workspace-view-decisions" data-workspace-section="decisions" aria-labelledby="workspace-decisions-title" hidden>
-            <header class="workspace-view-heading">
-              <div>
-                <p class="section-index" data-i18n="workspace.decisions.index">RETAINED TRACE / REAL RECEIPTS</p>
-                <h2 id="workspace-decisions-title" data-i18n="workspace.decisions.title">Decisions</h2>
-              </div>
-              <p data-i18n="workspace.decisions.lead">Counts are derived only from receipt actions returned by the current API.</p>
-            </header>
-            <div class="decision-counts">
-              <div data-decision="SHOW"><span data-i18n="workspace.decision.show">SHOW</span><strong id="workspace-show-count">0</strong><small>PROCEED</small></div>
-              <div data-decision="REVIEW"><span data-i18n="workspace.decision.review">REVIEW</span><strong id="workspace-review-count">0</strong><small>NEEDS_REVIEW</small></div>
-              <div data-decision="BLOCK"><span data-i18n="workspace.decision.block">BLOCK</span><strong id="workspace-block-count">0</strong><small>SILENCE</small></div>
-            </div>
-            <p class="authority-note" data-i18n="workspace.decisions.boundary">SILENCE means release withheld while the audit trace remains. It does not mean deletion.</p>
-          </section>
-
-          <section class="workspace-view" id="workspace-view-skills" data-workspace-section="skills" aria-labelledby="workspace-skills-title" hidden>
-            <header class="workspace-view-heading">
-              <div><p class="section-index" data-i18n="workspace.skills.index">GOVERNED EVIDENCE / API-BACKED</p><h2 id="workspace-skills-title" data-i18n="workspace.skills.title">Skills</h2></div>
-              <p data-i18n="workspace.skills.lead">Retain bounded candidate evidence in this workspace. Retention is not admission, installation, or release authority.</p>
-            </header>
-            <p class="skill-authority-note" data-i18n="workspace.skills.boundary">Candidate evidence is stored separately from an admission decision. Skill admission remains separate from SaC/PoR release authority.</p>
-            <p id="workspace-skills-status" class="workspace-inline-status" role="status" aria-live="polite" data-i18n="workspace.skills.loading">Connecting to workspace skill evidence…</p>
-            <section class="workspace-skill-block" aria-labelledby="workspace-retained-skills-title">
-              <header>
-                <h3 id="workspace-retained-skills-title" data-i18n="workspace.skills.retainedTitle">Retained candidate evidence</h3>
-                <small data-i18n="workspace.skills.retainedMeta">WORKSPACE-SCOPED · IMMUTABLE SNAPSHOTS</small>
-              </header>
-              <div id="workspace-skills-list" class="workspace-skills-list"></div>
-            </section>
-            <section class="workspace-skill-block" aria-labelledby="workspace-skill-catalog-title">
-              <header>
-                <h3 id="workspace-skill-catalog-title" data-i18n="workspace.skills.catalogTitle">Public review candidates</h3>
-                <a href="/skills/" data-i18n="workspace.skills.open">Inspect full Skill Forge evidence</a>
-              </header>
-              <p data-i18n="workspace.skills.catalogLead">Retain the current bounded evidence snapshot. This action cannot set admission, availability, or a decision receipt.</p>
-              <div id="workspace-skill-catalog" class="workspace-skill-catalog"></div>
-            </section>
-          </section>
-
-          <section class="workspace-view" id="workspace-view-receipts" data-workspace-section="receipts" aria-labelledby="workspace-receipts-title" hidden>
-            <header class="workspace-view-heading">
-              <div>
-                <p class="section-index" data-i18n="workspace.receipts.index">PERSISTENT TRACE / API-BACKED</p>
-                <h2 id="workspace-receipts-title" data-i18n="workspace.receipts.title">Receipts</h2>
-              </div>
-              <p data-i18n="workspace.receipts.lead">Only retained receipt metadata returned by the current workspace API is rendered.</p>
-            </header>
-            <div class="workspace-receipt-columns" aria-hidden="true">
-              <span data-i18n="workspace.receipt.column.action">Action</span>
-              <span data-i18n="workspace.receipt.column.id">Receipt ID</span>
-              <span data-i18n="workspace.receipt.column.internal">Internal decision</span>
-              <span data-i18n="workspace.receipt.column.time">Captured</span>
-            </div>
-            <div id="workspace-receipts-list" class="workspace-receipts-list"></div>
-            <p class="receipt-boundary" data-i18n="workspace.receipts.boundary">A receipt records a decision trace. It is not universal proof or certification.</p>
-          </section>
-
-          <section class="workspace-view" id="workspace-view-settings" data-workspace-section="settings" aria-labelledby="workspace-settings-title" hidden>
-            <header class="workspace-view-heading">
-              <div><p class="section-index" data-i18n="workspace.settings.index">ACCESS / CURRENT SESSION</p><h2 id="workspace-settings-title" data-i18n="workspace.settings.title">Settings</h2></div>
-            </header>
-            <dl class="settings-list">
-              <div><dt data-i18n="workspace.settings.auth">Authentication</dt><dd id="workspace-auth-mode">—</dd></div>
-              <div><dt data-i18n="workspace.settings.scope">Workspace model</dt><dd data-i18n="workspace.settings.single">One backend-backed workspace per account in v0.1.</dd></div>
-              <div><dt data-i18n="workspace.settings.controls">Workspace controls</dt><dd data-i18n="workspace.settings.controlsBody">Rename, delete, and secondary workspace controls are not exposed because the current API has no such contract.</dd></div>
-            </dl>
-            <button id="workspace-sign-out-settings" class="product-action product-action--secondary" type="button" data-i18n="workspace.signout">Sign out</button>
-          </section>
-        </main>
-
-        <aside class="workspace-context" aria-labelledby="workspace-context-title">
-          <p class="section-index" data-i18n="workspace.context.index">LIVE CONTEXT</p>
-          <h2 id="workspace-context-title" data-i18n="workspace.context.title">What is actually connected.</h2>
-          <dl class="context-ledger">
-            <div><dt data-i18n="workspace.context.account">Account</dt><dd class="connected" data-i18n="workspace.context.connected">Connected</dd></div>
-            <div><dt data-i18n="workspace.context.sources">Sources</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
-            <div><dt data-i18n="workspace.context.memory">Memory</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
-            <div><dt data-i18n="workspace.context.evidence">Evidence</dt><dd data-i18n="workspace.context.notConnected">Not connected in v0.1</dd></div>
-            <div><dt data-i18n="workspace.context.skills">Skills</dt><dd class="connected" id="workspace-context-skills">—</dd></div>
-            <div><dt data-i18n="workspace.context.receipts">Receipts</dt><dd class="connected" id="workspace-context-receipts">—</dd></div>
-          </dl>
-          <section class="latest-decision" aria-labelledby="workspace-latest-title">
-            <span data-i18n="workspace.latest.index">LATEST RETAINED GATE ACTION</span>
-            <strong id="workspace-latest-action">—</strong>
-            <p id="workspace-latest-detail" data-i18n="workspace.latest.none">No retained Gate decision was returned.</p>
-          </section>
-          <p class="authority-note" data-i18n="workspace.context.boundary">Metadata and workspace access remain outside Gate authority.</p>
-        </aside>
-      </div>
+          <aside class="workspace-axiom-state">
+            <div class="axiom-continuity-mark" aria-hidden="true"><span></span><i></i></div>
+            <p class="identity-index" data-identity-i18n="workspace.axiom">AXIOM / CONTINUITY</p>
+            <h2 data-identity-i18n="workspace.ready">Workspace ready.</h2>
+            <p data-identity-i18n="workspace.axiom.body">Witnessing an authenticated session. Axiom is not authentication, authorization, or Gate authority.</p>
+          </aside>
+        </div>
+      </main>
     </div>
 
-    <noscript>
-      <div class="noscript-product noscript-workspace">
-        <h1 data-i18n="workspace.noscript.title">JavaScript is required to authenticate this workspace.</h1>
-        <p data-i18n="workspace.noscript.body">No workspace data has been loaded. Open Account to sign in through the existing API.</p>
-        <a href="/account/" data-i18n="workspace.account.open">Open Account</a>
-      </div>
-    </noscript>
-
-    <script src="/assets/js/i18n.js?v=20260726b"></script>
-    <script src="/assets/js/i18n-arch.js?v=20260729a"></script>
-    <script src="/assets/js/workspace-skills-i18n.js?v=20260728b"></script>
-    <script src="/assets/js/api.js?v=20260728d"></script>
-    <script src="/assets/js/workspace-foundation.js?v=20260728e"></script>
+    <noscript><div class="identity-noscript"><h1>Private identity requires JavaScript.</h1><p>No private workspace data was loaded.</p></div></noscript>
+    <script src="/assets/js/i18n.js?v=20260724a"></script>
+    <script src="/assets/js/identity-config.js?v=20260808-identity-v1"></script>
+    <script type="module" src="/assets/js/identity-app.mjs?v=20260808-identity-v1"></script>
   </body>
 </html>
