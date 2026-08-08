@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="core-product">
+<html lang="en" class="cinematic-production" data-cinematic-scene="benchmark" data-v2-world="benchmark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -17,54 +17,43 @@
     <link rel="icon" href="/assets/brand/semeai-favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260731-premium" />
-    <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260731-premium" />
     <link rel="stylesheet" href="./assets/benchmark.css?v=20260801-premium" />
-    <link rel="stylesheet" href="/assets/css/core-product.css?v=20260807-core" />
+    <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260808-production" />
+    <link rel="stylesheet" href="/assets/css/cinematic-system.css?v=20260808-production" />
     <script src="./assets/sigil.js?v=20260726b" defer></script>
     <script src="./assets/benchmark.js?v=20260728a" defer></script>
   </head>
-  <body class="mode-evidence v2-production-world v2-production" data-semeai-custom-bg data-v2-route="lab">
+  <body class="cinematic-production-page mode-evidence" data-v2-route="lab">
     <a class="skip-link" href="#benchmark-input" data-i18n="bench.skip">Skip to benchmark input</a>
-    <noscript><p class="axiom-noscript">Axiom animation requires JavaScript. The Benchmark evidence instrument remains available on this page.</p></noscript>
+    <noscript>
+      <section class="nojs-contract">
+        <p>SEMEAI / EVIDENCE OBSERVATORY / JAVASCRIPT OFF</p>
+        <h1>Seven signals. One assembled trace.</h1>
+        <p>No score is displayed without the deterministic analyzer and its Presentation Gate. Axiom witnesses; it does not score.</p>
+        <nav aria-label="Core product routes"><a href="/">Field</a> · <a href="/gate.html">Gate</a> · <a href="/genesis/">Genesis</a></nav>
+      </section>
+    </noscript>
+
+    <canvas id="cinematic-canvas" class="cinematic-canvas" aria-hidden="true"></canvas>
+    <div class="cinematic-grain" aria-hidden="true"></div>
+    <div class="cinematic-vignette" aria-hidden="true"></div>
+    <div class="cinematic-route-seam" aria-hidden="true"></div>
 
     <div data-semeai-nav></div>
 
-    <div class="page-shell">
-      <header class="benchmark-header" aria-label="Repository Evidence Benchmark controls">
-        <a class="wordmark" href="/" aria-label="SemeAI home">
-          <img class="wordmark-mark" src="/assets/brand/semeai-mark-mono.svg" width="24" height="24" alt="" aria-hidden="true" />
-          <span data-i18n="bench.wordmark">REPOSITORY EVIDENCE BENCHMARK</span>
-        </a>
-        <div class="benchmark-header-actions">
-          <div class="instrument-status" aria-current="page">
-            <span class="status-light" aria-hidden="true"></span>
-            <span data-i18n="bench.status">LIVE PUBLIC EVIDENCE INSTRUMENT</span>
-          </div>
-          <nav class="benchmark-route-nav" aria-label="Benchmark context">
-            <a href="/gate.html" data-i18n="bench.route.gate">UNDERSTAND THE GATE</a>
-            <a href="/book/" data-i18n="bench.route.method">METHOD</a>
-          </nav>
-          <div class="benchmark-auth-entry" role="status">
-            <span class="benchmark-auth-state" aria-disabled="true" data-i18n="bench.auth.cta"
-              >GITHUB CONNECTION UNAVAILABLE</span
-            >
-            <span data-i18n="bench.auth.hint">Anonymous benchmark remains available.</span>
-          </div>
-        </div>
-      </header>
-
-      <main class="cp-stage">
-        <section class="cp-world" aria-labelledby="page-title">
-          <div class="cp-copy">
-            <p class="cp-index"><b>03</b><span data-i18n="bench.hero.eyebrow">EVIDENCE OBSERVATORY</span></p>
-            <h1 class="cp-title" id="page-title">
+    <div class="page-shell cinematic-benchmark-shell">
+      <main class="cinematic-main production-main">
+        <section class="world world--benchmark is-active production-world" data-world="benchmark" aria-labelledby="page-title">
+          <div class="world-copy world-copy--benchmark">
+            <p class="world-index"><span>03</span><b data-i18n="bench.hero.eyebrow">EVIDENCE OBSERVATORY</b></p>
+            <h1 id="page-title">
               <span data-i18n="bench.hero.h1">SEVEN SIGNALS.</span>
               <em data-i18n="bench.hero.h1.span">ONE ASSEMBLED TRACE.</em>
             </h1>
-            <p class="cp-lead">
+            <p class="world-lead">
               <span data-i18n="bench.hero.desc">Real public GitHub evidence controls seven categories. The score arrives only after the policy, signals, and presentation decision settle. No hard-coded score theater.</span>
             </p>
-            <div class="hero-visual cp-sigil-preview" aria-label="Deterministic repository sigil preview">
+            <div class="benchmark-identity-hook" aria-label="Deterministic repository sigil preview">
               <div class="orbit orbit-a" aria-hidden="true"></div>
               <div class="orbit orbit-b" aria-hidden="true"></div>
               <div id="sigil" class="sigil" aria-hidden="true"></div>
@@ -75,42 +64,34 @@
             </div>
           </div>
 
-          <aside class="cp-panel cp-score" aria-label="Assembled score panel">
-            <div class="cp-score__value">
+          <aside class="benchmark-result cinematic-benchmark-result" data-state="IDLE" aria-label="Assembled score panel">
+            <div class="benchmark-result__score">
               <span data-i18n="bench.score.title">ASSEMBLED SCORE</span>
-              <strong id="cp-score-mirror">—</strong><small>/ 100</small>
+              <strong id="cinematic-score">—</strong><small>/ 100</small>
             </div>
-            <div class="cp-score__meta">
-              <p><span>SOURCE</span><strong id="cp-source-mirror">NOT CAPTURED</strong></p>
-              <p><span>PRESENTATION GATE</span><strong id="cp-gate-mirror">—</strong></p>
-              <p><span>SOURCE COMMIT</span><code id="cp-commit-mirror">—</code></p>
-              <p><span>LOCAL RECEIPT</span><code id="cp-receipt-mirror">—</code></p>
+            <div class="benchmark-result__source">
+              <p><span>SOURCE</span><strong id="cinematic-source">NOT CAPTURED</strong></p>
+              <p><span>PRESENTATION GATE</span><strong id="cinematic-presentation-gate">—</strong></p>
+              <p><span>SOURCE COMMIT</span><code id="cinematic-commit">—</code></p>
+              <p><span>LOCAL RECEIPT</span><code id="cinematic-receipt">—</code></p>
             </div>
-            <ol class="cp-signals" aria-label="Seven Benchmark signals">
-              <li><b>01 IMPL</b><strong data-cp-sig="0">—</strong></li>
-              <li><b>02 TESTS</b><strong data-cp-sig="1">—</strong></li>
-              <li><b>03 EVID</b><strong data-cp-sig="2">—</strong></li>
-              <li><b>04 CONT</b><strong data-cp-sig="3">—</strong></li>
-              <li><b>05 REL</b><strong data-cp-sig="4">—</strong></li>
-              <li><b>06 RES</b><strong data-cp-sig="5">—</strong></li>
-              <li><b>07 EXT</b><strong data-cp-sig="6">—</strong></li>
+            <ol class="signal-inspector" aria-label="Seven Benchmark signals">
+              <li><span>01</span><b>IMPL</b><strong data-cinematic-signal>—</strong></li>
+              <li><span>02</span><b>TESTS</b><strong data-cinematic-signal>—</strong></li>
+              <li><span>03</span><b>EVID</b><strong data-cinematic-signal>—</strong></li>
+              <li><span>04</span><b>CONT</b><strong data-cinematic-signal>—</strong></li>
+              <li><span>05</span><b>REL</b><strong data-cinematic-signal>—</strong></li>
+              <li><span>06</span><b>RES</b><strong data-cinematic-signal>—</strong></li>
+              <li><span>07</span><b>EXT</b><strong data-cinematic-signal>—</strong></li>
             </ol>
           </aside>
 
-          <div class="cp-axiom-strip" data-cp-axiom aria-label="Axiom witness">
-            <div class="cp-axiom-strip__sprite" aria-hidden="true"></div>
-            <div class="cp-axiom-strip__copy">
-              <span>AXIOM / <strong data-cp-axiom-state>ATTENTIVE</strong></span>
-              <p data-cp-axiom-msg>Observing evidence assembly. Not scoring.</p>
-            </div>
-          </div>
-
-          <section id="benchmark-input" class="cp-panel cp-bench-console input-panel" aria-labelledby="input-title">
+          <section id="benchmark-input" class="benchmark-console" aria-labelledby="input-title">
             <form id="benchmark-form" novalidate>
               <label for="repository-input">
                 <span data-i18n="bench.input.label">PUBLIC REPOSITORY</span>
               </label>
-              <div class="input-row">
+              <div>
                 <input
                   id="repository-input"
                   name="repository"
@@ -122,26 +103,37 @@
                   aria-describedby="input-help input-error"
                   required
                 />
-                <button id="run-button" class="primary-button" type="submit">
+                <button id="run-button" type="submit">
                   <span data-i18n="bench.input.run">ASSEMBLE REAL EVIDENCE</span>
                   <span aria-hidden="true">↗</span>
                 </button>
               </div>
-              <div class="form-meta cp-form-meta">
+              <div class="benchmark-console__meta">
                 <p id="input-help" data-i18n="bench.input.help">Example: owner/repository or https://github.com/owner/repository</p>
                 <button id="reset-button" class="text-button" type="button" data-i18n="bench.input.reset">RESET TO FIRST REPOSITORY</button>
               </div>
               <p id="input-error" class="input-error" role="alert"></p>
             </form>
-            <div id="run-status" class="run-status cp-run-status" role="status" aria-live="polite">
+            <div id="run-status" class="run-status gate-status" role="status" aria-live="polite">
               <span class="status-track" aria-hidden="true"><span></span></span>
               <span id="run-status-text" data-i18n="bench.input.ready">READY / NO SCORE ANNOUNCED</span>
+            </div>
+            <div class="benchmark-auth-entry" role="status">
+              <span class="benchmark-auth-state" aria-disabled="true" data-i18n="bench.auth.cta">GITHUB CONNECTION UNAVAILABLE</span>
+              <span data-i18n="bench.auth.hint">Anonymous benchmark remains available.</span>
             </div>
             <h2 id="input-title" class="sr-only" data-i18n="bench.input.title">Name the repository.</h2>
           </section>
         </section>
 
-        <div class="cp-instrument">
+        <button class="axiom-witness" type="button" data-axiom-witness data-open-axiom data-semantic-state="ATTENTIVE" aria-label="Open Axiom public witness" data-i18n-aria="v2.axiom.open">
+          <div class="axiom-witness__beam" aria-hidden="true"></div>
+          <div class="axiom-witness__halo" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="axiom-witness__sprite" aria-hidden="true"></div>
+          <div class="axiom-witness__copy"><span>AXIOM / <b data-axiom-state>ATTENTIVE</b></span><p data-axiom-message>Observing evidence assembly. Not scoring.</p></div>
+        </button>
+
+        <div class="benchmark-instrument production-continuation">
 
         <noscript>
           <section class="noscript-panel" aria-labelledby="noscript-title">
@@ -452,13 +444,11 @@
       </div>
     </div>
     <script src="/assets/js/i18n.js?v=20260724a"></script>
-    <script src="/assets/js/i18n-arch.js?v=20260729a"></script>
-    <script src="/assets/js/site-shell.js?v=20260731-premium"></script>
+    <script src="/assets/js/i18n-arch.js?v=20260808-production"></script>
+    <script src="/assets/js/site-shell.js?v=20260808-production"></script>
     <script src="/assets/js/axiom-archive.js?v=20260729a"></script>
     <script type="module" src="/assets/js/axiom-presence-register.mjs?v=20260731-premium"></script>
-    <script defer src="/assets/js/axiom-agent.js?v=20260731-premium"></script>
-    <script defer src="/assets/js/v2-production.js?v=20260807-product"></script>
-    <script defer src="/assets/js/core-product.js?v=20260807-core"></script>
-    <script defer src="/assets/js/core-benchmark-mirror.js?v=20260807-core"></script>
+    <script defer src="/assets/js/axiom-agent.js?v=20260808-production"></script>
+    <script type="module" src="/assets/js/cinematic-production.mjs?v=20260808-production"></script>
   </body>
 </html>

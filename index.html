@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="core-product" data-v2-world="field">
+<html lang="en" class="cinematic-production" data-cinematic-scene="field" data-v2-world="field">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,85 +13,88 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,wght@0,500;1,500&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/assets/css/brand.css?v=20260723b" />
     <link rel="stylesheet" href="/assets/css/site.css?v=20260731-premium" />
-    <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260731-premium" />
-    <link rel="stylesheet" href="/assets/css/core-product.css?v=20260807-core" />
+    <link rel="stylesheet" href="/assets/css/axiom-agent.css?v=20260808-production" />
+    <link rel="stylesheet" href="/assets/css/cinematic-system.css?v=20260808-production" />
     <title data-i18n-page="v2.field.title">SemeAI — The Release Field</title>
   </head>
-  <body class="core-immersive v2-production mode-field" data-v2-route="field">
+  <body class="cinematic-production-page mode-field" data-v2-route="field">
     <a class="skip-link" href="#main" data-i18n="v2.field.skip">Skip to the Release Field</a>
     <noscript>
-      <section class="cp-noscript">
+      <section class="nojs-contract">
         <p>SEMEAI / RELEASE FIELD / JAVASCRIPT OFF</p>
         <h1>Possibility has weight. Authority holds the boundary.</h1>
         <p>A model creates a candidate. The Gate remains the final release authority. SHOW may release only the exact evaluated candidate. REVIEW and BLOCK release no candidate content. Axiom witnesses; it never decides.</p>
+        <nav aria-label="Core product routes"><a href="/gate.html">Gate</a> · <a href="/benchmark/">Evidence</a> · <a href="/genesis/">Genesis</a></nav>
       </section>
     </noscript>
 
+    <canvas id="cinematic-canvas" class="cinematic-canvas" aria-hidden="true"></canvas>
+    <div class="cinematic-grain" aria-hidden="true"></div>
+    <div class="cinematic-vignette" aria-hidden="true"></div>
+    <div class="cinematic-route-seam" aria-hidden="true"></div>
+
     <div data-semeai-nav></div>
 
-    <main id="main" class="cp-stage">
-      <section class="cp-world" data-field-scene data-field-motion="ambient" data-state="idle" aria-labelledby="field-title">
-        <div class="cp-copy" data-v2-reveal>
-          <p class="cp-index"><b>00</b><span data-i18n="v2.field.index">THE RELEASE FIELD</span></p>
-          <h1 class="cp-title" id="field-title">
-            <span data-i18n="v2.field.h1a">Possibility has weight.</span>
-            <em data-i18n="v2.field.h1b">Authority holds the boundary.</em>
-          </h1>
-          <p class="cp-lead" data-i18n="v2.field.lead">A candidate can move, gather context, and approach the boundary. Authority does not move with it. Generation is not release authority.</p>
-          <div class="cp-chain" aria-label="Product architecture">
-            <span><b>01</b><small data-i18n="v2.field.thesis1s">MODEL</small></span><i aria-hidden="true"></i>
-            <span><b>02</b><small data-i18n="v2.field.thesis2s">GATE</small></span><i aria-hidden="true"></i>
-            <span><b>03</b><small data-i18n="v2.field.thesis3s">RECEIPT</small></span><i aria-hidden="true"></i>
-            <span><b>04</b><small data-i18n="v2.field.thesis4s">AXIOM</small></span>
+    <main id="main" class="cinematic-main production-main">
+      <section class="world world--field is-active production-world" data-world="field" data-field-scene data-field-motion="ambient" aria-labelledby="field-title">
+        <div class="world-copy world-copy--field">
+          <p class="world-index"><span>01</span><b data-i18n="v2.field.index">RELEASE FIELD</b></p>
+          <h1 id="field-title"><span data-i18n="v2.field.h1a">POSSIBILITY</span><em data-i18n="v2.field.h1b">HAS WEIGHT.</em></h1>
+          <p class="world-lead" data-i18n="v2.field.lead">A candidate can move, gather context, and approach the boundary. Authority does not move with it.</p>
+          <div class="field-contract" aria-label="Release sequence" data-i18n-aria="v2.field.thesisAria">
+            <span><b>01</b><small data-i18n="v2.field.thesis1s">MODEL GENERATES</small></span>
+            <i aria-hidden="true"></i>
+            <span><b>02</b><small data-i18n="v2.field.thesis2s">GATE DECIDES</small></span>
+            <i aria-hidden="true"></i>
+            <span><b>03</b><small data-i18n="v2.field.thesis3s">RECEIPT PROVES</small></span>
+            <i aria-hidden="true"></i>
+            <span><b>04</b><small data-i18n="v2.field.thesis4s">AXIOM WITNESSES</small></span>
           </div>
-          <a class="cp-cta scene-run" href="/gate.html#live-gate">
-            <span data-i18n="v2.field.enter">Run the Gate</span>
-            <i aria-hidden="true">↗</i>
+          <a class="cinematic-action" href="/gate.html#live-gate">
+            <span data-i18n="v2.field.enter">CARRY THE TRACE TO THE GATE</span><i aria-hidden="true">↗</i>
           </a>
         </div>
 
-        <aside class="cp-telemetry" aria-hidden="true">
+        <aside class="world-telemetry world-telemetry--field" aria-label="Field telemetry">
           <p><span>OBJECT</span><strong>UNRELEASED CANDIDATE</strong></p>
-          <p><span>FIELD FORCE</span><strong data-cp-force>0.38</strong></p>
-          <p><span>AUTHORITY</span><strong data-cp-authority>EXTERNAL / GATE</strong></p>
-          <p><span>STATE</span><strong data-cp-state>BOUND</strong></p>
+          <p><span>FIELD FORCE</span><strong data-field-force>0.38</strong></p>
+          <p><span>AUTHORITY</span><strong>EXTERNAL / GATE</strong></p>
+          <p><span>STATE</span><strong data-field-state>BOUND</strong></p>
         </aside>
 
-        <div class="cp-axiom-strip" data-cp-axiom aria-label="Axiom witness">
-          <div class="cp-axiom-strip__sprite" aria-hidden="true"></div>
-          <div class="cp-axiom-strip__copy">
-            <span>AXIOM / <strong data-cp-axiom-state>IDLE</strong></span>
-            <p data-cp-axiom-msg>Witnessing possibility. No release authority.</p>
-          </div>
-        </div>
-
-        <div class="cp-hint" aria-hidden="true">
-          <span></span>
-          <p data-i18n="v2.field.note">Move the pointer. The field bends; the boundary holds. Home cannot release.</p>
+        <div class="field-instruction" aria-hidden="true">
+          <span></span><p data-i18n="v2.field.note">Move the pointer. The field bends; the boundary holds.</p>
         </div>
       </section>
 
-      <section class="cp-below" id="how-it-works" aria-labelledby="coordinates-title">
+      <button class="axiom-witness" type="button" data-axiom-witness data-open-axiom data-semantic-state="IDLE" aria-label="Open Axiom public witness" data-i18n-aria="v2.axiom.open">
+        <div class="axiom-witness__beam" aria-hidden="true"></div>
+        <div class="axiom-witness__halo" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="axiom-witness__sprite" aria-hidden="true"></div>
+        <div class="axiom-witness__copy"><span>AXIOM / <b data-axiom-state>IDLE</b></span><p data-axiom-message>Witnessing possibility. No release authority.</p></div>
+      </button>
+
+      <section class="production-continuation" id="how-it-works" aria-labelledby="coordinates-title">
         <header>
-          <p class="cp-index"><b>01</b><span data-i18n="v2.field.coordinatesIndex">ONE SYSTEM, DIFFERENT PHYSICS</span></p>
+          <p class="world-index"><span>02</span><b data-i18n="v2.field.coordinatesIndex">ONE SYSTEM, DIFFERENT PHYSICS</b></p>
           <h2 id="coordinates-title" data-i18n="v2.field.coordinatesTitle">Move through the mechanism, not a menu of claims.</h2>
         </header>
-        <div class="cp-coords" id="use-cases">
-          <a href="/gate.html#live-gate"><span>01</span><strong data-i18n="v2.nav.gate">Gate</strong><small data-i18n="v2.field.gateSmall">The real release threshold</small></a>
-          <a href="/benchmark/"><span>02</span><strong data-i18n="v2.nav.lab">Evidence Lab</strong><small data-i18n="v2.field.labSmall">A real repository assembled in public</small></a>
-          <a href="/genesis/"><span>03</span><strong data-i18n="v2.nav.genesis">Genesis</strong><small data-i18n="v2.field.genesisSmall">Admitted trace across time</small></a>
-          <a href="/research.html"><span>04</span><strong data-i18n="v2.field.boundaries">Claim boundaries</strong><small data-i18n="v2.field.boundariesSmall">What the evidence does and does not prove</small></a>
+        <div class="continuity-grid" id="use-cases">
+          <a href="/gate.html#live-gate"><span>01 / AUTHORITY</span><strong data-i18n="v2.nav.gate">Gate</strong><small data-i18n="v2.field.gateSmall">The real release threshold</small></a>
+          <a href="/benchmark/"><span>02 / EVIDENCE</span><strong data-i18n="v2.nav.evidence">Evidence</strong><small data-i18n="v2.field.labSmall">A real repository assembled in public</small></a>
+          <a href="/genesis/"><span>03 / HISTORY</span><strong data-i18n="v2.nav.genesis">Genesis</strong><small data-i18n="v2.field.genesisSmall">Admitted trace across time</small></a>
+          <a href="/research.html"><span>04 / BOUNDARY</span><strong data-i18n="v2.field.boundaries">Claim boundaries</strong><small data-i18n="v2.field.boundariesSmall">What the evidence does and does not prove</small></a>
         </div>
 
-        <section class="pilot-line pilot-line--production" id="pilot" style="margin-top:3rem" aria-labelledby="pilot-title">
+        <section class="pilot-line production-pilot" id="pilot" aria-labelledby="pilot-title">
           <div>
-            <p class="cp-index"><b>03</b><span data-i18n="v2.field.pilotIndex">GATE TECHNICAL PILOT</span></p>
+            <p class="world-index"><span>03</span><b data-i18n="v2.field.pilotIndex">GATE TECHNICAL PILOT</b></p>
             <h2 id="pilot-title" data-i18n="v2.field.pilotTitle">Map one bounded workflow from generation to release.</h2>
-            <p class="cp-lead" data-i18n="v2.field.pilotBody">The pilot tests a defined decision boundary, published integration contract, and receipt flow. It is not a universal safety, truth, or compliance claim.</p>
+            <p data-i18n="v2.field.pilotBody">The pilot tests a defined decision boundary, published integration contract, and receipt flow. It is not a universal safety, truth, or compliance claim.</p>
           </div>
-          <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.2rem">
-            <a class="cp-cta" style="width:auto;min-width:14rem" href="/pilots/support.html" data-i18n="v2.field.pilotCta">Inspect the Gate Pilot</a>
-            <a class="cp-cta" style="width:auto;min-width:12rem;background:transparent" href="/gate.html#semantics-title" data-i18n="v2.field.contractCta">Read the contract</a>
+          <div class="production-actions">
+            <a class="cinematic-action" href="/pilots/support.html" data-i18n="v2.field.pilotCta">Inspect the Gate Pilot</a>
+            <a class="cinematic-action cinematic-action--quiet" href="/gate.html#semantics-title" data-i18n="v2.field.contractCta">Read the contract</a>
           </div>
         </section>
       </section>
@@ -99,12 +102,11 @@
 
     <div data-semeai-footer></div>
     <script src="/assets/js/i18n.js?v=20260724a"></script>
-    <script src="/assets/js/i18n-arch.js?v=20260801-production"></script>
-    <script src="/assets/js/site-shell.js?v=20260801-production"></script>
+    <script src="/assets/js/i18n-arch.js?v=20260808-production"></script>
+    <script src="/assets/js/site-shell.js?v=20260808-production"></script>
     <script src="/assets/js/axiom-archive.js?v=20260729a"></script>
     <script type="module" src="/assets/js/axiom-presence-register.mjs?v=20260731-premium"></script>
-    <script defer src="/assets/js/axiom-agent.js?v=20260731-premium"></script>
-    <script defer src="/assets/js/v2-production.js?v=20260807-product"></script>
-    <script defer src="/assets/js/core-product.js?v=20260807-core"></script>
+    <script defer src="/assets/js/axiom-agent.js?v=20260808-production"></script>
+    <script type="module" src="/assets/js/cinematic-production.mjs?v=20260808-production"></script>
   </body>
 </html>

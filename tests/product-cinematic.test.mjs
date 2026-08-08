@@ -39,31 +39,35 @@ async function run() {
   const gate = fs.readFileSync(path.join(ROOT, "gate.html"), "utf8");
   const benchmark = fs.readFileSync(path.join(ROOT, "benchmark", "index.html"), "utf8");
   const cinematic = fs.readFileSync(path.join(ROOT, "cinematic-engine", "index.html"), "utf8");
-  const productCss = fs.readFileSync(path.join(ROOT, "assets", "css", "product-cinematic.css"), "utf8");
-  const productJs = fs.readFileSync(path.join(ROOT, "assets", "js", "product-cinematic.js"), "utf8");
+  const productCss = fs.readFileSync(path.join(ROOT, "assets", "css", "cinematic-system.css"), "utf8");
+  const productJs = fs.readFileSync(path.join(ROOT, "assets", "js", "cinematic-production.mjs"), "utf8");
+  const archivedEngine = fs.readFileSync(path.join(ROOT, "cinematic-engine", "assets", "engine.mjs"), "utf8");
   const controller = fs.readFileSync(path.join(ROOT, "assets", "js", "commercial-gate-demo.js"), "utf8");
 
   // Production product language (not prototype isolation theater).
   assert.match(home, /Possibility has weight/i);
-  assert.match(home, /core-product\.css|product-cinematic\.css/);
-  assert.match(home, /core-product\.js|product-cinematic\.js|cp-chain|pc-thesis/);
+  assert.match(home, /cinematic-system\.css/);
+  assert.match(home, /cinematic-production\.mjs/);
   assert.match(home, /MODEL|GATE|RECEIPT|AXIOM/i);
   assert.doesNotMatch(home, /ISOLATED PROOF|NO PR \/ NO DEPLOY|FROZEN PRODUCTION/i);
 
   assert.match(gate, /One boundary/i);
   assert.match(gate, /Four physical fates/i);
-  assert.match(gate, /core-product\.css|product-cinematic\.css/);
+  assert.match(gate, /cinematic-system\.css/);
   assert.match(gate, /id="live-gate"/);
   assert.match(gate, /id="commercial-demo-release"[^>]*hidden/);
 
   assert.match(benchmark, /SEVEN SIGNALS/i);
   assert.match(benchmark, /ONE ASSEMBLED TRACE/i);
-  assert.match(benchmark, /core-product\.css|product-cinematic\.css/);
+  assert.match(benchmark, /cinematic-system\.css/);
 
   // Archived cinematic study no longer markets itself as production product.
   assert.doesNotMatch(cinematic, /ISOLATED PROOF|NO PR \/ NO DEPLOY|OPEN FROZEN PRODUCTION/i);
   assert.match(cinematic, /ARCHIVED INTERACTION STUDY|HISTORICAL INTERACTION ARCHIVE/i);
   assert.match(cinematic, /OPEN THE LIVE PRODUCT GATE/i);
+  assert.match(cinematic, /\/assets\/css\/cinematic-system\.css/);
+  assert.match(archivedEngine, /\/assets\/js\/cinematic-scenes\.mjs/);
+  assert.match(archivedEngine, /\/assets\/js\/cinematic-axiom-witness\.mjs/);
 
   // Presentation layer only — no Gate authority mutation or candidate fabrication.
   assert.doesNotMatch(productJs, /ai_answer|safe_fallback|heldCopy|answer_hash\s*=/);
@@ -87,13 +91,20 @@ async function run() {
       field: Boolean(document.querySelector("[data-field-scene]")),
       overflowX: document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
       hasLiveGate: Boolean(document.querySelector("#live-gate")),
+      axiomWitnesses: document.querySelectorAll("[data-axiom-witness]").length,
       h1: document.querySelector("#field-title")?.textContent?.replace(/\s+/g, " ").trim() || "",
     }));
     assert.equal(homeState.structure, true);
     assert.equal(homeState.field, true);
     assert.equal(homeState.hasLiveGate, false);
+    assert.equal(homeState.axiomWitnesses, 1);
     assert.equal(homeState.overflowX, false);
     assert.match(homeState.h1, /weight|Possibility|вагу|Можливість|вес|Возможность/i);
+
+    await page.locator("[data-open-axiom]").click();
+    assert.equal(await page.locator(".axiom-agent__panel").isVisible(), true);
+    await page.locator(".axiom-agent__close").click();
+    assert.equal(await page.locator("[data-open-axiom]").evaluate((node) => node === document.activeElement), true);
 
     await page.goto(`${origin}/gate.html`, { waitUntil: "domcontentloaded" });
     await page.waitForSelector("#commercial-demo-run, .cp-gate-terminal", { timeout: 8000 });

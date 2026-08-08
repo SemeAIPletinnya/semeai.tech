@@ -343,6 +343,7 @@
   let activeRequest = null;
   let requestSequence = 0;
   let lastResult = null;
+  let returnFocusTarget = null;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const nodes = {};
   let Presence = null;
@@ -763,7 +764,9 @@
     if (lastResult) renderResult(lastResult, { moveFocus: false });
   }
 
-  function openPanel() {
+  function openPanel(event) {
+    const trigger = event?.currentTarget;
+    returnFocusTarget = trigger instanceof HTMLElement && trigger !== nodes.launcher ? trigger : nodes.launcher;
     nodes.cue.hidden = true;
     nodes.panel.hidden = false;
     nodes.launcher.setAttribute("aria-expanded", "true");
@@ -789,7 +792,7 @@
     window.clearTimeout(greetingTimer);
     if (lastResult) applyResultVisual(lastResult);
     else setState("idle", "ready-no-active-work");
-    if (restoreFocus) nodes.launcher.focus();
+    if (restoreFocus) (returnFocusTarget || nodes.launcher).focus();
   }
 
   function buildInterface() {
@@ -976,8 +979,8 @@
     window.setTimeout(() => {
       if (nodes.panel?.hidden) nodes.cue.hidden = true;
     }, 10_000);
-    launcher.addEventListener("click", () => {
-      if (panel.hidden) openPanel();
+    launcher.addEventListener("click", (event) => {
+      if (panel.hidden) openPanel(event);
       else closePanel();
     });
     close.addEventListener("click", () => closePanel());

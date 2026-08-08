@@ -569,7 +569,7 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
     const expectedPrimary = [
       ["Field", "/"],
       ["Gate", "/gate.html"],
-      ["Lab", "/benchmark/"],
+      ["Evidence", "/benchmark/"],
       ["Genesis", "/genesis/"],
     ];
     const results = [];
@@ -600,8 +600,8 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
         }
         assert.equal(await page.locator(".site-route-context").count(), 0, `${route} should not render the legacy route counter`);
         if (viewport.width === 1440) {
-          const primary = await page.locator(".site-nav > a.nav-link").evaluateAll((links) =>
-            links.map((link) => [link.textContent.trim(), link.getAttribute("href")]),
+          const primary = await page.locator(".site-nav > a.nav-link, .site-nav > .core-path-secondary > a.core-context-link").evaluateAll((links) =>
+            links.map((link) => [(link.querySelector("b")?.textContent || link.textContent).trim(), link.getAttribute("href")]),
           );
           assert.deepEqual(primary, expectedPrimary, `${route} should expose the four production V2 worlds`);
           assert.equal(await page.locator(".header-pilot").getAttribute("href"), "/#pilot");
@@ -632,10 +632,10 @@ async function validatePublicRouteContext(browser, origin, tailwindRuntime) {
     }, commercialKeys);
     assert.deepEqual(missingCommercialTranslations, [], "Changed production V2 copy should be synchronized across EN/UA/RU");
     await localePage.locator('[data-lang="uk"]:visible').first().click();
-    assert.equal((await localePage.locator(".site-nav > a.nav-link").first().textContent()).trim(), "Поле");
+    assert.equal((await localePage.locator(".site-nav > a.nav-link b").first().textContent()).trim(), "Поле");
     assert.equal((await localePage.locator(".header-pilot").textContent()).trim(), "Запросити пілот");
     await localePage.locator('[data-lang="ru"]:visible').first().click();
-    assert.equal((await localePage.locator(".site-nav > a.nav-link").first().textContent()).trim(), "Поле");
+    assert.equal((await localePage.locator(".site-nav > a.nav-link b").first().textContent()).trim(), "Поле");
     assert.equal((await localePage.locator(".header-pilot").textContent()).trim(), "Запросить пилот");
     assert.deepEqual(localeErrors, []);
     await localeContext.close();
@@ -1628,14 +1628,16 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
 
   await loadRoute(page, origin, "/gate.html");
   assert.equal(await page.locator("#live-gate").getAttribute("data-decision"), "IDLE");
-  assert.ok((await page.locator(".threshold-aperture").boundingBox()).y < 900, "The live threshold geometry should enter the first desktop viewport");
+  assert.ok((await page.locator(".gate-console").boundingBox()).y < 900, "The live threshold controls should enter the first desktop viewport");
   assert.equal(await page.locator("#commercial-demo-release").isHidden(), true);
   await page.locator("#commercial-demo-run").click();
   await page.locator('#live-gate[data-decision="SHOW"]').waitFor();
   await page.waitForTimeout(650);
   assert.equal(await page.locator("#commercial-demo-answer").textContent(), "Use promo code SAVE30 to get 30% off.");
   assert.equal(await page.locator("#commercial-demo-release").isVisible(), true, "SHOW should reveal the exact evaluated candidate");
-  assert.equal(await page.locator("[data-machine-step].is-active").count(), 5, "A real terminal decision should advance the five causal stages");
+  assert.equal(await page.evaluate(() => window.SemeAICinematicProduction?.state.gate), "SHOW");
+  assert.equal(await page.locator("[data-axiom-witness]").getAttribute("data-semantic-state"), "RESULT");
+  assert.equal(await page.locator(".gate-sequence-trace").isVisible(), true, "The causal release trace should remain inspectable");
   assert.equal(await page.locator("[data-machine-decision]").textContent(), "PROCEED");
 
   await loadRoute(page, origin, "/research.html");
@@ -1674,8 +1676,8 @@ async function validateMotionSemantics(browser, origin, tailwindRuntime) {
   assert.ok(dashboard.canvasWidth > 0, "Dashboard should retain its deterministic operational field");
 
   await loadRoute(page, origin, "/");
-  assert.equal(await page.locator(".release-field--production [data-decision-trigger]").count(), 0, "The Release Field must not simulate a Gate decision");
-  assert.equal(await page.locator('a.scene-run[href="/gate.html#live-gate"]').count(), 1);
+  assert.equal(await page.locator("[data-field-scene] [data-decision-trigger]").count(), 0, "The Release Field must not simulate a Gate decision");
+  assert.equal(await page.locator('a.cinematic-action[href="/gate.html#live-gate"]').count(), 1);
   await page.evaluate(() => {
     window.__semeaiRouteRafCount = 0;
   });
@@ -2129,16 +2131,17 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
       });
     });
     await loadRoute(page, origin, route);
-    await page.waitForSelector('[data-axiom-agent][data-asset-state="ready"]');
+    await page.waitForSelector('[data-axiom-agent][data-asset-state="ready"]', { state: "attached" });
 
     assert.equal(await page.locator("[data-axiom-agent]").count(), 1);
     assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "false");
     assert.equal(await page.locator("[data-axiom-agent]").getAttribute("data-state"), "idle");
     const compactV2Witness = await page.locator("body").evaluate((body) => body.classList.contains("v2-production") || body.classList.contains("v2-production-world"));
-    assert.equal(await page.locator(".axiom-agent__launcher").isVisible(), true);
-    assert.equal(await page.locator(".axiom-agent__cue").isVisible(), !compactV2Witness, "V2 worlds should keep Axiom available without an unsolicited overlay cue");
+    const cinematicWitness = await page.locator("body").evaluate((body) => body.classList.contains("cinematic-production-page"));
+    assert.equal(await page.locator(".axiom-agent__launcher").isVisible(), !cinematicWitness);
+    assert.equal(await page.locator(".axiom-agent__cue").isVisible(), !compactV2Witness && !cinematicWitness, "Cinematic and V2 worlds should keep Axiom available without an unsolicited duplicate cue");
 
-    await page.locator(".axiom-agent__launcher").click();
+    await page.locator(cinematicWitness ? "[data-open-axiom]" : ".axiom-agent__launcher").click();
     assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "true");
     assert.equal(await page.locator(".axiom-agent__panel").isVisible(), true);
     assert.equal(await page.locator(".axiom-agent__mode").innerText(), "Public");
@@ -2330,7 +2333,8 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
     await page.keyboard.press("Escape");
     assert.equal(await page.locator(".axiom-agent__panel").isHidden(), true);
     assert.equal(await page.locator(".axiom-agent__launcher").getAttribute("aria-expanded"), "false");
-    assert.equal(await page.locator(".axiom-agent__launcher").evaluate((node) => node === document.activeElement), true);
+    const focusSelector = cinematicWitness ? "[data-open-axiom]" : ".axiom-agent__launcher";
+    assert.equal(await page.locator(focusSelector).evaluate((node) => node === document.activeElement), true);
     assert.deepEqual(errors, [], `${route} Axiom shell should remain error-free`);
     results.push(routeKey);
     await context.close();
@@ -2344,7 +2348,7 @@ async function validateAxiomArchiveShell(browser, origin, tailwindRuntime) {
   const reducedErrors = [];
   await wirePage(reducedPage, tailwindRuntime, reducedErrors);
   await loadRoute(reducedPage, origin, "/gate.html");
-  await reducedPage.waitForSelector('[data-axiom-agent][data-asset-state="ready"]');
+  await reducedPage.waitForSelector('[data-axiom-agent][data-asset-state="ready"]', { state: "attached" });
   const before = await reducedPage.locator("[data-axiom-agent]").evaluate((node) => ({
     row: node.dataset.spriteRow,
     column: node.dataset.spriteColumn,
