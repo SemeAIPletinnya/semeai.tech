@@ -1,7 +1,7 @@
 import { createI18n } from "./i18n.mjs";
-import { AxiomWitness } from "./axiom-witness.mjs";
+import { AxiomWitness } from "/assets/js/cinematic-axiom-witness.mjs";
 import { BenchmarkBridge, ContractError, GateBridge } from "./data-bridges.mjs";
-import { CinematicRenderer } from "./scenes.mjs";
+import { CinematicRenderer } from "/assets/js/cinematic-scenes.mjs";
 
 const DYNAMIC_COPY = {
   en: {

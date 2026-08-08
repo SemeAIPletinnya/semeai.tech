@@ -1,9 +1,9 @@
 (() => {
   const path = (location.pathname || "").toLowerCase();
   const routes = [
-    { key: "home", i18n: "v2.nav.field", label: "Field", href: "/" },
-    { key: "gate", i18n: "v2.nav.gate", label: "Gate", href: "/gate.html" },
-    { key: "benchmark", i18n: "v2.nav.lab", label: "Lab", href: "/benchmark/" },
+    { key: "home", number: "01", i18n: "v2.nav.field", label: "Field", href: "/" },
+    { key: "gate", number: "02", i18n: "v2.nav.gate", label: "Gate", href: "/gate.html" },
+    { key: "benchmark", number: "03", i18n: "v2.nav.evidence", label: "Evidence", href: "/benchmark/" },
     { key: "genesis", i18n: "v2.nav.genesis", label: "Genesis", href: "/genesis/" },
   ];
   const publicRouteContexts = [
@@ -247,7 +247,7 @@
     return node;
   }
 
-  function appendBrandIdentity(brand) {
+  function appendBrandIdentity(brand, cinematic = false) {
     brand.append(
       element("img", {
         class: "brand-mark semeai-mark",
@@ -259,6 +259,7 @@
       }),
       element("span", { class: "semeai-wordmark" }, "SemeAI")
     );
+    if (cinematic) brand.append(element("small", { class: "brand-system-label", "data-i18n": "v2.nav.system" }, t("v2.nav.system", "GOVERNED PUBLIC SYSTEM")));
   }
 
   function routeLink(route, className) {
@@ -269,6 +270,20 @@
       link.classList.add("active");
       link.setAttribute("aria-current", "page");
     }
+    return link;
+  }
+
+  function cinematicRouteLink(route) {
+    const link = element("a", {
+      class: "nav-link core-path-link",
+      href: route.href,
+      "data-cinematic-route": route.key,
+    });
+    link.append(
+      element("span", { "aria-hidden": "true" }, route.number),
+      element("b", { "data-i18n": route.i18n }, t(route.i18n, route.label)),
+    );
+    applyCurrentRoute(link, route.key);
     return link;
   }
 
@@ -344,7 +359,7 @@
     return link;
   }
 
-  function buildSystemMap() {
+  function buildSystemMap({ excludeCore = false } = {}) {
     const item = element("div", { class: "nav-item system-map" });
     const trigger = element("button", {
       type: "button",
@@ -371,7 +386,10 @@
       "aria-label": t("shell.resources.aria", "SemeAI resources"),
       "data-i18n-aria": "shell.resources.aria",
     });
+    const coreKeys = new Set(["gate", "benchmark", "genesis"]);
     resourceGroups().forEach((group) => {
+      const groupRoutes = excludeCore ? group.routes.filter((route) => !coreKeys.has(route.key)) : group.routes;
+      if (!groupRoutes.length) return;
       const titleId = `system-map-${group.key}-title`;
       const section = element("div", {
         class: `system-map-group system-map-group--${group.key}`,
@@ -385,7 +403,7 @@
           t(group.i18n, group.label),
         ),
       );
-      group.routes.forEach((route) => section.append(systemMapLink(route)));
+      groupRoutes.forEach((route) => section.append(systemMapLink(route)));
       panel.append(section);
     });
     item.append(trigger, panel);
@@ -471,7 +489,8 @@
   }
 
   function buildHeader() {
-    const header = element("header", { class: "site-header", "data-semeai-header": "" });
+    const cinematic = ["home", "gate", "benchmark"].includes(currentRoute());
+    const header = element("header", { class: `site-header${cinematic ? " cinematic-navigation" : ""}`, "data-semeai-header": "" });
     const inner = element("div", { class: "site-header-inner" });
     const brand = element("a", {
       class: "brand",
@@ -479,16 +498,23 @@
       "aria-label": t("shell.home", "SemeAI home"),
       "data-i18n-aria": "shell.home",
     });
-    appendBrandIdentity(brand);
+    appendBrandIdentity(brand, cinematic);
     if (currentRoute() === "home") brand.setAttribute("aria-current", "page");
 
     const nav = element("nav", {
-      class: "site-nav",
+      class: `site-nav${cinematic ? " world-nav core-path" : ""}`,
       "aria-label": t("shell.nav.primary", "Primary"),
       "data-i18n-aria": "shell.nav.primary",
     });
-    routes.forEach((route) => nav.append(routeLink(route, "nav-link")));
-    nav.append(buildSystemMap());
+    if (cinematic) {
+      routes.slice(0, 3).forEach((route) => nav.append(cinematicRouteLink(route)));
+      const secondary = element("div", { class: "core-path-secondary" });
+      secondary.append(routeLink(routes[3], "nav-link core-context-link"), buildSystemMap({ excludeCore: true }));
+      nav.append(secondary);
+    } else {
+      routes.forEach((route) => nav.append(routeLink(route, "nav-link")));
+      nav.append(buildSystemMap());
+    }
 
     const actions = element("div", { class: "header-actions" });
     const pilot = routeLink({ key: "pilot", i18n: "shell.nav.pilot", label: "Request a pilot", href: "/#pilot" }, "btn-primary header-pilot");
@@ -532,8 +558,11 @@
         t("shell.nav.resources", "Resources"),
       ),
     );
-    resourceGroups()
+    const cinematicCoreKeys = new Set(["gate", "benchmark", "genesis"]);
+    const mobileSystemRoutes = resourceGroups()
       .flatMap((group) => group.routes)
+      .filter((route) => !cinematic || !cinematicCoreKeys.has(route.key));
+    mobileSystemRoutes
       .forEach((route) => {
         const link = mobileRouteLink(route);
         link.classList.add("mobile-system-link");

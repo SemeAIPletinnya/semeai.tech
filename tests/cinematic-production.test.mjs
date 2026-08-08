@@ -38,28 +38,28 @@ async function run() {
   const home = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
   const gate = fs.readFileSync(path.join(ROOT, "gate.html"), "utf8");
   const bench = fs.readFileSync(path.join(ROOT, "benchmark", "index.html"), "utf8");
-  const css = fs.readFileSync(path.join(ROOT, "assets", "css", "core-product.css"), "utf8");
-  const js = fs.readFileSync(path.join(ROOT, "assets", "js", "core-product.js"), "utf8");
+  const css = fs.readFileSync(path.join(ROOT, "assets", "css", "cinematic-system.css"), "utf8");
+  const js = fs.readFileSync(path.join(ROOT, "assets", "js", "cinematic-production.mjs"), "utf8");
   const controller = fs.readFileSync(path.join(ROOT, "assets", "js", "commercial-gate-demo.js"), "utf8");
 
   // Structural rebuild markers
-  assert.match(home, /class="core-product"/);
-  assert.match(home, /core-product\.css/);
-  assert.match(home, /core-product\.js/);
-  assert.match(home, /cp-world|cp-stage/);
+  assert.match(home, /class="cinematic-production"/);
+  assert.match(home, /cinematic-system\.css/);
+  assert.match(home, /cinematic-production\.mjs/);
+  assert.match(home, /world--field|production-world/);
   assert.match(home, /Possibility has weight/i);
   assert.doesNotMatch(home, /id="live-gate"|data-decision-trigger|data-home-outcome/);
   assert.match(home, /data-field-scene/);
 
-  assert.match(gate, /class="core-product"/);
-  assert.match(gate, /cp-gate-console|cp-gate-terminal/);
+  assert.match(gate, /class="cinematic-production"/);
+  assert.match(gate, /gate-console|gate-terminal/);
   assert.match(gate, /id="live-gate"/);
   assert.match(gate, /id="commercial-demo-release"[^>]*hidden/);
   assert.match(gate, /id="commercial-demo-run"/);
   assert.match(gate, /One boundary/i);
 
-  assert.match(bench, /class="core-product"/);
-  assert.match(bench, /cp-score|cp-signals|cp-bench-console/);
+  assert.match(bench, /class="cinematic-production"/);
+  assert.match(bench, /cinematic-benchmark-result|signal-inspector|benchmark-console/);
   assert.match(bench, /id="benchmark-form"/);
   assert.match(bench, /id="repository-input"/);
   assert.match(bench, /id="benchmark-result"/);
@@ -79,7 +79,7 @@ async function run() {
 
     await page.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
     const homeState = await page.evaluate(() => ({
-      canvas: Boolean(document.querySelector(".cp-canvas")),
+      canvas: Boolean(document.querySelector(".cinematic-canvas")),
       field: Boolean(document.querySelector("[data-field-scene]")),
       liveGate: Boolean(document.querySelector("#live-gate")),
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
@@ -93,11 +93,11 @@ async function run() {
 
     await page.goto(`${origin}/gate.html`, { waitUntil: "domcontentloaded" });
     const gateState = await page.evaluate(() => ({
-      console: Boolean(document.querySelector(".cp-gate-console")),
-      terminal: Boolean(document.querySelector(".cp-gate-terminal")),
+      console: Boolean(document.querySelector(".gate-console")),
+      terminal: Boolean(document.querySelector(".gate-terminal")),
       decision: document.querySelector("#live-gate")?.dataset.decision,
       releaseHidden: document.querySelector("#commercial-demo-release")?.hidden !== false,
-      apertureY: document.querySelector(".threshold-aperture")?.getBoundingClientRect().y ?? 9999,
+      apertureY: document.querySelector(".gate-authority")?.getBoundingClientRect().y ?? 9999,
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
     }));
     assert.equal(gateState.console, true);
@@ -114,7 +114,7 @@ async function run() {
     await page.goto(`${origin}/benchmark/`, { waitUntil: "domcontentloaded" });
     const benchState = await page.evaluate(() => ({
       form: Boolean(document.querySelector("#benchmark-form")),
-      scorePanel: Boolean(document.querySelector(".cp-score")),
+      scorePanel: Boolean(document.querySelector(".cinematic-benchmark-result")),
       overflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 2,
     }));
     assert.equal(benchState.form, true);
@@ -144,7 +144,7 @@ async function run() {
     await browser.close();
     server.close();
   }
-  console.log("core-product structural rebuild contracts: ok");
+  console.log("cinematic production integration contracts: ok");
 }
 
 run().catch((error) => {
