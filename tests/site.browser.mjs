@@ -25,6 +25,7 @@ const ROUTES = [
   "/dashboard.html",
   "/account/",
   "/workspace/",
+  "/crm/",
   "/account.html",
 ];
 
@@ -203,7 +204,7 @@ async function closeServer(server) {
 }
 
 function expectedPath(route) {
-  if (route === "/account.html" || route === "/workspace/") return "/account/";
+  if (route === "/account.html" || route === "/workspace/" || route === "/crm/") return "/account/";
   return route;
 }
 
@@ -372,7 +373,7 @@ async function loadRoute(page, origin, route) {
     waitUntil: "load",
     timeout: 15_000,
   });
-  if (route === "/account.html" || route === "/workspace/") {
+  if (route === "/account.html" || route === "/workspace/" || route === "/crm/") {
     await page.waitForURL(/\/account\/(?:\?|$)/, { timeout: 3_000 });
   }
   await page.waitForTimeout(route === "/" ? 120 : 70);
@@ -1100,6 +1101,52 @@ async function validateReducedMotion(browser, origin, tailwindRuntime) {
 
 async function validateAccountWorkspaceFoundation(browser, origin) {
   const results = [];
+
+  // Identity V1 has dedicated mocked-provider/session/RLS coverage in
+  // identity.browser.mjs. The cross-route suite keeps only no-configuration,
+  // compatibility redirect, mobile overflow, and private-first-render checks.
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 1440, height: 900 },
+  ]) {
+    const context = await browser.newContext({ viewport, locale: "en-US", reducedMotion: "reduce" });
+    const page = await context.newPage();
+    const errors = [];
+    page.on("pageerror", (error) => errors.push(`pageerror ${error.message}`));
+    page.on("console", (message) => { if (message.type() === "error") errors.push(`console ${message.text()}`); });
+    await page.goto(`${origin}/account/?lang=en`, { waitUntil: "load" });
+    await page.locator("#identity-unconfigured:not([hidden])").waitFor();
+    assert.equal(await page.locator('[data-identity-provider="google"]').count(), 1);
+    assert.equal(await page.locator('[data-identity-provider="github"]').count(), 1);
+    assert.equal(await page.locator('input[type="password"]').count(), 0);
+    assert.equal(await page.locator('meta[name="robots"]').getAttribute("content"), "noindex,nofollow,noarchive");
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2), false);
+    assert.deepEqual(errors, []);
+    results.push(`identity configuration boundary ${viewport.width}x${viewport.height}`);
+    await context.close();
+  }
+
+  {
+    const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+    const page = await context.newPage();
+    await page.goto(`${origin}/workspace/`, { waitUntil: "load" });
+    await page.waitForURL(/\/account\/\?next=%2Fworkspace%2F&reason=identity_configuration/, { timeout: 3_000 });
+    assert.equal(await page.locator("#workspace-private:not([hidden])").count(), 0);
+    results.push("workspace private-first redirect");
+    await context.close();
+  }
+
+  {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    const page = await context.newPage();
+    await page.goto(`${origin}/account.html?lang=uk#legacy=preserved`, { waitUntil: "load" });
+    await page.waitForURL(/\/account\/\?lang=uk#legacy=preserved/, { timeout: 3_000 });
+    await page.locator("#identity-unconfigured:not([hidden])").waitFor();
+    results.push("legacy account redirect preservation");
+    await context.close();
+  }
+
+  return results;
 
   async function openProductPage({
     route,

@@ -4,6 +4,7 @@
   "private": true,
   "description": "Static SemeAI public, product, and evidence surfaces.",
   "scripts": {
+    "build:identity": "esbuild src/supabase-browser.mjs --bundle --format=esm --platform=browser --target=es2020 --minify --legal-comments=linked --outfile=assets/js/supabase-browser.mjs",
     "test:benchmark": "node benchmark/tests/golden.browser.mjs",
     "test:book": "node book/tests/book.browser.mjs",
     "test:genesis": "node genesis/tests/manifest.test.mjs && node genesis/tests/historical-admission.test.mjs",
@@ -12,10 +13,16 @@
     "test:motion": "node tests/v2-motion.test.mjs",
     "test:product": "node tests/product-cinematic.test.mjs",
     "test:cinematic": "node tests/cinematic-production.test.mjs",
+    "test:identity": "node tests/identity-foundation.test.mjs && node tests/identity-database.test.mjs && node tests/identity.browser.mjs",
     "test:site": "node tests/site.browser.mjs",
-    "test": "npm run test:benchmark && npm run test:book && npm run test:genesis && npm run test:axiom && npm run test:v2 && npm run test:motion && npm run test:product && npm run test:cinematic && npm run test:site"
+    "test": "npm run test:benchmark && npm run test:book && npm run test:genesis && npm run test:axiom && npm run test:v2 && npm run test:motion && npm run test:product && npm run test:cinematic && npm run test:identity && npm run test:site"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.112.2"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.4",
+    "esbuild": "0.28.1",
     "playwright": "1.62.0"
   },
   "engines": {
